@@ -1,34 +1,43 @@
 import os
+import sys
 
 import torch
+
+sys.path.append("..")
 
 from sae_lens.training.config import LanguageModelSAERunnerConfig
 from sae_lens.training.lm_runner import language_model_sae_runner
 
-os.environ["WANDB_MODE"] = "offline"  # turn this off if you want to see the output
+if torch.cuda.is_available():
+    device = "cuda"
+elif torch.backends.mps.is_available():
+    device = "mps"
+else:
+    device = "cpu"
 
+print("Using device:", device)
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-# The way to run this with this command:
-# poetry run py.test tests/benchmark/test_language_model_sae_runner.py --profile-svg -s
-def test_language_model_sae_runner():
-    if torch.cuda.is_available():
-        device = "cuda"
-    elif torch.backends.mps.is_available():
-        device = "mps"
-    else:
-        device = "cpu"
+total_training_steps = 200_000
+batch_size = 4096
+total_training_tokens = total_training_steps * batch_size
+print(f"Total Training Tokens: {total_training_tokens}")
 
-    # total_training_steps = 20_000
-    total_training_steps = 500
-    batch_size = 4096
-    total_training_tokens = total_training_steps * batch_size
-    print(f"Total Training Tokens: {total_training_tokens}")
+# change these configs
+model_name = "gelu-1l"
+dataset_path = "NeelNanda/c4-tokenized-2b"
+new_cached_activations_path = (
+    f"./cached_activations/{model_name}/{dataset_path}/{total_training_steps}"
+)
 
-    lr_warm_up_steps = 0
-    lr_decay_steps = 40_000
-    print(f"lr_decay_steps: {lr_decay_steps}")
-    l1_warmup_steps = 10_000
-    print(f"l1_warmup_steps: {l1_warmup_steps}")
+lr_warm_up_steps = 0
+lr_decay_steps = total_training_steps // 5  # 20% of training steps.
+print(f"lr_decay_steps: {lr_decay_steps}")
+l1_warmup_steps = total_training_steps // 20  # 5% of training steps.
+print(f"l1_warmup_steps: {l1_warmup_steps}")
+log_to_wandb = True
+
+for l1_coefficient in [2, 5, 10]:
 
     cfg = LanguageModelSAERunnerConfig(
         # Pick a tiny model to make this easier.
@@ -38,22 +47,25 @@ def test_language_model_sae_runner():
         hook_point_layer=0,
         d_in=512,
         dataset_path="NeelNanda/c4-tokenized-2b",
-        context_size=256,
+        streaming=False,
+        context_size=1024,
         is_dataset_tokenized=True,
-        prepend_bos=True,  # I used to train GPT2 SAEs with a prepended-bos but no longer think we should do this.
+        prepend_bos=True,
         # How big do we want our SAE to be?
-        expansion_factor=16,
+        expansion_factor=64,
         # Dataset / Activation Store
         # When we do a proper test
         # training_tokens= 820_000_000, # 200k steps * 4096 batch size ~ 820M tokens (doable overnight on an A100)
         # For now.
+        use_cached_activations=True,
+        cached_activations_path="/home/paperspace/shared_volumes/activations_volume_1/gelu-1l",
         training_tokens=total_training_tokens,  # For initial testing I think this is a good number.
         train_batch_size=4096,
         # Loss Function
         ## Reconstruction Coefficient.
         mse_loss_normalization=None,  # MSE Loss Normalization is not mentioned (so we use stanrd MSE Loss). But not we take an average over the batch.
         ## Anthropic does not mention using an Lp norm other than L1.
-        l1_coefficient=5,
+        l1_coefficient=l1_coefficient,
         lp_norm=1.0,
         # Instead, they multiply the L1 loss contribution
         # from each feature of the activations by the decoder norm of the corresponding feature.
@@ -74,7 +86,7 @@ def test_language_model_sae_runner():
         decoder_heuristic_init=True,
         init_encoder_as_decoder_transpose=True,
         # Optimizer
-        lr=4e-5,
+        lr=5e-5,
         ## adam optimizer has no weight decay by default so worry about this.
         adam_beta1=0.9,
         adam_beta2=0.999,
@@ -87,9 +99,10 @@ def test_language_model_sae_runner():
         dead_feature_window=1000,
         dead_feature_threshold=1e-4,
         # WANDB
-        log_to_wandb=True,  # always use wandb unless you are just testing code.
-        wandb_project="benchmark",
+        log_to_wandb=log_to_wandb,  # always use wandb unless you are just testing code.
+        wandb_project="how_we_train_SAEs_replication_1",
         wandb_log_frequency=50,
+        eval_every_n_wandb_logs=10,
         # Misc
         device=device,
         seed=42,
@@ -101,5 +114,4 @@ def test_language_model_sae_runner():
     # look at the next cell to see some instruction for what to do while this is running.
     sparse_autoencoder_dictionary = language_model_sae_runner(cfg)
 
-    assert sparse_autoencoder_dictionary is not None
-    # know whether or not this works by looking at the dashboard!
+    print("=" * 50)
