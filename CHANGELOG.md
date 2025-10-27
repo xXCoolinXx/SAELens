@@ -1,5 +1,70 @@
 # CHANGELOG
 
+## v6.20.0 (2025-10-27)
+
+### Feature
+
+* feat: Temporal SAE integration (#575)
+
+* clauded temporal SAE integration
+
+* setting up tests and removing intermediate files
+
+* use SAELens names for weights
+
+* updating implementation
+
+* disallow folding w dec norm for temporal saes
+
+* added temporal sae
+
+* Revert &#34;added temporal sae&#34;
+
+This reverts commit c6447901110b26b5d09e5504847a11a86acab8f1.
+
+* added warning to standalone decoding
+
+* updated loading temporal sae to safetensors format
+
+* fixing syntax issues
+
+* testing sae inference
+
+* fix: 1. W_enc not initialized for tied weights and 2. added scaling factor.
+
+* added end-to-end comparison with original implementation of TemporalSAE
+
+* fixed linting
+
+* fix: set temporal hook_name, fix lint
+
+* add neuronpedia entries to yaml
+
+* use gemma-2-2b instead of google/gemma-2-2b in pretrained yaml
+
+* make W_enc optional for Temporal SAE
+
+* adapted tests
+
+* ruff formatting
+
+* fixed layer index of temporal Llama SAEs
+
+* fix: temporal pretrained yaml
+
+* fix: undo formatting change
+
+* Fix hook_resid_post ID in pretrained_saes.yaml
+
+* fix: final corrections for temporal SAEs llama yaml
+
+* moving scaling into temporal SAEs for now
+
+---------
+
+Co-authored-by: David Chanin &lt;chanindav@gmail.com&gt;
+Co-authored-by: Johnny Lin &lt;hijohnnylin@gmail.com&gt; ([`888c586`](https://github.com/decoderesearch/SAELens/commit/888c58696ceeabf22e9980149dca52c1bb655e37))
+
 ## v6.19.0 (2025-10-27)
 
 ### Chore
