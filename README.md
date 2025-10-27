@@ -1,4 +1,4 @@
-<img width="1308" alt="Screenshot 2024-03-21 at 3 08 28 pm" src="https://github.com/decoderesearch/mats_sae_training/assets/69127271/209012ec-a779-4036-b4be-7b7739ea87f6">
+<img width="1308" height="532" alt="saes_pic" src="https://github.com/user-attachments/assets/2a5d752f-b261-4ee4-ad5d-ebf282321371" />
 
 # SAE Lens
 
