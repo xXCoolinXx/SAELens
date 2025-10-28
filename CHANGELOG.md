@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v6.20.1 (2025-10-28)
+
+### Fix
+
+* fix: update pypi publisher ([`2541e2c`](https://github.com/decoderesearch/SAELens/commit/2541e2c3e0e74f868b5082c67e852ab2409588d8))
+
 ## v6.20.0 (2025-10-27)
 
 ### Feature
