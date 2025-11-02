@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v6.21.0 (2025-11-02)
+
+### Feature
+
+* feat: gpt-oss-20b andyrdt (#580) ([`c82f75d`](https://github.com/decoderesearch/SAELens/commit/c82f75d948c8efc5792ae382b194bc7f2b9fc97f))
+
 ## v6.20.1 (2025-10-28)
 
 ### Fix
