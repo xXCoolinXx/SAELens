@@ -14948,6 +14948,7 @@ goodfire-llama-3.3-70b-instruct:
   - id: layer_50
     path: Llama-3.3-70B-Instruct-SAE-l50.pt
     l0: 121
+    neuronpedia: llama3.3-70b-it/50-resid-post-gf
 
 goodfire-llama-3.1-8b-instruct:
   conversion_func: goodfire
@@ -14957,3 +14958,4 @@ goodfire-llama-3.1-8b-instruct:
   - id: layer_19
     path: Llama-3.1-8B-Instruct-SAE-l19.pth
     l0: 91
+    neuronpedia: llama3.1-8b-it/19-resid-post-gf
