@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v6.22.0 (2025-11-11)
+
+### Feature
+
+* feat: add neuronpedia links to pretrained yaml (#583)
+
+* fix: add neuronpedia entry for gf sae
+
+* fix: add neuronpedia entry for gf sae ([`853af37`](https://github.com/decoderesearch/SAELens/commit/853af370db47a51f1c3b8b555328bc45a387d28c))
+
 ## v6.21.0 (2025-11-02)
 
 ### Feature
