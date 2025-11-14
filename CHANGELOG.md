@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## v6.22.1 (2025-11-14)
+
+### Chore
+
+* chore: skip temporal sae from HF on CI to save disk space (#586) ([`b34447d`](https://github.com/decoderesearch/SAELens/commit/b34447d6dbbaf8bad638b067f4819f66d3232c69))
+
+### Fix
+
+* fix: jaxtyping annotation error (#585)
+
+* fix: jaxtyping annotating error
+
+* removing jaxtyping annotations
+
+---------
+
+Co-authored-by: David Chanin &lt;chanindav@gmail.com&gt; ([`eb86497`](https://github.com/decoderesearch/SAELens/commit/eb864974e7b2e3dd15fb4136e685e737c711faba))
+
 ## v6.22.0 (2025-11-11)
 
 ### Feature
