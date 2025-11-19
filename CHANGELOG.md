@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v6.22.2 (2025-11-19)
+
+### Fix
+
+* fix: allow None context_size in SAEs if explicitly overridden (#587)
+
+* fix: allow None context_size in SAEs if explicitly overridden
+
+* adding test ([`082c777`](https://github.com/decoderesearch/SAELens/commit/082c7773568ce7173faf6d120c4f285e84f4df13))
+
 ## v6.22.1 (2025-11-14)
 
 ### Chore
