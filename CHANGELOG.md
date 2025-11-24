@@ -1,5 +1,43 @@
 # CHANGELOG
 
+## v6.22.3 (2025-11-24)
+
+### Chore
+
+* chore: updating claude permissions ([`797acc3`](https://github.com/decoderesearch/SAELens/commit/797acc3cda7b1f4b97784c8d1cba3df97e8e55bd))
+
+* chore: Add Claude Code GitHub Workflow (#589)
+
+* &#34;Claude PR Assistant workflow&#34;
+
+* &#34;Claude Code Review workflow&#34; ([`34ed031`](https://github.com/decoderesearch/SAELens/commit/34ed0317157c70a68868abebe3dddf5dddd43af2))
+
+### Fix
+
+* fix: Add epsilon to fold_W_dec_norm to prevent NaN from division by zero (#590)
+
+* fix: Add epsilon to fold_W_dec_norm to prevent NaN from division by zero
+
+When decoder weights have zero norm (dead latents), the division in
+`fold_W_dec_norm` produces NaN values. This adds `.clamp(min=1e-8)` to
+prevent division by zero in all implementations.
+
+Also adds regression tests that verify `fold_W_dec_norm` handles zero-norm
+decoder rows without producing NaN values.
+
+Fixes #588
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-authored-by: David Chanin &lt;chanind@users.noreply.github.com&gt;
+
+* fixing formatting
+
+---------
+
+Co-authored-by: claude[bot] &lt;41898282+claude[bot]@users.noreply.github.com&gt;
+Co-authored-by: David Chanin &lt;chanind@users.noreply.github.com&gt; ([`006a75b`](https://github.com/decoderesearch/SAELens/commit/006a75b5b1c450bcc28ba296b54506d503c599de))
+
 ## v6.22.2 (2025-11-19)
 
 ### Fix
