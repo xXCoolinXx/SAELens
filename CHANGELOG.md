@@ -1,5 +1,49 @@
 # CHANGELOG
 
+## v6.24.0 (2025-12-19)
+
+### Documentation
+
+* docs: cleaner pretrained saes table (#594) ([`6c6c408`](https://github.com/decoderesearch/SAELens/commit/6c6c4082535554699238ec5e11693ab219fd0abf))
+
+### Feature
+
+* feat: Gemma Scope 2 (#595)
+
+* adding loaders for gs
+
+* adding transcoder loading
+
+* fixing transcoder loading / adding config tests
+
+* adding d_out to transcoder cfg
+
+* support loading CLTs
+
+* update loaders for new gemma-scope configs
+
+* updating pretrained_saes.yaml
+
+* add some neuronpedia entries to the pretrained yaml
+
+* fix: gemma 270m doesnt have pt, 270m SAE directory workaround
+
+* fix: 270m doesn&#39;t have pt
+
+* change gg/gs -&gt; google
+
+* add fallback to infer confg dict if missing from repo
+
+* fixing gemma-scope-2 SAE ids
+
+* fixing linting
+
+* hackily fixing new typing issue
+
+---------
+
+Co-authored-by: Johnny Lin &lt;hijohnnylin@gmail.com&gt; ([`10d3aea`](https://github.com/decoderesearch/SAELens/commit/10d3aeac13d7d30c8c235f4c02de0b7e58f823f0))
+
 ## v6.23.0 (2025-12-18)
 
 ### Chore
