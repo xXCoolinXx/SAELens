@@ -10,9 +10,11 @@ from sparsify import SparseCoder, SparseCoderConfig
 
 from sae_lens import StandardSAE, StandardSAEConfig
 from sae_lens.loading.pretrained_sae_loaders import (
+    _infer_gemma_3_raw_cfg_dict,
     dictionary_learning_sae_huggingface_loader_1,
     get_deepseek_r1_config_from_hf,
     get_gemma_2_transcoder_config_from_hf,
+    get_gemma_3_config_from_hf,
     get_goodfire_config_from_hf,
     get_goodfire_huggingface_loader,
     get_llama_scope_config_from_hf,
@@ -149,6 +151,162 @@ def test_load_sae_config_from_huggingface_gemma_2():
     }
 
     assert cfg_dict == expected_cfg_dict
+
+
+@pytest.mark.parametrize(
+    (
+        "folder_name",
+        "architecture",
+        "hooks",
+        "d_sae",
+        "d_in",
+        "d_out",
+    ),
+    [
+        (
+            "resid_post_all/layer_10_width_262k_l0_small",
+            "jumprelu",
+            {
+                "hook_name": "blocks.10.hook_resid_post",
+                "hf_hook_name": "model.layers.10.output",
+            },
+            262144,
+            1152,
+            None,
+        ),
+        (
+            "transcoder_all/layer_10_width_262k_l0_small_affine",
+            "jumprelu_skip_transcoder",
+            {
+                "hook_name": "blocks.10.ln2.hook_normalized",
+                "hook_name_out": "blocks.10.hook_mlp_out",
+                "hf_hook_name": "model.layers.10.pre_feedforward_layernorm.output",
+                "hf_hook_name_out": "model.layers.10.post_feedforward_layernorm.output",
+            },
+            262144,
+            1152,
+            1152,
+        ),
+        (
+            "attn_out_all/layer_11_width_16k_l0_small",
+            "jumprelu",
+            {
+                "hook_name": "blocks.11.hook_attn_out",
+                "hf_hook_name": "model.layers.11.self_attn.o_proj.input",
+            },
+            16384,
+            1024,
+            None,
+        ),
+    ],
+)
+def test_get_gemma_3_config_from_hf(
+    folder_name: str,
+    architecture: str,
+    hooks: dict[str, str],
+    d_sae: int,
+    d_in: int,
+    d_out: int | None,
+):
+    cfg_dict = get_gemma_3_config_from_hf(
+        "google/gemma-scope-2-1b-pt", folder_name, "cpu"
+    )
+
+    expected_cfg_dict = {
+        "architecture": architecture,
+        "d_in": d_in,
+        "d_sae": d_sae,
+        "dtype": "float32",
+        "model_name": "google/gemma-3-1b-pt",
+        "hook_head_index": None,
+        "finetuning_scaling_factor": False,
+        "sae_lens_training_version": None,
+        "prepend_bos": True,
+        "dataset_path": "monology/pile-uncopyrighted",
+        "context_size": 1024,
+        "apply_b_dec_to_input": False,
+        "normalize_activations": None,
+        "device": "cpu",
+        **hooks,
+    }
+    if d_out is not None:
+        expected_cfg_dict["d_out"] = d_out
+    assert cfg_dict == expected_cfg_dict
+
+
+@pytest.mark.parametrize(
+    ("repo_id", "folder_name", "expected_cfg"),
+    [
+        (
+            "google/gemma-scope-2-1b-pt",
+            "resid_post_all/layer_10_width_262k_l0_small",
+            {
+                "architecture": "jump_relu",
+                "model_name": "google/gemma-3-1b-pt",
+                "hf_hook_point_in": "model.layers.10.output",
+            },
+        ),
+        (
+            "google/gemma-scope-2-4b-it",
+            "transcoder_all/layer_5_width_16k_l0_big_affine",
+            {
+                "architecture": "jump_relu",
+                "model_name": "google/gemma-3-4b-it",
+                "hf_hook_point_in": "model.layers.5.pre_feedforward_layernorm.output",
+                "hf_hook_point_out": "model.layers.5.post_feedforward_layernorm.output",
+            },
+        ),
+        (
+            "google/gemma-scope-2-12b-pt",
+            "attn_out_all/layer_11_width_16k_l0_small",
+            {
+                "architecture": "jump_relu",
+                "model_name": "google/gemma-3-12b-pt",
+                "hf_hook_point_in": "model.layers.11.self_attn.o_proj.input",
+            },
+        ),
+        (
+            "google/gemma-scope-2-27b-it",
+            "mlp_out/layer_17_width_16k_l0_big",
+            {
+                "architecture": "jump_relu",
+                "model_name": "google/gemma-3-27b-it",
+                "hf_hook_point_in": "model.layers.17.post_feedforward_layernorm.output",
+            },
+        ),
+        (
+            "google/gemma-scope-2-270m-pt",
+            "clt/layer_3_width_16k_l0_medium",
+            {
+                "architecture": "jump_relu",
+                "model_name": "google/gemma-3-270m-pt",
+                "hf_hook_point_in": "model.layers.3.pre_feedforward_layernorm.output",
+                "hf_hook_point_out": "model.layers.3.post_feedforward_layernorm.output",
+            },
+        ),
+    ],
+)
+def test_infer_gemma_3_raw_cfg_dict(
+    repo_id: str,
+    folder_name: str,
+    expected_cfg: dict[str, str],
+):
+    cfg = _infer_gemma_3_raw_cfg_dict(repo_id, folder_name)
+    assert cfg == expected_cfg
+
+
+def test_infer_gemma_3_raw_cfg_dict_invalid_folder_name():
+    with pytest.raises(
+        ValueError, match="Could not extract layer number from folder_name"
+    ):
+        _infer_gemma_3_raw_cfg_dict("google/gemma-scope-2-1b-pt", "invalid_folder_name")
+
+
+def test_infer_gemma_3_raw_cfg_dict_unknown_hook_type():
+    with pytest.raises(ValueError, match="Could not infer hook type from folder_name"):
+        _infer_gemma_3_raw_cfg_dict(
+            "google/gemma-scope-2-1b-pt", "unknown_hook/layer_5_width_16k"
+        )
 
 
 def test_load_sae_config_from_huggingface_gemma_2_hook_z_saes():
@@ -1186,12 +1344,11 @@ def test_get_mntss_clt_layer_huggingface_loader(
             return {f"W_dec_{folder_name}": W_dec_tensor}
         raise ValueError(f"Unexpected file path: {file_path}")
 
-    # Mock hf_hub_url to return a fake URL
-    def mock_hf_hub_url(repo_id_arg: str, filename: str) -> str:  # noqa: ARG001
-        return f"https://huggingface.co/{repo_id_arg}/resolve/main/{filename}"
-
     # Mock get_safetensors_tensor_shapes to return expected tensor shapes
-    def mock_get_safetensors_tensor_shapes(url: str) -> dict[str, list[int]]:  # noqa: ARG001
+    def mock_get_safetensors_tensor_shapes(
+        repo_id_arg: str,  # noqa: ARG001
+        filename: str,  # noqa: ARG001
+    ) -> dict[str, list[int]]:
         return {
             f"b_dec_{folder_name}": [d_in],
             f"b_enc_{folder_name}": [d_sae],
@@ -1204,9 +1361,6 @@ def test_get_mntss_clt_layer_huggingface_loader(
     )
     monkeypatch.setattr(
         "sae_lens.loading.pretrained_sae_loaders.load_file", mock_load_file
-    )
-    monkeypatch.setattr(
-        "sae_lens.loading.pretrained_sae_loaders.hf_hub_url", mock_hf_hub_url
     )
     monkeypatch.setattr(
         "sae_lens.loading.pretrained_sae_loaders.get_safetensors_tensor_shapes",
