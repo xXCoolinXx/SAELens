@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v6.24.1 (2025-12-20)
+
+### Fix
+
+* fix: skip invalid gemma scope 2 transcoders (#596) ([`d388d32`](https://github.com/decoderesearch/SAELens/commit/d388d328fb0b4f8b6b273e416ee922256dbd7aba))
+
 ## v6.24.0 (2025-12-19)
 
 ### Documentation
