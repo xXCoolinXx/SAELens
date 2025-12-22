@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v6.25.0 (2025-12-22)
+
+### Feature
+
+* feat: adds some neuronpedia entries for 27b-it (#602) ([`895a90d`](https://github.com/decoderesearch/SAELens/commit/895a90d83986fe3eeeda10f66e0902fcfb53514a))
+
 ## v6.24.2 (2025-12-21)
 
 ### Chore
