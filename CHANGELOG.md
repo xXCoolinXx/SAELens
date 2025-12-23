@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## v6.25.1 (2025-12-23)
+
+### Performance
+
+* perf: improve memory usage when loading SAEs from pretrained (#603)
+
+* perf: improve memory usage when loading SAEs from pretrained
+
+* fixing tests
+
+* adding more tests
+
+* changes from CR
+
+* more test fixes
+
+* more tests
+
+* updating docstrings ([`25a7ad0`](https://github.com/decoderesearch/SAELens/commit/25a7ad0c56e1f325ce154e1be5cf2521da5dace1))
+
 ## v6.25.0 (2025-12-22)
 
 ### Feature
