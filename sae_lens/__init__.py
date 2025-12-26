@@ -21,6 +21,10 @@ from sae_lens.saes import (
     JumpReLUTrainingSAEConfig,
     JumpReLUTranscoder,
     JumpReLUTranscoderConfig,
+    MatchingPursuitSAE,
+    MatchingPursuitSAEConfig,
+    MatchingPursuitTrainingSAE,
+    MatchingPursuitTrainingSAEConfig,
     MatryoshkaBatchTopKTrainingSAE,
     MatryoshkaBatchTopKTrainingSAEConfig,
     SAEConfig,
@@ -113,6 +117,10 @@ __all__ = [
     "MatryoshkaBatchTopKTrainingSAEConfig",
     "TemporalSAE",
     "TemporalSAEConfig",
+    "MatchingPursuitSAE",
+    "MatchingPursuitTrainingSAE",
+    "MatchingPursuitSAEConfig",
+    "MatchingPursuitTrainingSAEConfig",
 ]
 
 
@@ -139,3 +147,7 @@ register_sae_class(
     "jumprelu_skip_transcoder", JumpReLUSkipTranscoder, JumpReLUSkipTranscoderConfig
 )
 register_sae_class("temporal", TemporalSAE, TemporalSAEConfig)
+register_sae_class("matching_pursuit", MatchingPursuitSAE, MatchingPursuitSAEConfig)
+register_sae_training_class(
+    "matching_pursuit", MatchingPursuitTrainingSAE, MatchingPursuitTrainingSAEConfig
+)
