@@ -1,5 +1,57 @@
 # CHANGELOG
 
+## v6.26.0 (2025-12-26)
+
+### Feature
+
+* feat: Matching Pursuit SAEs (#601)
+
+* implementing matching pursuit SAE implementation
+
+* optimizing matching pursuit function
+
+* handle 3d inputs
+
+* dtype nonsense
+
+* adding aux loss based on topk saes
+
+* try using more no-grad to reduce mem usage
+
+* further memory improvements for backwards pass
+
+* check convergence less often
+
+* more optimizations
+
+* adding max iterations option
+
+* removing gram option
+
+* removing aux loss from mp saes
+
+* forcing decoder init norm to be 1.0 for mp saes
+
+* adding another test
+
+* adding docs for trainin MP-SAEs
+
+* updating docs further
+
+* changes from Claude CR
+
+* fixing test
+
+* final tweaks pre merge
+
+* adding  option
+
+* fixing docs
+
+* tweaking tests
+
+* fixing docstrings ([`b317d08`](https://github.com/decoderesearch/SAELens/commit/b317d08b9c68938f60219d086cd7c1d573023124))
+
 ## v6.25.1 (2025-12-23)
 
 ### Performance
