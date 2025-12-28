@@ -959,7 +959,7 @@ def get_dictionary_learning_config_1_from_hf(
     architecture = "standard"
     if trainer["dict_class"] == "GatedAutoEncoder":
         architecture = "gated"
-    elif trainer["dict_class"] == "MatryoshkaBatchTopKSAE":
+    elif trainer["dict_class"] in ["MatryoshkaBatchTopKSAE", "BatchTopKSAE"]:
         architecture = "jumprelu"
 
     return {

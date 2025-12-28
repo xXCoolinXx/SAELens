@@ -17,6 +17,7 @@ from sae_lens.loading.pretrained_sae_loaders import (
     gemma_2_transcoder_huggingface_loader,
     gemma_3_sae_huggingface_loader,
     get_deepseek_r1_config_from_hf,
+    get_dictionary_learning_config_1_from_hf,
     get_gemma_2_transcoder_config_from_hf,
     get_gemma_3_config_from_hf,
     get_goodfire_config_from_hf,
@@ -1212,6 +1213,37 @@ def test_sparsify_disk_loader(tmp_path: Path):
     torch.testing.assert_close(state_dict["b_dec"], sparsify_sae.b_dec.data)
 
 
+def test_get_dictionary_learning_config_1_from_hf_andy():
+    cfg_dict = get_dictionary_learning_config_1_from_hf(
+        "andyrdt/saes-llama-3.1-8b-instruct",
+        "resid_post_layer_3/trainer_1",
+        device="cpu",
+        force_download=False,
+        cfg_overrides=None,
+    )
+    assert cfg_dict == {
+        "architecture": "jumprelu",  # BatchTopKSAE uses threshold-based activation
+        "d_in": 4096,
+        "d_sae": 131072,
+        "dtype": "float32",
+        "device": "cpu",
+        "model_name": "Llama-3.1-8B-Instruct",
+        "hook_name": "blocks.3.hook_resid_post",
+        "hook_head_index": None,
+        "activation_fn": "relu",
+        "activation_fn_kwargs": {},
+        "apply_b_dec_to_input": True,
+        "finetuning_scaling_factor": False,
+        "sae_lens_training_version": None,
+        "prepend_bos": True,
+        "dataset_path": "monology/pile-uncopyrighted",
+        "context_size": 1024,
+        "normalize_activations": "none",
+        "neuronpedia_id": None,
+        "dataset_trust_remote_code": True,
+    }
+
+
 @pytest.mark.skip(
     reason="This takes too long since the files are large. Also redundant-ish with the test below."
 )
@@ -1223,9 +1255,10 @@ def test_dictionary_learning_sae_huggingface_loader_1_andy():
         force_download=False,
         cfg_overrides=None,
     )
-    assert state_dict.keys() == {"W_enc", "W_dec", "b_dec", "b_enc"}
+    # BatchTopKSAE includes a threshold parameter for JumpReLU-style activation
+    assert state_dict.keys() == {"W_enc", "W_dec", "b_dec", "b_enc", "threshold"}
     assert cfg_dict == {
-        "architecture": "standard",
+        "architecture": "jumprelu",  # BatchTopKSAE uses threshold-based activation
         "d_in": 4096,
         "d_sae": 131072,
         "dtype": "float32",
@@ -1249,6 +1282,7 @@ def test_dictionary_learning_sae_huggingface_loader_1_andy():
     assert state_dict["W_dec"].shape == (131072, 4096)
     assert state_dict["b_dec"].shape == (4096,)
     assert state_dict["b_enc"].shape == (131072,)
+    assert state_dict["threshold"].shape == (131072,)
 
 
 def test_dictionary_learning_sae_huggingface_loader_1():
