@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v6.26.1 (2025-12-28)
+
+### Fix
+
+* fix: enable remaining gemma scope 2 transcoders (#607) ([`7a5b4a7`](https://github.com/decoderesearch/SAELens/commit/7a5b4a7ae24ac4f717de9b8ab2358bffd776326d))
+
+### Unknown
+
+* core: fix docs code highlighting issue with 1password plugin (#606) ([`95ebc89`](https://github.com/decoderesearch/SAELens/commit/95ebc89da6e7a18c510f19daedbe9885d8042303))
+
 ## v6.26.0 (2025-12-26)
 
 ### Feature
