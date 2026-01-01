@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## v6.27.0 (2026-01-01)
+
+### Documentation
+
+* docs: adding docs for extending SAELens with custom runners (#610)
+
+* adding docs for extending SAELens with custom runners
+
+* updating docs
+
+* fixing docs typo ([`3c0f86d`](https://github.com/decoderesearch/SAELens/commit/3c0f86db678d0bc97040272ef2a645b3416fcacf))
+
+### Feature
+
+* feat: allow control of the mixing portion used by the activations store (#609)
+
+* feat: allow explicit control of the mixing portion used by the activation store
+
+* disable shuffling when mix_fraction = 0
+
+* cleaning up test
+
+* updating docs from CR
+
+* fixing test ([`f8f0094`](https://github.com/decoderesearch/SAELens/commit/f8f009476c5f2efa322ffacf3c6216fb11f1c8df))
+
 ## v6.26.2 (2025-12-28)
 
 ### Fix
