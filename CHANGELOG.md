@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v6.27.1 (2026-01-02)
+
+### Fix
+
+* fix: handle empty or nearly empty sequences when disable_concat_sequences=True (#611) ([`0e4b3e9`](https://github.com/decoderesearch/SAELens/commit/0e4b3e9397a30659a2f25b469130c197bdc20bba))
+
 ## v6.27.0 (2026-01-01)
 
 ### Documentation
