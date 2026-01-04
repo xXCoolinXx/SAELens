@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v6.27.2 (2026-01-04)
+
+### Fix
+
+* fix: stop mixing buffer from growing indefinitely on high mix fraction (#613) ([`a385f4a`](https://github.com/decoderesearch/SAELens/commit/a385f4aeb9779772e99cba07bb323023fe4721be))
+
 ## v6.27.1 (2026-01-02)
 
 ### Fix
