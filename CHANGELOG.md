@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v6.27.3 (2026-01-05)
+
+### Performance
+
+* perf: simplify activation store loading batches (#614)
+
+* perf: simplify activation store loading batches
+
+* fixing benchmark typing
+
+* change from CR ([`4dd0a95`](https://github.com/decoderesearch/SAELens/commit/4dd0a955ad0b4f05d3f97fffc1ed3bb4837a8def))
+
 ## v6.27.2 (2026-01-04)
 
 ### Fix
