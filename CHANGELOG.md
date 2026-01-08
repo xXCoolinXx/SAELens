@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## v6.28.1 (2026-01-08)
+
+### Chore
+
+* chore: improve prompt for claude code reviews ([`818ed71`](https://github.com/decoderesearch/SAELens/commit/818ed71ab7b1117031e9de944cecfdb3d5f6b788))
+
+### Fix
+
+* fix: better warning message when trying to load a listed SAE from Huggingface (#617)
+
+* fix: better warning message when trying to load a listed SAE directly from huggingface
+
+* fix: add return type annotation to mock_sae_lens_loader
+
+Co-authored-by: David Chanin &lt;chanind@users.noreply.github.com&gt;
+
+---------
+
+Co-authored-by: claude[bot] &lt;41898282+claude[bot]@users.noreply.github.com&gt;
+Co-authored-by: David Chanin &lt;chanind@users.noreply.github.com&gt; ([`e077582`](https://github.com/decoderesearch/SAELens/commit/e0775827bbc49439b2acc32e2f646fc0b0fea6e9))
+
 ## v6.28.0 (2026-01-08)
 
 ### Chore
