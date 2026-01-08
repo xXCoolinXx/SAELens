@@ -1,5 +1,53 @@
 # CHANGELOG
 
+## v6.28.0 (2026-01-08)
+
+### Chore
+
+* chore: use sticky comments for claude code review (#616) ([`26bf6be`](https://github.com/decoderesearch/SAELens/commit/26bf6bec6cdc3641b017dc046117da3465edf521))
+
+### Feature
+
+* feat: Support for Training Toy SAEs on Synthetic Data (#615)
+
+* WIP toy models
+
+* renaming toy model -&gt; synthetic
+
+* more shuffling
+
+* adding hierarchy modifier
+
+* allow passing multiple modifiers to the activations generator
+
+* adding firing prob helpers and simplifying trainer
+
+* adding mcc eval
+
+* updating hierarchy helpers
+
+* renaming train helper
+
+* simplifying feature dictionary
+
+* adding toy model tutorial
+
+* adding toy model tutorial
+
+* adding docs
+
+* changes from CR
+
+* adding more test coverage
+
+* fixing formatting
+
+* more CR fixes
+
+* adding extra validation to correlation matrix
+
+* more improvements from CR ([`9d942d8`](https://github.com/decoderesearch/SAELens/commit/9d942d847e5d3ae56340ffbe7e62af4175ff3dd9))
+
 ## v6.27.3 (2026-01-05)
 
 ### Performance
