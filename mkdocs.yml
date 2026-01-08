@@ -47,7 +47,7 @@ extra_css:
   - assets/saetable.css
 nav:
   - Home: index.md
-  - Roadmap: roadmap.md
+  - Usage: usage.md
   - Training SAEs: training_saes.md
   - Synthetic Data: synthetic_data.md
   - Custom SAEs: custom_saes.md
