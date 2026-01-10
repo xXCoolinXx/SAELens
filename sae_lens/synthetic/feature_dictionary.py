@@ -16,11 +16,28 @@ FeatureDictionaryInitializer = Callable[["FeatureDictionary"], None]
 
 def orthogonalize_embeddings(
     embeddings: torch.Tensor,
-    target_cos_sim: float = 0,
     num_steps: int = 200,
     lr: float = 0.01,
     show_progress: bool = False,
+    chunk_size: int = 1024,
 ) -> torch.Tensor:
+    """
+    Orthogonalize embeddings using gradient descent with chunked computation.
+
+    Uses chunked computation to avoid O(n²) memory usage when computing pairwise
+    dot products. Memory usage is O(chunk_size × n) instead of O(n²).
+
+    Args:
+        embeddings: Tensor of shape [num_vectors, hidden_dim]
+        num_steps: Number of optimization steps
+        lr: Learning rate for Adam optimizer
+        show_progress: Whether to show progress bar
+        chunk_size: Number of vectors to process at once. Smaller values use less
+            memory but may be slower.
+
+    Returns:
+        Orthogonalized embeddings of the same shape, normalized to unit length.
+    """
     num_vectors = embeddings.shape[0]
     # Create a detached copy and normalize, then enable gradients
     embeddings = embeddings.detach().clone()
@@ -29,24 +46,37 @@ def orthogonalize_embeddings(
 
     optimizer = torch.optim.Adam([embeddings], lr=lr)  # type: ignore[list-item]
 
-    # Create a mask to zero out diagonal elements (avoid in-place operations)
-    off_diagonal_mask = ~torch.eye(
-        num_vectors, dtype=torch.bool, device=embeddings.device
-    )
-
     pbar = tqdm(
         range(num_steps), desc="Orthogonalizing vectors", disable=not show_progress
     )
     for _ in pbar:
         optimizer.zero_grad()
 
-        dot_products = embeddings @ embeddings.T
-        diff = dot_products - target_cos_sim
-        # Use masking instead of in-place fill_diagonal_
-        off_diagonal_diff = diff * off_diagonal_mask.float()
-        loss = off_diagonal_diff.pow(2).sum()
-        loss = loss + num_vectors * (dot_products.diag() - 1).pow(2).sum()
+        off_diag_loss = torch.tensor(0.0, device=embeddings.device)
+        diag_loss = torch.tensor(0.0, device=embeddings.device)
 
+        for i in range(0, num_vectors, chunk_size):
+            end_i = min(i + chunk_size, num_vectors)
+            chunk = embeddings[i:end_i]
+            chunk_dots = chunk @ embeddings.T  # [chunk_size, num_vectors]
+
+            # Create mask to zero out diagonal elements for this chunk
+            # Diagonal of full matrix: position (i+k, i+k) → in chunk_dots: (k, i+k)
+            chunk_len = end_i - i
+            row_indices = torch.arange(chunk_len, device=embeddings.device)
+            col_indices = i + row_indices  # column indices in full matrix
+
+            # Boolean mask: True for off-diagonal elements we want to include
+            off_diag_mask = torch.ones_like(chunk_dots, dtype=torch.bool)
+            off_diag_mask[row_indices, col_indices] = False
+
+            off_diag_loss = off_diag_loss + chunk_dots[off_diag_mask].pow(2).sum()
+
+            # Diagonal loss: keep self-dot-products at 1
+            diag_vals = chunk_dots[row_indices, col_indices]
+            diag_loss = diag_loss + (diag_vals - 1).pow(2).sum()
+
+        loss = off_diag_loss + num_vectors * diag_loss
         loss.backward()
         optimizer.step()
         pbar.set_description(f"loss: {loss.item():.3f}")
@@ -59,7 +89,10 @@ def orthogonalize_embeddings(
 
 
 def orthogonal_initializer(
-    num_steps: int = 200, lr: float = 0.01, show_progress: bool = False
+    num_steps: int = 200,
+    lr: float = 0.01,
+    show_progress: bool = False,
+    chunk_size: int = 1024,
 ) -> FeatureDictionaryInitializer:
     def initializer(feature_dict: "FeatureDictionary") -> None:
         feature_dict.feature_vectors.data = orthogonalize_embeddings(
@@ -67,6 +100,7 @@ def orthogonal_initializer(
             num_steps=num_steps,
             lr=lr,
             show_progress=show_progress,
+            chunk_size=chunk_size,
         )
 
     return initializer
@@ -97,6 +131,7 @@ class FeatureDictionary(nn.Module):
         hidden_dim: int,
         bias: bool = False,
         initializer: FeatureDictionaryInitializer | None = orthogonal_initializer(),
+        device: str | torch.device = "cpu",
     ):
         """
         Create a new FeatureDictionary.
@@ -106,20 +141,23 @@ class FeatureDictionary(nn.Module):
             hidden_dim: Dimensionality of the hidden space
             bias: Whether to include a bias term in the embedding
             initializer: Initializer function to use. If None, the embeddings are initialized to random unit vectors. By default will orthogonalize embeddings.
+            device: Device to use for the feature dictionary.
         """
         super().__init__()
         self.num_features = num_features
         self.hidden_dim = hidden_dim
 
         # Initialize feature vectors as unit vectors
-        embeddings = torch.randn(num_features, hidden_dim)
+        embeddings = torch.randn(num_features, hidden_dim, device=device)
         embeddings = embeddings / embeddings.norm(p=2, dim=1, keepdim=True).clamp(
             min=1e-8
         )
         self.feature_vectors = nn.Parameter(embeddings)
 
         # Initialize bias (zeros if not using bias, but still a parameter for consistent API)
-        self.bias = nn.Parameter(torch.zeros(hidden_dim), requires_grad=bias)
+        self.bias = nn.Parameter(
+            torch.zeros(hidden_dim, device=device), requires_grad=bias
+        )
 
         if initializer is not None:
             initializer(self)
