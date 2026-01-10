@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v6.28.2 (2026-01-10)
+
+### Chore
+
+* chore: show-hf-hook-in-docs (#619) ([`1f6c480`](https://github.com/decoderesearch/SAELens/commit/1f6c480d775530076f27b8f7c4db4429eee2bccc))
+
+* chore: improved usage docs (#618) ([`d29066c`](https://github.com/decoderesearch/SAELens/commit/d29066cc82337e09acc61646d3d0580ab4ef9056))
+
+### Performance
+
+* perf: vectorizing toy model hierarchy enforcement in hierarchy_modifier() (#620) ([`6ce12db`](https://github.com/decoderesearch/SAELens/commit/6ce12db50505222150189f16fcffbf9b715cebc8))
+
 ## v6.28.1 (2026-01-08)
 
 ### Chore
