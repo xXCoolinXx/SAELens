@@ -17,11 +17,14 @@ from sae_lens.synthetic.activation_generator import (
     ActivationGenerator,
     ActivationsModifier,
     ActivationsModifierInput,
+    CorrelationMatrixInput,
 )
 from sae_lens.synthetic.correlation import (
+    LowRankCorrelationMatrix,
     create_correlation_matrix_from_correlations,
     generate_random_correlation_matrix,
     generate_random_correlations,
+    generate_random_low_rank_correlation_matrix,
 )
 from sae_lens.synthetic.evals import (
     SyntheticDataEvalResult,
@@ -66,6 +69,9 @@ __all__ = [
     "create_correlation_matrix_from_correlations",
     "generate_random_correlations",
     "generate_random_correlation_matrix",
+    "generate_random_low_rank_correlation_matrix",
+    "LowRankCorrelationMatrix",
+    "CorrelationMatrixInput",
     # Feature modifiers
     "ActivationsModifier",
     "ActivationsModifierInput",
