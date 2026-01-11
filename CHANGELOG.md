@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## v6.29.0 (2026-01-11)
+
+### Feature
+
+* feat: scalable low-rank correlation matrices for synthetic data SAEs (#621)
+
+* allow low rank correlation matrices for sampling
+
+* vectorizing generate_random_correlation_matrix
+
+* adding helper for generating low rank correlation matrices
+
+* changes from CR
+
+* more CR changes
+
+* fixing tensor shapes in docs ([`92f0ef7`](https://github.com/decoderesearch/SAELens/commit/92f0ef7137679c277023a5f2bf3904781ffedd70))
+
 ## v6.28.2 (2026-01-10)
 
 ### Chore
