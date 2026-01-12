@@ -47,6 +47,16 @@ ALL_TRAINING_ARCHITECTURES = [
 ]
 
 
+def to_sparse(tensor: torch.Tensor) -> torch.Tensor:
+    """Convert a dense tensor to sparse COO format."""
+    return tensor.to_sparse_coo()
+
+
+def to_dense(tensor: torch.Tensor) -> torch.Tensor:
+    """Convert a tensor to dense format if sparse."""
+    return tensor.to_dense() if tensor.is_sparse else tensor
+
+
 # This TypedDict should match the fields directly in LanguageModelSAERunnerConfig
 class LanguageModelSAERunnerConfigDict(TypedDict, total=False):
     sae: TrainingSAEConfig  # The nested SAE config object
