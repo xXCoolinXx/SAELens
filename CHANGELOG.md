@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v6.29.1 (2026-01-12)
+
+### Performance
+
+* perf: allow using sparse tensors and autocasting for synthetic data (#622) ([`bd7d1e5`](https://github.com/decoderesearch/SAELens/commit/bd7d1e57ce5496fd364ac4deac8befcfe1d92e3b))
+
 ## v6.29.0 (2026-01-11)
 
 ### Feature
