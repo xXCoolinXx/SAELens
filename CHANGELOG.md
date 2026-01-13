@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v6.30.0 (2026-01-13)
+
+### Feature
+
+* feat: add neuronpedia entries in pretrained_saes (#623) ([`dc059ae`](https://github.com/decoderesearch/SAELens/commit/dc059ae49acc0f59894c7a4adc06687f97b99d3e))
+
 ## v6.29.1 (2026-01-12)
 
 ### Performance
