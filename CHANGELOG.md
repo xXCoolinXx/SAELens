@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v6.30.1 (2026-01-20)
+
+### Fix
+
+* fix: correct TLens hook names for gemma scope 2 and fix non-affine transcoders (#624) ([`a70ad12`](https://github.com/decoderesearch/SAELens/commit/a70ad1292c4f8f67931771f952868771a00718b5))
+
 ## v6.30.0 (2026-01-13)
 
 ### Feature
