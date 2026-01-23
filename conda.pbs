@@ -1,0 +1,21 @@
+#!/bin/bash
+#PBS -N conda
+#PBS -q medium
+#PBS -l mem=16gb,ncpus=8
+#PBS -l walltime=01:00:00
+#PBS -o job_output.log
+#PBS -e job_error.log
+
+# --- CONFIGURATION ---
+
+# 1. Move to the directory where you submitted the job
+cd $PBS_O_WORKDIR
+
+LOGFILE=$PBS_O_WORKDIR/debug_$(date +%Y%m%d_%H%M%S).log
+
+{
+conda env create -f conda_env.yml -p /scratch/Collin/envs/sae
+} 2>&1 | tee $LOGFILE
+
+
+echo "Job finished at $(date)"
