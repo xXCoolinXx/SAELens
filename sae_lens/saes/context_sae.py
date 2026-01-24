@@ -175,8 +175,8 @@ class ContextSAE(SAE[ContextSAEConfig]):
         enc = self.encode(x)
 
         return {
-            "context": enc[0:self.n_context_features],
-            "token": enc[0:self.n_context_features:]
+            "context": enc[..., 0:self.n_context_features],
+            "token": enc[..., self.n_context_features:]
         }
 
     def decode(
@@ -327,6 +327,8 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
 
         # [batch_size, 2, d_in], [batch_size, d_in]
         return feature_acts, hidden_pre
+    
+    
 
     @override
     def decode(
