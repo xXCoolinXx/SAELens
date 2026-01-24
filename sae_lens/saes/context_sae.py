@@ -20,6 +20,9 @@ from sae_lens.saes.sae import (
 from sae_lens.saes.topk_sae import (
     SparseHookPoint,
     _sparse_matmul_nd,
+    _fold_norm_topk,
+    _init_weights_topk,
+    _calculate_topk_aux_acts,
 )
 
 class SplitTopK(nn.Module):
@@ -125,7 +128,7 @@ class ContextSAEConfig(SAEConfig):
     @override
     @classmethod
     def architecture(cls) -> str:
-        return "topk"
+        return "split-topk"
 
 class ContextSAE(SAE[ContextSAEConfig]):
     """
@@ -147,12 +150,6 @@ class ContextSAE(SAE[ContextSAEConfig]):
         self.n_context_features = int(self.cfg.d_sae * self.cfg.pct_context_features)
         self.n_token_features = self.cfg.d_sae - self.n_context_features
 
-        # We cannot use the standard activation_fn parameter since we use SplitTopK
-        self.activation_fn = SplitTopK(
-            [self.cfg.k_context, self.cfg.k_token], 
-            [self.n_context_features, 
-             self.n_token_features])
-
     @override
     def initialize_weights(self) -> None:
         # Initialize encoder weights and bias.
@@ -172,7 +169,9 @@ class ContextSAE(SAE[ContextSAEConfig]):
         return self.hook_sae_acts_post(self.activation_fn(hidden_pre))
     
     def encode_partitioned(self, x: torch.Tensor) -> dict[str, torch.Tensor]:
-        """Same as standard encode function but returns with the dictionary """
+        """Same as standard encode function but returns a dictionary containing
+         context: context features
+          token: token specific features"""
         enc = self.encode(x)
 
         return {
@@ -202,7 +201,10 @@ class ContextSAE(SAE[ContextSAEConfig]):
 
     @override
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
-        return TopK(self.cfg.k, use_sparse_activations=False)
+        return SplitTopK(
+            [self.cfg.k_context, self.cfg.k_token], 
+            [self.n_context_features, 
+             self.n_token_features])
 
     @override
     @torch.no_grad()
@@ -215,9 +217,9 @@ class ContextSAE(SAE[ContextSAEConfig]):
 
 
 @dataclass
-class TopKTrainingSAEConfig(TrainingSAEConfig):
+class ContextTrainingSAEConfig(TrainingSAEConfig):
     """
-    Configuration class for training a TopKTrainingSAE.
+    Configuration class for training a ContextTrainingSAE.
 
     Args:
         k (int): Number of top features to keep active. Only the top k features
@@ -256,28 +258,36 @@ class TopKTrainingSAEConfig(TrainingSAEConfig):
             Inherited from SAEConfig.
     """
 
-    k: int = 100
-    use_sparse_activations: bool = False
+    pct_context_features: float = 1/2 # By default, use half of the feature set for context and half for token-specific. 
+    k_context: int = 64
+    k_token: int = 64
+
+    # use_sparse_activations: bool = False # Not implemented for SplitTopK
     aux_loss_coefficient: float = 1.0
     rescale_acts_by_decoder_norm: bool = True
 
     @override
     @classmethod
     def architecture(cls) -> str:
-        return "topk"
+        return "split-topk"
 
 
-class TopKTrainingSAE(TrainingSAE[TopKTrainingSAEConfig]):
+class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
     """
-    TopK variant with training functionality. Calculates a topk-related auxiliary loss, etc.
+    Context (SplitTopK) variant with training functionality. Calculates a topk-related auxiliary loss, etc.
+    For residual stream h_t, we predict context latents and token-specific latents. We reconstruct as normal.
+    For residual stream h_{t+k}, we predict only token-specific latents. We reconstruct from its token-specific latents and h_t's context latents.
     """
 
     b_enc: nn.Parameter
 
-    def __init__(self, cfg: TopKTrainingSAEConfig, use_error_term: bool = False):
+    def __init__(self, cfg: ContextTrainingSAEConfig, use_error_term: bool = False):
         super().__init__(cfg, use_error_term)
         self.hook_sae_acts_post = SparseHookPoint(self.cfg.d_sae)
         self.setup()
+
+        self.n_context_features = int(self.cfg.d_sae * self.cfg.pct_context_features)
+        self.n_token_features = self.cfg.d_sae - self.n_context_features
 
     @override
     def initialize_weights(self) -> None:
@@ -288,22 +298,40 @@ class TopKTrainingSAE(TrainingSAE[TopKTrainingSAEConfig]):
         self, x: torch.Tensor
     ) -> tuple[torch.Tensor, torch.Tensor]:
         """
-        Similar to the base training method: calculate pre-activations, then apply TopK.
+        Similar to the base training method: calculate pre-activations, then apply SplitTopK.
+        We additionally must assume that we receive inputs like [batch_size, 2, d_in] as we split it up. 
         """
-        sae_in = self.process_sae_in(x)
-        hidden_pre = self.hook_sae_acts_pre(sae_in @ self.W_enc + self.b_enc)
+        sae_in_t = self.process_sae_in(x[:, 0, :])
+        sae_in_ts = self.process_sae_in(x[:, 1, :])
+
+        # Only return hidden_pre for token t
+        hidden_pre = self.hook_sae_acts_pre(sae_in_t @ self.W_enc + self.b_enc)
+        enc_conext_t = hidden_pre[:, :self.n_context_features]
+
+
+        # Get only token specific component via slicing
+        enc_ts_token = sae_in_ts @ self.W_enc[:, self.n_context_features:] + self.b_enc[self.n_context_features:]
+        enc_ts = torch.cat([enc_conext_t, enc_ts_token], dim=-1)
 
         if self.cfg.rescale_acts_by_decoder_norm:
             hidden_pre = hidden_pre * self.W_dec.norm(dim=-1)
+            enc_ts = enc_ts * self.W_dec.norm(dim=-1)
+        
+        act_t = self.activation_fn(hidden_pre)
+        act_ts = self.activation_fn(enc_ts)
 
-        # Apply the TopK activation function (already set in self.activation_fn if config is "topk")
-        feature_acts = self.hook_sae_acts_post(self.activation_fn(hidden_pre))
+        act_all = torch.stack([act_t, act_ts], dim=1)
+
+        # Apply the SplitTopK activation function
+        feature_acts = self.hook_sae_acts_post(act_all)
+
+        # [batch_size, 2, d_in], [batch_size, d_in]
         return feature_acts, hidden_pre
 
     @override
     def decode(
         self,
-        feature_acts: torch.Tensor,
+        feature_acts: torch.Tensor, #[batch_size, 2, d_in]
     ) -> torch.Tensor:
         """
         Decodes feature activations back into input space,
@@ -313,13 +341,12 @@ class TopKTrainingSAE(TrainingSAE[TopKTrainingSAEConfig]):
         if self.cfg.rescale_acts_by_decoder_norm:
             # need to multiply by the inverse of the norm because division is illegal with sparse tensors
             feature_acts = feature_acts * (1 / self.W_dec.norm(dim=-1))
-        if feature_acts.is_sparse:
-            sae_out_pre = _sparse_matmul_nd(feature_acts, self.W_dec) + self.b_dec
-        else:
-            sae_out_pre = feature_acts @ self.W_dec + self.b_dec
+
+        # For now, assume activations aren't sparse (this was difficult to implement with SplitTopK)
+        sae_out_pre = feature_acts @ self.W_dec + self.b_dec
         sae_out_pre = self.hook_sae_recons(sae_out_pre)
         sae_out_pre = self.run_time_activation_norm_fn_out(sae_out_pre)
-        return self.reshape_fn_out(sae_out_pre, self.d_head)
+        return self.reshape_fn_out(sae_out_pre, self.d_head) # May pose an issue? 
 
     @override
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -348,8 +375,8 @@ class TopKTrainingSAE(TrainingSAE[TopKTrainingSAEConfig]):
     ) -> dict[str, torch.Tensor]:
         # Calculate the auxiliary loss for dead neurons
         topk_loss = self.calculate_topk_aux_loss(
-            sae_in=step_input.sae_in,
-            sae_out=sae_out,
+            sae_in=step_input.sae_in[:, 0, :], # Only calculate on first token residual stream, same for hidden_pre
+            sae_out=sae_out[:, 0, :],
             hidden_pre=hidden_pre,
             dead_neuron_mask=step_input.dead_neuron_mask,
         )
@@ -366,7 +393,10 @@ class TopKTrainingSAE(TrainingSAE[TopKTrainingSAEConfig]):
 
     @override
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
-        return TopK(self.cfg.k, use_sparse_activations=self.cfg.use_sparse_activations)
+        return SplitTopK(
+            [self.cfg.k_context, self.cfg.k_token], 
+            [self.n_context_features, 
+             self.n_token_features])
 
     @override
     def get_coefficients(self) -> dict[str, TrainCoefficientConfig | float]:
@@ -390,10 +420,10 @@ class TopKTrainingSAE(TrainingSAE[TopKTrainingSAEConfig]):
         # NOTE: checking the number of dead neurons will force a GPU sync, so performance can likely be improved here
         if dead_neuron_mask is None or (num_dead := int(dead_neuron_mask.sum())) == 0:
             return sae_out.new_tensor(0.0)
-        residual = (sae_in - sae_out).detach()
+        residual = (sae_in[:, 0, :] - sae_out[:, 0, :]).detach()
 
         # Heuristic from Appendix B.1 in the paper
-        k_aux = sae_in.shape[-1] // 2
+        k_aux = sae_in[:, 0, :].shape[-1] // 2
 
         # Reduce the scale of the loss if there are a small number of dead latents
         scale = min(num_dead / k_aux, 1.0)
@@ -422,51 +452,3 @@ class TopKTrainingSAE(TrainingSAE[TopKTrainingSAEConfig]):
                 b_enc=state_dict["b_enc"],
                 W_dec=state_dict["W_dec"],
             )
-
-
-def _calculate_topk_aux_acts(
-    k_aux: int,
-    hidden_pre: torch.Tensor,
-    dead_neuron_mask: torch.Tensor,
-) -> torch.Tensor:
-    """
-    Helper method to calculate activations for the auxiliary loss.
-
-    Args:
-        k_aux: Number of top dead neurons to select
-        hidden_pre: Pre-activation values from encoder
-        dead_neuron_mask: Boolean mask indicating which neurons are dead
-
-    Returns:
-        Tensor with activations for only the top-k dead neurons, zeros elsewhere
-    """
-
-    # Don't include living latents in this loss
-    auxk_latents = torch.where(dead_neuron_mask[None], hidden_pre, -torch.inf)
-    # Top-k dead latents
-    auxk_topk = auxk_latents.topk(k_aux, sorted=False)
-    # Set the activations to zero for all but the top k_aux dead latents
-    auxk_acts = torch.zeros_like(hidden_pre)
-    auxk_acts.scatter_(-1, auxk_topk.indices, auxk_topk.values)
-    # Set activations to zero for all but top k_aux dead latents
-    return auxk_acts
-
-
-def _init_weights_topk(
-    sae: SAE[ContextSAEConfig] | TrainingSAE[TopKTrainingSAEConfig],
-) -> None:
-    sae.b_enc = nn.Parameter(
-        torch.zeros(sae.cfg.d_sae, dtype=sae.dtype, device=sae.device)
-    )
-
-
-def _fold_norm_topk(
-    W_enc: torch.Tensor,
-    b_enc: torch.Tensor,
-    W_dec: torch.Tensor,
-) -> None:
-    W_dec_norm = W_dec.norm(dim=-1).clamp(min=1e-8)
-    b_enc.data = b_enc.data * W_dec_norm
-    W_dec_norms = W_dec_norm.unsqueeze(1)
-    W_dec.data = W_dec.data / W_dec_norms
-    W_enc.data = W_enc.data * W_dec_norms.T
