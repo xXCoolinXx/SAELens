@@ -9,6 +9,10 @@ from sae_lens.saes import (
     SAE,
     BatchTopKTrainingSAE,
     BatchTopKTrainingSAEConfig,
+    ContextSAE,
+    ContextSAEConfig,
+    ContextTrainingSAE,
+    ContextTrainingSAEConfig,
     GatedSAE,
     GatedSAEConfig,
     GatedTrainingSAE,
@@ -123,6 +127,10 @@ __all__ = [
     "MatchingPursuitTrainingSAE",
     "MatchingPursuitSAEConfig",
     "MatchingPursuitTrainingSAEConfig",
+    "ContextSAE",
+    "ContextSAEConfig",
+    "ContextTrainingSAE",
+    "ContextTrainingSAEConfig",
 ]
 
 
@@ -152,4 +160,14 @@ register_sae_class("temporal", TemporalSAE, TemporalSAEConfig)
 register_sae_class("matching_pursuit", MatchingPursuitSAE, MatchingPursuitSAEConfig)
 register_sae_training_class(
     "matching_pursuit", MatchingPursuitTrainingSAE, MatchingPursuitTrainingSAEConfig
+)
+register_sae_training_class(
+    "context_sae",
+    ContextTrainingSAE,
+    ContextTrainingSAEConfig,
+)
+register_sae_class(
+    "context_sae",
+    ContextSAE,
+    ContextSAEConfig,
 )

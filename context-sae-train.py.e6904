@@ -1,0 +1,4 @@
+/var/spool/pbs/mom_priv/jobs/6904.asax-pbs1.SC: line 1: from: command not found
+/var/spool/pbs/mom_priv/jobs/6904.asax-pbs1.SC: line 3: from: command not found
+/var/spool/pbs/mom_priv/jobs/6904.asax-pbs1.SC: line 5: syntax error near unexpected token `('
+/var/spool/pbs/mom_priv/jobs/6904.asax-pbs1.SC: line 5: `from sae_lens import ('

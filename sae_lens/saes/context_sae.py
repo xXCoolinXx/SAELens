@@ -1,7 +1,8 @@
 """Inference-only TopKSAE variant, similar in spirit to StandardSAE but using a TopK-based activation."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Callable
+from typing import Any
 
 import torch
 from torch import nn
@@ -14,16 +15,15 @@ from sae_lens.saes.sae import (
     TrainingSAE,
     TrainingSAEConfig,
     TrainStepInput,
-    _disable_hooks,
 )
-
 from sae_lens.saes.topk_sae import (
     SparseHookPoint,
-    _sparse_matmul_nd,
+    _calculate_topk_aux_acts,
     _fold_norm_topk,
     _init_weights_topk,
-    _calculate_topk_aux_acts,
+    _sparse_matmul_nd,
 )
+
 
 class SplitTopK(nn.Module):
     """
@@ -35,30 +35,35 @@ class SplitTopK(nn.Module):
     def __init__(
         self,
         k_budgets: list[int],
-        partition_sizes : list[int],
+        partition_sizes: list[int],
     ):
         if len(k_budgets) != len(partition_sizes):
-            raise ValueError("Error: Mismatch size between given k budgets and partition sizes (need n sizes for n budgets)")
+            raise ValueError(
+                "Error: Mismatch size between given k budgets and partition sizes (need n sizes for n budgets)"
+            )
 
         super().__init__()
         self.k_budgets = k_budgets
         self.partition_sizes = partition_sizes
         self.compiled_partitioned_top_k = torch.compile(self._partitioned_top_k)
-    
-    def _partitioned_top_k(self, 
-                           x : torch.Tensor, 
-                           ) -> tuple[torch.Tensor, torch.Tensor]:
+
+    def _partitioned_top_k(
+        self,
+        x: torch.Tensor,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
         x_partitioned = torch.split(x, self.partition_sizes, dim=-1)
 
-        # Collect 
+        # Collect
         all_vals = []
         all_indices = []
 
         current_offset = 0
 
-        for partition, k, sizes in zip(x_partitioned, self.k_budgets, self.partition_sizes):
+        for partition, k, sizes in zip(
+            x_partitioned, self.k_budgets, self.partition_sizes
+        ):
             vals, indices = torch.topk(partition, k=k, dim=-1, sorted=False)
-            
+
             # Shift indices back to original position in x
             indices = indices + current_offset
 
@@ -78,16 +83,16 @@ class SplitTopK(nn.Module):
         2) Apply ReLU.
         3) Zero out all other entries.
         """
-        
+
         topk_values, topk_indices = self.compiled_partitioned_top_k(x)
         # Take top k on each partition
-        
 
         values = topk_values.relu()
 
         result = torch.zeros_like(x)
         result.scatter_(-1, topk_indices, values)
         return result
+
 
 @dataclass
 class ContextSAEConfig(SAEConfig):
@@ -119,7 +124,10 @@ class ContextSAEConfig(SAEConfig):
         metadata (SAEMetadata): Metadata about the SAE (model name, hook name, etc.).
             Inherited from SAEConfig.
     """
-    pct_context_features: float = 1/2 # By default, use half of the feature set for context and half for token-specific. 
+
+    pct_context_features: float = (
+        1 / 2
+    )  # By default, use half of the feature set for context and half for token-specific.
     k_context: int = 64
     k_token: int = 64
 
@@ -129,6 +137,7 @@ class ContextSAEConfig(SAEConfig):
     @classmethod
     def architecture(cls) -> str:
         return "split-topk"
+
 
 class ContextSAE(SAE[ContextSAEConfig]):
     """
@@ -167,16 +176,16 @@ class ContextSAE(SAE[ContextSAEConfig]):
             hidden_pre = hidden_pre * self.W_dec.norm(dim=-1)
         # The BaseSAE already sets self.activation_fn to TopK(...) if config requests topk.
         return self.hook_sae_acts_post(self.activation_fn(hidden_pre))
-    
+
     def encode_partitioned(self, x: torch.Tensor) -> dict[str, torch.Tensor]:
         """Same as standard encode function but returns a dictionary containing
-         context: context features
-          token: token specific features"""
+        context: context features
+         token: token specific features"""
         enc = self.encode(x)
 
         return {
-            "context": enc[..., 0:self.n_context_features],
-            "token": enc[..., self.n_context_features:]
+            "context": enc[..., 0 : self.n_context_features],
+            "token": enc[..., self.n_context_features :],
         }
 
     def decode(
@@ -202,9 +211,9 @@ class ContextSAE(SAE[ContextSAEConfig]):
     @override
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
         return SplitTopK(
-            [self.cfg.k_context, self.cfg.k_token], 
-            [self.n_context_features, 
-             self.n_token_features])
+            [self.cfg.k_context, self.cfg.k_token],
+            [self.n_context_features, self.n_token_features],
+        )
 
     @override
     @torch.no_grad()
@@ -258,7 +267,9 @@ class ContextTrainingSAEConfig(TrainingSAEConfig):
             Inherited from SAEConfig.
     """
 
-    pct_context_features: float = 1/2 # By default, use half of the feature set for context and half for token-specific. 
+    pct_context_features: float = (
+        1 / 2
+    )  # By default, use half of the feature set for context and half for token-specific.
     k_context: int = 64
     k_token: int = 64
 
@@ -299,24 +310,26 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
     ) -> tuple[torch.Tensor, torch.Tensor]:
         """
         Similar to the base training method: calculate pre-activations, then apply SplitTopK.
-        We additionally must assume that we receive inputs like [batch_size, 2, d_in] as we split it up. 
+        We additionally must assume that we receive inputs like [batch_size, 2, d_in] as we split it up.
         """
         sae_in_t = self.process_sae_in(x[:, 0, :])
         sae_in_ts = self.process_sae_in(x[:, 1, :])
 
         # Only return hidden_pre for token t
         hidden_pre = self.hook_sae_acts_pre(sae_in_t @ self.W_enc + self.b_enc)
-        enc_conext_t = hidden_pre[:, :self.n_context_features]
-
+        enc_conext_t = hidden_pre[:, : self.n_context_features]
 
         # Get only token specific component via slicing
-        enc_ts_token = sae_in_ts @ self.W_enc[:, self.n_context_features:] + self.b_enc[self.n_context_features:]
+        enc_ts_token = (
+            sae_in_ts @ self.W_enc[:, self.n_context_features :]
+            + self.b_enc[self.n_context_features :]
+        )
         enc_ts = torch.cat([enc_conext_t, enc_ts_token], dim=-1)
 
         if self.cfg.rescale_acts_by_decoder_norm:
             hidden_pre = hidden_pre * self.W_dec.norm(dim=-1)
             enc_ts = enc_ts * self.W_dec.norm(dim=-1)
-        
+
         act_t = self.activation_fn(hidden_pre)
         act_ts = self.activation_fn(enc_ts)
 
@@ -327,13 +340,11 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
 
         # [batch_size, 2, d_in], [batch_size, d_in]
         return feature_acts, hidden_pre
-    
-    
 
     @override
     def decode(
         self,
-        feature_acts: torch.Tensor, #[batch_size, 2, d_in]
+        feature_acts: torch.Tensor,  # [batch_size, 2, d_in]
     ) -> torch.Tensor:
         """
         Decodes feature activations back into input space,
@@ -348,7 +359,7 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
         sae_out_pre = feature_acts @ self.W_dec + self.b_dec
         sae_out_pre = self.hook_sae_recons(sae_out_pre)
         sae_out_pre = self.run_time_activation_norm_fn_out(sae_out_pre)
-        return self.reshape_fn_out(sae_out_pre, self.d_head) # May pose an issue? 
+        return self.reshape_fn_out(sae_out_pre, self.d_head)  # May pose an issue?
 
     @override
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -357,7 +368,9 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
         sae_out = self.decode(feature_acts)
 
         if self.use_error_term:
-            raise NotImplementedError("Context SAE does not support use_error_term flag")
+            raise NotImplementedError(
+                "Context SAE does not support use_error_term flag"
+            )
             # with torch.no_grad():
             #     # Recompute without hooks for true error term
             #     with _disable_hooks(self):
@@ -378,7 +391,9 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
     ) -> dict[str, torch.Tensor]:
         # Calculate the auxiliary loss for dead neurons
         topk_loss = self.calculate_topk_aux_loss(
-            sae_in=step_input.sae_in[:, 0, :], # Only calculate on first token residual stream, same for hidden_pre
+            sae_in=step_input.sae_in[
+                :, 0, :
+            ],  # Only calculate on first token residual stream, same for hidden_pre
             sae_out=sae_out[:, 0, :],
             hidden_pre=hidden_pre,
             dead_neuron_mask=step_input.dead_neuron_mask,
@@ -397,9 +412,9 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
     @override
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
         return SplitTopK(
-            [self.cfg.k_context, self.cfg.k_token], 
-            [self.n_context_features, 
-             self.n_token_features])
+            [self.cfg.k_context, self.cfg.k_token],
+            [self.n_context_features, self.n_token_features],
+        )
 
     @override
     def get_coefficients(self) -> dict[str, TrainCoefficientConfig | float]:

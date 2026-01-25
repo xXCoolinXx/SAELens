@@ -2,6 +2,12 @@ from .batchtopk_sae import (
     BatchTopKTrainingSAE,
     BatchTopKTrainingSAEConfig,
 )
+from .context_sae import (
+    ContextSAE,
+    ContextSAEConfig,
+    ContextTrainingSAE,
+    ContextTrainingSAEConfig,
+)
 from .gated_sae import (
     GatedSAE,
     GatedSAEConfig,
@@ -88,4 +94,8 @@ __all__ = [
     "MatchingPursuitTrainingSAE",
     "MatchingPursuitSAEConfig",
     "MatchingPursuitTrainingSAEConfig",
+    "ContextSAE",
+    "ContextSAEConfig",
+    "ContextTrainingSAE",
+    "ContextTrainingSAEConfig",
 ]

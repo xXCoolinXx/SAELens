@@ -122,6 +122,16 @@ class ActivationsStore:
             exclude_special_tokens = torch.tensor(
                 exclude_special_tokens, dtype=torch.long, device=device
             )
+
+        context_processor = None
+        if cfg.context_processor is not None:
+            if cfg.context_processor == "near_pairs":
+                context_processor = pair_activations
+            else:
+                raise NotImplementedError(
+                    f"Function {context_processor} is not implemented for the activation store."
+                )
+
         return cls(
             model=model,
             dataset=override_dataset or cfg.dataset_path,
@@ -149,6 +159,7 @@ class ActivationsStore:
             disable_concat_sequences=cfg.disable_concat_sequences,
             sequence_separator_token=cfg.sequence_separator_token,
             activations_mixing_fraction=cfg.activations_mixing_fraction,
+            context_processor=context_processor,
         )
 
     @classmethod
