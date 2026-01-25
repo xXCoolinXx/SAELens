@@ -2,7 +2,7 @@
 #PBS -N conda
 #PBS -q medium
 #PBS -l mem=16gb,ncpus=8
-#PBS -l walltime=01:00:00
+#PBS -l walltime=02:00:00
 #PBS -o job_output.log
 #PBS -e job_error.log
 
