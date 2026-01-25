@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import datasets
+import torch
 from datasets import load_dataset
 
 from sae_lens import (
@@ -9,27 +11,41 @@ from sae_lens import (
     LoggingConfig,
 )
 
+torch.set_float32_matmul_precision("high")
+
+# Silences the graph break warning
+torch._dynamo.config.capture_scalar_outputs = True
+
 dataset_path = "./pile_long_context"
 source_repo = "monology/pile-uncopyrighted"
 min_chars = 7000  # Rough proxy for 2048 tokens (approx 3.5 chars/token)
+n_docs = 100_000
 
 if Path(dataset_path).exists():
     print(f"Dataset already exists at {dataset_path}")  # noqa: T201
+
+    dataset = datasets.load_from_disk(dataset_path, keep_in_memory=True)
 else:
     print(f"{dataset_path} not found. Streaming and filtering...")  # noqa: T201
 
     # Stream the dataset (no massive download)
-    ds = load_dataset(source_repo, split="train")
+    ds = load_dataset(source_repo, split="train", streaming=True)
 
     # Filter
-    ds = ds.filter(lambda x: len(x["text"]) > min_chars)
+    long_docs = ds.filter(lambda x: len(x["text"]) > min_chars).take(n_docs)
 
     # Save to disk as raw text (SAELens will handle tokenization)
     print("Materializing to disk...")  # noqa: T201
 
-    ds.save_to_disk(dataset_path)
+    def gen():  # type: ignore
+        yield from long_docs
 
-    print(f"Saved {len(ds)} documents to {dataset_path}")  # noqa: T201
+    # We reuse the features from the stream to avoid schema inference overhead
+    dataset = datasets.Dataset.from_generator(gen, features=long_docs.features)
+
+    dataset.save_to_disk(dataset_path)  # type: ignore
+
+    print(f"Saved {len(dataset)} documents to {dataset_path}")  # type: ignore # noqa: T201
 
 device = "cuda"
 
@@ -52,7 +68,7 @@ cfg = LanguageModelSAERunnerConfig(
     model_name="pythia-160m",
     model_class_name="HookedTransformer",
     hook_name="blocks.8.hook_resid_post",
-    dataset_path=dataset_path,
+    dataset_path=dataset,  # We already loaded the dataset because we have to use custom code # type: ignore
     is_dataset_tokenized=False,
     # Training Parameters
     lr=3e-4,
@@ -65,16 +81,17 @@ cfg = LanguageModelSAERunnerConfig(
     disable_concat_sequences=True,
     training_tokens=total_tokens,
     n_batches_in_buffer=1024,
-    store_batch_size_prompts=512,
+    store_batch_size_prompts=32,
     # Wandb
     logger=LoggingConfig(
         log_to_wandb=True,
         wandb_project="Context SAE test",
         wandb_log_frequency=30,
-        eval_every_n_wandb_logs=20,
+        eval_every_n_wandb_logs=100000000000,  # Evals are broken for this arch, just don't do it
     ),
     n_checkpoints=3,
     checkpoint_path="checkpoints",
+    context_processor="near_pairs",
     # Try compilation, since we have an H100 :)
     compile_llm=True,
     compile_sae=True,

@@ -655,11 +655,8 @@ class ActivationsStore:
         batch_tokens = batch_tokens[:, slice(*self.seqpos_slice)]
 
         if self.context_processor is not None:
-            # [batch_size, context_size, d_in] -> [batch_size, n_segments, context_segments, d_in]
+            # [batch_size, context_size, d_in] -> [batch_size, context_segments, d_in]
             activations = self.context_processor(activations)
-            activations = activations.flatten(
-                0, 1
-            )  # Flatten to [.., context_segments, d_in]
 
             token_ids = None  # Can no longer meaningfully do filtering
         else:
