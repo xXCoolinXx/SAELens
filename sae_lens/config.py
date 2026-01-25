@@ -219,6 +219,7 @@ class LanguageModelSAERunnerConfig(Generic[T_TRAINING_SAE_CONFIG]):
         special_token_field(default="bos")
     )
     activations_mixing_fraction: float = 0.5
+    context_processor: Literal["near_pairs"] | None = None
 
     # Misc
     device: str = "cpu"
@@ -533,6 +534,7 @@ class CacheActivationsRunnerConfig:
     streaming: bool = True
     autocast_lm: bool = False
     dataset_trust_remote_code: bool | None = None
+    context_processor = None
 
     def __post_init__(self):
         # Automatically determine context_size if dataset is tokenized

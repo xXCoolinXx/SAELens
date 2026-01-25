@@ -4,13 +4,13 @@ import copy
 import json
 import warnings
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from contextlib import contextmanager
 from dataclasses import asdict, dataclass, field, fields, replace
 from pathlib import Path
 from typing import (
     TYPE_CHECKING,
     Any,
-    Callable,
     Generic,
     Literal,
     NamedTuple,
@@ -958,6 +958,7 @@ class TrainingSAE(SAE[T_TRAINING_SAE_CONFIG], ABC):
 
         # Calculate MSE loss
         per_item_mse_loss = self.mse_loss_fn(sae_out, step_input.sae_in)
+
         mse_loss = per_item_mse_loss.sum(dim=-1).mean()
 
         # Calculate architecture-specific auxiliary losses
