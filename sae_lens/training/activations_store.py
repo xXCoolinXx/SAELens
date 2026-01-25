@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import os
 import warnings
-from collections.abc import Generator, Iterator
+from collections.abc import Callable, Generator, Iterator
 from pathlib import Path
 from typing import Any, Literal, cast
 
@@ -224,6 +224,7 @@ class ActivationsStore:
         disable_concat_sequences: bool = False,
         sequence_separator_token: int | Literal["bos", "eos", "sep"] | None = "bos",
         activations_mixing_fraction: float = 0.5,
+        context_processor: Callable[[torch.Tensor], torch.Tensor] | None = None,
     ):
         self.model = model
         if model_kwargs is None:
@@ -271,6 +272,15 @@ class ActivationsStore:
             sequence_separator_token
         )
         self.activations_mixing_fraction = activations_mixing_fraction
+
+        if context_processor is not None and not disable_concat_sequences:
+            raise ValueError(
+                "context_processor requires disable_concat_sequences=True"
+                "Concatenated sequences may cause the context processor"
+                "to span unrelated documents :("
+            )
+
+        self.context_processor = context_processor
 
         self.n_dataset_processed = 0
 
@@ -553,6 +563,12 @@ class ActivationsStore:
         raises StopIteration
         """
         assert self.cached_activation_dataset is not None
+
+        if self.context_processor is not None:
+            raise NotImplementedError(
+                "Context preprocessing is not yet implemented for cached activations"
+            )
+
         context_size = self.context_size
         batch_size = self.store_batch_size_prompts
         d_in = self.d_in
@@ -627,9 +643,18 @@ class ActivationsStore:
         # handle seqpos_slice, this is done for activations in get_activations
         batch_tokens = batch_tokens[:, slice(*self.seqpos_slice)]
 
-        # reshape from (batch, context, d_in) to (batch * context, d_in)
-        activations = activations.reshape(-1, d_in)
-        token_ids = batch_tokens.reshape(-1)
+        if self.context_processor is not None:
+            # [batch_size, context_size, d_in] -> [batch_size, n_segments, context_segments, d_in]
+            activations = self.context_processor(activations)
+            activations = activations.flatten(
+                0, 1
+            )  # Flatten to [.., context_segments, d_in]
+
+            token_ids = None  # Can no longer meaningfully do filtering
+        else:
+            # reshape from (batch, context, d_in) to (batch * context, d_in)
+            activations = activations.reshape(-1, d_in)
+            token_ids = batch_tokens.reshape(-1)
 
         return activations, token_ids
 
@@ -789,3 +814,28 @@ def _filter_buffer_acts(
 
     mask = torch.isin(tokens, exclude_tokens)
     return activations[~mask]
+
+
+def pair_activations(acts: torch.Tensor, max_dist: int = 16) -> torch.Tensor:
+    """
+    Input: (batch, context, d_in)
+    Output: (batch * (context - 1), 2, d_in)
+    """
+    batch, context, d_in = acts.shape
+
+    # Exclude last position (nothing to pair with)
+    valid_context = context - 1
+
+    t_indices = torch.arange(valid_context, device=acts.device)
+    max_offsets = torch.clamp(context - t_indices - 1, min=1, max=max_dist)
+
+    rand_vals = torch.rand(batch, valid_context, device=acts.device)
+    offsets = (rand_vals * max_offsets.unsqueeze(0)).long() + 1
+
+    t2_indices = t_indices.unsqueeze(0).expand(batch, -1) + offsets
+
+    acts_t = acts[:, :valid_context, :]
+    acts_t2 = torch.gather(acts, 1, t2_indices.unsqueeze(-1).expand(-1, -1, d_in))
+
+    pairs = torch.stack([acts_t, acts_t2], dim=2)
+    return pairs.reshape(-1, 2, d_in)
