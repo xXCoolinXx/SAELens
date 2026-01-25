@@ -15,6 +15,7 @@ from sae_lens.saes.sae import (
     TrainingSAE,
     TrainingSAEConfig,
     TrainStepInput,
+    TrainStepOutput,
 )
 from sae_lens.saes.topk_sae import (
     SparseHookPoint,
@@ -136,7 +137,7 @@ class ContextSAEConfig(SAEConfig):
     @override
     @classmethod
     def architecture(cls) -> str:
-        return "split-topk"
+        return "context_sae"
 
 
 class ContextSAE(SAE[ContextSAEConfig]):
@@ -154,16 +155,16 @@ class ContextSAE(SAE[ContextSAEConfig]):
             cfg: SAEConfig defining model size and behavior.
             use_error_term: Whether to apply the error-term approach in the forward pass.
         """
-        super().__init__(cfg, use_error_term)
+        self.n_context_features = int(cfg.d_sae * cfg.pct_context_features)
+        self.n_token_features = cfg.d_sae - self.n_context_features
 
-        self.n_context_features = int(self.cfg.d_sae * self.cfg.pct_context_features)
-        self.n_token_features = self.cfg.d_sae - self.n_context_features
+        super().__init__(cfg, use_error_term)
 
     @override
     def initialize_weights(self) -> None:
         # Initialize encoder weights and bias.
         super().initialize_weights()
-        _init_weights_topk(self)
+        _init_weights_topk(self)  # type: ignore
 
     def encode(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -280,7 +281,7 @@ class ContextTrainingSAEConfig(TrainingSAEConfig):
     @override
     @classmethod
     def architecture(cls) -> str:
-        return "split-topk"
+        return "context_sae"
 
 
 class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
@@ -293,17 +294,18 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
     b_enc: nn.Parameter
 
     def __init__(self, cfg: ContextTrainingSAEConfig, use_error_term: bool = False):
+        # This must go before super.__init__ because getting the activation_fn relies on it
+        self.n_context_features = int(cfg.d_sae * cfg.pct_context_features)
+        self.n_token_features = cfg.d_sae - self.n_context_features
+
         super().__init__(cfg, use_error_term)
         self.hook_sae_acts_post = SparseHookPoint(self.cfg.d_sae)
         self.setup()
 
-        self.n_context_features = int(self.cfg.d_sae * self.cfg.pct_context_features)
-        self.n_token_features = self.cfg.d_sae - self.n_context_features
-
     @override
     def initialize_weights(self) -> None:
         super().initialize_weights()
-        _init_weights_topk(self)
+        _init_weights_topk(self)  # type: ignore
 
     def encode_with_hidden_pre(
         self, x: torch.Tensor
@@ -335,7 +337,6 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
 
         act_all = torch.stack([act_t, act_ts], dim=1)
 
-        # Apply the SplitTopK activation function
         feature_acts = self.hook_sae_acts_post(act_all)
 
         # [batch_size, 2, d_in], [batch_size, d_in]
@@ -350,7 +351,7 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
         Decodes feature activations back into input space,
         applying optional finetuning scale, hooking, out normalization, etc.
         """
-        # Handle sparse tensors using efficient sparse matrix multiplication
+
         if self.cfg.rescale_acts_by_decoder_norm:
             # need to multiply by the inverse of the norm because division is illegal with sparse tensors
             feature_acts = feature_acts * (1 / self.W_dec.norm(dim=-1))
@@ -391,9 +392,7 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
     ) -> dict[str, torch.Tensor]:
         # Calculate the auxiliary loss for dead neurons
         topk_loss = self.calculate_topk_aux_loss(
-            sae_in=step_input.sae_in[
-                :, 0, :
-            ],  # Only calculate on first token residual stream, same for hidden_pre
+            sae_in=step_input.sae_in[:, 0, :],
             sae_out=sae_out[:, 0, :],
             hidden_pre=hidden_pre,
             dead_neuron_mask=step_input.dead_neuron_mask,
@@ -438,10 +437,10 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
         # NOTE: checking the number of dead neurons will force a GPU sync, so performance can likely be improved here
         if dead_neuron_mask is None or (num_dead := int(dead_neuron_mask.sum())) == 0:
             return sae_out.new_tensor(0.0)
-        residual = (sae_in[:, 0, :] - sae_out[:, 0, :]).detach()
+        residual = (sae_in - sae_out).detach()
 
         # Heuristic from Appendix B.1 in the paper
-        k_aux = sae_in[:, 0, :].shape[-1] // 2
+        k_aux = sae_in.shape[-1] // 2
 
         # Reduce the scale of the loss if there are a small number of dead latents
         scale = min(num_dead / k_aux, 1.0)
@@ -458,6 +457,60 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
         recons = self.decode(auxk_acts)
         auxk_loss = (recons - residual).pow(2).sum(dim=-1).mean()
         return self.cfg.aux_loss_coefficient * scale * auxk_loss
+
+    @override
+    def training_forward_pass(
+        self,
+        step_input: TrainStepInput,
+    ) -> TrainStepOutput:
+        """Forward pass during training."""
+        feature_acts, hidden_pre = self.encode_with_hidden_pre(step_input.sae_in)
+        sae_out = self.decode(feature_acts)
+
+        # Calculate MSE loss
+        per_item_mse_loss = self.mse_loss_fn(sae_out, step_input.sae_in)
+
+        mse_loss = per_item_mse_loss.sum(dim=-1).mean()
+
+        # Calculate architecture-specific auxiliary losses
+        aux_losses = self.calculate_aux_loss(
+            step_input=step_input,
+            feature_acts=feature_acts[
+                :, 0, :
+            ],  # This technically isn't actually used but I slice it to be safe
+            hidden_pre=hidden_pre,
+            sae_out=sae_out,
+        )
+
+        # Total loss is MSE plus all auxiliary losses
+        total_loss = mse_loss
+
+        # Create losses dictionary with mse_loss
+        losses = {"mse_loss": mse_loss}
+
+        # Add architecture-specific losses to the dictionary
+        # Make sure aux_losses is a dictionary with string keys and tensor values
+        if isinstance(aux_losses, dict):
+            losses.update(aux_losses)
+
+        # Sum all losses for total_loss
+        if isinstance(aux_losses, dict):
+            for loss_value in aux_losses.values():
+                total_loss = total_loss + loss_value
+        else:
+            # Handle case where aux_losses is a tensor
+            total_loss = total_loss + aux_losses
+
+        return TrainStepOutput(
+            sae_in=step_input.sae_in,
+            sae_out=sae_out,
+            feature_acts=feature_acts.flatten(
+                0, 1
+            ),  # Flatten for the dead neuron mask to work
+            hidden_pre=hidden_pre,
+            loss=total_loss,
+            losses=losses,
+        )
 
     @override
     def process_state_dict_for_saving_inference(
