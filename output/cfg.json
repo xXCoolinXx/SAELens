@@ -1,0 +1,34 @@
+{
+    "d_sae": 16384,
+    "normalize_activations": "none",
+    "reshape_activations": "none",
+    "dtype": "float32",
+    "k_token": 16,
+    "rescale_acts_by_decoder_norm": true,
+    "metadata": {
+        "sae_lens_version": "6.30.1",
+        "sae_lens_training_version": "6.30.1",
+        "dataset_path": "monology/pile-uncopyrighted",
+        "hook_name": "blocks.8.hook_resid_post",
+        "model_name": "pythia-160m-deduped",
+        "model_class_name": "HookedTransformer",
+        "hook_head_index": null,
+        "context_size": 2048,
+        "seqpos_slice": [
+            null
+        ],
+        "model_from_pretrained_kwargs": {
+            "center_writing_weights": false
+        },
+        "prepend_bos": true,
+        "exclude_special_tokens": false,
+        "sequence_separator_token": "bos",
+        "disable_concat_sequences": true
+    },
+    "apply_b_dec_to_input": true,
+    "d_in": 768,
+    "k_context": 4,
+    "pct_context_features": 0.2,
+    "device": "cuda",
+    "architecture": "context_sae"
+}

@@ -1,0 +1,121 @@
+#!/bin/bash
+# --- PBS Directives ---
+
+# Set the name of the job
+#PBS -N SAE
+
+# Specify the queue to use
+# The queue name 'gpu_queue' is an example; replace it with the actual name on your system.
+#PBS -q gpu
+
+# Request resources: 1 node, 1 CPU, and 1 GPU
+#PBS -l select=1:ncpus=4:ngpus=1:mem=16gb
+
+# Set the maximum walltime for the job (e.g., 1 hour)
+#PBS -l walltime=06:00:00
+
+# Redirect standard output and error to files
+#PBS -o job_output.log
+#PBS -e job_error.log
+
+# --- Job Commands ---
+
+# nvidia-smi
+
+export WANDB_API_KEY=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
+
+echo "Job started on $(hostname) at $(date)"
+# Navigate to the directory where the job was submitted
+cd $PBS_O_WORKDIR
+
+# Load necessary modules (e.g., CUDA, Python/PyTorch)
+# These module names are examples; they may differ on your system.
+module load anaconda
+module load cuda/12.6.0
+# conda init
+
+source $(conda info --base)/etc/profile.d/conda.sh
+conda activate /scratch/Collin/envs/sae # Activate your conda environment if needed
+
+# Remove stubs
+# export LD_LIBRARY_PATH=$(echo $LD_LIBRARY_PATH | sed 's|/lib64/stubs||g')
+export LD_LIBRARY_PATH=$(echo "$LD_LIBRARY_PATH" | tr ':' '\n' | grep -v "stubs" | tr '\n' ':')
+
+# Check which GPU has been allocated
+echo "GPU allocated:"
+nvidia-smi
+
+# Run your GPU-accelerated application
+echo "Running Python script..."
+
+export HF_HOME=/scratch/Collin/.cache/huggingface
+
+
+LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
+
+{
+    nvidia-smi
+
+    # export CUDA_VISIBLE_DEVICES=1 # Hot fix because ASAX doesn't properly change GPU visibility :/
+    # Train an SAE
+    # python3 context-sae-train.py
+
+    # Test autointerp # requires two GPUS for autointerp
+    # CUDA_VISIBLE_DEVICES=0 python -m vllm.entrypoints.openai.api_server \
+    # --model Qwen/Qwen3-32B \
+    # --host 127.0.0.1 \
+    # --port 8000 \
+    # --gpu-memory-utilization 0.92 \
+    # --max-model-len 8192 \
+    # --dtype bfloat16 \
+    # > vllm_server.log 2>&1 &
+
+    # VLLM_PID=$!
+
+    # echo "🚀 Starting Full 70B Model on 2x H100s (PID: $VLLM_PID)..."
+
+    # # ==========================================
+    # # 2. WAIT FOR SERVER
+    # # ==========================================
+    # # Note: Loading 140GB takes ~1-2 minutes. Be patient.
+    # while ! curl -s http://127.0.0.1:8000/health > /dev/null; do
+    #     if ! kill -0 $VLLM_PID 2>/dev/null; then
+    #         echo "❌ vLLM Died! Check logs:"
+    #         tail -n 20 vllm_server.log
+    #         exit 1
+    #     fi
+    #     echo "   ... loading weights (this is huge, give it a minute) ..."
+    #     sleep 10
+    # done
+
+    # echo "✅ Server Ready! 140GB Model Loaded."
+
+    # curl http://127.0.0.1:8000/v1/chat/completions \
+    # -H "Content-Type: application/json" \
+    # -o debug_output.json \
+    # -d '{
+    #     "model": "Qwen/Qwen3-32B",
+    #     "messages": [
+    #     {
+    #         "role": "system",
+    #         "content": "We'"'"'re studying neurons in a neural network. Each neuron activates on some particular word/words/substring/concept in a short document. The activating words in each document are indicated with << ... >>. We will give you a list of documents on which the neuron activates, in order from most strongly activating to least strongly activating. Look at the parts of the document the neuron activates for and summarize in a single sentence what the neuron is activating on. Try not to be overly specific in your explanation. Note that some neurons will activate only on specific words or substrings, but others will activate on most/all words in a sentence provided that sentence contains some particular concept. Your explanation should cover most or all activating words (for example, don'"'"'t give an explanation which is specific to a single word if all words in a sentence cause the neuron to activate). Pay attention to things like the capitalization and punctuation of the activating words or concepts, if that seems relevant. Keep the explanation as short and simple as possible, limited to 20 words or less. Omit punctuation and formatting. You should avoid giving long lists of words. Your response should be in the form \"This neuron activates on...\"."
+    #     },
+    #     {
+    #         "role": "user",
+    #         "content": "The activating documents are given below:\n\n1. I love eating <<apples>> for a snack.\n2. The <<apple>> pie was delicious.\n3. He bought a bag of <<apples>> at the store."
+    #     }
+    #     ],
+    #     "temperature": 0.0,
+    #     "max_tokens": 4096,
+    #     extra_body={
+    #         "chat_template_kwargs": {"enable_thinking": False},
+    #     },
+    # }'
+
+    # CUDA_VISIBLE_DEVICES=1 python3 sae-bench-test.py
+
+    python3 sae-bench-test.py
+} 2>&1 | tee $LOGFILE
+
+
+echo "Job finished at $(date)"
