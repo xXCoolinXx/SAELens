@@ -1,8 +1,9 @@
 """Inference-only TopKSAE variant, similar in spirit to StandardSAE but using a TopK-based activation."""
 
+from abc import ABC, abstractmethod
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Union
 
 import torch
 from torch import nn
@@ -25,74 +26,65 @@ from sae_lens.saes.topk_sae import (
     _sparse_matmul_nd,
 )
 
+KThresh = Union[int, float, torch.Tensor, Callable[[], int | float | torch.Tensor]]  # noqa: UP007
 
-class SplitTopK(nn.Module):
-    """
-    A TopK activation that zeroes out all but the top K elements along the last dimension,
-    and applies ReLU to the top K elements.
-    SplitTopK also partitions the activations based on the partition indices. Each partition receives a k budget.
-    """
+
+class SplitActivation(nn.Module, ABC):
+    """Abstract base class for a split activation function"""
 
     def __init__(
         self,
-        k_budgets: list[int],
+        k_thresholds: list[KThresh],
         partition_sizes: list[int],
     ):
-        if len(k_budgets) != len(partition_sizes):
+        if len(k_thresholds) != len(partition_sizes):
             raise ValueError(
                 "Error: Mismatch size between given k budgets and partition sizes (need n sizes for n budgets)"
             )
-
         super().__init__()
-        self.k_budgets = k_budgets
+
+        self.k_thresholds = k_thresholds
         self.partition_sizes = partition_sizes
-        self.compiled_partitioned_top_k = torch.compile(self._partitioned_top_k)
 
-    def _partitioned_top_k(
-        self,
-        x: torch.Tensor,
-    ) -> tuple[torch.Tensor, torch.Tensor]:
-        x_partitioned = torch.split(x, self.partition_sizes, dim=-1)
-
-        # Collect
-        all_vals = []
-        all_indices = []
-
-        current_offset = 0
-
-        for partition, k, sizes in zip(
-            x_partitioned, self.k_budgets, self.partition_sizes
-        ):
-            vals, indices = torch.topk(partition, k=k, dim=-1, sorted=False)
-
-            # Shift indices back to original position in x
-            indices = indices + current_offset
-
-            all_vals.append(vals)
-            all_indices.append(indices)
-
-            current_offset += sizes
-
-        return torch.cat(all_vals, dim=-1), torch.cat(all_indices, dim=-1)
+    @abstractmethod
+    def _part_act_fn(
+        self, x_part: torch.Tensor, kt: int | float | torch.Tensor
+    ) -> torch.Tensor:
+        pass
 
     def forward(
         self,
         x: torch.Tensor,
     ) -> torch.Tensor:
-        """
-        1) Select top K elements along the last dimension.
-        2) Apply ReLU.
-        3) Zero out all other entries.
-        """
+        x_partitioned = torch.split(x, self.partition_sizes, dim=-1)
 
-        topk_values, topk_indices = self.compiled_partitioned_top_k(x)
-        # Take top k on each partition
+        all_acts = []
+        for partition, kt in zip(x_partitioned, self.k_thresholds):
+            kt_val = kt() if callable(kt) else kt
+            all_acts.append(self._part_act_fn(partition, kt_val))
 
-        values = topk_values.relu()
+        return torch.cat(all_acts, dim=-1)
 
-        result = torch.zeros_like(x)
-        result.scatter_(-1, topk_indices, values)
-        return result
+
+class SplitJumpReLU(SplitActivation):
+    """Standard JumpReLU activation function split across multiple partitions"""
+
+    def _part_act_fn(self, x_part: torch.Tensor, kt) -> torch.Tensor:  # type: ignore
+        return (x_part * (x_part > kt)).to(x_part)
+
+
+class SplitBatchTopK(SplitActivation):
+    """Standard BatchTopK activation function split across multiple partitions"""
+
+    def _part_act_fn(self, x_part: torch.Tensor, kt) -> torch.Tensor:  # type: ignore
+        n_samples = x_part.shape[:-1].numel()
+        flat_acts = x_part.flatten()
+
+        vals, indices = torch.topk(flat_acts, int(kt * n_samples), dim=-1)
+
+        return (
+            torch.zeros_like(flat_acts).scatter(-1, indices, vals).reshape(x_part.shape)
+        )
 
 
 @dataclass
@@ -126,13 +118,11 @@ class ContextSAEConfig(SAEConfig):
             Inherited from SAEConfig.
     """
 
-    pct_context_features: float = (
-        1 / 2
-    )  # By default, use half of the feature set for context and half for token-specific.
-    k_context: int = 64
-    k_token: int = 64
+    pct_context_features: float = 2 / 10  # Use similar ratio to T-SAE paper
+    k_context: int = 4  # Probably there are less context related features in general
+    k_token: int = 16
 
-    rescale_acts_by_decoder_norm: bool = False
+    rescale_acts_by_decoder_norm: bool = True
 
     @override
     @classmethod
@@ -159,6 +149,9 @@ class ContextSAE(SAE[ContextSAEConfig]):
         self.n_token_features = cfg.d_sae - self.n_context_features
 
         super().__init__(cfg, use_error_term)
+
+        self.register_buffer("threshold_context", torch.tensor(0.0, dtype=torch.double))
+        self.register_buffer("threshold_token", torch.tensor(0.0, dtype=torch.double))
 
     @override
     def initialize_weights(self) -> None:
@@ -211,8 +204,11 @@ class ContextSAE(SAE[ContextSAEConfig]):
 
     @override
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
-        return SplitTopK(
-            [self.cfg.k_context, self.cfg.k_token],
+        return SplitJumpReLU(
+            [
+                lambda: self.threshold_context,
+                lambda: self.threshold_token,
+            ],  # type: ignore
             [self.n_context_features, self.n_token_features],
         )
 
@@ -268,11 +264,10 @@ class ContextTrainingSAEConfig(TrainingSAEConfig):
             Inherited from SAEConfig.
     """
 
-    pct_context_features: float = (
-        1 / 2
-    )  # By default, use half of the feature set for context and half for token-specific.
-    k_context: int = 64
-    k_token: int = 64
+    pct_context_features: float = 2 / 10
+    k_context: int = 4
+    k_token: int = 16
+    topk_threshold_lr: float = 0.01
 
     # use_sparse_activations: bool = False # Not implemented for SplitTopK
     aux_loss_coefficient: float = 1.0
@@ -301,6 +296,18 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
         super().__init__(cfg, use_error_term)
         self.hook_sae_acts_post = SparseHookPoint(self.cfg.d_sae)
         self.setup()
+
+        self.register_buffer(
+            "threshold_context",
+            # use double precision as otherwise we can run into numerical issues
+            torch.tensor(0.0, dtype=torch.double, device=self.W_dec.device),
+        )
+
+        self.register_buffer(
+            "threshold_token",
+            # use double precision as otherwise we can run into numerical issues
+            torch.tensor(0.0, dtype=torch.double, device=self.W_dec.device),
+        )
 
     @override
     def initialize_weights(self) -> None:
@@ -410,7 +417,7 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
 
     @override
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
-        return SplitTopK(
+        return SplitBatchTopK(
             [self.cfg.k_context, self.cfg.k_token],
             [self.n_context_features, self.n_token_features],
         )
@@ -467,6 +474,8 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
         feature_acts, hidden_pre = self.encode_with_hidden_pre(step_input.sae_in)
         sae_out = self.decode(feature_acts)
 
+        self.update_topk_threshold(feature_acts)
+
         # Calculate MSE loss
         per_item_mse_loss = self.mse_loss_fn(sae_out, step_input.sae_in)
 
@@ -512,11 +521,42 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
             losses=losses,
         )
 
+    @torch.no_grad()
+    def threshold_helper(
+        self, acts_topk_sliced: torch.Tensor, previous_threshold: torch.Tensor
+    ):
+        positive_mask = acts_topk_sliced > 0
+        lr = self.cfg.topk_threshold_lr
+        # autocast can cause numerical issues with the threshold update
+        with torch.autocast(previous_threshold.device.type, enabled=False):
+            if positive_mask.any():
+                min_positive = (
+                    acts_topk_sliced[positive_mask].min().to(previous_threshold.dtype)
+                )
+                return (1 - lr) * previous_threshold + lr * min_positive
+            return previous_threshold
+
+    @torch.no_grad()
+    def update_topk_threshold(self, acts_topk: torch.Tensor) -> None:
+        self.threshold_context = self.threshold_helper(
+            acts_topk[..., 0 : self.n_context_features], self.threshold_context
+        )
+        self.threshold_token = self.threshold_helper(
+            acts_topk[..., self.n_context_features :], self.threshold_token
+        )
+
     @override
     def process_state_dict_for_saving_inference(
         self, state_dict: dict[str, Any]
     ) -> None:
         super().process_state_dict_for_saving_inference(state_dict)
+
+        state_dict["threshold_context"] = self.threshold_context.detach().clone()
+        state_dict["threshold_token"] = self.threshold_token.detach().clone()
+
+        # For debugging purposes
+        print(state_dict["threshold_context"].mean)
+        print(state_dict["threshold_token"].mean)
         if self.cfg.rescale_acts_by_decoder_norm:
             _fold_norm_topk(
                 W_enc=state_dict["W_enc"],

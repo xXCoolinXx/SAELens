@@ -235,7 +235,8 @@ class ActivationsStore:
         disable_concat_sequences: bool = False,
         sequence_separator_token: int | Literal["bos", "eos", "sep"] | None = "bos",
         activations_mixing_fraction: float = 0.5,
-        context_processor: Callable[[torch.Tensor], torch.Tensor] | None = None,
+        context_processor: Callable[[torch.Tensor, torch.Tensor], torch.Tensor]
+        | None = None,
     ):
         self.model = model
         if model_kwargs is None:
@@ -653,10 +654,16 @@ class ActivationsStore:
 
         # handle seqpos_slice, this is done for activations in get_activations
         batch_tokens = batch_tokens[:, slice(*self.seqpos_slice)]
+        pad_id = (
+            self.model.tokenizer.pad_token_id  # type: ignore
+            if self.model.tokenizer.pad_token_id is not None  # type: ignore
+            else 0
+        )
+        valid_mask = batch_tokens != pad_id
 
         if self.context_processor is not None:
             # [batch_size, context_size, d_in] -> [batch_size, context_segments, d_in]
-            activations = self.context_processor(activations)
+            activations = self.context_processor(activations, valid_mask)  # type: ignore
 
             token_ids = None  # Can no longer meaningfully do filtering
         else:
@@ -824,26 +831,77 @@ def _filter_buffer_acts(
     return activations[~mask]
 
 
-def pair_activations(acts: torch.Tensor, max_dist: int = 16) -> torch.Tensor:
-    """
-    Input: (batch, context, d_in)
-    Output: (batch * (context - 1), 2, d_in)
-    """
-    batch, context, d_in = acts.shape
+# def pair_activations(
+#     acts: torch.Tensor, valid_mask: torch.Tensor, max_dist: int = 16
+# ) -> torch.Tensor:
+#     """
+#     Input: (batch, context, d_in)
+#     Output: (batch * (context - 1), 2, d_in)
+#     """
+#     batch, context, d_in = acts.shape
 
-    # Exclude last position (nothing to pair with)
+#     # Exclude last position (nothing to pair with)
+#     valid_context = context - 1
+
+#     t_indices = torch.arange(valid_context, device=acts.device)
+#     max_offsets = torch.clamp(context - t_indices - 1, min=1, max=max_dist)
+
+#     rand_vals = torch.rand(batch, valid_context, device=acts.device)
+#     offsets = (rand_vals * max_offsets.unsqueeze(0)).long() + 1
+
+#     t2_indices = t_indices.unsqueeze(0).expand(batch, -1) + offsets
+
+#     acts_t = acts[:, :valid_context, :]
+#     acts_t2 = torch.gather(acts, 1, t2_indices.unsqueeze(-1).expand(-1, -1, d_in))
+
+#     pairs = torch.stack([acts_t, acts_t2], dim=2)
+#     return pairs.reshape(-1, 2, d_in)
+
+
+def pair_activations(
+    acts: torch.Tensor, valid_mask: torch.Tensor, max_dist: int = 16
+) -> torch.Tensor:
+    batch, context, _ = acts.shape
     valid_context = context - 1
 
+    # 1. Calculate Indices & Offsets (Lightweight Integer Math)
+    # Shape: (valid_context,)
     t_indices = torch.arange(valid_context, device=acts.device)
+
+    # Calculate lookahead limits: (valid_context,)
+    # implicit broadcasting handles the subtraction
     max_offsets = torch.clamp(context - t_indices - 1, min=1, max=max_dist)
 
+    # Vectorized random offsets: (batch, valid_context)
+    # (T,) broadcasts against (B, T) automatically in PyTorch
     rand_vals = torch.rand(batch, valid_context, device=acts.device)
-    offsets = (rand_vals * max_offsets.unsqueeze(0)).long() + 1
+    offsets = (rand_vals * max_offsets).long() + 1
 
-    t2_indices = t_indices.unsqueeze(0).expand(batch, -1) + offsets
+    # Target indices (t + s): (batch, valid_context)
+    t2_indices = t_indices + offsets
 
-    acts_t = acts[:, :valid_context, :]
-    acts_t2 = torch.gather(acts, 1, t2_indices.unsqueeze(-1).expand(-1, -1, d_in))
+    # 2. Validity Masking
+    # Check t is not padding
+    mask_t = valid_mask[:, :valid_context]
+    # Check t+s is not padding
+    mask_t2 = torch.gather(valid_mask, 1, t2_indices)
 
-    pairs = torch.stack([acts_t, acts_t2], dim=2)
-    return pairs.reshape(-1, 2, d_in)
+    final_mask = mask_t & mask_t2
+
+    # 3. Optimization: Filter INDICES first
+    # Instead of gathering all activations and then masking, we find the
+    # coordinates (batch, seq) where data is valid first.
+
+    # nonzero returns tuple of (batch_indices, t_indices) for valid spots
+    b_idx, t_idx = torch.nonzero(final_mask, as_tuple=True)
+
+    # Get the corresponding t2 indices for those valid spots
+    t2_idx = t2_indices[b_idx, t_idx]
+
+    # 4. Gather Only Valid Data
+    # Advanced indexing: acts[rows, cols]
+    acts_t = acts[b_idx, t_idx]
+    acts_t2 = acts[b_idx, t2_idx]
+
+    # Stack: (n_valid_pairs, 2, d_in)
+    return torch.stack([acts_t, acts_t2], dim=1)
