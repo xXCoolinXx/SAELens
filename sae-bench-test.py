@@ -138,6 +138,7 @@ def run_evals(
     api_key: str | None = None,
     force_rerun: bool = False,
     save_activations: bool = False,
+    sae_feature_indices: list[torch.Tensor] | list[None] = [None],
 ):
     """Run selected evaluations for the given model and SAEs."""
 
@@ -242,12 +243,13 @@ def run_evals(
             )
         ),
         "sparse_probing": (
-            lambda: sparse_probing.run_eval(
+            lambda idx: sparse_probing.run_eval(
                 sparse_probing.SparseProbingEvalConfig(
                     model_name=model_name,
                     random_seed=RANDOM_SEED,
                     llm_batch_size=llm_batch_size,
                     llm_dtype=llm_dtype,
+                    sae_feature_indices=idx,
                 ),
                 selected_saes,
                 device,
@@ -302,6 +304,10 @@ def run_evals(
                     "Skipping unlearning evaluation due to missing bio-forget-corpus.jsonl"
                 )
                 continue
+        if eval_type == "sparse_probing":
+            for idx in sae_feature_indices:
+                eval_runners["sparse_probing"](idx)
+            continue
 
         print(f"\n\n\nRunning {eval_type} evaluation\n\n\n")  # noqa: T201
 
@@ -326,11 +332,11 @@ if __name__ == "__main__":
     eval_types = [
         # "absorption",
         # "autointerp",
-        "core",
-        "ravel",
-        "scr",
-        "tpp",
-        # "sparse_probing",
+        # "core",
+        # "ravel",
+        # "scr",
+        # "tpp",
+        "sparse_probing",
         # "sparse_probing_sae_probes",
         # "unlearning",
     ]
@@ -356,6 +362,10 @@ if __name__ == "__main__":
 
         selected_saes = [(f"{model_name}_layer_{hook_layer}_identity_sae", sae)]
 
+        context_idx = torch.arange(0, sae.n_context_features, device=device)  # type: ignore
+        token_idx = torch.arange(sae.n_context_features, sae.cfg.d_sae, device=device)  # type: ignore
+        all_idx = torch.arange(0, sae.cfg.d_sae, device=device)  # type: ignore
+
         for sae_name, sae in selected_saes:
             sae = sae.to(dtype=general_utils.str_to_dtype(llm_dtype))  # type: ignore
             sae.cfg.dtype = llm_dtype
@@ -370,4 +380,5 @@ if __name__ == "__main__":
             api_key=api_key,
             force_rerun=False,
             save_activations=False,
+            sae_feature_indices=[context_idx, token_idx, all_idx],  # type: ignore
         )
