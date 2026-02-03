@@ -250,6 +250,7 @@ def run_evals(
                     llm_batch_size=llm_batch_size,
                     llm_dtype=llm_dtype,
                     sae_feature_indices=idx,
+                    k_values=[1, 2, 5, 10, 20, 50, 100],  # Fuck it, do em all
                 ),
                 selected_saes,
                 device,
