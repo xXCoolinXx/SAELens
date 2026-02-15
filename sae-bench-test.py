@@ -102,7 +102,7 @@ MODEL_CONFIGS = {
         "d_model": 768,
     },
     "gemma-2-2b": {
-        "batch_size": 32,
+        "batch_size": 256,
         "dtype": "bfloat16",
         "layers": [12],
         "d_model": 2304,
@@ -243,14 +243,15 @@ def run_evals(
             )
         ),
         "sparse_probing": (
-            lambda idx: sparse_probing.run_eval(
+            sparse_probing.run_eval(
                 sparse_probing.SparseProbingEvalConfig(
                     model_name=model_name,
                     random_seed=RANDOM_SEED,
                     llm_batch_size=llm_batch_size,
                     llm_dtype=llm_dtype,
-                    sae_feature_indices=idx,
                     k_values=[1, 2, 5, 10, 20, 50, 100],  # Fuck it, do em all
+                    pooling_strategy="mean",
+                    masking_strategy="ofp",
                 ),
                 selected_saes,
                 device,
@@ -261,14 +262,15 @@ def run_evals(
             )
         ),
         "sparse_probing_sae_probes": (
-            lambda: sparse_probing_sae_probes.run_eval(
+            sparse_probing_sae_probes.run_eval(
                 sparse_probing_sae_probes.SparseProbingSaeProbesEvalConfig(
                     model_name=model_name,
+                    k_values=[1, 2, 5, 10, 20, 50, 100],
                 ),
                 selected_saes,
                 device,
                 "eval_results/sparse_probing_sae_probes",
-                force_rerun,
+                force_rerun=True,
             )
         ),
         "unlearning": (
@@ -305,10 +307,10 @@ def run_evals(
                     "Skipping unlearning evaluation due to missing bio-forget-corpus.jsonl"
                 )
                 continue
-        if eval_type == "sparse_probing":
-            for idx in sae_feature_indices:
-                eval_runners["sparse_probing"](idx)
-            continue
+        # if eval_type == "sparse_probing" or eval_type == "sparse_probing_sae_probes":
+        #     for idx in sae_feature_indices:
+        #         eval_runners[eval_type](idx)
+        #     continue
 
         print(f"\n\n\nRunning {eval_type} evaluation\n\n\n")  # noqa: T201
 
@@ -320,7 +322,8 @@ def run_evals(
 if __name__ == "__main__":
     device = general_utils.setup_environment()
 
-    model_name = "pythia-160m-deduped"
+    # model_name = "pythia-160m-deduped"
+    model_name = "gemma-2-2b"
     d_model = MODEL_CONFIGS[model_name]["d_model"]
     llm_batch_size = MODEL_CONFIGS[model_name]["batch_size"]
     llm_dtype = MODEL_CONFIGS[model_name]["dtype"]
@@ -331,14 +334,14 @@ if __name__ == "__main__":
 
     # Select your eval types here.
     eval_types = [
+        "sparse_probing",
+        # "core",
+        # "sparse_probing_sae_probes",
         # "absorption",
         # "autointerp",
-        # "core",
         # "ravel",
         # "scr",
         # "tpp",
-        "sparse_probing",
-        # "sparse_probing_sae_probes",
         # "unlearning",
     ]
 
@@ -357,7 +360,9 @@ if __name__ == "__main__":
 
     for hook_layer in MODEL_CONFIGS[model_name]["layers"]:  # type: ignore
         sae, cfg_dict, sparsity = SAE.load_from_disk(
-            path="/scratch/Collin/SAELens/checkpoints/omyz0sxn/375001088",
+            # path="/scratch/Collin/SAELens/checkpoints/omyz0sxn/375001088",
+            # path="/scratch/Collin/SAELens/checkpoints/uvvum8hk/118501376",
+            path="/scratch/Collin/SAELens/checkpoints/v5e7thp3/118501376",
             device=device,
         )
 

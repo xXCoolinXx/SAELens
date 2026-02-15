@@ -1,0 +1,141 @@
+{
+  "Broad Sentence-Level Concepts": {
+    "Logic, Reasoning & Commonsense": [
+      "42_temp_sense",
+      "47_reasoning_tf",
+      "48_cm_correct",
+      "49_cm_isshort",
+      "50_deon_isvalid",
+      "51_just_is",
+      "52_virtue_is"
+    ],
+    "Linguistic Structure & Entailment": [
+      "87_glue_cola",
+      "89_glue_mrpc",
+      "90_glue_qnli",
+      "91_glue_qqp",
+      "136_glue_mnli_entailment",
+      "137_glue_mnli_neutral",
+      "138_glue_mnli_contradiction"
+    ],
+    "Sentiment, Emotion & Tone": [
+      "92_glue_sst2",
+      "113_movie_sent",
+      "148_twt_emotion_worry",
+      "149_twt_emotion_happiness",
+      "150_twt_emotion_sadness",
+      "157_amazon_5star"
+    ],
+    "Style, Safety & Authorship": [
+      "94_ai_gen",
+      "95_toxic_is",
+      "96_spam_is",
+      "100_news_fake",
+      "105_click_bait",
+      "106_hate_hate",
+      "107_hate_offensive",
+      "110_aimade_humangpt3"
+    ],
+    "Abstract Contextual Attributes": [
+      "130_temp_cat_Frequency",
+      "131_temp_cat_Typical Time",
+      "132_temp_cat_Event Ordering",
+      "133_context_type_Causality",
+      "134_context_type_Belief_states",
+      "135_context_type_Event_duration"
+    ]
+  },
+  "Specific Local Concepts": {
+    "Fact Verification & Knowledge Retrieval": [
+      "36_sciq_tf",
+      "41_truthqa_tf",
+      "44_phys_tf",
+      "54_cs_tf",
+      "70_prime-factors",
+      "129_arith_mc_A"
+    ],
+    "Entity Identification (Biographical & Historical)": [
+      "5_hist_fig_ismale",
+      "6_hist_fig_isamerican",
+      "7_hist_fig_ispolitician",
+      "56_wikidatasex_or_gender",
+      "57_wikidatais_alive",
+      "58_wikidatapolitical_party",
+      "59_wikidata_occupation_isjournalist",
+      "60_wikidata_occupation_isathlete",
+      "61_wikidata_occupation_isactor",
+      "62_wikidata_occupation_ispolitician",
+      "63_wikidata_occupation_issinger",
+      "64_wikidata_occupation_isresearcher"
+    ],
+    "Keyword & Subject Detection (Headlines)": [
+      "21_headline_istrump",
+      "22_headline_isobama",
+      "23_headline_ischina",
+      "24_headline_isiran",
+      "26_headline_isfrontpage"
+    ],
+    "Topic & Domain Classification": [
+      "65_high-school",
+      "66_living-room",
+      "67_social-security",
+      "68_credit-card",
+      "69_blood-pressure",
+      "71_social-media",
+      "72_gene-expression",
+      "73_control-group",
+      "74_magnetic-field",
+      "75_cell-lines",
+      "76_trial-court",
+      "77_second-derivative",
+      "79_human-rights",
+      "80_side-effects",
+      "81_public-health",
+      "82_federal-government",
+      "83_third-party",
+      "84_clinical-trials",
+      "85_mental-health",
+      "139_news_class_Politics",
+      "140_news_class_Technology",
+      "141_news_class_Entertainment",
+      "142_cancer_cat_Thyroid_Cancer",
+      "143_cancer_cat_Lung_Cancer",
+      "144_cancer_cat_Colon_Cancer",
+      "145_disease_class_digestive system diseases",
+      "146_disease_class_cardiovascular diseases",
+      "147_disease_class_nervous system diseases",
+      "161_agnews_0",
+      "162_agnews_1",
+      "163_agnews_2"
+    ],
+    "Geolocation & Demographics": [
+      "78_north-america",
+      "114_nyc_borough_Manhattan",
+      "115_nyc_borough_Brooklyn",
+      "116_nyc_borough_Bronx",
+      "117_us_state_FL",
+      "118_us_state_CA",
+      "119_us_state_TX",
+      "120_us_timezone_Chicago",
+      "121_us_timezone_New_York",
+      "122_us_timezone_Los_Angeles",
+      "123_world_country_United_Kingdom",
+      "124_world_country_United_States",
+      "125_world_country_Italy"
+    ],
+    "Specific Formats, Codes & Types": [
+      "126_art_type_book",
+      "127_art_type_song",
+      "128_art_type_movie",
+      "151_it_tick_HR Support",
+      "152_it_tick_Hardware",
+      "153_it_tick_Administrative rights",
+      "154_athlete_sport_football",
+      "155_athlete_sport_basketball",
+      "156_athlete_sport_baseball",
+      "158_code_C",
+      "159_code_Python",
+      "160_code_HTML"
+    ]
+  }
+}

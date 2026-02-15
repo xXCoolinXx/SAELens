@@ -1,0 +1,118 @@
+{
+  "eval_type_id": "ravel",
+  "eval_config": {
+    "entity_attribute_selection": {
+      "city": [
+        "Country",
+        "Continent",
+        "Language"
+      ],
+      "nobel_prize_winner": [
+        "Country of Birth",
+        "Field",
+        "Gender"
+      ]
+    },
+    "top_n_entities": 500,
+    "top_n_templates": 90,
+    "full_dataset_downsample": null,
+    "num_pairs_per_attribute": 5000,
+    "train_test_split": 0.7,
+    "force_dataset_recompute": false,
+    "model_name": "google/gemma-2-2b",
+    "llm_dtype": "bfloat16",
+    "llm_batch_size": 8,
+    "learning_rate": 0.001,
+    "num_epochs": 2,
+    "train_mdas": false,
+    "n_generated_tokens": 6,
+    "random_seed": 42,
+    "artifact_dir": "artifacts/ravel"
+  },
+  "eval_id": "9b6c7329-db41-4d84-b3f9-85f5aa8ab1a6",
+  "datetime_epoch_millis": 1770317804088,
+  "eval_result_metrics": {
+    "ravel": {
+      "disentanglement_score": 0.6143404168321479,
+      "cause_score": 0.5874632851952164,
+      "isolation_score": 0.6412175484690792
+    }
+  },
+  "eval_result_details": [],
+  "sae_bench_commit_hash": "07d61d31854cf96d0aed0f48395af75f6e69dac9",
+  "sae_lens_id": "custom_sae",
+  "sae_lens_release_id": "gemma-2-2b_layer_12_identity_sae",
+  "sae_lens_version": "6.30.1",
+  "sae_cfg_dict": {
+    "d_in": 2304,
+    "d_sae": 16384,
+    "dtype": "bfloat16",
+    "device": "cuda",
+    "apply_b_dec_to_input": true,
+    "normalize_activations": "expected_average_only_in",
+    "reshape_activations": "none",
+    "metadata": {
+      "sae_lens_version": "6.30.1",
+      "sae_lens_training_version": "6.30.1",
+      "dataset_path": "monology/pile-uncopyrighted",
+      "hook_name": "blocks.12.hook_resid_post",
+      "model_name": "gemma-2-2b",
+      "model_class_name": "HookedTransformer",
+      "hook_head_index": null,
+      "context_size": 2048,
+      "seqpos_slice": [
+        null
+      ],
+      "model_from_pretrained_kwargs": {
+        "center_writing_weights": false
+      },
+      "prepend_bos": true,
+      "exclude_special_tokens": false,
+      "sequence_separator_token": "bos",
+      "disable_concat_sequences": true,
+      "hook_layer": 12,
+      "dataset_trust_remote_code": null
+    },
+    "pct_context_features": 0.5,
+    "k_context": 20,
+    "k_token": 20,
+    "rescale_acts_by_decoder_norm": true,
+    "architecture": "context_sae"
+  },
+  "eval_result_unstructured": {
+    "city_results": {
+      "city_Country": {
+        "cause_score": 0.5557038025350234,
+        "isolation_score": 0.3764157228514324,
+        "disentangle_score": 0.4660597626932279
+      },
+      "city_Continent": {
+        "cause_score": 0.4394037589112119,
+        "isolation_score": 0.5195607412491421,
+        "disentangle_score": 0.479482250080177
+      },
+      "city_Language": {
+        "cause_score": 0.590818363273453,
+        "isolation_score": 0.2845691382765531,
+        "disentangle_score": 0.43769375077500305
+      }
+    },
+    "nobel_prize_winner_results": {
+      "nobel_prize_winner_Country of Birth": {
+        "cause_score": 0.6322489391796322,
+        "isolation_score": 0.89281210592686,
+        "disentangle_score": 0.7625305225532462
+      },
+      "nobel_prize_winner_Field": {
+        "cause_score": 0.7403127124405167,
+        "isolation_score": 0.9025506867233486,
+        "disentangle_score": 0.8214316995819326
+      },
+      "nobel_prize_winner_Gender": {
+        "cause_score": 0.5662921348314607,
+        "isolation_score": 0.8713968957871396,
+        "disentangle_score": 0.7188445153093002
+      }
+    }
+  }
+}
