@@ -41847,3 +41847,14 @@ gemma-2b-res-jb:
     l0: 54.0
     path: gemma_2b_blocks.17.hook_resid_post_16384
     variance_explained: -0.85
+gemma-2-2b-layer-12-matching-pursuit-comparison:
+  conversion_func: null
+  links:
+    dashboards: null
+    model: https://huggingface.co/google/gemma-2b
+  model: gemma-2b
+  repo_id: chanind/gemma-2-2b-layer-12-matching-pursuit-comparison
+  saes:
+  - id: blocks.12.hook_resid_post
+    l0: 85.0
+    path: matching-pursuit/static-l0-85

@@ -12,7 +12,7 @@
 #PBS -l select=1:ncpus=4:ngpus=1:mem=16gb
 
 # Set the maximum walltime for the job (e.g., 1 hour)
-#PBS -l walltime=06:00:00
+#PBS -l walltime=08:00:00
 
 # Redirect standard output and error to files
 #PBS -o job_output.log
@@ -58,7 +58,7 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
 
     # export CUDA_VISIBLE_DEVICES=1 # Hot fix because ASAX doesn't properly change GPU visibility :/
     # Train an SAE
-    # python3 context-sae-train.py
+    # /scratch/Collin/envs/sae/bin/python context-sae-train.py
 
     # Test autointerp # requires two GPUS for autointerp
     # CUDA_VISIBLE_DEVICES=0 python -m vllm.entrypoints.openai.api_server \
@@ -114,7 +114,7 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
 
     # CUDA_VISIBLE_DEVICES=1 python3 sae-bench-test.py
 
-    python3 sae-bench-test.py
+    /scratch/Collin/envs/sae/bin/python sae-bench-test.py
 } 2>&1 | tee $LOGFILE
 
 

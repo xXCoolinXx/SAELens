@@ -46,10 +46,9 @@ source_repo = "monology/pile-uncopyrighted"
 device = "cuda"
 
 batch_size = 4096
-total_training_steps = 122_070
-total_tokens = (
-    batch_size * total_training_steps
-)  # Should be 500M in line with SAE bench
+total_tokens = 158_000_000
+
+total_training_steps = total_tokens // 2048
 
 lr_warm_up_steps = 1000
 lr_decay_steps = total_training_steps // 5  # 20% of training
@@ -57,17 +56,17 @@ lr_decay_steps = total_training_steps // 5  # 20% of training
 # So many damn parameters
 cfg = LanguageModelSAERunnerConfig(
     sae=ContextTrainingSAEConfig(
-        d_in=768,  # For pythia and gpt2-small,
+        d_in=2304,  # d_in=768,  # For pythia and gpt2-small,
         d_sae=16384,  # Good amount of features, compare to T-SAE paper
-        k_context=4,  # Split used by T-SAE
-        k_token=16,
-        pct_context_features=0.2,
+        k_context=20,  # Split used by T-SAE
+        k_token=20,
+        pct_context_features=0.5,
         aux_loss_coefficient=1 / 32,  # Following anthropic
         normalize_activations="expected_average_only_in",
     ),
-    model_name="pythia-160m-deduped",  # Use deduped, apparently its more interpretable
+    model_name="gemma-2-2b",  # "pythia-160m-deduped",  # Use deduped, apparently its more interpretable
     model_class_name="HookedTransformer",
-    hook_name="blocks.8.hook_resid_post",
+    hook_name="blocks.12.hook_resid_post",  # "blocks.8.hook_resid_post",
     dataset_path=source_repo,  # We already loaded the dataset because we have to use custom code # type: ignore
     is_dataset_tokenized=False,
     # Training Parameters
@@ -80,12 +79,12 @@ cfg = LanguageModelSAERunnerConfig(
     context_size=2048,
     disable_concat_sequences=True,
     training_tokens=total_tokens,
-    n_batches_in_buffer=1024,
+    n_batches_in_buffer=20,
     store_batch_size_prompts=32,
     # Wandb
     logger=LoggingConfig(
         log_to_wandb=True,
-        wandb_project="Context SAE test",
+        wandb_project="Context SAE test Gemma 2-2b",
         wandb_log_frequency=30,
         eval_every_n_wandb_logs=100000000000,  # Evals are broken for this arch, just don't do it for now
     ),
