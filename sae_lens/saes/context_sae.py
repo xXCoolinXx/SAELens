@@ -539,10 +539,10 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
     @torch.no_grad()
     def update_topk_threshold(self, acts_topk: torch.Tensor) -> None:
         self.threshold_context = self.threshold_helper(
-            acts_topk[..., 0 : self.n_context_features], self.threshold_context
+            acts_topk[..., 0, 0 : self.n_context_features], self.threshold_context
         )
         self.threshold_token = self.threshold_helper(
-            acts_topk[..., self.n_context_features :], self.threshold_token
+            acts_topk[..., 0, self.n_context_features :], self.threshold_token
         )
 
     @override
@@ -555,8 +555,8 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
         state_dict["threshold_token"] = self.threshold_token.detach().clone()
 
         # For debugging purposes
-        print(state_dict["threshold_context"].mean)
-        print(state_dict["threshold_token"].mean)
+        print(state_dict["threshold_context"].mean())
+        print(state_dict["threshold_token"].mean())
         if self.cfg.rescale_acts_by_decoder_norm:
             _fold_norm_topk(
                 W_enc=state_dict["W_enc"],

@@ -46,9 +46,9 @@ source_repo = "monology/pile-uncopyrighted"
 device = "cuda"
 
 batch_size = 4096
-total_tokens = 158_000_000
+total_tokens = 250_000_000
 
-total_training_steps = total_tokens // 2048
+total_training_steps = total_tokens // batch_size
 
 lr_warm_up_steps = 1000
 lr_decay_steps = total_training_steps // 5  # 20% of training
@@ -57,9 +57,9 @@ lr_decay_steps = total_training_steps // 5  # 20% of training
 cfg = LanguageModelSAERunnerConfig(
     sae=ContextTrainingSAEConfig(
         d_in=2304,  # d_in=768,  # For pythia and gpt2-small,
-        d_sae=16384,  # Good amount of features, compare to T-SAE paper
-        k_context=20,  # Split used by T-SAE
-        k_token=20,
+        d_sae=2**15,  # Good amount of features, compare to Gemma Scope
+        k_context=50,
+        k_token=50,
         pct_context_features=0.5,
         aux_loss_coefficient=1 / 32,  # Following anthropic
         normalize_activations="expected_average_only_in",
