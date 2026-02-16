@@ -243,14 +243,14 @@ def run_evals(
             )
         ),
         "sparse_probing": (
-            sparse_probing.run_eval(
+            lambda: sparse_probing.run_eval(
                 sparse_probing.SparseProbingEvalConfig(
                     model_name=model_name,
                     random_seed=RANDOM_SEED,
                     llm_batch_size=llm_batch_size,
                     llm_dtype=llm_dtype,
                     k_values=[1, 2, 5, 10, 20, 50, 100],  # Fuck it, do em all
-                    pooling_strategy="mean",
+                    pooling_strategy="last-token",
                     masking_strategy="ofp",
                 ),
                 selected_saes,
@@ -262,7 +262,7 @@ def run_evals(
             )
         ),
         "sparse_probing_sae_probes": (
-            sparse_probing_sae_probes.run_eval(
+            lambda: sparse_probing_sae_probes.run_eval(
                 sparse_probing_sae_probes.SparseProbingSaeProbesEvalConfig(
                     model_name=model_name,
                     k_values=[1, 2, 5, 10, 20, 50, 100],
@@ -334,8 +334,8 @@ if __name__ == "__main__":
 
     # Select your eval types here.
     eval_types = [
+        "core",
         "sparse_probing",
-        # "core",
         # "sparse_probing_sae_probes",
         # "absorption",
         # "autointerp",
@@ -362,11 +362,13 @@ if __name__ == "__main__":
         sae, cfg_dict, sparsity = SAE.load_from_disk(
             # path="/scratch/Collin/SAELens/checkpoints/omyz0sxn/375001088",
             # path="/scratch/Collin/SAELens/checkpoints/uvvum8hk/118501376",
-            path="/scratch/Collin/SAELens/checkpoints/v5e7thp3/118501376",
+            path="/scratch/Collin/SAELens/output/",
             device=device,
         )
 
-        selected_saes = [(f"{model_name}_layer_{hook_layer}_identity_sae", sae)]
+        selected_saes = [
+            (f"{model_name}_layer_{hook_layer}_context_sae_l0_100_32k", sae)
+        ]
 
         context_idx = torch.arange(0, sae.n_context_features, device=device)  # type: ignore
         token_idx = torch.arange(sae.n_context_features, sae.cfg.d_sae, device=device)  # type: ignore
