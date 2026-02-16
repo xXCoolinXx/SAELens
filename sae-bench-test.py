@@ -250,7 +250,7 @@ def run_evals(
                     llm_batch_size=llm_batch_size,
                     llm_dtype=llm_dtype,
                     k_values=[1, 2, 5, 10, 20, 50, 100],  # Fuck it, do em all
-                    pooling_strategy="last-token",
+                    pooling_strategy="last_token",
                     masking_strategy="ofp",
                 ),
                 selected_saes,
@@ -362,9 +362,10 @@ if __name__ == "__main__":
         sae, cfg_dict, sparsity = SAE.load_from_disk(
             # path="/scratch/Collin/SAELens/checkpoints/omyz0sxn/375001088",
             # path="/scratch/Collin/SAELens/checkpoints/uvvum8hk/118501376",
-            path="/scratch/Collin/SAELens/output/",
+            path="/scratch/Collin/SAELens/checkpoints/mego9om1/187502592/",
             device=device,
         )
+        print(sae.threshold_token, sae.threshold_context)   
 
         selected_saes = [
             (f"{model_name}_layer_{hook_layer}_context_sae_l0_100_32k", sae)

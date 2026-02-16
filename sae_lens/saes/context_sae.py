@@ -78,7 +78,7 @@ class SplitBatchTopK(SplitActivation):
 
     def _part_act_fn(self, x_part: torch.Tensor, kt) -> torch.Tensor:  # type: ignore
         n_samples = x_part.shape[:-1].numel()
-        flat_acts = x_part.flatten()
+        flat_acts = x_part.relu().flatten()
 
         vals, indices = torch.topk(flat_acts, int(kt * n_samples), dim=-1)
 
