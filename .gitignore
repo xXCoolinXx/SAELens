@@ -208,3 +208,5 @@ docs/.sae_config_cache/
 .pbs
 
 logs/
+
+output/
