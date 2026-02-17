@@ -87,6 +87,16 @@ class SplitBatchTopK(SplitActivation):
         )
 
 
+class SplitTopK(SplitActivation):
+    def _part_act_fn(self, x_part: torch.Tensor, kt):  # type: ignore
+        k = int(kt)
+        x_relu = x_part.relu()
+        topk_vals, topk_ids = torch.topk(x_relu, k, dim=-1)
+        result = torch.zeros_like(x_relu)
+        result.scatter_(-1, topk_ids, topk_vals)
+        return result
+
+
 @dataclass
 class ContextSAEConfig(SAEConfig):
     """
@@ -204,11 +214,16 @@ class ContextSAE(SAE[ContextSAEConfig]):
 
     @override
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
-        return SplitJumpReLU(
-            [
-                lambda: self.threshold_context,
-                lambda: self.threshold_token,
-            ],  # type: ignore
+        # return SplitJumpReLU(
+        #     [
+        #         lambda: self.threshold_context,
+        #         lambda: self.threshold_token,
+        #     ],  # type: ignore
+        #     [self.n_context_features, self.n_token_features],
+        # )
+
+        return SplitTopK(
+            [self.cfg.k_context, self.cfg.k_token],
             [self.n_context_features, self.n_token_features],
         )
 
@@ -413,11 +428,11 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
             raise NotImplementedError(
                 "Folding W_dec_norm is not safe for TopKSAEs when rescale_acts_by_decoder_norm is False, as this may change the topk activations"
             )
-        _fold_norm_topk(W_dec=self.W_dec, b_enc=self.b_enc, W_enc=self.W_enc)
+        # _fold_norm_topk(W_dec=self.W_dec, b_enc=self.b_enc, W_enc=self.W_enc)
 
     @override
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
-        return SplitBatchTopK(
+        return SplitTopK(
             [self.cfg.k_context, self.cfg.k_token],
             [self.n_context_features, self.n_token_features],
         )
@@ -510,6 +525,27 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
             # Handle case where aux_losses is a tensor
             total_loss = total_loss + aux_losses
 
+        l0_context_thresh = (
+            torch.count_nonzero(
+                hidden_pre[..., 0 : self.n_context_features] > self.threshold_context
+            )
+            / hidden_pre.shape[0]
+        )
+
+        l0_token_thresh = (
+            torch.count_nonzero(
+                hidden_pre[..., self.n_context_features :] > self.threshold_token
+            )
+            / hidden_pre.shape[0]
+        )
+
+        metrics = {
+            "context_threshold": self.threshold_context,
+            "token_threshold": self.threshold_token,
+            "l0_context_thresh": l0_context_thresh,
+            "l0_token_thresh": l0_token_thresh,
+        }
+
         return TrainStepOutput(
             sae_in=step_input.sae_in,
             sae_out=sae_out,
@@ -519,6 +555,7 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
             hidden_pre=hidden_pre,
             loss=total_loss,
             losses=losses,
+            metrics=metrics,  # type: ignore
         )
 
     @torch.no_grad()
@@ -557,6 +594,7 @@ class ContextTrainingSAE(TrainingSAE[ContextTrainingSAEConfig]):
         # For debugging purposes
         print(state_dict["threshold_context"].mean())
         print(state_dict["threshold_token"].mean())
+        # Don't Fold the Norm - weird issues will happen and your dog will be abducted by aliens
         if self.cfg.rescale_acts_by_decoder_norm:
             _fold_norm_topk(
                 W_enc=state_dict["W_enc"],

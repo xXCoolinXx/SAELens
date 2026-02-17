@@ -112,9 +112,9 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     #     },
     # }'
 
-    # CUDA_VISIBLE_DEVICES=1 python3 sae-bench-test.py
+    CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python sae-bench-test.py
 
-    /scratch/Collin/envs/sae/bin/python sae-bench-test.py
+    # /scratch/Collin/envs/sae/bin/python sae-bench-test.py
 } 2>&1 | tee $LOGFILE
 
 

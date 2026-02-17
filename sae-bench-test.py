@@ -12,10 +12,12 @@ import sae_bench.evals.unlearning.main as unlearning
 import sae_bench.sae_bench_utils.general_utils as general_utils
 import sklearn.utils.validation
 import torch
+from datasets import load_dataset
 from dotenv import load_dotenv
 from openai import OpenAI
 from openai.resources.chat import Completions
 from tqdm import tqdm
+from transformer_lens import HookedTransformer
 
 from sae_lens import SAE
 
@@ -319,6 +321,103 @@ def run_evals(
             eval_runners[eval_type]()
 
 
+@torch.no_grad()
+def recalibrate_thresholds(
+    sae,  # ContextSAE or ContextTrainingSAE #type: ignore
+    calibration_data: torch.Tensor,  # [n_samples, d_in]
+    target_l0_context: int | None = None,
+    target_l0_token: int | None = None,
+):
+    """
+    Set JumpReLU thresholds so that the average per-sample L0
+    matches the BatchTopK training L0.
+    """
+    target_l0_context = target_l0_context or sae.cfg.k_context
+    target_l0_token = target_l0_token or sae.cfg.k_token
+
+    # ---- compute pre-activations (same path as encode) ----
+    sae_in = sae.process_sae_in(calibration_data)
+    hidden_pre = sae_in @ sae.W_enc + sae.b_enc
+    if sae.cfg.rescale_acts_by_decoder_norm:
+        hidden_pre = hidden_pre * sae.W_dec.norm(dim=-1)
+
+    n_samples = hidden_pre.shape[0]
+
+    # ---- context partition ----
+    ctx_pre = hidden_pre[:, : sae.n_context_features].relu().flatten()
+    k_ctx_total = target_l0_context * n_samples
+    # kthvalue(k) returns the k-th smallest value.
+    # The (N - k_total)-th smallest is the first value *excluded* by top-k,
+    # so  x > threshold  keeps exactly k_total values (no ties in practice).
+    sae.threshold_context = torch.kthvalue(
+        ctx_pre, len(ctx_pre) - k_ctx_total
+    ).values.to(torch.double)
+
+    # ---- token partition ----
+    tok_pre = hidden_pre[:, sae.n_context_features :].relu().flatten()
+    k_tok_total = target_l0_token * n_samples
+    sae.threshold_token = torch.kthvalue(tok_pre, len(tok_pre) - k_tok_total).values.to(
+        torch.double
+    )
+
+    # ---- sanity-check ----
+    acts = sae.activation_fn(hidden_pre)
+    actual_ctx = (acts[:, : sae.n_context_features] > 0).float().sum(-1).mean()
+    actual_tok = (acts[:, sae.n_context_features :] > 0).float().sum(-1).mean()
+    print(f"Context  L0  target={target_l0_context}  actual={actual_ctx:.2f}")
+    print(f"Token    L0  target={target_l0_token}  actual={actual_tok:.2f}")
+
+    print(f"Context Threshold: {sae.threshold_context}")
+    print(f"Token threshold: {sae.threshold_token}")
+
+
+@torch.no_grad()
+def collect_activations(
+    model: HookedTransformer,
+    hook_name: str,
+    n_samples: int = 8192,
+    context_len: int = 2048,
+    batch_size: int = 8,
+) -> torch.Tensor:
+    """Collect activations at `hook_name` from monology/pile-uncopyrighted."""
+    dataset = load_dataset("monology/pile-uncopyrighted", split="train", streaming=True)
+
+    # Only run forward pass up to the layer we need
+    stop_at_layer = None
+    if "blocks." in hook_name:
+        stop_at_layer = int(hook_name.split(".")[1]) + 1
+
+    all_acts: list[torch.Tensor] = []
+    collected = 0
+    batch_texts: list[str] = []
+
+    for example in tqdm(dataset, desc="Collecting activations"):
+        batch_texts.append(example["text"])
+        if len(batch_texts) < batch_size:
+            continue
+
+        tokens = model.to_tokens(batch_texts, prepend_bos=True)[:, :context_len]
+
+        _, cache = model.run_with_cache(
+            tokens,
+            names_filter=[hook_name],
+            stop_at_layer=stop_at_layer,
+        )
+
+        acts = cache[hook_name].reshape(-1, cache[hook_name].shape[-1])
+        all_acts.append(acts.to(model.cfg.device))  # type: ignore
+        collected += acts.shape[0]
+        batch_texts = []
+        del cache
+
+        if collected >= n_samples:
+            break
+
+    result = torch.cat(all_acts, dim=0)[:n_samples]
+    print(f"Collected {result.shape[0]} activations of dim {result.shape[1]}")
+    return result
+
+
 if __name__ == "__main__":
     device = general_utils.setup_environment()
 
@@ -362,10 +461,20 @@ if __name__ == "__main__":
         sae, cfg_dict, sparsity = SAE.load_from_disk(
             # path="/scratch/Collin/SAELens/checkpoints/omyz0sxn/375001088",
             # path="/scratch/Collin/SAELens/checkpoints/uvvum8hk/118501376",
-            path="/scratch/Collin/SAELens/checkpoints/mego9om1/187502592/",
+            path="/scratch/Collin/SAELens/checkpoints/b6bjfcff/final_250003456",
             device=device,
         )
-        print(sae.threshold_token, sae.threshold_context)   
+
+        # print(f"Context Threshold: {sae.threshold_context}")
+        # print(f"Token threshold: {sae.threshold_token}")
+
+        # print(sae.threshold_token, sae.threshold_context)
+
+        # model = HookedTransformer.from_pretrained("gemma-2-2b", device=device)
+        # acts = collect_activations(model, "blocks.12.hook_resid_post")
+        # recalibrate_thresholds(
+        #     sae, calibration_data=acts, target_l0_context=50, target_l0_token=50
+        # )
 
         selected_saes = [
             (f"{model_name}_layer_{hook_layer}_context_sae_l0_100_32k", sae)

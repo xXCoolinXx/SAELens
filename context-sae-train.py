@@ -47,6 +47,7 @@ device = "cuda"
 
 batch_size = 4096
 total_tokens = 250_000_000
+# total_tokens = 1000 * batch_size
 
 total_training_steps = total_tokens // batch_size
 
@@ -94,6 +95,7 @@ cfg = LanguageModelSAERunnerConfig(
     # Try compilation, since we have an H100 :)
     compile_llm=True,
     compile_sae=True,
+    save_final_checkpoint=True,
 )
 
 sparse_autoencoder = LanguageModelSAETrainingRunner(cfg).run()  # type: ignore
