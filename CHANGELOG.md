@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v6.37.3 (2026-02-20)
+
+### Fix
+
+* fix: Handle HF ModelOutput logits in HookedProxyLM (#651) ([`110de31`](https://github.com/decoderesearch/SAELens/commit/110de3126c0e24e9e6459d5fb6a110024eb0875b))
+
 ## v6.37.2 (2026-02-19)
 
 ### Chore
