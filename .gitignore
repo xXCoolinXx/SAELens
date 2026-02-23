@@ -209,4 +209,6 @@ docs/.sae_config_cache/
 
 logs/
 
-output/
+output/*
+*.safetensors
+output

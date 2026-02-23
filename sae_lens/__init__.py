@@ -7,6 +7,7 @@ logger = logging.getLogger(__name__)
 
 from sae_lens.saes import (
     SAE,
+    SMIXAE,
     BatchTopKTrainingSAE,
     BatchTopKTrainingSAEConfig,
     ContextSAE,
@@ -34,12 +35,19 @@ from sae_lens.saes import (
     SAEConfig,
     SkipTranscoder,
     SkipTranscoderConfig,
+    SMIXAEConfig,
+    SMIXAETraining,
+    SMIXAETrainingConfig,
     StandardSAE,
     StandardSAEConfig,
     StandardTrainingSAE,
     StandardTrainingSAEConfig,
     TemporalSAE,
     TemporalSAEConfig,
+    TopKNonlinearSAE,
+    TopKNonlinearSAEConfig,
+    TopKNonlinearTrainingSAE,
+    TopKNonlinearTrainingSAEConfig,
     TopKSAE,
     TopKSAEConfig,
     TopKTrainingSAE,
@@ -131,6 +139,14 @@ __all__ = [
     "ContextSAEConfig",
     "ContextTrainingSAE",
     "ContextTrainingSAEConfig",
+    "TopKNonlinearSAE",
+    "TopKNonlinearSAEConfig",
+    "TopKNonlinearTrainingSAE",
+    "TopKNonlinearTrainingSAEConfig",
+    "SMIXAE",
+    "SMIXAEConfig",
+    "SMIXAETraining",
+    "SMIXAETrainingConfig",
 ]
 
 
@@ -171,3 +187,14 @@ register_sae_class(
     ContextSAE,
     ContextSAEConfig,
 )
+
+register_sae_training_class(
+    "topk_nonlinear", TopKNonlinearTrainingSAE, TopKNonlinearTrainingSAEConfig
+)
+
+register_sae_class("topk_nonlinear", TopKNonlinearSAE, TopKNonlinearSAEConfig)
+
+
+register_sae_training_class("smixae", SMIXAETraining, SMIXAETrainingConfig)
+
+register_sae_class("smixae", SMIXAE, SMIXAEConfig)

@@ -59,9 +59,11 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     # export CUDA_VISIBLE_DEVICES=1 # Hot fix because ASAX doesn't properly change GPU visibility :/
     # Train an SAE
     # /scratch/Collin/envs/sae/bin/python3 context-sae-train.py
+    # /scratch/Collin/envs/sae/bin/python3 smixae_run.py
 
-    # Test autointerp # requires two GPUS for autointerp
-    # CUDA_VISIBLE_DEVICES=0 python -m vllm.entrypoints.openai.api_server \
+
+    # Test autointerp, requires two GPUS for autointerp
+    # CUDA_VISIBLE_DEVICES=0 /scratch/Collin/envs/sae/bin/python -m vllm.entrypoints.openai.api_server \
     # --model Qwen/Qwen3-32B \
     # --host 127.0.0.1 \
     # --port 8000 \
@@ -112,9 +114,12 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     #     },
     # }'
 
-    CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python sae-bench-test.py
+    # CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python sae-bench-test.py
 
-    # /scratch/Collin/envs/sae/bin/python sae-bench-test.py
+    # CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python nonlinear-sae-bench-test.py
+    # /scratch/Collin/envs/sae/bin/python examine_act_funcs.py
+
+    /scratch/Collin/envs/sae/bin/python dimensionality_analysis.py
 } 2>&1 | tee $LOGFILE
 
 

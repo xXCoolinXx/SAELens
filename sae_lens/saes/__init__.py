@@ -31,6 +31,7 @@ from .matryoshka_batchtopk_sae import (
     MatryoshkaBatchTopKTrainingSAEConfig,
 )
 from .sae import SAE, SAEConfig, TrainingSAE, TrainingSAEConfig
+from .smixae import SMIXAE, SMIXAEConfig, SMIXAETraining, SMIXAETrainingConfig
 from .standard_sae import (
     StandardSAE,
     StandardSAEConfig,
@@ -38,6 +39,12 @@ from .standard_sae import (
     StandardTrainingSAEConfig,
 )
 from .temporal_sae import TemporalSAE, TemporalSAEConfig
+from .topk_nonlinear_sae import (
+    TopKNonlinearSAE,
+    TopKNonlinearSAEConfig,
+    TopKNonlinearTrainingSAE,
+    TopKNonlinearTrainingSAEConfig,
+)
 from .topk_sae import (
     TopKSAE,
     TopKSAEConfig,
@@ -98,4 +105,12 @@ __all__ = [
     "ContextSAEConfig",
     "ContextTrainingSAE",
     "ContextTrainingSAEConfig",
+    "TopKNonlinearSAE",
+    "TopKNonlinearSAEConfig",
+    "TopKNonlinearTrainingSAE",
+    "TopKNonlinearTrainingSAEConfig",
+    "SMIXAE",
+    "SMIXAEConfig",
+    "SMIXAETraining",
+    "SMIXAETrainingConfig",
 ]
