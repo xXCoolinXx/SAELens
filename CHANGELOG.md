@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v6.37.5 (2026-02-27)
+
+### Chore
+
+* chore: adding more exploration to the synth-sae-bench notebook (#653) ([`97784ab`](https://github.com/decoderesearch/SAELens/commit/97784abf2235a3b1c8527d93a5db8bf4d99338df))
+
+### Fix
+
+* fix: update pretrained yaml to add neuronpedia entries for gemma-3-27b-it 262k transcoders (#654)
+
+* fix: add neuronpedia entries for 27b-it transcoders ([`b185915`](https://github.com/decoderesearch/SAELens/commit/b18591515fc2efba54a6958e1ae8f6e110fc3994))
+
 ## v6.37.4 (2026-02-23)
 
 ### Performance
