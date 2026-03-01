@@ -60,11 +60,10 @@ cfg = LanguageModelSAERunnerConfig(
         d_in=768,  # d_in=768,  # For pythia and gpt2-small,
         n_experts=512,  # Good amount of features, compare to Gemma Scope
         d_expert=16,
-        k_experts=12,
+        d_bottleneck=3,
         d_sae=16 * 512,  # this paramater is ignored
-        aux_loss_coefficient=1.0,  # Following anthropic
-        expert_threshold_factor=0.5,
-        router_noise_scale=0.5,
+        k_experts=64,
+        aux_loss_coefficient=0.1,
         normalize_activations="expected_average_only_in",
     ),
     model_name="pythia-160m-deduped",  # "pythia-160m-deduped",  # Use deduped, apparently its more interpretable
@@ -89,7 +88,7 @@ cfg = LanguageModelSAERunnerConfig(
         log_to_wandb=True,
         wandb_project="SMIXAE on pythia 160M",
         wandb_log_frequency=30,
-        eval_every_n_wandb_logs=5000,
+        eval_every_n_wandb_logs=5000000,
     ),
     n_checkpoints=3,
     checkpoint_path="checkpoints",

@@ -1,11 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import plotly.graph_objects as go
 import torch
-
-# pip install umap-learn ripser
+import umap
 from datasets import load_dataset
-from persim import plot_diagrams
-from ripser import ripser
+from plotly.subplots import make_subplots
 from sklearn.manifold import TSNE
 from sklearn.preprocessing import StandardScaler
 from tqdm import tqdm
@@ -15,9 +14,10 @@ from sae_lens import SAE
 
 # ---- Config ----
 device = "cuda" if torch.cuda.is_available() else "cpu"
-batch_size = 64
+batch_size = 512
 n_batches = 100
 hook_point = "blocks.8.hook_resid_post"
+max_vis_points = 5000
 
 # ---- Load model and SAE ----
 model = HookedTransformer.from_pretrained("EleutherAI/pythia-160m", device=device)
@@ -35,8 +35,9 @@ dataset = load_dataset("openwebtext", split="train", streaming=True)
 tokenizer = model.tokenizer
 tokenizer.pad_token = tokenizer.eos_token
 
-# ---- Collect activations ----
+# ---- Collect activations AND tokens ----
 expert_latents = {i: [] for i in range(n_experts)}
+expert_contexts = {i: [] for i in range(n_experts)}
 expert_counts = torch.zeros(n_experts)
 
 iterator = iter(dataset)
@@ -56,14 +57,42 @@ for batch_idx in tqdm(range(n_batches), desc="Collecting activations"):
         feature_acts = sae.encode(residual_flat)
         feature_acts_by_expert = feature_acts.view(-1, n_experts, d_expert)
 
-    active_mask = feature_acts_by_expert.abs().sum(dim=-1) > 0
+    # Find active experts per token: (n_tokens, k_experts) indices
+    active_norms = feature_acts_by_expert.norm(dim=-1)  # (n_tokens, n_experts)
+    active_mask = active_norms > 0
 
-    for expert_id in range(n_experts):
-        mask = active_mask[:, expert_id]
-        if mask.any():
-            latents = feature_acts_by_expert[mask, expert_id].cpu().numpy()
-            expert_latents[expert_id].extend(latents)
-            expert_counts[expert_id] += mask.sum().item()
+    # Precompute all token strings for this batch
+    batch_size_actual, seq_len = tokens.shape
+    tokens_cpu = tokens.cpu()
+
+    # Build context strings in bulk
+    all_contexts_batch = []
+    for b in range(batch_size_actual):
+        for p in range(seq_len):
+            start = max(0, p - 10)
+            end = min(seq_len, p + 11)
+            pre = tokenizer.decode(tokens_cpu[b, start:p].tolist())
+            target = tokenizer.decode([tokens_cpu[b, p].item()])
+            post = tokenizer.decode(tokens_cpu[b, p + 1 : end].tolist())
+            all_contexts_batch.append(f"{pre}[{target}]{post}")
+
+    # Batch collect per expert
+    feature_acts_cpu = feature_acts_by_expert.cpu().numpy()
+    active_mask_cpu = active_mask.cpu()
+
+    for expert_id in active_mask_cpu.any(dim=0).nonzero(as_tuple=True)[0].tolist():
+        mask = active_mask_cpu[:, expert_id]
+        indices = mask.nonzero(as_tuple=True)[0].tolist()
+        expert_latents[expert_id].extend(feature_acts_cpu[indices, expert_id])
+        expert_counts[expert_id] += len(indices)
+        for idx in indices:
+            expert_contexts[expert_id].append(all_contexts_batch[idx])
+
+print("\nExpert utilization stats:")
+print(f"  Active experts: {(expert_counts > 0).sum().item()}")
+print(f"  Mean tokens per expert: {expert_counts.mean().item():.1f}")
+print(f"  Min tokens: {expert_counts.min().item():.0f}")
+print(f"  Max tokens: {expert_counts.max().item():.0f}")
 
 
 # ---- Compute dimensionality for all experts ----
@@ -101,23 +130,20 @@ for expert_id in tqdm(range(n_experts), desc="Analyzing experts"):
 sorted_by_pr = sorted(results, key=lambda r: r["participation_ratio"])
 
 # ---- Select interesting experts ----
-# Low-dim but not trivially 1D, with enough samples
 interesting = [
     r
     for r in sorted_by_pr
     if 2.5 < r["participation_ratio"] < 9.0 and r["n_samples"] >= 200
 ]
 
-# Also include the near-1D ones for comparison
 near_1d = [
     r for r in sorted_by_pr if r["participation_ratio"] < 2.5 and r["n_samples"] >= 200
 ]
 
-# Pick targets
 targets = []
 if near_1d:
     targets.append(near_1d[0])
-targets.extend(interesting[:5])  # up to 5 interesting experts
+targets.extend(interesting[:5])
 
 print(f"\nSelected {len(targets)} experts for manifold analysis:")
 for r in targets:
@@ -127,50 +153,57 @@ for r in targets:
     )
 
 
-# ---- Manifold Analysis Functions ----
-def prepare_data(expert_id, max_points=5000, max_points_tda=1000):
-    """Prepare and subsample data for an expert."""
+# ---- Analysis Functions ----
+def prepare_data(expert_id):
     latents = np.stack(expert_latents[expert_id])
     scaler = StandardScaler()
     latents_scaled = scaler.fit_transform(latents)
 
-    # Subsample for visualization
-    if latents_scaled.shape[0] > max_points:
-        vis_idx = np.random.choice(latents_scaled.shape[0], max_points, replace=False)
-        latents_vis = latents_scaled[vis_idx]
+    n_total = latents_scaled.shape[0]
+
+    if n_total > max_vis_points:
+        vis_idx = np.random.choice(n_total, max_vis_points, replace=False)
     else:
-        latents_vis = latents_scaled
+        vis_idx = np.arange(n_total)
 
-    # Smaller subsample for TDA (persistent homology is expensive)
-    if latents_scaled.shape[0] > max_points_tda:
-        tda_idx = np.random.choice(
-            latents_scaled.shape[0], max_points_tda, replace=False
-        )
-        latents_tda = latents_scaled[tda_idx]
-    else:
-        latents_tda = latents_scaled
+    latents_vis = latents_scaled[vis_idx]
 
-    return latents_scaled, latents_vis, latents_tda
+    return latents_scaled, latents_vis, vis_idx
 
 
-# def run_umap(data, n_neighbors=15, min_dist=0.1):
-#     reducer = umap.UMAP(
-#         n_components=2, n_neighbors=n_neighbors, min_dist=min_dist, random_state=42
-#     )
-#     return reducer.fit_transform(data)
-
-
-def run_tsne(data, perplexity=30):
-    reducer = TSNE(
-        n_components=2, perplexity=min(perplexity, data.shape[0] - 1), random_state=42
+def run_umap(data, n_components=3, n_neighbors=15, min_dist=0.1):
+    reducer = umap.UMAP(
+        n_components=n_components,
+        n_neighbors=n_neighbors,
+        min_dist=min_dist,
+        n_jobs=-1,
     )
     return reducer.fit_transform(data)
 
 
-def run_tda(data, maxdim=2):
-    """Run persistent homology up to dimension maxdim."""
-    result = ripser(data, maxdim=maxdim)
-    return result
+def run_tsne(data, n_components=3, perplexity=30):
+    reducer = TSNE(
+        n_components=n_components,
+        perplexity=min(perplexity, data.shape[0] - 1),
+        n_jobs=-1,
+    )
+    return reducer.fit_transform(data)
+
+
+def make_snippet(context, max_len=80):
+    if len(context) <= max_len:
+        return context
+    bracket_pos = context.find("[")
+    if bracket_pos >= 0:
+        start = max(0, bracket_pos - max_len // 2)
+        end = min(len(context), bracket_pos + max_len // 2)
+        snippet = context[start:end]
+        if start > 0:
+            snippet = "..." + snippet
+        if end < len(context):
+            snippet = snippet + "..."
+        return snippet
+    return context[:max_len] + "..."
 
 
 # ---- Run analysis on each target expert ----
@@ -179,142 +212,200 @@ for r in tqdm(targets, desc="Running manifold analysis"):
     expert_id = r["expert_id"]
     print(f"\nAnalyzing expert {expert_id}...")
 
-    latents_full, latents_vis, latents_tda = prepare_data(expert_id)
+    latents_full, latents_vis, vis_idx = prepare_data(expert_id)
 
-    analysis = {"info": r}
+    analysis = {"info": r, "vis_idx": vis_idx}
 
-    # # UMAP
-    # print("  Running UMAP...")
-    # analysis["umap"] = run_umap(latents_vis)
+    print("  Running UMAP (3D)...")
+    analysis["umap_3d"] = run_umap(latents_vis, n_components=3)
 
-    # t-SNE
-    print("  Running t-SNE...")
-    analysis["tsne"] = run_tsne(latents_vis)
+    print("  Running t-SNE (3D)...")
+    analysis["tsne_3d"] = run_tsne(latents_vis, n_components=3)
 
-    # TDA
-    print("  Running persistent homology...")
-    analysis["tda"] = run_tda(latents_tda, maxdim=2)
-
-    # PCA for reference
     latents_centered = latents_vis - latents_vis.mean(axis=0)
     U, S, Vt = np.linalg.svd(latents_centered, full_matrices=False)
-    analysis["pca_2d"] = latents_centered @ Vt[:2].T
     analysis["pca_3d"] = latents_centered @ Vt[:3].T
 
     expert_analyses[expert_id] = analysis
 
-# ---- Plot: UMAP + t-SNE + PCA for each expert ----
-n_targets = len(targets)
-fig, axes = plt.subplots(n_targets, 3, figsize=(18, 5 * n_targets))
-if n_targets == 1:
-    axes = axes.reshape(1, -1)
-
-for row, r in enumerate(targets):
+# ---- Interactive 3D plots with context snippets on hover ----
+for r in targets:
     expert_id = r["expert_id"]
     analysis = expert_analyses[expert_id]
+    pr = r["participation_ratio"]
+    vis_idx = analysis["vis_idx"]
 
-    # PCA
-    pca_2d = analysis["pca_2d"]
-    axes[row, 0].scatter(pca_2d[:, 0], pca_2d[:, 1], s=1, alpha=0.3, c="steelblue")
-    axes[row, 0].set_title(
-        f"Expert {expert_id} — PCA\nPR={r['participation_ratio']:.2f}"
+    all_contexts_list = expert_contexts[expert_id]
+
+    vis_snippets = []
+    for i in vis_idx:
+        if i < len(all_contexts_list):
+            vis_snippets.append(make_snippet(all_contexts_list[i]))
+        else:
+            vis_snippets.append("(no context)")
+
+    fig = make_subplots(
+        rows=1,
+        cols=3,
+        specs=[[{"type": "scatter3d"}, {"type": "scatter3d"}, {"type": "scatter3d"}]],
+        subplot_titles=[
+            f"PCA (PR={pr:.2f})",
+            f"UMAP (PR={pr:.2f})",
+            f"t-SNE (PR={pr:.2f})",
+        ],
     )
-    axes[row, 0].set_xlabel("PC1")
-    axes[row, 0].set_ylabel("PC2")
 
-    # # UMAP
-    # umap_2d = analysis["umap"]
-    # axes[row, 1].scatter(umap_2d[:, 0], umap_2d[:, 1], s=1, alpha=0.3, c="steelblue")
-    # axes[row, 1].set_title(f"Expert {expert_id} — UMAP")
-    # axes[row, 1].set_xlabel("UMAP1")
-    # axes[row, 1].set_ylabel("UMAP2")
+    pca = analysis["pca_3d"]
+    distances_pca = np.linalg.norm(pca, axis=1)
+    fig.add_trace(
+        go.Scatter3d(
+            x=pca[:, 0],
+            y=pca[:, 1],
+            z=pca[:, 2],
+            mode="markers",
+            marker=dict(
+                size=1.5, color=distances_pca, colorscale="Viridis", opacity=0.5
+            ),
+            text=vis_snippets,
+            hoverinfo="text",
+            name="PCA",
+        ),
+        row=1,
+        col=1,
+    )
 
-    # t-SNE
-    tsne_2d = analysis["tsne"]
-    axes[row, 2].scatter(tsne_2d[:, 0], tsne_2d[:, 1], s=1, alpha=0.3, c="steelblue")
-    axes[row, 2].set_title(f"Expert {expert_id} — t-SNE")
-    axes[row, 2].set_xlabel("t-SNE1")
-    axes[row, 2].set_ylabel("t-SNE2")
+    umap_3d = analysis["umap_3d"]
+    distances_umap = np.linalg.norm(umap_3d - umap_3d.mean(axis=0), axis=1)
+    fig.add_trace(
+        go.Scatter3d(
+            x=umap_3d[:, 0],
+            y=umap_3d[:, 1],
+            z=umap_3d[:, 2],
+            mode="markers",
+            marker=dict(
+                size=1.5, color=distances_umap, colorscale="Viridis", opacity=0.5
+            ),
+            text=vis_snippets,
+            hoverinfo="text",
+            name="UMAP",
+        ),
+        row=1,
+        col=2,
+    )
 
-plt.tight_layout()
-plt.savefig("expert_manifold_embeddings.png", dpi=150, bbox_inches="tight")
-plt.show()
-print("Saved expert_manifold_embeddings.png")
+    tsne_3d = analysis["tsne_3d"]
+    distances_tsne = np.linalg.norm(tsne_3d - tsne_3d.mean(axis=0), axis=1)
+    fig.add_trace(
+        go.Scatter3d(
+            x=tsne_3d[:, 0],
+            y=tsne_3d[:, 1],
+            z=tsne_3d[:, 2],
+            mode="markers",
+            marker=dict(
+                size=1.5, color=distances_tsne, colorscale="Viridis", opacity=0.5
+            ),
+            text=vis_snippets,
+            hoverinfo="text",
+            name="t-SNE",
+        ),
+        row=1,
+        col=3,
+    )
 
-# ---- Plot: Persistence diagrams ----
-fig2, axes2 = plt.subplots(1, n_targets, figsize=(6 * n_targets, 5))
-if n_targets == 1:
-    axes2 = [axes2]
+    fig.update_layout(
+        title=f"Expert {expert_id} — 3D Manifold Visualizations (PR={pr:.2f}, n={r['n_samples']})",
+        height=700,
+        width=1800,
+        showlegend=False,
+    )
 
-for col, r in enumerate(targets):
-    expert_id = r["expert_id"]
-    tda_result = expert_analyses[expert_id]["tda"]
-    plot_diagrams(tda_result["dgms"], ax=axes2[col], show=False)
-    axes2[col].set_title(f"Expert {expert_id}\nPR={r['participation_ratio']:.2f}")
+    filename = f"expert_{expert_id}_3d.html"
+    fig.write_html(filename)
+    print(f"Saved interactive plot: {filename}")
 
-plt.tight_layout()
-plt.savefig("expert_persistence_diagrams.png", dpi=150, bbox_inches="tight")
-plt.show()
-print("Saved expert_persistence_diagrams.png")
-
-# ---- Print TDA summary ----
+# ---- Token analysis along manifold coordinates ----
 print("\n" + "=" * 60)
-print("Topological Summary per Expert")
+print("Token Analysis Along Manifold Coordinates")
 print("=" * 60)
 
 for r in targets:
     expert_id = r["expert_id"]
-    tda_result = expert_analyses[expert_id]["tda"]
-    dgms = tda_result["dgms"]
+    all_ctxs = expert_contexts[expert_id]
 
-    print(f"\nExpert {expert_id} (PR={r['participation_ratio']:.2f}):")
+    if len(all_ctxs) < 50:
+        print(f"\nExpert {expert_id}: too few tokens for analysis")
+        continue
 
-    for dim, dgm in enumerate(dgms):
-        if len(dgm) == 0:
-            print(f"  H{dim}: no features")
-            continue
+    latents = np.stack(expert_latents[expert_id])
+    scaler = StandardScaler()
+    latents_scaled = scaler.fit_transform(latents)
+    latents_centered = latents_scaled - latents_scaled.mean(axis=0)
+    U, S, Vt = np.linalg.svd(latents_centered, full_matrices=False)
+    pc1 = latents_centered @ Vt[0]
 
-        # Filter out infinite death features for stats
-        finite = dgm[dgm[:, 1] != np.inf]
-        if len(finite) == 0:
-            print(f"  H{dim}: {len(dgm)} features (all infinite)")
-            continue
+    sort_idx = np.argsort(pc1)
+    n_total = len(sort_idx)
+    n_bins = 10
+    bin_size = n_total // n_bins
 
-        lifetimes = finite[:, 1] - finite[:, 0]
-        # Significant features: lifetime > mean + 1*std
-        threshold = lifetimes.mean() + lifetimes.std()
-        significant = lifetimes > threshold
-        n_significant = significant.sum()
+    print(f"\nExpert {expert_id} (PR={r['participation_ratio']:.2f})")
+    print(f"Tokens sorted by PC1 coordinate, showing {n_bins} bins:")
+    print("-" * 80)
 
-        print(
-            f"  H{dim}: {len(dgm)} total features, {n_significant} significant "
-            f"(lifetime > {threshold:.3f})"
-        )
-        if n_significant > 0:
-            sig_lifetimes = lifetimes[significant]
+    for bin_i in range(n_bins):
+        start = bin_i * bin_size
+        end = start + bin_size
+        bin_indices = sort_idx[start:end]
+
+        pc1_min = pc1[bin_indices].min()
+        pc1_max = pc1[bin_indices].max()
+
+        sample_size = min(5, len(bin_indices))
+        sample_indices = np.random.choice(bin_indices, sample_size, replace=False)
+
+        print(f"\n  Bin {bin_i} (PC1: {pc1_min:.2f} to {pc1_max:.2f}):")
+        for idx in sample_indices:
+            if idx < len(all_ctxs):
+                print(f"    {make_snippet(all_ctxs[idx], max_len=100)}")
+
+    print("\n  --- Extreme LOW PC1 tokens ---")
+    for idx in sort_idx[:10]:
+        if idx < len(all_ctxs):
             print(
-                f"       Significant lifetimes: {sorted(sig_lifetimes, reverse=True)[:5]}"
+                f"    PC1={pc1[idx]:>7.2f}  {make_snippet(all_ctxs[idx], max_len=100)}"
             )
 
-    # Interpretation hints
-    h0_count = len(dgms[0]) if len(dgms) > 0 else 0
-    h1_sig = 0
-    h2_sig = 0
-    if len(dgms) > 1:
-        finite_h1 = dgms[1][dgms[1][:, 1] != np.inf]
-        if len(finite_h1) > 0:
-            lt = finite_h1[:, 1] - finite_h1[:, 0]
-            h1_sig = (lt > lt.mean() + lt.std()).sum()
-    if len(dgms) > 2:
-        finite_h2 = dgms[2][dgms[2][:, 1] != np.inf]
-        if len(finite_h2) > 0:
-            lt = finite_h2[:, 1] - finite_h2[:, 0]
-            h2_sig = (lt > lt.mean() + lt.std()).sum()
+    print("\n  --- Extreme HIGH PC1 tokens ---")
+    for idx in sort_idx[-10:]:
+        if idx < len(all_ctxs):
+            print(
+                f"    PC1={pc1[idx]:>7.2f}  {make_snippet(all_ctxs[idx], max_len=100)}"
+            )
 
-    hints = []
-    if h1_sig > 0:
-        hints.append(f"circular/loop structure (H1={h1_sig})")
-    if h2_sig > 0:
-        hints.append(f"spherical/void structure (H2={h2_sig})")
-    if hints:
-        print(f"  → Possible: {', '.join(hints)}")
+# ---- Dimensionality summary plots ----
+participation_ratios = [r["participation_ratio"] for r in results]
+dims_90 = [r["dim_90_variance"] for r in results]
+
+fig_summary, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+axes[0].hist(participation_ratios, bins=30, edgecolor="black")
+axes[0].set_xlabel("Participation Ratio")
+axes[0].set_ylabel("Count")
+axes[0].set_title("Distribution of Intrinsic Dimensionality")
+axes[0].axvline(
+    x=np.median(participation_ratios),
+    color="r",
+    linestyle="--",
+    label=f"Median: {np.median(participation_ratios):.2f}",
+)
+axes[0].legend()
+
+axes[1].hist(dims_90, bins=range(1, d_expert + 2), edgecolor="black", align="left")
+axes[1].set_xlabel("Dimensions")
+axes[1].set_ylabel("Count")
+axes[1].set_title("Dimensions Needed for 90% Variance")
+
+plt.tight_layout()
+plt.savefig("expert_dimensionality_summary.png", dpi=150, bbox_inches="tight")
+plt.show()
+print("Saved expert_dimensionality_summary.png")

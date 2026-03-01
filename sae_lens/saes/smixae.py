@@ -1,4 +1,3 @@
-import math
 from collections.abc import Callable
 from dataclasses import dataclass
 
@@ -27,6 +26,7 @@ class SMIXAEConfig(SAEConfig):
     n_experts: int = 1024
     d_expert: int = 16
     k_experts: int = 8
+    d_bottleneck: int = 3
 
     @override
     @classmethod
@@ -118,10 +118,9 @@ class SMIXAETrainingConfig(TrainingSAEConfig):
 
     n_experts: int = 1024
     d_expert: int = 16
+    d_bottleneck: int = 3
     k_experts: int = 8  # L0 = d_expert * k_experts
-    aux_loss_coefficient: float = 0.01
-    router_noise_scale: float = 0.5
-    expert_threshold_factor: float = 0.2
+    aux_loss_coefficient: float = 0.05
 
     @override
     @classmethod
@@ -141,9 +140,15 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
       - calculate_aux_loss: computes a sparsity penalty based on the (optionally scaled) p-norm of feature activations.
     """
 
-    b_enc: nn.Parameter
-    W_router: nn.Parameter
-    b_router: nn.Parameter
+    # b_enc: nn.Parameter
+    # b_gate : nn.Parameter
+    W_gate: nn.Parameter
+    W_bottleneck: nn.Parameter
+    W_latent_dec: nn.Parameter
+
+    # Flow diagram
+
+    # x : d_model -> SwiGLU : (n_experts, d_expert) -> Bottleneck (n_experts, d_bottleneck) -> Latent Decode : (n_experts, d_expert) -> W_dec : (d_model)
 
     def __init__(self, cfg: SMIXAETrainingConfig):
         # Intercept d_sae
@@ -165,42 +170,33 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         # Process the input (including dtype conversion, hook call, and any activation normalization)
         sae_in = self.process_sae_in(x)
 
-        # Select experts
-        self.router_choices = sae_in @ self.W_router + self.b_router
-        # Add noise to help avoid dead experts
-        # noise = torch.randn_like(router_choices) * self.cfg.router_noise_scale
-        # router_choices = router_choices + noise
+        # SwiGLU encoder gate
+        gate = self.activation_fn(sae_in @ self.W_gate)
+        hidden_pre = self.hook_sae_acts_pre(sae_in @ self.W_enc)
+        h = hidden_pre * gate
+        h_unflattened = h.unflatten(-1, (self.cfg.n_experts, self.cfg.d_expert))
 
-        # Select top K choices
-        topk_values, topk_indices = torch.topk(
-            self.router_choices, self.cfg.k_experts, dim=-1
-        )
-        # Softmax the values
-        topk_values = F.softmax(topk_values, dim=-1)
-        # Scatter back to the original size
-        self.router_weights = torch.zeros_like(self.router_choices)
-        self.router_weights.scatter_(dim=-1, index=topk_indices, src=topk_values)
+        # Bottleneck
+        self.z = torch.einsum(
+            "bne,ned->bnd", h_unflattened, self.W_bottleneck
+        )  # (batch_size, n_experts, d_bottelneck)
 
-        # Compute the pre-activation (and allow for a hook if desired). Right now this is a dense computation - optimize this later
-        hidden_pre = self.hook_sae_acts_pre(sae_in @ self.W_enc + self.b_enc)  # type: ignore
+        expert_norms = self.z.norm(dim=-1)  # (batch, n_experts)
+        _, topk_idx = expert_norms.topk(self.cfg.k_experts, dim=-1)
+        mask = torch.zeros_like(expert_norms).scatter(-1, topk_idx, 1.0)
+        self.z = self.z * mask.unsqueeze(-1)
 
-        # Get the router mask. We make this an an attribute so that loss can be computed on the router distribution
-        router_mask = self.router_weights.repeat_interleave(self.cfg.d_expert, dim=-1)
-
-        # Apply the activation function (and any post-activation hook)
-        feature_acts = self.hook_sae_acts_post(self.activation_fn(hidden_pre))
-
-        # Apply the router mask for weighting + masking
-        feature_acts = router_mask * feature_acts
-
-        return feature_acts, hidden_pre
+        return h, hidden_pre
 
     def decode(self, feature_acts: torch.Tensor) -> torch.Tensor:
         """
         Decodes feature activations back into input space,
         applying optional finetuning scale, hooking, out normalization, etc.
         """
-        sae_out_pre = feature_acts @ self.W_dec + self.b_dec
+        sae_out_pre = torch.einsum("bnd,nde->bne", feature_acts, self.W_latent_dec)
+        sae_out_pre = sae_out_pre.flatten(-2, -1)
+        sae_out_pre = sae_out_pre @ self.W_dec + self.b_dec
+
         sae_out_pre = self.hook_sae_recons(sae_out_pre)
         sae_out_pre = self.run_time_activation_norm_fn_out(sae_out_pre)
         return self.reshape_fn_out(sae_out_pre, self.d_head)
@@ -212,7 +208,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     ) -> TrainStepOutput:
         """Forward pass during training."""
         feature_acts, hidden_pre = self.encode_with_hidden_pre(step_input.sae_in)
-        sae_out = self.decode(feature_acts)
+        sae_out = self.decode(self.z)
 
         # Calculate MSE loss
         per_item_mse_loss = self.mse_loss_fn(sae_out, step_input.sae_in)
@@ -248,16 +244,15 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
             # Handle case where aux_losses is a tensor
             total_loss = total_loss + aux_losses
 
-        expert_counts = (self.router_weights > 0).float().sum(dim=0)
-        avg_mask = self.router_weights.mean(dim=0)
+        metrics = {}
 
-        metrics: dict[str, torch.Tensor | float | int] = {}
+        metrics["experts_above_1e-3_L2"] = (
+            (self.z.norm(dim=-1) > 1e-3).float().sum(dim=-1).mean()
+        )
 
-        metrics["expert_entropy"] = -(
-            avg_mask * (avg_mask + 1e-8).log()
-        ).sum() / math.log(self.cfg.n_experts)
-
-        metrics["expert_coverage"] = (expert_counts > 0).float().mean()
+        metrics["experts_above_1e-1_L2"] = (
+            (self.z.norm(dim=-1) > 1e-1).float().sum(dim=-1).mean()
+        )
 
         return TrainStepOutput(
             sae_in=step_input.sae_in,
@@ -278,54 +273,50 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     ) -> dict[str, torch.Tensor]:
         losses = {}
 
-        full_probs = F.softmax(self.router_choices, dim=-1)
-        avg_probs = full_probs.mean(dim=0)
+        # Apply group lasso on feature acts
 
-        # losses["expert_loss"] = (
-        #     -self.cfg.aux_loss_coefficient * (avg_probs + 1e-8).log().mean()
-        # )
-
-        selection_freq = (self.router_weights > 0).float().mean(dim=0).detach()
-
-        min_threshold = (
-            self.cfg.expert_threshold_factor * self.cfg.k_experts / self.cfg.n_experts
-        )
-
-        below_threshold_mask = (selection_freq < min_threshold).float()
-
-        losses["expert_threshold"] = (
-            self.cfg.aux_loss_coefficient
-            * (below_threshold_mask * (-torch.log(avg_probs + 1e-8))).sum()
-        )
-
-        # Compute KL divergence between uniform distribution and average router mask
-        # Compute average router mask
-        # avg_mask = self.router_weights.mean(dim=0)
-        # uniform = torch.full_like(avg_mask, 1.0 / self.cfg.n_experts)
-
-        # losses["load_balancing"] = self.cfg.aux_loss_coefficient * F.kl_div(
-        #     (avg_mask + 1e-8).log(), uniform, reduction="sum"
-        # )
+        # losses["group_lasso"] = (
+        #     self.cfg.aux_loss_coefficient * self.z.norm(dim=-1).sum(dim=-1).mean()
+        # )  # L2 norm per expert, 'L1' sum over all experts
 
         return losses
 
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
-        return nn.GELU()  # Try ReLU, GELU, etc.
+        return nn.SiLU()  # Try ReLU, GELU, etc.
 
 
 def _init_weights_smixae(
     sae: SAE[SMIXAEConfig] | TrainingSAE[SMIXAETrainingConfig],
 ) -> None:
-    sae.b_enc = nn.Parameter(
-        torch.zeros(sae.cfg.d_sae, dtype=sae.dtype, device=sae.device)
+    sae.W_gate = nn.Parameter(
+        torch.empty(
+            sae.cfg.d_in,
+            sae.cfg.n_experts * sae.cfg.d_expert,
+            dtype=sae.dtype,
+            device=sae.device,
+        )
+    )  # Same dim size but we reshape
+
+    sae.W_bottleneck = nn.Parameter(
+        torch.empty(
+            sae.cfg.n_experts,
+            sae.cfg.d_expert,
+            sae.cfg.d_bottleneck,
+            dtype=sae.dtype,
+            device=sae.device,
+        )
     )
 
-    sae.W_router = nn.Parameter(
-        torch.empty(sae.cfg.d_in, sae.cfg.n_experts, dtype=sae.dtype, device=sae.device)
+    sae.W_latent_dec = nn.Parameter(
+        torch.empty(
+            sae.cfg.n_experts,
+            sae.cfg.d_bottleneck,
+            sae.cfg.d_expert,
+            dtype=sae.dtype,
+            device=sae.device,
+        )
     )
 
-    nn.init.kaiming_uniform_(sae.W_router)
-
-    sae.b_router = nn.Parameter(
-        torch.zeros(sae.cfg.n_experts, dtype=sae.dtype, device=sae.device)
-    )
+    nn.init.kaiming_uniform_(sae.W_gate)
+    nn.init.kaiming_uniform_(sae.W_bottleneck)
+    nn.init.kaiming_uniform_(sae.W_latent_dec)
