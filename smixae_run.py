@@ -62,8 +62,8 @@ cfg = LanguageModelSAERunnerConfig(
         d_expert=16,
         d_bottleneck=3,
         d_sae=16 * 512,  # this paramater is ignored
-        l0_coefficient=1.0,
-        # k_experts=1024,
+        # l0_coefficient=1.0,
+        k_experts=12,
         aux_loss_coefficient=0.1,  # no longer used
         normalize_activations="expected_average_only_in",
     ),

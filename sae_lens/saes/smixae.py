@@ -29,9 +29,9 @@ class SMIXAEConfig(SAEConfig):
     # k_experts: int = 8
     d_bottleneck: int = 3
 
-    jump_relu_bandwidth: float = 0.05
-    jump_relu_init_threshold = 0.1
-    l0_coefficient: float = 1.0
+    # jump_relu_bandwidth: float = 0.05
+    # jump_relu_init_threshold = 0.1
+    # l0_coefficient: float = 1.0
 
     @override
     @classmethod
@@ -144,9 +144,9 @@ class SMIXAETrainingConfig(TrainingSAEConfig):
     aux_loss_coefficient: float = 0.05
     # expert_threshold: float = 0.1
 
-    jump_relu_bandwidth: float = 0.05
-    jump_relu_init_threshold: float = 2.0
-    l0_coefficient: float = 1.0
+    # jump_relu_bandwidth: float = 0.05
+    # jump_relu_init_threshold: float = 2.0
+    # l0_coefficient: float = 1.0
     threshold_lr: float = 0.1
 
     @override
@@ -187,7 +187,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         self.hook_l0 = HookPoint()
         self.hook_sae_acts_bottleneck = HookPoint()
 
-        self.batchtopk = BatchTopK(self.cfg.n_experts)
+        self.batchtopk = BatchTopK(self.cfg.k_experts)
 
         self.register_buffer(
             "threshold",
