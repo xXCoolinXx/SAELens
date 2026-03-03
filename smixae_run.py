@@ -58,12 +58,13 @@ lr_decay_steps = total_training_steps // 5  # 20% of training
 cfg = LanguageModelSAERunnerConfig(
     sae=SMIXAETrainingConfig(
         d_in=768,  # d_in=768,  # For pythia and gpt2-small,
-        n_experts=512,  # Good amount of features, compare to Gemma Scope
+        n_experts=1024,  # Good amount of features, compare to Gemma Scope
         d_expert=16,
         d_bottleneck=3,
         d_sae=16 * 512,  # this paramater is ignored
-        k_experts=64,
-        aux_loss_coefficient=0.1,
+        l0_coefficient=0.10,
+        # k_experts=1024,
+        aux_loss_coefficient=0.1,  # no longer used
         normalize_activations="expected_average_only_in",
     ),
     model_name="pythia-160m-deduped",  # "pythia-160m-deduped",  # Use deduped, apparently its more interpretable

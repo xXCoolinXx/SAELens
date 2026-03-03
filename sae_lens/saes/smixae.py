@@ -1,11 +1,13 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 
+import numpy as np
 import torch
-import torch.nn.functional as F
 from torch import nn
+from transformer_lens.hook_points import HookPoint
 from typing_extensions import override
 
+from sae_lens.saes.jumprelu_sae import Step
 from sae_lens.saes.sae import (
     SAE,
     SAEConfig,
@@ -25,8 +27,12 @@ class SMIXAEConfig(SAEConfig):
 
     n_experts: int = 1024
     d_expert: int = 16
-    k_experts: int = 8
+    # k_experts: int = 8
     d_bottleneck: int = 3
+
+    jump_relu_bandwidth: float = 0.05
+    jump_relu_init_threshold = 0.1
+    l0_coefficient: float = 1.0
 
     @override
     @classmethod
@@ -49,9 +55,10 @@ class SMIXAE(SAE[SMIXAEConfig]):
     including any error-term processing if configured.
     """
 
-    b_enc: nn.Parameter
-    W_router: nn.Parameter
-    b_router: nn.Parameter
+    W_gate: nn.Parameter
+    W_bottleneck: nn.Parameter
+    W_latent_dec: nn.Parameter
+    log_threshold: nn.Parameter
 
     def __init__(self, cfg: SMIXAEConfig, use_error_term: bool = False):
         super().__init__(cfg, use_error_term)
@@ -62,48 +69,53 @@ class SMIXAE(SAE[SMIXAEConfig]):
         super().initialize_weights()
         _init_weights_smixae(self)
 
+    @property
+    def threshold(self) -> torch.Tensor:
+        return torch.exp(self.log_threshold)
+
     def encode(self, x: torch.Tensor) -> torch.Tensor:
         """
         Encode the input tensor into the feature space.
         """
         # Preprocess the SAE input (casting type, applying hooks, normalization)
-        sae_in = self.process_sae_in(x)
+        # Process the input (including dtype conversion, hook call, and any activation normalization)
+        _, _, z, _ = smixae_encode(self, x)
 
-        router_choices = sae_in @ self.W_router + self.b_router
-        # Add noise to help avoid dead experts
-        # noise = torch.randn_like(router_choices) * self.cfg.router_noise_scale
-        # router_choices = router_choices + noise
+        # sae_in = self.process_sae_in(x)
 
-        # Select top K choices
-        topk_values, topk_indices = torch.topk(
-            router_choices, self.cfg.k_experts, dim=-1
-        )
-        # Softmax the values
-        topk_values = F.softmax(topk_values, dim=-1)
-        # Scatter back to the original size
-        router_weights = torch.zeros_like(router_choices)
-        router_weights.scatter_(dim=-1, index=topk_indices, src=topk_values)
+        # # SwiGLU encoder gate
+        # gate = self.activation_fn(sae_in @ self.W_gate)
+        # hidden_pre = self.hook_sae_acts_pre(sae_in @ self.W_enc)
+        # h = self.hook_sae_acts_post(hidden_pre * gate)
+        # h_unflattened = h.unflatten(-1, (self.cfg.n_experts, self.cfg.d_expert))
 
-        router_mask = router_weights.repeat_interleave(self.cfg.d_expert, dim=-1)
+        # # Bottleneck
+        # self.z = torch.einsum(
+        #     "bne,ned->bnd", h_unflattened, self.W_bottleneck
+        # )  # (batch_size, n_experts, d_bottelneck)
 
-        # Compute the pre-activation values
-        hidden_pre = self.hook_sae_acts_pre(sae_in @ self.W_enc + self.b_enc)
-        # Apply the activation function (e.g., ReLU, depending on config) and router mask
-        return self.hook_sae_acts_post(self.activation_fn(hidden_pre)) * router_mask
+        # expert_norms = self.z.norm(dim=-1)  # (batch, n_experts)
+        # _, topk_idx = expert_norms.topk(self.cfg.k_experts, dim=-1)
+        # mask = torch.zeros_like(expert_norms).scatter(-1, topk_idx, 1.0)
+        # self.z = self.z * mask.unsqueeze(-1)
+
+        return z
 
     def decode(self, feature_acts: torch.Tensor) -> torch.Tensor:
         """
         Decode the feature activations back to the input space.
         Now, if hook_z reshaping is turned on, we reverse the flattening.
         """
-        # 1) linear transform
-        sae_out_pre = feature_acts @ self.W_dec + self.b_dec
-        # 2) hook reconstruction
+        sae_out_pre = torch.einsum("bnd,nde->bne", feature_acts, self.W_latent_dec)
+        sae_out_pre = sae_out_pre.flatten(-2, -1)
+        sae_out_pre = sae_out_pre @ self.W_dec + self.b_dec
+
         sae_out_pre = self.hook_sae_recons(sae_out_pre)
-        # 4) optional out-normalization (e.g. constant_norm_rescale)
         sae_out_pre = self.run_time_activation_norm_fn_out(sae_out_pre)
-        # 5) if hook_z is enabled, rearrange back to (..., n_heads, d_head).
         return self.reshape_fn_out(sae_out_pre, self.d_head)
+
+    def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
+        return nn.SiLU()  # Try ReLU, GELU, etc.
 
 
 @dataclass
@@ -121,6 +133,11 @@ class SMIXAETrainingConfig(TrainingSAEConfig):
     d_bottleneck: int = 3
     k_experts: int = 8  # L0 = d_expert * k_experts
     aux_loss_coefficient: float = 0.05
+    expert_threshold: float = 0.1
+
+    jump_relu_bandwidth: float = 0.05
+    jump_relu_init_threshold = 0.1
+    l0_coefficient: float = 1.0
 
     @override
     @classmethod
@@ -145,6 +162,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     W_gate: nn.Parameter
     W_bottleneck: nn.Parameter
     W_latent_dec: nn.Parameter
+    log_threshold: nn.Parameter
 
     # Flow diagram
 
@@ -155,6 +173,13 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         cfg.d_sae = cfg.d_expert * cfg.n_experts
 
         super().__init__(cfg)
+
+        self.hook_l0 = HookPoint()
+        self.hook_sae_acts_bottleneck = HookPoint()
+
+    @property
+    def threshold(self) -> torch.Tensor:
+        return torch.exp(self.log_threshold)
 
     def initialize_weights(self) -> None:
         super().initialize_weights()
@@ -167,24 +192,45 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     def encode_with_hidden_pre(
         self, x: torch.Tensor
     ) -> tuple[torch.Tensor, torch.Tensor]:
+        h, hidden_pre, z, l0 = smixae_encode(self, x)
+
+        self.z = z
+        self.l0 = l0
+        self.hook_sae_acts_pre(hidden_pre)
+        self.hook_sae_acts_post(h)
+        self.hook_l0(l0)
+        self.hook_sae_acts_bottleneck(z)
+
         # Process the input (including dtype conversion, hook call, and any activation normalization)
-        sae_in = self.process_sae_in(x)
+        # sae_in = self.process_sae_in(x)
 
-        # SwiGLU encoder gate
-        gate = self.activation_fn(sae_in @ self.W_gate)
-        hidden_pre = self.hook_sae_acts_pre(sae_in @ self.W_enc)
-        h = hidden_pre * gate
-        h_unflattened = h.unflatten(-1, (self.cfg.n_experts, self.cfg.d_expert))
+        # # StepGLU encoder gate
 
-        # Bottleneck
-        self.z = torch.einsum(
-            "bne,ned->bnd", h_unflattened, self.W_bottleneck
-        )  # (batch_size, n_experts, d_bottelneck)
+        # # Use step to decouple magnitude from existence
+        # gate = Step.apply(
+        #     sae_in @ self.W_gate, self.threshold, self.cfg.jump_relu_bandwidth
+        # )
 
-        expert_norms = self.z.norm(dim=-1)  # (batch, n_experts)
-        _, topk_idx = expert_norms.topk(self.cfg.k_experts, dim=-1)
-        mask = torch.zeros_like(expert_norms).scatter(-1, topk_idx, 1.0)
-        self.z = self.z * mask.unsqueeze(-1)
+        # # Save L0 to apply count loss later
+        # self.l0 = torch.sum(gate, dim=-1)  # type: ignore
+
+        # # Standard forward
+        # hidden_pre = self.hook_sae_acts_pre(sae_in @ self.W_enc)
+        # h = hidden_pre * gate
+
+        # h_unflattened = h.unflatten(-1, (self.cfg.n_experts, self.cfg.d_expert))
+        # # expert_mask = (h_unflattened.norm(dim=-1) > self.cfg.expert_threshold).float()
+        # # h_unflattened = h_unflattened * expert_mask.unsqueeze(-1)
+
+        # # Bottleneck
+        # self.z = torch.einsum(
+        #     "bne,ned->bnd", h_unflattened, self.W_bottleneck
+        # )  # (batch_size, n_experts, d_bottelneck)
+
+        # # expert_norms = self.z.norm(dim=-1)  # (batch, n_experts)
+        # # _, topk_idx = expert_norms.topk(self.cfg.k_experts, dim=-1)
+        # # mask = torch.zeros_like(expert_norms).scatter(-1, topk_idx, 1.0)
+        # # self.z = self.z * mask.unsqueeze(-1)
 
         return h, hidden_pre
 
@@ -273,6 +319,8 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     ) -> dict[str, torch.Tensor]:
         losses = {}
 
+        losses["l0"] = (self.cfg.l0_coefficient * self.l0).mean()
+
         # Apply group lasso on feature acts
 
         # losses["group_lasso"] = (
@@ -282,7 +330,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         return losses
 
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
-        return nn.SiLU()  # Try ReLU, GELU, etc.
+        return nn.ReLU()  # Dummy func
 
 
 def _init_weights_smixae(
@@ -317,6 +365,52 @@ def _init_weights_smixae(
         )
     )
 
+    sae.log_threshold = nn.Parameter(
+        torch.ones(sae.cfg.d_sae, dtype=sae.dtype, device=sae.device)
+        * np.log(sae.cfg.jump_relu_init_threshold)
+    )
+
     nn.init.kaiming_uniform_(sae.W_gate)
     nn.init.kaiming_uniform_(sae.W_bottleneck)
     nn.init.kaiming_uniform_(sae.W_latent_dec)
+
+
+def smixae_encode(
+    sae: SMIXAE | SMIXAETraining, x: torch.Tensor
+) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+    sae_in = sae.process_sae_in(x)
+
+    # StepGLU encoder gate
+
+    # Use step to decouple magnitude from existence
+    gate = Step.apply(sae_in @ sae.W_gate, sae.threshold, sae.cfg.jump_relu_bandwidth)
+
+    # Save L0 to apply count loss later
+    # l0 = torch.sum(gate, dim=-1)  # type: ignore
+    latent_count = gate.unflatten(-1, (sae.cfg.n_experts, sae.cfg.d_expert)).sum(
+        dim=-1
+    )  # 0 to 16
+    expert_cost = torch.log1p(
+        latent_count
+    )  # concave: first latent costs ~0.7, going from 8→9 costs ~0.05
+    l0 = expert_cost.sum(dim=-1)
+
+    # Standard forward
+    hidden_pre = sae_in @ sae.W_enc
+    h = hidden_pre * gate  # type: ignore
+
+    h_unflattened = h.unflatten(-1, (sae.cfg.n_experts, sae.cfg.d_expert))
+    # expert_mask = (h_unflattened.norm(dim=-1) > self.cfg.expert_threshold).float()
+    # h_unflattened = h_unflattened * expert_mask.unsqueeze(-1)
+
+    # Bottleneck
+    z = torch.einsum(
+        "bne,ned->bnd", h_unflattened, sae.W_bottleneck
+    )  # (batch_size, n_experts, d_bottelneck)
+
+    # expert_norms = self.z.norm(dim=-1)  # (batch, n_experts)
+    # _, topk_idx = expert_norms.topk(self.cfg.k_experts, dim=-1)
+    # mask = torch.zeros_like(expert_norms).scatter(-1, topk_idx, 1.0)
+    # self.z = self.z * mask.unsqueeze(-1)
+
+    return h, hidden_pre, z, l0
