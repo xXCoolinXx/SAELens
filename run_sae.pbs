@@ -9,7 +9,7 @@
 #PBS -q gpu
 
 # Request resources: 1 node, 1 CPU, and 1 GPU
-#PBS -l select=1:ncpus=8:ngpus=1:mem=16gb
+#PBS -l select=1:ncpus=8:ngpus=2:mem=16gb
 
 # Set the maximum walltime for the job (e.g., 1 hour)
 #PBS -l walltime=10:00:00
@@ -59,8 +59,8 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     # export CUDA_VISIBLE_DEVICES=1 # Hot fix because ASAX doesn't properly change GPU visibility :/
     # Train an SAE
     # /scratch/Collin/envs/sae/bin/python3 context-sae-train.py
-    # /scratch/Collin/envs/sae/bin/python3 smixae_run.py
-    /scratch/Collin/envs/sae/bin/python3 manifold_visualization_smixae.py
+    /scratch/Collin/envs/sae/bin/python3 smixae_run.py
+    # /scratch/Collin/envs/sae/bin/python3 manifold_visualization_smixae.py
 
 
     # Test autointerp, requires two GPUS for autointerp
