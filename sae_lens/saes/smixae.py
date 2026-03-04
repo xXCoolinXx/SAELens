@@ -58,6 +58,7 @@ class SMIXAE(SAE[SMIXAEConfig]):
     W_bottleneck: nn.Parameter
     W_latent_dec: nn.Parameter
     log_threshold: nn.Parameter
+    b_gate: nn.Parameter
 
     def __init__(self, cfg: SMIXAEConfig, use_error_term: bool = False):
         super().__init__(cfg, use_error_term)
@@ -76,6 +77,8 @@ class SMIXAE(SAE[SMIXAEConfig]):
                 dtype=torch.long,
             ),
         )
+
+        self.cfg.apply_b_dec_to_input = False  # Remove bias term - destroys structure
 
     @override
     def initialize_weights(self) -> None:
@@ -126,7 +129,7 @@ class SMIXAE(SAE[SMIXAEConfig]):
         """
         sae_out_pre = torch.einsum("bnd,nde->bne", feature_acts, self.W_latent_dec)
         sae_out_pre = sae_out_pre.flatten(-2, -1)
-        sae_out_pre = sae_out_pre @ self.W_dec + self.b_dec
+        sae_out_pre = sae_out_pre @ self.W_dec  # + self.b_dec
 
         sae_out_pre = self.hook_sae_recons(sae_out_pre)
         sae_out_pre = self.run_time_activation_norm_fn_out(sae_out_pre)
@@ -180,6 +183,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     # b_enc: nn.Parameter
     # b_gate : nn.Parameter
     W_gate: nn.Parameter
+    b_gate: nn.Parameter
     W_bottleneck: nn.Parameter
     W_latent_dec: nn.Parameter
     # log_threshold: nn.Parameter
@@ -213,6 +217,9 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
                 dtype=torch.long,
             ),
         )
+
+        self.cfg.apply_b_dec_to_input = False  # Remove bias term - destroys structure
+        self.b_dec.requires_grad_(False)
 
     def initialize_weights(self) -> None:
         super().initialize_weights()
@@ -283,7 +290,9 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         """
         sae_out_pre = torch.einsum("bnd,nde->bne", feature_acts, self.W_latent_dec)
         sae_out_pre = sae_out_pre.flatten(-2, -1)
-        sae_out_pre = sae_out_pre @ self.W_dec + self.b_dec
+        sae_out_pre = (
+            sae_out_pre @ self.W_dec
+        )  # + self.b_dec # Bias term destroys manifold structure
 
         sae_out_pre = self.hook_sae_recons(sae_out_pre)
         sae_out_pre = self.run_time_activation_norm_fn_out(sae_out_pre)
@@ -441,6 +450,15 @@ def _init_weights_smixae(
         )
     )  # Same dim size but we reshape
 
+    # Add gate bias term to allow more expressivity - pre relu
+    sae.b_gate = nn.Parameter(
+        torch.zeros(
+            sae.cfg.n_experts * sae.cfg.d_expert,
+            dtype=sae.dtype,
+            device=sae.device,
+        )
+    )
+
     sae.W_bottleneck = nn.Parameter(
         torch.empty(
             sae.cfg.n_experts,
@@ -480,7 +498,7 @@ def smixae_encode(
 
     # Use step to decouple magnitude from existence
     gate = sae.activation_fn(
-        sae_in @ sae.W_gate  # , sae.threshold, sae.cfg.jump_relu_bandwidth
+        sae_in @ sae.W_gate + sae.b_gate  # , sae.threshold, sae.cfg.jump_relu_bandwidth
     )
 
     # Save L0 to apply count loss later
