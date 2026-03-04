@@ -10,11 +10,11 @@ from sae_lens import SAE
 # ============================================================
 # Config
 # ============================================================
-MODEL_NAME = "pythia-160m-deduped"
-HOOK_NAME = "blocks.8.hook_resid_post"
-CHECKPOINT_PATH = "/scratch/Collin/SAELens/checkpoints/sxksg8mk/62500864"
+MODEL_NAME = "gemma-2-2b"
+HOOK_NAME = "blocks.12.hook_resid_post"
+CHECKPOINT_PATH = "/scratch/Collin/SAELens/checkpoints/iulqcbsf/final_250003456"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-N_TEXTS = 1000
+N_TEXTS = 10000
 SEQ_LEN = 128
 N_EXPERTS_TO_PLOT = 25
 CONTEXT_WINDOW = 10  # tokens before/after for context

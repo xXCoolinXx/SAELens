@@ -1,0 +1,2678 @@
+[
+  {
+    "task": "months",
+    "description": "Months of the year - expected ring/circle",
+    "n_feature_values": 12,
+    "n_templates": 8,
+    "n_examples": 96,
+    "cyclic": true,
+    "expert_summaries": [
+      {
+        "expert_id": 810,
+        "activation_freq": 1.0,
+        "mean_norm": 215.806884765625,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9899991644814243,
+          0.009464584918175322,
+          0.0005362506004004179
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 682,
+        "activation_freq": 0.14583333333333334,
+        "mean_norm": 3.8092105388641357,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.991997712886323,
+          0.007930216757755725,
+          7.207035592143033e-05
+        ],
+        "n_feature_values_active": 11
+      },
+      {
+        "expert_id": 838,
+        "activation_freq": 0.75,
+        "mean_norm": 123.40460968017578,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.99989969579669,
+          9.984061374786134e-05,
+          4.635895622775329e-07
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 872,
+        "activation_freq": 0.07291666666666667,
+        "mean_norm": 2.317629337310791,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.6876302009497148,
+          0.21574142548575553,
+          0.09662837356452951
+        ],
+        "n_feature_values_active": 7
+      },
+      {
+        "expert_id": 698,
+        "activation_freq": 1.0,
+        "mean_norm": 49.63606643676758,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.924123333112691,
+          0.042554600106707176,
+          0.03332206678060193
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 598,
+        "activation_freq": 0.09375,
+        "mean_norm": 2.410051107406616,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.913923090703165,
+          0.06726603491306504,
+          0.018810874383769945
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 480,
+        "activation_freq": 0.8854166666666666,
+        "mean_norm": 3.5302798748016357,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9863503933406055,
+          0.013118101699016295,
+          0.0005315049603782921
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 841,
+        "activation_freq": 1.0,
+        "mean_norm": 12.693187713623047,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.6360411717580925,
+          0.2919647215325185,
+          0.07199410670938901
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 150,
+        "activation_freq": 0.75,
+        "mean_norm": 7.821211814880371,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7534461759606722,
+          0.2417948551048135,
+          0.0047589689345142825
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 116,
+        "activation_freq": 0.11458333333333333,
+        "mean_norm": 2.781662940979004,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9343037227324259,
+          0.056545052196610705,
+          0.009151225070963354
+        ],
+        "n_feature_values_active": 11
+      },
+      {
+        "expert_id": 966,
+        "activation_freq": 0.75,
+        "mean_norm": 57.19181823730469,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9847610344560481,
+          0.012140383730405057,
+          0.0030985818135467525
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 68,
+        "activation_freq": 0.75,
+        "mean_norm": 23.75701904296875,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9854475934922542,
+          0.011796227265931557,
+          0.0027561792418142194
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 171,
+        "activation_freq": 0.75,
+        "mean_norm": 8.933918952941895,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9621168608125406,
+          0.02660487756271618,
+          0.011278261624743274
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 634,
+        "activation_freq": 0.125,
+        "mean_norm": 7.1997504234313965,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.96278855698197,
+          0.034633649099784704,
+          0.002577793918245283
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 582,
+        "activation_freq": 0.125,
+        "mean_norm": 3.1619091033935547,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7695039482764128,
+          0.21025043207039243,
+          0.020245619653194803
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 762,
+        "activation_freq": 0.125,
+        "mean_norm": 4.024360656738281,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7432265037338536,
+          0.23437248941189362,
+          0.022401006854252774
+        ],
+        "n_feature_values_active": 12
+      }
+    ]
+  },
+  {
+    "task": "days_of_week",
+    "description": "Days of the week - expected ring/circle",
+    "n_feature_values": 7,
+    "n_templates": 8,
+    "n_examples": 56,
+    "cyclic": true,
+    "expert_summaries": [
+      {
+        "expert_id": 810,
+        "activation_freq": 1.0,
+        "mean_norm": 245.2246856689453,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9944865753241409,
+          0.00537763903762797,
+          0.00013578563823107986
+        ],
+        "n_feature_values_active": 7
+      },
+      {
+        "expert_id": 698,
+        "activation_freq": 0.9107142857142857,
+        "mean_norm": 61.73418045043945,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9998833415681548,
+          0.00010440918089933197,
+          1.2249250945794063e-05
+        ],
+        "n_feature_values_active": 7
+      },
+      {
+        "expert_id": 480,
+        "activation_freq": 0.9107142857142857,
+        "mean_norm": 2.957880973815918,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9625242412828475,
+          0.03571816258264406,
+          0.0017575961345083556
+        ],
+        "n_feature_values_active": 7
+      },
+      {
+        "expert_id": 841,
+        "activation_freq": 0.9642857142857143,
+        "mean_norm": 14.242759704589844,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9956970044218927,
+          0.004204812814230844,
+          9.818276387640919e-05
+        ],
+        "n_feature_values_active": 7
+      },
+      {
+        "expert_id": 838,
+        "activation_freq": 0.875,
+        "mean_norm": 123.03182983398438,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9999441705441033,
+          5.5197348973525384e-05,
+          6.321069231990657e-07
+        ],
+        "n_feature_values_active": 7
+      },
+      {
+        "expert_id": 189,
+        "activation_freq": 0.05357142857142857,
+        "mean_norm": 2.329294443130493,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9449791509206725,
+          0.055020849079327326,
+          -1.205006046649969e-17
+        ],
+        "n_feature_values_active": 3
+      },
+      {
+        "expert_id": 469,
+        "activation_freq": 0.10714285714285714,
+        "mean_norm": 2.5139894485473633,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9143019839960703,
+          0.06414820030393953,
+          0.021549815699990104
+        ],
+        "n_feature_values_active": 6
+      },
+      {
+        "expert_id": 150,
+        "activation_freq": 0.875,
+        "mean_norm": 7.5493669509887695,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9458683175280933,
+          0.049525761615302775,
+          0.004605920856604057
+        ],
+        "n_feature_values_active": 7
+      },
+      {
+        "expert_id": 966,
+        "activation_freq": 0.875,
+        "mean_norm": 57.089317321777344,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9939806108705485,
+          0.0033121321673128387,
+          0.002707256962138778
+        ],
+        "n_feature_values_active": 7
+      },
+      {
+        "expert_id": 634,
+        "activation_freq": 0.125,
+        "mean_norm": 3.452106475830078,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9837243461334708,
+          0.01618378770637709,
+          9.18661601521104e-05
+        ],
+        "n_feature_values_active": 7
+      },
+      {
+        "expert_id": 697,
+        "activation_freq": 0.125,
+        "mean_norm": 2.884052276611328,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8456134846405193,
+          0.15144748619428475,
+          0.00293902916519597
+        ],
+        "n_feature_values_active": 7
+      },
+      {
+        "expert_id": 68,
+        "activation_freq": 0.875,
+        "mean_norm": 23.51089096069336,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9816251150596167,
+          0.015392136992062466,
+          0.0029827479483208316
+        ],
+        "n_feature_values_active": 7
+      },
+      {
+        "expert_id": 598,
+        "activation_freq": 0.125,
+        "mean_norm": 2.8527674674987793,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.976593607665367,
+          0.01814545275452866,
+          0.005260939580104402
+        ],
+        "n_feature_values_active": 7
+      },
+      {
+        "expert_id": 171,
+        "activation_freq": 0.875,
+        "mean_norm": 8.88560676574707,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.740269437195588,
+          0.2429451435271022,
+          0.016785419277309768
+        ],
+        "n_feature_values_active": 7
+      }
+    ]
+  },
+  {
+    "task": "hours",
+    "description": "Hours of the day - expected ring/circle",
+    "n_feature_values": 24,
+    "n_templates": 6,
+    "n_examples": 144,
+    "cyclic": true,
+    "expert_summaries": [
+      {
+        "expert_id": 810,
+        "activation_freq": 1.0,
+        "mean_norm": 279.3529052734375,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9997680889919248,
+          0.00021273113022455788,
+          1.9179877850528926e-05
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 698,
+        "activation_freq": 1.0,
+        "mean_norm": 64.40431213378906,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.987070555021009,
+          0.01196588250821016,
+          0.0009635624707806574
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 838,
+        "activation_freq": 1.0,
+        "mean_norm": 123.83872985839844,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9998538300257085,
+          0.00014080621171057729,
+          5.363762580969164e-06
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 150,
+        "activation_freq": 1.0,
+        "mean_norm": 8.107231140136719,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6030512087185588,
+          0.3920698835195167,
+          0.004878907761924445
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 966,
+        "activation_freq": 1.0,
+        "mean_norm": 57.7086181640625,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9692716774459027,
+          0.029382502870636422,
+          0.0013458196834607128
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 68,
+        "activation_freq": 1.0,
+        "mean_norm": 23.888456344604492,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9919378026327758,
+          0.006578939649149433,
+          0.0014832577180747264
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 841,
+        "activation_freq": 1.0,
+        "mean_norm": 15.37987232208252,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9132984348316655,
+          0.056479614620447524,
+          0.030221950547886935
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 480,
+        "activation_freq": 1.0,
+        "mean_norm": 3.4612560272216797,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9447246544492511,
+          0.05410911919536337,
+          0.001166226355385504
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 171,
+        "activation_freq": 1.0,
+        "mean_norm": 9.070180892944336,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9601367308173275,
+          0.032211319370623236,
+          0.0076519498120492906
+        ],
+        "n_feature_values_active": 24
+      }
+    ]
+  },
+  {
+    "task": "time_units",
+    "description": "Time duration units - expected line/plume (log scale)",
+    "n_feature_values": 13,
+    "n_templates": 6,
+    "n_examples": 78,
+    "cyclic": false,
+    "expert_summaries": [
+      {
+        "expert_id": 810,
+        "activation_freq": 1.0,
+        "mean_norm": 238.23062133789062,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9831273402997719,
+          0.016262894108021755,
+          0.0006097655922064335
+        ],
+        "n_feature_values_active": 13
+      },
+      {
+        "expert_id": 698,
+        "activation_freq": 0.9230769230769231,
+        "mean_norm": 58.69715118408203,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9961795846591963,
+          0.0037434505895637986,
+          7.696475123994566e-05
+        ],
+        "n_feature_values_active": 13
+      },
+      {
+        "expert_id": 841,
+        "activation_freq": 1.0,
+        "mean_norm": 13.80346965789795,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9642743952952231,
+          0.027041861368340823,
+          0.008683743336436256
+        ],
+        "n_feature_values_active": 13
+      },
+      {
+        "expert_id": 682,
+        "activation_freq": 0.0641025641025641,
+        "mean_norm": 4.935708999633789,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9824670391123782,
+          0.016886450847829,
+          0.0006465100397927229
+        ],
+        "n_feature_values_active": 5
+      },
+      {
+        "expert_id": 480,
+        "activation_freq": 0.9743589743589743,
+        "mean_norm": 3.2225723266601562,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7518007332019953,
+          0.24592614337098115,
+          0.0022731234270236536
+        ],
+        "n_feature_values_active": 13
+      },
+      {
+        "expert_id": 189,
+        "activation_freq": 0.11538461538461539,
+        "mean_norm": 3.229353427886963,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.8273409434801421,
+          0.1023779613977504,
+          0.0702810951221076
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 116,
+        "activation_freq": 0.07692307692307693,
+        "mean_norm": 3.0421199798583984,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.978088485199633,
+          0.020300379225741946,
+          0.0016111355746249879
+        ],
+        "n_feature_values_active": 6
+      },
+      {
+        "expert_id": 893,
+        "activation_freq": 0.08974358974358974,
+        "mean_norm": 2.933316469192505,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9285171412283982,
+          0.06556365253845609,
+          0.005919206233145597
+        ],
+        "n_feature_values_active": 7
+      },
+      {
+        "expert_id": 697,
+        "activation_freq": 0.05128205128205128,
+        "mean_norm": 2.5178780555725098,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9970101180224665,
+          0.002989821742649959,
+          6.0234883448187e-08
+        ],
+        "n_feature_values_active": 4
+      },
+      {
+        "expert_id": 171,
+        "activation_freq": 0.9358974358974359,
+        "mean_norm": 8.214795112609863,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.996864897094252,
+          0.0029647039207275107,
+          0.0001703989850205816
+        ],
+        "n_feature_values_active": 13
+      },
+      {
+        "expert_id": 598,
+        "activation_freq": 0.07692307692307693,
+        "mean_norm": 2.565474271774292,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8143897221635041,
+          0.15636605874499815,
+          0.029244219091497686
+        ],
+        "n_feature_values_active": 6
+      },
+      {
+        "expert_id": 150,
+        "activation_freq": 0.8333333333333334,
+        "mean_norm": 8.054229736328125,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8991630664605632,
+          0.09212770891652206,
+          0.008709224622914753
+        ],
+        "n_feature_values_active": 13
+      },
+      {
+        "expert_id": 838,
+        "activation_freq": 0.8333333333333334,
+        "mean_norm": 123.6614990234375,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9995479708976656,
+          0.00044688386170209176,
+          5.145240632408421e-06
+        ],
+        "n_feature_values_active": 13
+      },
+      {
+        "expert_id": 184,
+        "activation_freq": 0.14102564102564102,
+        "mean_norm": 2.7031238079071045,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8531822223119403,
+          0.13290428087453454,
+          0.013913496813525267
+        ],
+        "n_feature_values_active": 11
+      },
+      {
+        "expert_id": 966,
+        "activation_freq": 0.8333333333333334,
+        "mean_norm": 57.555213928222656,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9691505352807624,
+          0.017191967341165248,
+          0.013657497378072387
+        ],
+        "n_feature_values_active": 13
+      },
+      {
+        "expert_id": 469,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 3.2920095920562744,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9544753341772225,
+          0.038570702826718234,
+          0.00695396299605931
+        ],
+        "n_feature_values_active": 13
+      },
+      {
+        "expert_id": 68,
+        "activation_freq": 0.8333333333333334,
+        "mean_norm": 23.694847106933594,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9752109420410823,
+          0.015309054107402421,
+          0.009480003851515371
+        ],
+        "n_feature_values_active": 13
+      }
+    ]
+  },
+  {
+    "task": "numbers",
+    "description": "Numbers 1-100 - expected line or curve",
+    "n_feature_values": 100,
+    "n_templates": 5,
+    "n_examples": 500,
+    "cyclic": false,
+    "expert_summaries": [
+      {
+        "expert_id": 810,
+        "activation_freq": 1.0,
+        "mean_norm": 85.29020690917969,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9504932869661815,
+          0.048705572364990686,
+          0.0008011406688278093
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 480,
+        "activation_freq": 0.794,
+        "mean_norm": 3.635406970977783,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.929022476516415,
+          0.06603474217171834,
+          0.004942781311866734
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 698,
+        "activation_freq": 0.768,
+        "mean_norm": 18.288837432861328,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9922733037970881,
+          0.00704362666863293,
+          0.0006830695342788481
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 171,
+        "activation_freq": 0.76,
+        "mean_norm": 4.591527938842773,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9741070220284935,
+          0.02528121144502447,
+          0.0006117665264821424
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 598,
+        "activation_freq": 0.136,
+        "mean_norm": 2.4243624210357666,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.7823323711111341,
+          0.16114806963029552,
+          0.05651955925857038
+        ],
+        "n_feature_values_active": 53
+      },
+      {
+        "expert_id": 841,
+        "activation_freq": 0.622,
+        "mean_norm": 8.477355003356934,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9358248153729485,
+          0.05263198217780273,
+          0.01154320244924865
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 805,
+        "activation_freq": 0.362,
+        "mean_norm": 2.461879253387451,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6010388825484855,
+          0.38067135863170776,
+          0.018289758819806788
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 682,
+        "activation_freq": 0.606,
+        "mean_norm": 4.614384174346924,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9146802657655734,
+          0.08013587798499565,
+          0.005183856249431006
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 797,
+        "activation_freq": 0.298,
+        "mean_norm": 2.363126039505005,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.5590458480775666,
+          0.42721047234408166,
+          0.013743679578351743
+        ],
+        "n_feature_values_active": 98
+      },
+      {
+        "expert_id": 204,
+        "activation_freq": 0.058,
+        "mean_norm": 2.345813035964966,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.6534102482815196,
+          0.25382410494667734,
+          0.092765646771803
+        ],
+        "n_feature_values_active": 26
+      },
+      {
+        "expert_id": 695,
+        "activation_freq": 0.082,
+        "mean_norm": 2.350820302963257,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6691998406909045,
+          0.2813582572623916,
+          0.04944190204670393
+        ],
+        "n_feature_values_active": 40
+      },
+      {
+        "expert_id": 622,
+        "activation_freq": 0.134,
+        "mean_norm": 2.4166340827941895,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7233719844678231,
+          0.26051424920850086,
+          0.01611376632367609
+        ],
+        "n_feature_values_active": 67
+      },
+      {
+        "expert_id": 219,
+        "activation_freq": 0.37,
+        "mean_norm": 2.531949520111084,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9156419934513973,
+          0.05508890301989039,
+          0.02926910352871223
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 433,
+        "activation_freq": 0.176,
+        "mean_norm": 2.46391224861145,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8746140351473101,
+          0.11108393592505655,
+          0.01430202892763338
+        ],
+        "n_feature_values_active": 88
+      },
+      {
+        "expert_id": 520,
+        "activation_freq": 0.188,
+        "mean_norm": 2.493325710296631,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.804595933179402,
+          0.17825549077012295,
+          0.017148576050474942
+        ],
+        "n_feature_values_active": 93
+      },
+      {
+        "expert_id": 469,
+        "activation_freq": 0.396,
+        "mean_norm": 2.7090559005737305,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7609990727274312,
+          0.21716192043842442,
+          0.021839006834144338
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 422,
+        "activation_freq": 0.2,
+        "mean_norm": 3.6898326873779297,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9544158864745825,
+          0.034857937993178545,
+          0.010726175532239098
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 872,
+        "activation_freq": 0.6,
+        "mean_norm": 4.871695041656494,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6364316875422923,
+          0.3144864842343604,
+          0.0490818282233474
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 966,
+        "activation_freq": 0.394,
+        "mean_norm": 29.895427703857422,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.99973537060444,
+          0.00018444386970240992,
+          8.018552585775845e-05
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 838,
+        "activation_freq": 0.2,
+        "mean_norm": 121.69445037841797,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9998399037998952,
+          0.00015488119431511797,
+          5.215005789734055e-06
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 990,
+        "activation_freq": 0.2,
+        "mean_norm": 3.3329732418060303,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7472707315461349,
+          0.2364206264543673,
+          0.016308641999497813
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 857,
+        "activation_freq": 0.4,
+        "mean_norm": 3.2622790336608887,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8925632428097099,
+          0.09786484957771133,
+          0.009571907612578893
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 150,
+        "activation_freq": 0.2,
+        "mean_norm": 5.808024883270264,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.934944167222279,
+          0.06030765434822052,
+          0.004748178429500525
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 871,
+        "activation_freq": 0.2,
+        "mean_norm": 2.956301212310791,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.736614465933416,
+          0.2578740518005539,
+          0.005511482266030212
+        ],
+        "n_feature_values_active": 100
+      },
+      {
+        "expert_id": 68,
+        "activation_freq": 0.2,
+        "mean_norm": 23.25216293334961,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9427452239820424,
+          0.04508958902920865,
+          0.012165186988749015
+        ],
+        "n_feature_values_active": 100
+      }
+    ]
+  },
+  {
+    "task": "first_names",
+    "description": "Common first names - expected clusters",
+    "n_feature_values": 36,
+    "n_templates": 6,
+    "n_examples": 216,
+    "cyclic": false,
+    "expert_summaries": [
+      {
+        "expert_id": 810,
+        "activation_freq": 1.0,
+        "mean_norm": 114.73184204101562,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9441892795797128,
+          0.05497661535648528,
+          0.0008341050638018919
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 8,
+        "activation_freq": 0.2824074074074074,
+        "mean_norm": 3.326582670211792,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9868138595932653,
+          0.011658925763676213,
+          0.001527214643058694
+        ],
+        "n_feature_values_active": 26
+      },
+      {
+        "expert_id": 841,
+        "activation_freq": 0.8611111111111112,
+        "mean_norm": 8.826732635498047,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8361780374752034,
+          0.13777250487772075,
+          0.02604945764707593
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 682,
+        "activation_freq": 0.4537037037037037,
+        "mean_norm": 4.101900100708008,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9860895506725833,
+          0.01150351131511384,
+          0.002406938012302936
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 480,
+        "activation_freq": 0.7685185185185185,
+        "mean_norm": 3.896332263946533,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9385488958996366,
+          0.060200216929977964,
+          0.0012508871703854232
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 698,
+        "activation_freq": 0.7870370370370371,
+        "mean_norm": 28.803739547729492,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9945426045646426,
+          0.003144397310867113,
+          0.0023129981244903817
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 598,
+        "activation_freq": 0.22685185185185186,
+        "mean_norm": 2.510465145111084,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.5758296325564403,
+          0.3056257777000865,
+          0.11854458974347325
+        ],
+        "n_feature_values_active": 28
+      },
+      {
+        "expert_id": 171,
+        "activation_freq": 0.6574074074074074,
+        "mean_norm": 5.928511142730713,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9833367250992956,
+          0.01591773403979942,
+          0.0007455408609050007
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 469,
+        "activation_freq": 0.37962962962962965,
+        "mean_norm": 2.658379077911377,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.7207922427396514,
+          0.22069159378006337,
+          0.058516163480285356
+        ],
+        "n_feature_values_active": 35
+      },
+      {
+        "expert_id": 99,
+        "activation_freq": 0.08796296296296297,
+        "mean_norm": 2.421516180038452,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.661582167614362,
+          0.2787154561979822,
+          0.059702376187655795
+        ],
+        "n_feature_values_active": 17
+      },
+      {
+        "expert_id": 697,
+        "activation_freq": 0.12962962962962962,
+        "mean_norm": 2.857088565826416,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8715079781616408,
+          0.12302336346293763,
+          0.0054686583754216395
+        ],
+        "n_feature_values_active": 27
+      },
+      {
+        "expert_id": 893,
+        "activation_freq": 0.3287037037037037,
+        "mean_norm": 3.815368175506592,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9758891986108059,
+          0.018295786465353812,
+          0.0058150149238403405
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 116,
+        "activation_freq": 0.10648148148148148,
+        "mean_norm": 2.3769986629486084,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9300142897596148,
+          0.051318115860529215,
+          0.018667594379855934
+        ],
+        "n_feature_values_active": 23
+      },
+      {
+        "expert_id": 328,
+        "activation_freq": 0.14351851851851852,
+        "mean_norm": 2.8113510608673096,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.7993767923788921,
+          0.14289827473166014,
+          0.05772493288944772
+        ],
+        "n_feature_values_active": 31
+      },
+      {
+        "expert_id": 582,
+        "activation_freq": 0.16203703703703703,
+        "mean_norm": 2.4651222229003906,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.5584446838479167,
+          0.3753364261716436,
+          0.06621888998043982
+        ],
+        "n_feature_values_active": 33
+      },
+      {
+        "expert_id": 838,
+        "activation_freq": 0.3333333333333333,
+        "mean_norm": 123.06179809570312,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9998537402450006,
+          0.00013925157955560578,
+          7.008175443870925e-06
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 150,
+        "activation_freq": 0.3333333333333333,
+        "mean_norm": 7.283745765686035,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8442093209613946,
+          0.14757764266380283,
+          0.008213036374802678
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 634,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 6.860672473907471,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9137880818944787,
+          0.08160844117578267,
+          0.00460347692973871
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 966,
+        "activation_freq": 0.3333333333333333,
+        "mean_norm": 57.40065383911133,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9423074443538669,
+          0.04522710325028727,
+          0.012465452395845915
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 901,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 3.3889667987823486,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.771348379957117,
+          0.19256093154140208,
+          0.036090688501480846
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 640,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 3.5548274517059326,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.7799927668249805,
+          0.1504067718038594,
+          0.0696004613711602
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 857,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 3.9631288051605225,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9747070602011059,
+          0.021504791481439404,
+          0.0037881483174547043
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 68,
+        "activation_freq": 0.3333333333333333,
+        "mean_norm": 23.89747428894043,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.973396735297967,
+          0.019818668153663628,
+          0.006784596548369491
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 545,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 3.795138120651245,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8950338158071688,
+          0.05719883270023269,
+          0.04776735149259855
+        ],
+        "n_feature_values_active": 36
+      },
+      {
+        "expert_id": 798,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 3.5456745624542236,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.7986242160585484,
+          0.14830940682925237,
+          0.053066377112199276
+        ],
+        "n_feature_values_active": 36
+      }
+    ]
+  },
+  {
+    "task": "body_parts",
+    "description": "Body parts - expected sheet/spatial manifold",
+    "n_feature_values": 24,
+    "n_templates": 6,
+    "n_examples": 144,
+    "cyclic": false,
+    "expert_summaries": [
+      {
+        "expert_id": 810,
+        "activation_freq": 1.0,
+        "mean_norm": 278.15283203125,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9976875444235007,
+          0.0019203796923580238,
+          0.00039207588414133824
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 698,
+        "activation_freq": 1.0,
+        "mean_norm": 63.58304214477539,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9320578342330219,
+          0.06419061910481241,
+          0.0037515466621656983
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 838,
+        "activation_freq": 1.0,
+        "mean_norm": 123.26007843017578,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9993648933385668,
+          0.0006278114274131782,
+          7.295234020032231e-06
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 150,
+        "activation_freq": 1.0,
+        "mean_norm": 7.808628559112549,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8995683750138638,
+          0.0933517242849316,
+          0.0070799007012046136
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 966,
+        "activation_freq": 1.0,
+        "mean_norm": 57.35466766357422,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8643600100197684,
+          0.11841188209038346,
+          0.017228107889848042
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 841,
+        "activation_freq": 1.0,
+        "mean_norm": 16.05423355102539,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.7313819551919976,
+          0.2152605238292801,
+          0.05335752097872237
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 480,
+        "activation_freq": 1.0,
+        "mean_norm": 3.6518352031707764,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7933445797919738,
+          0.20196377343446067,
+          0.004691646773565502
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 68,
+        "activation_freq": 1.0,
+        "mean_norm": 23.68808364868164,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9771722933153697,
+          0.0147661025542207,
+          0.008061604130409596
+        ],
+        "n_feature_values_active": 24
+      },
+      {
+        "expert_id": 171,
+        "activation_freq": 1.0,
+        "mean_norm": 9.039932250976562,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7237804595206137,
+          0.23919820864760044,
+          0.03702133183178588
+        ],
+        "n_feature_values_active": 24
+      }
+    ]
+  },
+  {
+    "task": "colors",
+    "description": "Colors - expected ring through color space",
+    "n_feature_values": 12,
+    "n_templates": 6,
+    "n_examples": 72,
+    "cyclic": true,
+    "expert_summaries": [
+      {
+        "expert_id": 682,
+        "activation_freq": 0.4027777777777778,
+        "mean_norm": 7.284728050231934,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9313122662869878,
+          0.05855288978088009,
+          0.010134843932132116
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 841,
+        "activation_freq": 0.9583333333333334,
+        "mean_norm": 11.033750534057617,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8501945935059416,
+          0.1344635796128317,
+          0.015341826881226787
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 810,
+        "activation_freq": 1.0,
+        "mean_norm": 159.521728515625,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8684691949342792,
+          0.129184145857184,
+          0.0023466592085367994
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 480,
+        "activation_freq": 0.8333333333333334,
+        "mean_norm": 4.82443904876709,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8060616713726702,
+          0.18927273145592277,
+          0.004665597171407018
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 697,
+        "activation_freq": 0.3472222222222222,
+        "mean_norm": 3.0020413398742676,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.969674016518225,
+          0.029086165008720976,
+          0.0012398184730538578
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 698,
+        "activation_freq": 0.7777777777777778,
+        "mean_norm": 42.09734344482422,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9987363378923582,
+          0.0011668601279562155,
+          9.68019796855521e-05
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 843,
+        "activation_freq": 0.08333333333333333,
+        "mean_norm": 2.9764347076416016,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9771673396887954,
+          0.02264445485099552,
+          0.00018820546020905475
+        ],
+        "n_feature_values_active": 6
+      },
+      {
+        "expert_id": 797,
+        "activation_freq": 0.06944444444444445,
+        "mean_norm": 2.9118258953094482,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7439457955962048,
+          0.25599068071871,
+          6.352368508527267e-05
+        ],
+        "n_feature_values_active": 5
+      },
+      {
+        "expert_id": 696,
+        "activation_freq": 0.19444444444444445,
+        "mean_norm": 2.5667130947113037,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.7013924156660191,
+          0.23148741203289674,
+          0.06712017230108415
+        ],
+        "n_feature_values_active": 11
+      },
+      {
+        "expert_id": 598,
+        "activation_freq": 0.2222222222222222,
+        "mean_norm": 3.913599967956543,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8990672040940588,
+          0.08762933512920941,
+          0.013303460776731724
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 40,
+        "activation_freq": 0.06944444444444445,
+        "mean_norm": 2.4280471801757812,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7565775900291576,
+          0.2328143735685938,
+          0.010608036402248668
+        ],
+        "n_feature_values_active": 5
+      },
+      {
+        "expert_id": 8,
+        "activation_freq": 0.08333333333333333,
+        "mean_norm": 2.381524085998535,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8559786036416221,
+          0.13737323431220957,
+          0.006648162046168133
+        ],
+        "n_feature_values_active": 6
+      },
+      {
+        "expert_id": 171,
+        "activation_freq": 0.8055555555555556,
+        "mean_norm": 6.7555437088012695,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9655491338024612,
+          0.03253235558581888,
+          0.001918510611719989
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 469,
+        "activation_freq": 0.2777777777777778,
+        "mean_norm": 2.6585841178894043,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8588807276533063,
+          0.11771580127061212,
+          0.023403471076081643
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 629,
+        "activation_freq": 0.1388888888888889,
+        "mean_norm": 2.604592800140381,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.8382671797643014,
+          0.08978100748111516,
+          0.0719518127545834
+        ],
+        "n_feature_values_active": 10
+      },
+      {
+        "expert_id": 804,
+        "activation_freq": 0.1527777777777778,
+        "mean_norm": 3.0057945251464844,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.877319016963593,
+          0.0931579435876184,
+          0.02952303944878873
+        ],
+        "n_feature_values_active": 11
+      },
+      {
+        "expert_id": 857,
+        "activation_freq": 0.19444444444444445,
+        "mean_norm": 4.7605671882629395,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9882156846380478,
+          0.00869368886892906,
+          0.0030906264930231327
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 838,
+        "activation_freq": 0.5,
+        "mean_norm": 123.08462524414062,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9998177383719407,
+          0.0001805812303208675,
+          1.6803977384604133e-06
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 921,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 6.155942916870117,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8433919072869247,
+          0.14362578116002295,
+          0.012982311553052328
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 433,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 3.4635636806488037,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8731089209934488,
+          0.11690079773469905,
+          0.009990281271852018
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 1009,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 5.775905609130859,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8587318038969627,
+          0.1300371934334002,
+          0.011231002669636947
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 150,
+        "activation_freq": 0.5,
+        "mean_norm": 7.364664554595947,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9033817587264865,
+          0.09383480158579073,
+          0.0027834396877228283
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 966,
+        "activation_freq": 0.5,
+        "mean_norm": 57.32357406616211,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9428520401025673,
+          0.036113054746914626,
+          0.021034905150518177
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 877,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 5.020734786987305,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.5371245983771488,
+          0.37067888573838226,
+          0.09219651588446892
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 718,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 4.074012756347656,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.5406778136364738,
+          0.45317405755249685,
+          0.006148128811029342
+        ],
+        "n_feature_values_active": 12
+      }
+    ]
+  },
+  {
+    "task": "directions",
+    "description": "Compass directions - expected ring",
+    "n_feature_values": 8,
+    "n_templates": 5,
+    "n_examples": 40,
+    "cyclic": true,
+    "expert_summaries": [
+      {
+        "expert_id": 810,
+        "activation_freq": 1.0,
+        "mean_norm": 227.81689453125,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9960221026736489,
+          0.0034701967613996187,
+          0.0005077005649514507
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 698,
+        "activation_freq": 1.0,
+        "mean_norm": 52.7894287109375,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9681905137752388,
+          0.027559460369687774,
+          0.004250025855073281
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 106,
+        "activation_freq": 0.075,
+        "mean_norm": 2.470780611038208,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8328743655026224,
+          0.16712563449737752,
+          1.1164273818962854e-17
+        ],
+        "n_feature_values_active": 3
+      },
+      {
+        "expert_id": 1009,
+        "activation_freq": 0.075,
+        "mean_norm": 2.411977529525757,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6181251801027373,
+          0.38187481989726274,
+          0.0
+        ],
+        "n_feature_values_active": 3
+      },
+      {
+        "expert_id": 171,
+        "activation_freq": 0.95,
+        "mean_norm": 8.044013023376465,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9952614136624778,
+          0.004527863599829481,
+          0.00021072273769272575
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 838,
+        "activation_freq": 0.8,
+        "mean_norm": 123.3006820678711,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9999379545921899,
+          6.034493846893138e-05,
+          1.700469341158768e-06
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 841,
+        "activation_freq": 1.0,
+        "mean_norm": 13.633462905883789,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8614591386094639,
+          0.11094339042249998,
+          0.02759747096803624
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 150,
+        "activation_freq": 0.8,
+        "mean_norm": 7.820246696472168,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8056268669335903,
+          0.1905146464597539,
+          0.0038584866066557633
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 697,
+        "activation_freq": 0.2,
+        "mean_norm": 3.124408721923828,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9285123525212045,
+          0.07012346758082484,
+          0.0013641798979707358
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 682,
+        "activation_freq": 0.2,
+        "mean_norm": 4.16981315612793,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9040569542193871,
+          0.08908859891010176,
+          0.006854446870511021
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 480,
+        "activation_freq": 1.0,
+        "mean_norm": 3.5662949085235596,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6588493204103586,
+          0.33659935186456535,
+          0.0045513277250760755
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 966,
+        "activation_freq": 0.8,
+        "mean_norm": 57.384498596191406,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9528176474778407,
+          0.04309438149200631,
+          0.004087971030153038
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 951,
+        "activation_freq": 0.2,
+        "mean_norm": 2.7306430339813232,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6822471401900734,
+          0.2953289498018629,
+          0.02242391000806374
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 68,
+        "activation_freq": 0.8,
+        "mean_norm": 23.731773376464844,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9760420602053768,
+          0.019617356396181732,
+          0.004340583398441568
+        ],
+        "n_feature_values_active": 8
+      }
+    ]
+  },
+  {
+    "task": "sizes",
+    "description": "Ordinal sizes - expected line",
+    "n_feature_values": 9,
+    "n_templates": 5,
+    "n_examples": 45,
+    "cyclic": false,
+    "expert_summaries": [
+      {
+        "expert_id": 682,
+        "activation_freq": 0.5555555555555556,
+        "mean_norm": 6.732043266296387,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6723163007468657,
+          0.316011080118583,
+          0.011672619134551364
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 810,
+        "activation_freq": 1.0,
+        "mean_norm": 138.76463317871094,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9655215333830253,
+          0.033370835340560394,
+          0.0011076312764142836
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 841,
+        "activation_freq": 1.0,
+        "mean_norm": 9.948005676269531,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7593451956699817,
+          0.2035681109106209,
+          0.03708669341939735
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 697,
+        "activation_freq": 0.2222222222222222,
+        "mean_norm": 2.84824800491333,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.998440977076272,
+          0.0009384871416725421,
+          0.0006205357820556345
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 698,
+        "activation_freq": 1.0,
+        "mean_norm": 28.561952590942383,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7419471462619661,
+          0.2306137906242314,
+          0.02743906311380246
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 480,
+        "activation_freq": 1.0,
+        "mean_norm": 3.7356019020080566,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8638002774493466,
+          0.13373877419075625,
+          0.002460948359897078
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 857,
+        "activation_freq": 0.3111111111111111,
+        "mean_norm": 3.1319587230682373,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9281369838456052,
+          0.06380837267100188,
+          0.008054643483392932
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 469,
+        "activation_freq": 0.3111111111111111,
+        "mean_norm": 2.6698949337005615,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.7318778995062869,
+          0.2056520740678745,
+          0.0624700264258388
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 767,
+        "activation_freq": 0.35555555555555557,
+        "mean_norm": 3.5798115730285645,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9623412408228216,
+          0.03716330822440964,
+          0.000495450952768842
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 598,
+        "activation_freq": 0.1111111111111111,
+        "mean_norm": 3.510895252227783,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.900488523583515,
+          0.0970134521371813,
+          0.0024980242793037535
+        ],
+        "n_feature_values_active": 5
+      },
+      {
+        "expert_id": 311,
+        "activation_freq": 0.28888888888888886,
+        "mean_norm": 3.6163218021392822,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8674889528336792,
+          0.12077748450241978,
+          0.01173356266390105
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 433,
+        "activation_freq": 0.1111111111111111,
+        "mean_norm": 2.940640926361084,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.985734685525952,
+          0.013341601742066765,
+          0.0009237127319812764
+        ],
+        "n_feature_values_active": 5
+      },
+      {
+        "expert_id": 171,
+        "activation_freq": 0.7555555555555555,
+        "mean_norm": 6.018857479095459,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9372824263839303,
+          0.061970969258875984,
+          0.0007466043571936041
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 137,
+        "activation_freq": 0.13333333333333333,
+        "mean_norm": 2.805499315261841,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.956692667877355,
+          0.035829362230961094,
+          0.007477969891683819
+        ],
+        "n_feature_values_active": 6
+      },
+      {
+        "expert_id": 797,
+        "activation_freq": 0.6,
+        "mean_norm": 3.4338908195495605,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8327934454179887,
+          0.15095254287211562,
+          0.01625401170989572
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 966,
+        "activation_freq": 0.4888888888888889,
+        "mean_norm": 47.42913818359375,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9998371692763368,
+          9.832190896017789e-05,
+          6.450881470301412e-05
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 838,
+        "activation_freq": 0.4,
+        "mean_norm": 123.13522338867188,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9999054370828548,
+          8.939694868487778e-05,
+          5.165968460329089e-06
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 348,
+        "activation_freq": 0.17777777777777778,
+        "mean_norm": 2.470089912414551,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8987334352598847,
+          0.0715481252385202,
+          0.029718439501595043
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 150,
+        "activation_freq": 0.4,
+        "mean_norm": 7.490511417388916,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6099841569007313,
+          0.38809690415911324,
+          0.0019189389401555303
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 467,
+        "activation_freq": 0.2,
+        "mean_norm": 2.9703924655914307,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6749269027749721,
+          0.31722927121990824,
+          0.00784382600511955
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 1005,
+        "activation_freq": 0.2,
+        "mean_norm": 3.97322416305542,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.6485453820291097,
+          0.27906985515298616,
+          0.07238476281790428
+        ],
+        "n_feature_values_active": 9
+      },
+      {
+        "expert_id": 68,
+        "activation_freq": 0.4,
+        "mean_norm": 23.704566955566406,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9686819813891916,
+          0.027175385498401365,
+          0.004142633112406978
+        ],
+        "n_feature_values_active": 9
+      }
+    ]
+  },
+  {
+    "task": "temperatures",
+    "description": "Temperature words - expected line",
+    "n_feature_values": 8,
+    "n_templates": 5,
+    "n_examples": 40,
+    "cyclic": false,
+    "expert_summaries": [
+      {
+        "expert_id": 810,
+        "activation_freq": 1.0,
+        "mean_norm": 230.4247589111328,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9846244954522317,
+          0.01476697873834832,
+          0.0006085258094198498
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 841,
+        "activation_freq": 1.0,
+        "mean_norm": 13.508357048034668,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9247505255040879,
+          0.048654116831249955,
+          0.026595357664662086
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 698,
+        "activation_freq": 1.0,
+        "mean_norm": 51.821250915527344,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8393268733641388,
+          0.12881336330217935,
+          0.0318597633336818
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 682,
+        "activation_freq": 0.075,
+        "mean_norm": 2.7052242755889893,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9345027537007145,
+          0.06549724629928547,
+          -3.68266866384967e-17
+        ],
+        "n_feature_values_active": 3
+      },
+      {
+        "expert_id": 582,
+        "activation_freq": 0.125,
+        "mean_norm": 2.65226411819458,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6193556654973045,
+          0.3512094051059513,
+          0.029434929396744303
+        ],
+        "n_feature_values_active": 5
+      },
+      {
+        "expert_id": 696,
+        "activation_freq": 0.125,
+        "mean_norm": 2.5231244564056396,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8557665665058339,
+          0.1424715551539679,
+          0.0017618783401982044
+        ],
+        "n_feature_values_active": 5
+      },
+      {
+        "expert_id": 756,
+        "activation_freq": 0.125,
+        "mean_norm": 2.4432244300842285,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9867849073460454,
+          0.008294764956056983,
+          0.004920327697897762
+        ],
+        "n_feature_values_active": 5
+      },
+      {
+        "expert_id": 467,
+        "activation_freq": 0.075,
+        "mean_norm": 2.445798873901367,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8593627263573256,
+          0.14063727364267434,
+          5.800692722086166e-17
+        ],
+        "n_feature_values_active": 3
+      },
+      {
+        "expert_id": 480,
+        "activation_freq": 1.0,
+        "mean_norm": 3.427973508834839,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6077980838224575,
+          0.38445792830383546,
+          0.007743987873707215
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 469,
+        "activation_freq": 0.175,
+        "mean_norm": 2.367659330368042,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7579004553632241,
+          0.2232955372783538,
+          0.018804007358422158
+        ],
+        "n_feature_values_active": 7
+      },
+      {
+        "expert_id": 838,
+        "activation_freq": 0.8,
+        "mean_norm": 123.11117553710938,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9997091710649604,
+          0.00028075238559206153,
+          1.0076549447477753e-05
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 1009,
+        "activation_freq": 0.2,
+        "mean_norm": 4.552579879760742,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9131874468917069,
+          0.08031000559077511,
+          0.006502547517518014
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 857,
+        "activation_freq": 0.2,
+        "mean_norm": 3.247316360473633,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9777668190873827,
+          0.01780855561126114,
+          0.004424625301356172
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 150,
+        "activation_freq": 0.8,
+        "mean_norm": 7.629094123840332,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9223274703887964,
+          0.06829303236112809,
+          0.009379497250075537
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 137,
+        "activation_freq": 0.2,
+        "mean_norm": 6.037353515625,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8891431092427103,
+          0.08857542083666559,
+          0.022281469920624127
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 966,
+        "activation_freq": 0.8,
+        "mean_norm": 57.30975341796875,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9312494671258557,
+          0.058819780974531145,
+          0.009930751899613205
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 68,
+        "activation_freq": 0.8,
+        "mean_norm": 23.730255126953125,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9710663627125639,
+          0.025727924107543706,
+          0.003205713179892402
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 872,
+        "activation_freq": 0.2,
+        "mean_norm": 3.3600196838378906,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6777267326456344,
+          0.293534456760034,
+          0.028738810594331563
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 171,
+        "activation_freq": 0.8,
+        "mean_norm": 8.893088340759277,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8820671052632055,
+          0.09412698716960265,
+          0.023805907567191784
+        ],
+        "n_feature_values_active": 8
+      }
+    ]
+  },
+  {
+    "task": "countries",
+    "description": "Countries - expected spatial/geographic structure",
+    "n_feature_values": 20,
+    "n_templates": 5,
+    "n_examples": 100,
+    "cyclic": false,
+    "expert_summaries": [
+      {
+        "expert_id": 810,
+        "activation_freq": 1.0,
+        "mean_norm": 129.71551513671875,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9053799137660933,
+          0.09313321131599349,
+          0.0014868749179132057
+        ],
+        "n_feature_values_active": 20
+      },
+      {
+        "expert_id": 480,
+        "activation_freq": 0.92,
+        "mean_norm": 4.224575519561768,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8173517248234594,
+          0.17852949552120823,
+          0.004118779655332405
+        ],
+        "n_feature_values_active": 20
+      },
+      {
+        "expert_id": 682,
+        "activation_freq": 0.38,
+        "mean_norm": 4.105249404907227,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9911940796477241,
+          0.007218885806383587,
+          0.0015870345458923229
+        ],
+        "n_feature_values_active": 20
+      },
+      {
+        "expert_id": 893,
+        "activation_freq": 0.3,
+        "mean_norm": 2.9744787216186523,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9466629305805038,
+          0.046218656192435266,
+          0.007118413227060925
+        ],
+        "n_feature_values_active": 16
+      },
+      {
+        "expert_id": 171,
+        "activation_freq": 0.89,
+        "mean_norm": 5.584540367126465,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9833768357469354,
+          0.0156375918284565,
+          0.0009855724246082217
+        ],
+        "n_feature_values_active": 20
+      },
+      {
+        "expert_id": 469,
+        "activation_freq": 0.13,
+        "mean_norm": 2.3557817935943604,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.5889419712804527,
+          0.3600141322732647,
+          0.05104389644628263
+        ],
+        "n_feature_values_active": 8
+      },
+      {
+        "expert_id": 841,
+        "activation_freq": 1.0,
+        "mean_norm": 10.938497543334961,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.7508647831264392,
+          0.1796281810846854,
+          0.06950703578887536
+        ],
+        "n_feature_values_active": 20
+      },
+      {
+        "expert_id": 698,
+        "activation_freq": 1.0,
+        "mean_norm": 28.695270538330078,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7917011927171559,
+          0.17617766820823577,
+          0.03212113907460825
+        ],
+        "n_feature_values_active": 20
+      },
+      {
+        "expert_id": 106,
+        "activation_freq": 0.12,
+        "mean_norm": 2.855834722518921,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.833920800592114,
+          0.16054942416754026,
+          0.005529775240345564
+        ],
+        "n_feature_values_active": 12
+      },
+      {
+        "expert_id": 626,
+        "activation_freq": 0.05,
+        "mean_norm": 2.6316065788269043,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.926006059375589,
+          0.06963402277725012,
+          0.004359917847160955
+        ],
+        "n_feature_values_active": 5
+      },
+      {
+        "expert_id": 598,
+        "activation_freq": 0.06,
+        "mean_norm": 2.40698504447937,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8808331040996529,
+          0.10497181884289228,
+          0.014195077057454743
+        ],
+        "n_feature_values_active": 6
+      },
+      {
+        "expert_id": 97,
+        "activation_freq": 0.05,
+        "mean_norm": 2.544985294342041,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.920024590183775,
+          0.07849661596604789,
+          0.0014787938501769824
+        ],
+        "n_feature_values_active": 5
+      },
+      {
+        "expert_id": 362,
+        "activation_freq": 0.15,
+        "mean_norm": 2.353139638900757,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.5963880755223271,
+          0.35441798926866935,
+          0.04919393520900345
+        ],
+        "n_feature_values_active": 15
+      },
+      {
+        "expert_id": 634,
+        "activation_freq": 0.6,
+        "mean_norm": 6.677917957305908,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9454176726671274,
+          0.04558385855490397,
+          0.008998468777968659
+        ],
+        "n_feature_values_active": 20
+      },
+      {
+        "expert_id": 838,
+        "activation_freq": 0.4,
+        "mean_norm": 122.76054382324219,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9998760696779194,
+          0.00012012434577562991,
+          3.8059763049848732e-06
+        ],
+        "n_feature_values_active": 20
+      },
+      {
+        "expert_id": 150,
+        "activation_freq": 0.4,
+        "mean_norm": 7.466116428375244,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9512946732108842,
+          0.04343367106028647,
+          0.00527165572882935
+        ],
+        "n_feature_values_active": 20
+      },
+      {
+        "expert_id": 966,
+        "activation_freq": 0.4,
+        "mean_norm": 56.86256790161133,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.961010413668887,
+          0.029822365273097312,
+          0.0091672210580156
+        ],
+        "n_feature_values_active": 20
+      },
+      {
+        "expert_id": 68,
+        "activation_freq": 0.4,
+        "mean_norm": 23.604368209838867,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9623865319862662,
+          0.03193152249395864,
+          0.005681945519775148
+        ],
+        "n_feature_values_active": 20
+      }
+    ]
+  }
+]

@@ -57,19 +57,19 @@ lr_decay_steps = total_training_steps // 5  # 20% of training
 # So many damn parameters
 cfg = LanguageModelSAERunnerConfig(
     sae=SMIXAETrainingConfig(
-        d_in=768,  # d_in=768,  # For pythia and gpt2-small,
+        d_in=2304,  # d_in=768,  # For pythia and gpt2-small,
         n_experts=1024,  # Good amount of features, compare to Gemma Scope
         d_expert=16,
         d_bottleneck=3,
-        d_sae=16 * 512,  # this paramater is ignored
+        d_sae=16 * 512,  # this parameter is ignored
         # l0_coefficient=1.0,
-        k_experts=12,
-        aux_loss_coefficient=0.1,  # no longer used
+        k_experts=32,
+        aux_loss_coefficient=1 / 32,
         normalize_activations="expected_average_only_in",
     ),
-    model_name="pythia-160m-deduped",  # "pythia-160m-deduped",  # Use deduped, apparently its more interpretable
+    model_name="gemma-2-2b",  # "pythia-160m-deduped",  # Use deduped, apparently its more interpretable
     model_class_name="HookedTransformer",
-    hook_name="blocks.8.hook_resid_post",  # "blocks.8.hook_resid_post",
+    hook_name="blocks.12.hook_resid_post",  # "blocks.8.hook_resid_post",
     dataset_path=source_repo,  # We already loaded the dataset because we have to use custom code # type: ignore
     is_dataset_tokenized=False,
     # Training Parameters

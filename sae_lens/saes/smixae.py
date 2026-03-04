@@ -124,7 +124,7 @@ class SMIXAE(SAE[SMIXAEConfig]):
         return self.reshape_fn_out(sae_out_pre, self.d_head)
 
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
-        return nn.SiLU()  # Try ReLU, GELU, etc.
+        return nn.ReLU()  # Try ReLU, GELU, etc.
 
 
 @dataclass
@@ -141,13 +141,14 @@ class SMIXAETrainingConfig(TrainingSAEConfig):
     d_expert: int = 16
     d_bottleneck: int = 3
     k_experts: int = 8  # L0 = d_expert * k_experts
-    aux_loss_coefficient: float = 0.05
+    aux_loss_coefficient: float = 1 / 32
     # expert_threshold: float = 0.1
 
     # jump_relu_bandwidth: float = 0.05
     # jump_relu_init_threshold: float = 2.0
     # l0_coefficient: float = 1.0
     threshold_lr: float = 0.1
+    dead_after_n_passes: int = 1000  # If an expert hasn't fired for 1k passes, it has sadly passed away and we give it emergency aux loss to resucitate
 
     @override
     @classmethod
@@ -195,6 +196,14 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
             torch.tensor(0.0, dtype=torch.double, device=self.W_dec.device),
         )
 
+        # Dead expert tracker
+        self.n_passes_since_fired = torch.zeros(
+            self.cfg.n_experts,
+            dtype=torch.long,
+            device=self.W_dec.device,
+            requires_grad=False,
+        )
+
     def initialize_weights(self) -> None:
         super().initialize_weights()
         _init_weights_smixae(self)
@@ -208,14 +217,21 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     ) -> tuple[torch.Tensor, torch.Tensor]:
         h, hidden_pre, z = smixae_encode(self, x)
 
-        batch_norm_mask = self.batchtopk(z.norm(dim=-1)) > 0
+        batch_norm_mask = self.batchtopk(z.norm(dim=-1)) > 0  # (batch_size, n_experts)
 
+        self.z_pre = z
         self.z = z * batch_norm_mask.unsqueeze(-1)
         # self.l0 = l0
         self.hook_sae_acts_pre(hidden_pre)
         self.hook_sae_acts_post(h)
         # self.hook_l0(l0)
         self.hook_sae_acts_bottleneck(z)
+
+        did_fire = batch_norm_mask.any(dim=0)
+        self.n_passes_since_fired += 1
+        self.n_passes_since_fired = (
+            self.n_passes_since_fired * ~did_fire
+        )  # 0 out if it did fire
 
         # Process the input (including dtype conversion, hook call, and any activation normalization)
         # sae_in = self.process_sae_in(x)
@@ -339,6 +355,13 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     ) -> dict[str, torch.Tensor]:
         losses = {}
 
+        losses["dead_expert_aux_loss"] = self.calculate_topk_aux_loss(
+            step_input.sae_in,
+            sae_out,
+            self.z_pre,
+            self.n_passes_since_fired > self.cfg.dead_after_n_passes,
+        )
+
         # losses["l0"] = (self.cfg.l0_coefficient * self.l0).mean()
 
         # Apply group lasso on feature acts
@@ -348,6 +371,39 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         # )  # L2 norm per expert, 'L1' sum over all experts
 
         return losses
+
+    def calculate_topk_aux_loss(
+        self,
+        sae_in: torch.Tensor,
+        sae_out: torch.Tensor,
+        z_pre_mask: torch.Tensor,  # (batch, n_experts, d_bottleneck) before TopK
+        dead_expert_mask: torch.Tensor,  # (n_experts,) bool
+    ) -> torch.Tensor:
+        if dead_expert_mask is None or (num_dead := int(dead_expert_mask.sum())) == 0:
+            return sae_out.new_tensor(0.0)
+
+        residual = (sae_in - sae_out).detach()
+
+        # Heuristic: use half of active experts as k_aux
+        k_aux = self.cfg.k_experts // 2
+        scale = min(num_dead / k_aux, 1.0)
+        k_aux = min(k_aux, num_dead)
+
+        # Select top-k_aux dead experts by bottleneck norm
+        expert_norms = z_pre_mask.norm(dim=-1)  # (batch, n_experts)
+        dead_norms = torch.where(dead_expert_mask[None], expert_norms, -torch.inf)
+        topk = dead_norms.topk(k_aux, dim=-1, sorted=False)
+
+        # Build sparse z with only selected dead experts
+        aux_mask = torch.zeros_like(expert_norms)
+        aux_mask.scatter_(1, topk.indices, 1.0)
+        z_aux = z_pre_mask * aux_mask.unsqueeze(-1)  # (batch, n_experts, d_bottleneck)
+
+        # Decode through full expert pipeline
+        recons = self.decode(z_aux)
+
+        auxk_loss = (recons - residual).pow(2).sum(dim=-1).mean()
+        return self.cfg.aux_loss_coefficient * scale * auxk_loss
 
     @torch.no_grad()
     def update_threshold(self, norms_topk: torch.Tensor) -> None:
@@ -360,7 +416,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
                 self.threshold = (1 - lr) * self.threshold + lr * min_positive
 
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
-        return nn.SiLU()
+        return nn.ReLU()
 
 
 def _init_weights_smixae(
