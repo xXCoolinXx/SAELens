@@ -68,6 +68,15 @@ class SMIXAE(SAE[SMIXAEConfig]):
             torch.tensor(0.0, dtype=torch.double, device=self.W_dec.device),
         )
 
+        # Dead expert tracker - remove this later, not used for inference
+        self.register_buffer(
+            "n_passes_since_fired",
+            torch.zeros(
+                self.cfg.n_experts,
+                dtype=torch.long,
+            ),
+        )
+
     @override
     def initialize_weights(self) -> None:
         # Initialize encoder weights and bias.
@@ -86,7 +95,7 @@ class SMIXAE(SAE[SMIXAEConfig]):
         # Process the input (including dtype conversion, hook call, and any activation normalization)
         _, _, z = smixae_encode(self, x)  # (batch, n_experts, d_bottleneck)
 
-        z_norm_mask = z.norm(dim=-1) > self.threshold  # (batch, n_experts) mask
+        z_norm_mask = z.norm(dim=-1) > self.threshold  # type: ignore # (batch, n_experts) mask
 
         z = z * z_norm_mask.unsqueeze(-1)  # Apply mask per bottelneck
 
@@ -197,11 +206,12 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         )
 
         # Dead expert tracker
-        self.n_passes_since_fired = torch.zeros(
-            self.cfg.n_experts,
-            dtype=torch.long,
-            device=self.W_dec.device,
-            requires_grad=False,
+        self.register_buffer(
+            "n_passes_since_fired",
+            torch.zeros(
+                self.cfg.n_experts,
+                dtype=torch.long,
+            ),
         )
 
     def initialize_weights(self) -> None:
