@@ -97,11 +97,12 @@ class SMIXAE(SAE[SMIXAEConfig]):
         """
         # Preprocess the SAE input (casting type, applying hooks, normalization)
         # Process the input (including dtype conversion, hook call, and any activation normalization)
-        _, _, z = smixae_encode(self, x)  # (batch, n_experts, d_bottleneck)
+        self.sae_in = self.process_sae_in(x)
+        _, _, z = smixae_encode(self, self.sae_in)  # (batch, n_experts, d_bottleneck)
 
-        z_norm_mask = z.norm(dim=-1) > self.threshold  # type: ignore # (batch, n_experts) mask
+        # z_norm_mask = z.norm(dim=-1) > self.threshold  # type: ignore # (batch, n_experts) mask
 
-        z = z * z_norm_mask.unsqueeze(-1)  # Apply mask per bottelneck
+        # z = z * z_norm_mask.unsqueeze(-1)  # Apply mask per bottelneck
 
         # sae_in = self.process_sae_in(x)
 
@@ -128,9 +129,12 @@ class SMIXAE(SAE[SMIXAEConfig]):
         Decode the feature activations back to the input space.
         Now, if hook_z reshaping is turned on, we reverse the flattening.
         """
-        sae_out_pre = torch.einsum("bnd,nde->bne", feature_acts, self.W_latent_dec)
-        sae_out_pre = sae_out_pre.flatten(-2, -1)
-        sae_out_pre = sae_out_pre @ self.W_dec  # + self.b_dec
+        # sae_out_pre = torch.einsum("bnd,nde->bne", feature_acts, self.W_latent_dec)
+        # sae_out_pre = sae_out_pre.flatten(-2, -1)
+        # sae_out_pre = sae_out_pre @ self.W_dec  # + self.b_dec
+        sae_out_pre, _ = matching_pursuit_decode(
+            feature_acts, self.sae_in, self, self.cfg.k_experts, 0, True, 128
+        )
 
         sae_out_pre = self.hook_sae_recons(sae_out_pre)
         sae_out_pre = self.run_time_activation_norm_fn_out(sae_out_pre)
@@ -234,7 +238,8 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     def encode_with_hidden_pre(
         self, x: torch.Tensor
     ) -> tuple[torch.Tensor, torch.Tensor]:
-        h, hidden_pre, z = smixae_encode(self, x)
+        self.sae_in = self.process_sae_in(x)
+        h, hidden_pre, z = smixae_encode(self, self.sae_in)
 
         # batch_norm_mask = self.batchtopk(z.norm(dim=-1)) > 0  # (batch_size, n_experts)
 
@@ -311,7 +316,6 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     ) -> TrainStepOutput:
         """Forward pass during training."""
         feature_acts, hidden_pre = self.encode_with_hidden_pre(step_input.sae_in)
-        self.sae_in = step_input.sae_in
         sae_out = self.decode(self.z)
 
         self.update_threshold(self.z.norm(dim=-1))
@@ -498,9 +502,9 @@ def _init_weights_smixae(
 
 
 def smixae_encode(
-    sae: SMIXAE | SMIXAETraining, x: torch.Tensor
+    sae: SMIXAE | SMIXAETraining, sae_in: torch.Tensor
 ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-    sae_in = sae.process_sae_in(x)
+    # sae_in = sae.process_sae_in(x)
 
     # StepGLU encoder gate
 
