@@ -12,7 +12,7 @@ from sae_lens import SAE
 # ============================================================
 MODEL_NAME = "gemma-2-2b"
 HOOK_NAME = "blocks.12.hook_resid_post"
-CHECKPOINT_PATH = "/scratch/Collin/SAELens/checkpoints/wq3gukf1/62500864"
+CHECKPOINT_PATH = "/scratch/Collin/SAELens/checkpoints/619m0oe0/final_250003456"  # "/scratch/Collin/SAELens/checkpoints/wq3gukf1/62500864"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 N_TEXTS = 1000
 SEQ_LEN = 128

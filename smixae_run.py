@@ -59,7 +59,7 @@ cfg = LanguageModelSAERunnerConfig(
     sae=SMIXAETrainingConfig(
         d_in=2304,  # d_in=768,  # For pythia and gpt2-small,
         n_experts=1024,  # Good amount of features, compare to Gemma Scope
-        d_expert=8,
+        d_expert=16,
         d_bottleneck=3,
         d_sae=8 * 512,  # this parameter is ignored
         # l0_coefficient=1.0,

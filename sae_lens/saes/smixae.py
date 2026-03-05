@@ -29,6 +29,7 @@ class SMIXAEConfig(SAEConfig):
     k_experts: int = 8
     d_bottleneck: int = 3
     b_gate_init: float = -0.1
+    rescale_acts_by_decoder_norm : bool = True
 
     # jump_relu_bandwidth: float = 0.05
     # jump_relu_init_threshold = 0.1
@@ -55,7 +56,7 @@ class SMIXAE(SAE[SMIXAEConfig]):
     including any error-term processing if configured.
     """
 
-    W_gate: nn.Parameter
+    # W_gate: nn.Parameter
     W_bottleneck: nn.Parameter
     W_latent_dec: nn.Parameter
     log_threshold: nn.Parameter
@@ -160,6 +161,7 @@ class SMIXAETrainingConfig(TrainingSAEConfig):
     k_experts: int = 8  # L0 = d_expert * k_experts
     aux_loss_coefficient: float = 1 / 32
     b_gate_init: float = -0.1
+    rescale_acts_by_decoder_norm : bool = True
     # expert_threshold: float = 0.1
 
     # jump_relu_bandwidth: float = 0.05
@@ -188,7 +190,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
 
     # b_enc: nn.Parameter
     # b_gate : nn.Parameter
-    W_gate: nn.Parameter
+    # W_gate: nn.Parameter
     b_gate: nn.Parameter
     W_bottleneck: nn.Parameter
     W_latent_dec: nn.Parameter
@@ -316,6 +318,10 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     ) -> TrainStepOutput:
         """Forward pass during training."""
         feature_acts, hidden_pre = self.encode_with_hidden_pre(step_input.sae_in)
+
+        if self.cfg.rescale_acts_by_decoder_norm:
+            
+
         sae_out = self.decode(self.z)
 
         self.update_threshold(self.z.norm(dim=-1))
@@ -452,14 +458,14 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
 def _init_weights_smixae(
     sae: SAE[SMIXAEConfig] | TrainingSAE[SMIXAETrainingConfig],
 ) -> None:
-    sae.W_gate = nn.Parameter(
-        torch.empty(
-            sae.cfg.d_in,
-            sae.cfg.n_experts * sae.cfg.d_expert,
-            dtype=sae.dtype,
-            device=sae.device,
-        )
-    )  # Same dim size but we reshape
+    # sae.W_gate = nn.Parameter(
+    #     torch.empty(
+    #         sae.cfg.d_in,
+    #         sae.cfg.n_experts * sae.cfg.d_expert,
+    #         dtype=sae.dtype,
+    #         device=sae.device,
+    #     )
+    # )  # Same dim size but we reshape
 
     # Add gate bias term to allow more expressivity - pre relu
     sae.b_gate = nn.Parameter(
@@ -509,9 +515,9 @@ def smixae_encode(
     # StepGLU encoder gate
 
     # Use step to decouple magnitude from existence
-    gate = sae.activation_fn(
-        sae_in @ sae.W_gate + sae.b_gate  # , sae.threshold, sae.cfg.jump_relu_bandwidth
-    )
+    # gate = sae.activation_fn(
+    #     sae_in @ sae.W_gate + sae.b_gate  # , sae.threshold, sae.cfg.jump_relu_bandwidth
+    # )
 
     # Save L0 to apply count loss later
     # l0 = torch.sum(gate, dim=-1)  # type: ignore
@@ -524,8 +530,8 @@ def smixae_encode(
     # l0 = expert_cost.sum(dim=-1)
 
     # Standard forward
-    hidden_pre = sae_in @ sae.W_enc
-    h = hidden_pre * gate  # type: ignore
+    hidden_pre = sae.activation_fn(sae_in @ sae.W_enc + sae.b_gate)  # Remove gate
+    h = hidden_pre  # * gate  # type: ignore
 
     h_unflattened = h.unflatten(-1, (sae.cfg.n_experts, sae.cfg.d_expert))
 
@@ -541,6 +547,12 @@ def smixae_encode(
     z = torch.einsum(
         "bne,ned->bnd", h_unflattened, sae.W_bottleneck
     )  # (batch_size, n_experts, d_bottelneck)
+
+    if sae.cfg.rescale_acts_by_decoder_norm:
+        norm = (sae.W_latent_dec @ sae.W_dec.view(sae.cfg.n_experts, sae.cfg.d_expert, -1)).norm(dim=-1)
+        z = z * norm
+
+        
 
     # expert_norms = self.z.norm(dim=-1)  # (batch, n_experts)
     # _, topk_idx = expert_norms.topk(self.cfg.k_experts, dim=-1)

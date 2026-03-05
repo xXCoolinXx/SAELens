@@ -9,6 +9,8 @@ to discover geometric structures (rings, lines, sheets, clusters).
 Uses multivariate Fisher score (trace(S_w^{-1} S_b)) to find experts that
 best separate feature classes in 3D bottleneck space.
 
+Uses matching pursuit mask for expert selection instead of norm thresholds.
+
 Inspired by "Shape Happens" (Tiblias et al., 2025) probing methodology.
 """
 
@@ -24,6 +26,7 @@ from plotly.subplots import make_subplots
 from transformer_lens import HookedTransformer
 
 from sae_lens import SAE
+from sae_lens.saes.smixae import matching_pursuit_decode
 
 # ============================================================
 # Config
@@ -31,8 +34,7 @@ from sae_lens import SAE
 MODEL_NAME = "gemma-2-2b"
 HOOK_NAME = "blocks.12.hook_resid_post"
 CHECKPOINT_PATH = (
-    "/scratch/Collin/SAELens/checkpoints/wq3gukf1/final_250003456"
-    # "/scratch/Collin/SAELens/checkpoints/apuvg3w9/final_250003456"  # UPDATE THIS
+    "/scratch/Collin/SAELens/checkpoints/619m0oe0/final_250003456"  # UPDATE THIS
 )
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 OUTPUT_DIR = Path("manifold_probing_results")
@@ -59,7 +61,6 @@ class ProbingTask:
 def build_probing_tasks() -> list[ProbingTask]:
     tasks = []
 
-    # --- Months of the year (expected: ring) ---
     months = [
         "January",
         "February",
@@ -95,7 +96,6 @@ def build_probing_tasks() -> list[ProbingTask]:
         )
     )
 
-    # --- Days of the week (expected: ring) ---
     days = [
         "Monday",
         "Tuesday",
@@ -126,7 +126,6 @@ def build_probing_tasks() -> list[ProbingTask]:
         )
     )
 
-    # --- Hours of the day (expected: ring) ---
     hours_str = [
         "1 AM",
         "2 AM",
@@ -172,7 +171,6 @@ def build_probing_tasks() -> list[ProbingTask]:
         )
     )
 
-    # --- Time durations / units (expected: line/plume) ---
     time_units = [
         "nanosecond",
         "microsecond",
@@ -207,7 +205,6 @@ def build_probing_tasks() -> list[ProbingTask]:
         )
     )
 
-    # --- Numbers 1-100 (expected: line or curve) ---
     numbers = [str(i) for i in range(1, 101)]
     tasks.append(
         ProbingTask(
@@ -227,7 +224,6 @@ def build_probing_tasks() -> list[ProbingTask]:
         )
     )
 
-    # --- Common first names (expected: clusters by gender/origin) ---
     names = [
         "James",
         "Mary",
@@ -285,7 +281,6 @@ def build_probing_tasks() -> list[ProbingTask]:
         )
     )
 
-    # --- Body parts (expected: sheet/spatial structure) ---
     body_parts = [
         "head",
         "forehead",
@@ -331,7 +326,6 @@ def build_probing_tasks() -> list[ProbingTask]:
         )
     )
 
-    # --- Colors (expected: ring or curve through color space) ---
     colors = [
         "red",
         "orange",
@@ -365,7 +359,6 @@ def build_probing_tasks() -> list[ProbingTask]:
         )
     )
 
-    # --- Compass directions (expected: ring) ---
     directions = [
         "north",
         "northeast",
@@ -394,7 +387,6 @@ def build_probing_tasks() -> list[ProbingTask]:
         )
     )
 
-    # --- Ordinal sizes (expected: line) ---
     sizes = [
         "microscopic",
         "tiny",
@@ -424,7 +416,6 @@ def build_probing_tasks() -> list[ProbingTask]:
         )
     )
 
-    # --- Temperatures (expected: line) ---
     temperatures = [
         "freezing",
         "cold",
@@ -453,7 +444,6 @@ def build_probing_tasks() -> list[ProbingTask]:
         )
     )
 
-    # --- Countries (expected: spatial/cluster structure) ---
     countries = [
         "France",
         "Germany",
@@ -563,7 +553,7 @@ def collect_activations(
         with torch.no_grad():
             _, cache = model.run_with_cache(tokens, names_filter=hook_name)
 
-        acts = cache[hook_name]  # (batch, seq, d_model)
+        acts = cache[hook_name]
 
         for i, ex in enumerate(batch):
             target_idx = min(ex.target_token_idx + 1, seq_len - 1)
@@ -573,20 +563,31 @@ def collect_activations(
 
 
 # ============================================================
-# 4. Run through SAE and extract bottleneck coordinates
+# 4. Run through SAE and extract bottleneck coordinates + MP mask
 # ============================================================
 def get_bottleneck_coords(
     sae: SAE, activations: torch.Tensor, batch_size: int = 256
-) -> np.ndarray:
+) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Returns:
+        z_np: (n_samples, n_experts, d_bottleneck) bottleneck coordinates
+        mp_mask: (n_samples, n_experts) bool mask of MP-selected experts
+    """
     all_z = []
+    all_masks = []
 
     for batch_start in range(0, len(activations), batch_size):
         batch = activations[batch_start : batch_start + batch_size].to(sae.device)
         with torch.no_grad():
             z = sae.encode(batch)
+            sae_in = sae.process_sae_in(batch)
+            _, mask = matching_pursuit_decode(
+                z, sae_in, sae, sae.cfg.k_experts, 0, True, 128
+            )
         all_z.append(z.cpu().numpy())
+        all_masks.append(mask.cpu().numpy())
 
-    return np.concatenate(all_z, axis=0)
+    return np.concatenate(all_z, axis=0), np.concatenate(all_masks, axis=0)
 
 
 # ============================================================
@@ -617,18 +618,15 @@ def fisher_score_multivariate(
         mean_c = z_c.mean(axis=0)
         n_c = len(z_c)
 
-        # Within-class scatter
         diff = z_c - mean_c
         S_w += diff.T @ diff
 
-        # Between-class scatter
         d_vec = (mean_c - overall_mean).reshape(-1, 1)
         S_b += n_c * (d_vec @ d_vec.T)
 
     if classes_present < 3:
         return 0.0
 
-    # Regularize S_w
     S_w += np.eye(d) * 1e-6
 
     return float(np.trace(np.linalg.solve(S_w, S_b)))
@@ -636,13 +634,14 @@ def fisher_score_multivariate(
 
 def find_responsive_experts(
     z_np: np.ndarray,
+    mp_mask: np.ndarray,
     examples: list[ProbingExample],
     task: ProbingTask,
     n_experts: int = 25,
 ) -> tuple[np.ndarray, np.ndarray]:
     """
     Find experts whose 3D bottleneck best separates feature classes
-    using multivariate Fisher score.
+    using multivariate Fisher score. Uses MP mask for active/inactive.
 
     Returns (top_expert_ids, all_scores).
     """
@@ -654,8 +653,7 @@ def find_responsive_experts(
     scores = np.zeros(n_exp)
 
     for expert_id in range(n_exp):
-        norms = np.linalg.norm(z_np[:, expert_id, :], axis=-1)
-        active = norms > 1e-3
+        active = mp_mask[:, expert_id]
 
         if active.sum() < 10:
             continue
@@ -686,6 +684,7 @@ def plot_task_experts(
     expert_ids: np.ndarray,
     fisher_scores: np.ndarray,
     z_np: np.ndarray,
+    mp_mask: np.ndarray,
     examples: list[ProbingExample],
     activation_freq: np.ndarray,
     mean_norm_per_expert: np.ndarray,
@@ -717,8 +716,7 @@ def plot_task_experts(
         row = idx // cols + 1
         col = idx % cols + 1
 
-        norms = np.linalg.norm(z_np[:, expert_id, :], axis=-1)
-        active = norms > 1e-3
+        active = mp_mask[:, expert_id]
         n_active = active.sum()
 
         if n_active < 5:
@@ -799,6 +797,7 @@ def plot_task_single_expert_labeled(
     expert_id: int,
     fisher_score: float,
     z_np: np.ndarray,
+    mp_mask: np.ndarray,
     examples: list[ProbingExample],
     output_dir: Path,
 ):
@@ -812,8 +811,7 @@ def plot_task_single_expert_labeled(
     for feat_idx, value in enumerate(task.feature_values):
         indices = feature_to_indices[value]
         z_feat = z_np[indices, expert_id, :]
-        norms = np.linalg.norm(z_feat, axis=-1)
-        active = norms > 1e-3
+        active = mp_mask[indices, expert_id]
 
         if active.sum() < 1:
             continue
@@ -881,8 +879,7 @@ def plot_task_single_expert_labeled(
         for feat_idx, value in enumerate(task.feature_values):
             indices = feature_to_indices[value]
             z_feat = z_np[indices, expert_id, :]
-            norms = np.linalg.norm(z_feat, axis=-1)
-            active = norms > 1e-3
+            active = mp_mask[indices, expert_id]
             if active.sum() >= 1:
                 ordered_means.append(z_feat[active].mean(axis=0))
 
@@ -924,6 +921,7 @@ def compute_task_summary(
     expert_ids: np.ndarray,
     fisher_scores: np.ndarray,
     z_np: np.ndarray,
+    mp_mask: np.ndarray,
     examples: list[ProbingExample],
 ) -> dict:
     feature_to_indices = defaultdict(list)
@@ -932,17 +930,16 @@ def compute_task_summary(
 
     summaries = []
     for expert_id in expert_ids:
-        norms = np.linalg.norm(z_np[:, expert_id, :], axis=-1)
-        active_frac = (norms > 1e-3).mean()
+        active_frac = mp_mask[:, expert_id].mean()
 
         mean_positions = []
         active_values = []
         for value in task.feature_values:
             indices = feature_to_indices[value]
             z_feat = z_np[indices, expert_id, :]
-            active_mask = np.linalg.norm(z_feat, axis=-1) > 1e-3
-            if active_mask.sum() > 0:
-                mean_positions.append(z_feat[active_mask].mean(axis=0))
+            active = mp_mask[indices, expert_id]
+            if active.sum() > 0:
+                mean_positions.append(z_feat[active].mean(axis=0))
                 active_values.append(value)
 
         if len(mean_positions) < 3:
@@ -966,24 +963,26 @@ def compute_task_summary(
             intrinsic_dim = 0
             explained = np.zeros(3)
 
-        # Cyclic score: is end close to start relative to mean step?
+        # Cyclic score
         cyclic_score = 0.0
         if task.cyclic and len(mean_positions) >= 4:
             step_distances = np.linalg.norm(np.diff(mean_positions, axis=0), axis=-1)
             mean_step = step_distances.mean()
             close_distance = np.linalg.norm(mean_positions[-1] - mean_positions[0])
             if mean_step > 0:
-                # Ratio: close_distance / mean_step. <1 means cyclic.
                 cyclic_score = 1.0 - min(close_distance / (mean_step * 2), 1.0)
+
+        # Mean norm of selected activations
+        active_all = mp_mask[:, expert_id]
+        norms = np.linalg.norm(z_np[:, expert_id, :], axis=-1)
+        mean_norm = float(norms[active_all].mean()) if active_all.any() else 0.0
 
         summaries.append(
             {
                 "expert_id": int(expert_id),
                 "fisher_score": float(fisher_scores[expert_id]),
                 "activation_freq": float(active_frac),
-                "mean_norm": float(norms[norms > 1e-3].mean())
-                if (norms > 1e-3).any()
-                else 0,
+                "mean_norm": mean_norm,
                 "intrinsic_dim": intrinsic_dim,
                 "pca_explained_variance": [float(e) for e in explained[:3]],
                 "n_feature_values_active": len(mean_positions),
@@ -1007,7 +1006,7 @@ def compute_task_summary(
 # ============================================================
 def main():
     print("=" * 60)
-    print("Manifold Probing for SMIXAE (Fisher Score)")
+    print("Manifold Probing for SMIXAE (Fisher Score + MP Mask)")
     print("=" * 60)
 
     # Load model
@@ -1045,20 +1044,23 @@ def main():
         activations = collect_activations(model, examples, HOOK_NAME)
         print(f"Activations shape: {activations.shape}")
 
-        # Run through SAE
-        print("Encoding through SAE...")
-        z_np = get_bottleneck_coords(sae, activations)
+        # Run through SAE + MP
+        print("Encoding through SAE + matching pursuit...")
+        z_np, mp_mask = get_bottleneck_coords(sae, activations)
         print(f"Bottleneck coords shape: {z_np.shape}")
+        print(
+            f"MP mask shape: {mp_mask.shape}, mean experts selected: {mp_mask.sum(axis=1).mean():.1f}"
+        )
 
-        # Compute expert stats
+        # Compute expert stats from MP mask
+        activation_freq = mp_mask.mean(axis=0)
         expert_norms = np.linalg.norm(z_np, axis=-1)
-        activation_freq = (expert_norms > 1e-3).mean(axis=0)
         mean_norm_per_expert = expert_norms.mean(axis=0)
 
-        # Find responsive experts via Fisher score
+        # Find responsive experts via Fisher score with MP mask
         print("Computing Fisher scores...")
         top_experts, fisher_scores = find_responsive_experts(
-            z_np, examples, task, n_experts=N_EXPERTS_TO_PLOT
+            z_np, mp_mask, examples, task, n_experts=N_EXPERTS_TO_PLOT
         )
 
         print("Top 5 experts by Fisher score:")
@@ -1075,6 +1077,7 @@ def main():
             expert_ids=top_experts,
             fisher_scores=fisher_scores,
             z_np=z_np,
+            mp_mask=mp_mask,
             examples=examples,
             activation_freq=activation_freq,
             mean_norm_per_expert=mean_norm_per_expert,
@@ -1088,12 +1091,15 @@ def main():
                 expert_id=eid,
                 fisher_score=fisher_scores[eid],
                 z_np=z_np,
+                mp_mask=mp_mask,
                 examples=examples,
                 output_dir=OUTPUT_DIR,
             )
 
         # Compute summary
-        summary = compute_task_summary(task, top_experts, fisher_scores, z_np, examples)
+        summary = compute_task_summary(
+            task, top_experts, fisher_scores, z_np, mp_mask, examples
+        )
         all_summaries.append(summary)
 
         # Print quick stats
