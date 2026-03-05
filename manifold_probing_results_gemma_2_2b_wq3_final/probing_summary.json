@@ -1,0 +1,4322 @@
+[
+  {
+    "task": "months",
+    "description": "Months of the year - expected ring/circle",
+    "n_feature_values": 12,
+    "n_templates": 8,
+    "n_examples": 96,
+    "cyclic": true,
+    "expert_summaries": [
+      {
+        "expert_id": 949,
+        "fisher_score": 64.02309229659613,
+        "activation_freq": 0.15625,
+        "mean_norm": 12.65182876586914,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9995096781325384,
+          0.0004484155642572189,
+          4.190630320429536e-05
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 926,
+        "fisher_score": 20.42564590024396,
+        "activation_freq": 0.20833333333333334,
+        "mean_norm": 7.119227409362793,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9873197079224495,
+          0.012068594248640289,
+          0.0006116978289103424
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 241,
+        "fisher_score": 13.749830934819556,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 8.075675964355469,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7893198980564525,
+          0.21039737556867052,
+          0.00028272637487699296
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.41999511336681217
+      },
+      {
+        "expert_id": 398,
+        "fisher_score": 10.933066475735739,
+        "activation_freq": 0.1875,
+        "mean_norm": 7.142148971557617,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9479058304252056,
+          0.04606682071976198,
+          0.006027348855032341
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 433,
+        "fisher_score": 8.162285533791048,
+        "activation_freq": 0.14583333333333334,
+        "mean_norm": 6.312254428863525,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9000668136288624,
+          0.07657310834916571,
+          0.023360078021971865
+        ],
+        "n_feature_values_active": 11,
+        "cyclic_score": 0.5148406246932193
+      },
+      {
+        "expert_id": 28,
+        "fisher_score": 8.032391743581385,
+        "activation_freq": 0.25,
+        "mean_norm": 12.156272888183594,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9237298539746667,
+          0.06988642868316514,
+          0.006383717342168147
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.5499848189748384
+      },
+      {
+        "expert_id": 660,
+        "fisher_score": 7.009201551198856,
+        "activation_freq": 0.23958333333333334,
+        "mean_norm": 8.993560791015625,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.978807268275864,
+          0.014194349407461677,
+          0.006998382316674419
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.6670250976124705
+      },
+      {
+        "expert_id": 679,
+        "fisher_score": 6.764371015262068,
+        "activation_freq": 0.21875,
+        "mean_norm": 7.259762763977051,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8770886264754325,
+          0.10572896978268782,
+          0.017182403741879643
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.6245689565433684
+      },
+      {
+        "expert_id": 356,
+        "fisher_score": 6.561853685939149,
+        "activation_freq": 0.1875,
+        "mean_norm": 8.208562850952148,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9579207513825054,
+          0.03959595646520425,
+          0.0024832921522902375
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.5309794108725193
+      },
+      {
+        "expert_id": 193,
+        "fisher_score": 6.514903753357187,
+        "activation_freq": 0.21875,
+        "mean_norm": 7.261397361755371,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7547667578078895,
+          0.19848562696108357,
+          0.04674761523102691
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 889,
+        "fisher_score": 6.459022575953296,
+        "activation_freq": 0.15625,
+        "mean_norm": 6.778026103973389,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9091197268063385,
+          0.05702159334636696,
+          0.03385867984729457
+        ],
+        "n_feature_values_active": 11,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 940,
+        "fisher_score": 6.155157413179066,
+        "activation_freq": 0.22916666666666666,
+        "mean_norm": 7.812088489532471,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8057265266016703,
+          0.18177815202476608,
+          0.012495321373563498
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 407,
+        "fisher_score": 5.880487041286436,
+        "activation_freq": 0.1875,
+        "mean_norm": 10.15053653717041,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9922989361879561,
+          0.007103428244402495,
+          0.0005976355676414163
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.40518691402228135
+      },
+      {
+        "expert_id": 967,
+        "fisher_score": 5.753149181731735,
+        "activation_freq": 0.19791666666666666,
+        "mean_norm": 10.236225128173828,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.999497181253242,
+          0.0004938370092232927,
+          8.98173753472286e-06
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 72,
+        "fisher_score": 5.36913023943927,
+        "activation_freq": 0.23958333333333334,
+        "mean_norm": 7.338242053985596,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9964451645325837,
+          0.003478224182811969,
+          7.661128460434178e-05
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 820,
+        "fisher_score": 5.072923274443443,
+        "activation_freq": 0.25,
+        "mean_norm": 8.160956382751465,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9994656348547636,
+          0.0004813829784383552,
+          5.298216679806606e-05
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.2130254217457298
+      },
+      {
+        "expert_id": 0,
+        "fisher_score": 4.740564474603659,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 8.858283996582031,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9989743482928118,
+          0.0009903087641454774,
+          3.534294304281745e-05
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.9042850531796829
+      },
+      {
+        "expert_id": 776,
+        "fisher_score": 4.451434580174917,
+        "activation_freq": 0.25,
+        "mean_norm": 6.536903381347656,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9719454712535168,
+          0.02285937193809985,
+          0.005195156808383389
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.9312874545628049
+      },
+      {
+        "expert_id": 939,
+        "fisher_score": 4.44244674143217,
+        "activation_freq": 0.17708333333333334,
+        "mean_norm": 6.627496242523193,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.767683206455438,
+          0.23077327996735794,
+          0.0015435135772041166
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.36542715706198814
+      },
+      {
+        "expert_id": 307,
+        "fisher_score": 4.3892477279248725,
+        "activation_freq": 0.25,
+        "mean_norm": 8.291108131408691,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9821257037362858,
+          0.01736659307567239,
+          0.0005077031880418043
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.6644950385943722
+      },
+      {
+        "expert_id": 7,
+        "fisher_score": 4.258038679489716,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 6.613473892211914,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7607942354050239,
+          0.20588464578353388,
+          0.033321118811442244
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.39204844802445316
+      },
+      {
+        "expert_id": 1014,
+        "fisher_score": 4.116410348259318,
+        "activation_freq": 0.23958333333333334,
+        "mean_norm": 8.363724708557129,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.994533667977309,
+          0.004339663016906002,
+          0.0011266690057849039
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 978,
+        "fisher_score": 4.026225633384789,
+        "activation_freq": 0.21875,
+        "mean_norm": 6.81247615814209,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7979370924491554,
+          0.1783023468149545,
+          0.023760560735890127
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 448,
+        "fisher_score": 3.960456272333409,
+        "activation_freq": 0.25,
+        "mean_norm": 9.388707160949707,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8747489188011903,
+          0.08503960201505399,
+          0.04021147918375565
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 476,
+        "fisher_score": 3.906655760442253,
+        "activation_freq": 0.25,
+        "mean_norm": 11.522430419921875,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9617189591873002,
+          0.03733160474026843,
+          0.0009494360724313167
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.7648314266439531
+      }
+    ]
+  },
+  {
+    "task": "days_of_week",
+    "description": "Days of the week - expected ring/circle",
+    "n_feature_values": 7,
+    "n_templates": 8,
+    "n_examples": 56,
+    "cyclic": true,
+    "expert_summaries": [
+      {
+        "expert_id": 490,
+        "fisher_score": 859.9018382637205,
+        "activation_freq": 0.17857142857142858,
+        "mean_norm": 7.112953186035156,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.823447500239797,
+          0.1757433468042927,
+          0.000809152955910338
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.2933968938776822
+      },
+      {
+        "expert_id": 978,
+        "fisher_score": 375.6493887372899,
+        "activation_freq": 0.17857142857142858,
+        "mean_norm": 7.06830358505249,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9944767528551726,
+          0.00546507941503835,
+          5.816772978902281e-05
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.8266387170737665
+      },
+      {
+        "expert_id": 176,
+        "fisher_score": 208.88788770194674,
+        "activation_freq": 0.19642857142857142,
+        "mean_norm": 7.657416820526123,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9904545661396368,
+          0.009274933697159706,
+          0.00027050016320360505
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.8969612238934689
+      },
+      {
+        "expert_id": 416,
+        "fisher_score": 83.1747640488411,
+        "activation_freq": 0.17857142857142858,
+        "mean_norm": 9.290417671203613,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9297368558233443,
+          0.07015747937019959,
+          0.00010566480645600762
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.40368733425630865
+      },
+      {
+        "expert_id": 7,
+        "fisher_score": 22.81030290559879,
+        "activation_freq": 0.19642857142857142,
+        "mean_norm": 6.977039813995361,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9972163193825901,
+          0.0021011678710278047,
+          0.0006825127463821637
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 133,
+        "fisher_score": 22.557850873039385,
+        "activation_freq": 0.17857142857142858,
+        "mean_norm": 6.9245147705078125,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8943422182568006,
+          0.07857850561117316,
+          0.02707927613202622
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 333,
+        "fisher_score": 20.82924882943709,
+        "activation_freq": 0.25,
+        "mean_norm": 10.010293960571289,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9968338458534666,
+          0.0031225168672584153,
+          4.363727927515454e-05
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 1007,
+        "fisher_score": 20.099032156922355,
+        "activation_freq": 0.19642857142857142,
+        "mean_norm": 6.35867166519165,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9152819476299687,
+          0.060817475602003755,
+          0.023900576768027395
+        ],
+        "n_feature_values_active": 6,
+        "cyclic_score": 0.5554712396229706
+      },
+      {
+        "expert_id": 1,
+        "fisher_score": 17.650880836801804,
+        "activation_freq": 0.25,
+        "mean_norm": 9.415586471557617,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.744583357638459,
+          0.2518901462504059,
+          0.003526496111135129
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.45118215722899835
+      },
+      {
+        "expert_id": 123,
+        "fisher_score": 16.91645174550027,
+        "activation_freq": 0.21428571428571427,
+        "mean_norm": 8.186485290527344,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.802066646941086,
+          0.1906043214113335,
+          0.007329031647580541
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.1760096745646077
+      },
+      {
+        "expert_id": 321,
+        "fisher_score": 11.783736030083404,
+        "activation_freq": 0.19642857142857142,
+        "mean_norm": 9.459428787231445,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9977966655562835,
+          0.0021882937718549116,
+          1.5040671861622248e-05
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.7176424221376632
+      },
+      {
+        "expert_id": 246,
+        "fisher_score": 11.322700550659286,
+        "activation_freq": 0.21428571428571427,
+        "mean_norm": 6.682581424713135,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9267955716585313,
+          0.06519665227939951,
+          0.008007776062069295
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.7558975865527047
+      },
+      {
+        "expert_id": 226,
+        "fisher_score": 10.384338509044944,
+        "activation_freq": 0.19642857142857142,
+        "mean_norm": 6.405072212219238,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8667130503298347,
+          0.13220484495963922,
+          0.0010821047105261342
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.7726352162676967
+      },
+      {
+        "expert_id": 851,
+        "fisher_score": 8.881425475654524,
+        "activation_freq": 0.25,
+        "mean_norm": 7.6606621742248535,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7671792674836776,
+          0.2317182800973336,
+          0.001102452418988637
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.7955653876399099
+      },
+      {
+        "expert_id": 939,
+        "fisher_score": 8.795130689288406,
+        "activation_freq": 0.25,
+        "mean_norm": 6.8721137046813965,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8803674454793252,
+          0.11914122078627994,
+          0.0004913337343948964
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.4673639285443778
+      },
+      {
+        "expert_id": 935,
+        "fisher_score": 8.749751437040203,
+        "activation_freq": 0.17857142857142858,
+        "mean_norm": 10.064058303833008,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9984620304320225,
+          0.001514831749411791,
+          2.3137818565628924e-05
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 1010,
+        "fisher_score": 8.007565638983078,
+        "activation_freq": 0.17857142857142858,
+        "mean_norm": 6.9763383865356445,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.991352628566366,
+          0.008498048271671735,
+          0.0001493231619623808
+        ],
+        "n_feature_values_active": 6,
+        "cyclic_score": 0.3079811141873525
+      },
+      {
+        "expert_id": 530,
+        "fisher_score": 7.394392811343397,
+        "activation_freq": 0.19642857142857142,
+        "mean_norm": 10.494675636291504,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7850005779658008,
+          0.18706046298948892,
+          0.027938959044710263
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.5623134821430043
+      },
+      {
+        "expert_id": 951,
+        "fisher_score": 7.38815096017099,
+        "activation_freq": 0.17857142857142858,
+        "mean_norm": 6.730812072753906,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7854036439512564,
+          0.1925724539264702,
+          0.02202390212227345
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 27,
+        "fisher_score": 5.484594118535409,
+        "activation_freq": 0.23214285714285715,
+        "mean_norm": 7.5416789054870605,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9357371945080669,
+          0.050712579441331944,
+          0.013550226050601176
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.15612113138911898
+      },
+      {
+        "expert_id": 306,
+        "fisher_score": 5.476865751389643,
+        "activation_freq": 0.21428571428571427,
+        "mean_norm": 7.469632625579834,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9610056952221929,
+          0.037804807328687844,
+          0.0011894974491191924
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.11709814579575761
+      },
+      {
+        "expert_id": 245,
+        "fisher_score": 5.443840752556456,
+        "activation_freq": 0.25,
+        "mean_norm": 8.992527961730957,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8980959209547084,
+          0.08744690030359667,
+          0.014457178741694901
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 307,
+        "fisher_score": 5.047274895159621,
+        "activation_freq": 0.25,
+        "mean_norm": 7.1446638107299805,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9955942418534045,
+          0.004392812085293805,
+          1.2946061301646169e-05
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.7477791887612051
+      },
+      {
+        "expert_id": 760,
+        "fisher_score": 4.527869582185151,
+        "activation_freq": 0.26785714285714285,
+        "mean_norm": 13.313580513000488,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6569758924941065,
+          0.34280205135114067,
+          0.00022205615475291964
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.6741791873936653
+      },
+      {
+        "expert_id": 237,
+        "fisher_score": 4.369426174037544,
+        "activation_freq": 0.25,
+        "mean_norm": 8.090627670288086,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.903923452397098,
+          0.09500644219194024,
+          0.0010701054109617586
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      }
+    ]
+  },
+  {
+    "task": "hours",
+    "description": "Hours of the day - expected ring/circle",
+    "n_feature_values": 24,
+    "n_templates": 6,
+    "n_examples": 144,
+    "cyclic": true,
+    "expert_summaries": [
+      {
+        "expert_id": 0,
+        "fisher_score": 3765.4088702439503,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 8.326456069946289,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9780385982713796,
+          0.02053406553576958,
+          0.0014273361928508698
+        ],
+        "n_feature_values_active": 21,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 436,
+        "fisher_score": 3708.5527608768934,
+        "activation_freq": 0.13194444444444445,
+        "mean_norm": 6.438509464263916,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9111607426949901,
+          0.08581246038148706,
+          0.003026796923522843
+        ],
+        "n_feature_values_active": 15,
+        "cyclic_score": 0.667444830324406
+      },
+      {
+        "expert_id": 981,
+        "fisher_score": 1978.4992689758583,
+        "activation_freq": 0.09027777777777778,
+        "mean_norm": 7.244844913482666,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.996889175374736,
+          0.0030944552824020374,
+          1.636934286194441e-05
+        ],
+        "n_feature_values_active": 10,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 936,
+        "fisher_score": 103.82674383691632,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 9.448067665100098,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9914516138902703,
+          0.0076962447395228905,
+          0.0008521413702068562
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 1014,
+        "fisher_score": 79.79235429196939,
+        "activation_freq": 0.2361111111111111,
+        "mean_norm": 8.075427055358887,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9959637094837653,
+          0.003795961930400093,
+          0.00024032858583445389
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 441,
+        "fisher_score": 73.81255267445235,
+        "activation_freq": 0.2013888888888889,
+        "mean_norm": 6.492013454437256,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.584810113835646,
+          0.38026622691496476,
+          0.03492365924938914
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.3396438484554196
+      },
+      {
+        "expert_id": 28,
+        "fisher_score": 60.67119626971695,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 7.629627704620361,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9007871082575376,
+          0.08963297245758789,
+          0.009579919284874545
+        ],
+        "n_feature_values_active": 18,
+        "cyclic_score": 0.810167418961521
+      },
+      {
+        "expert_id": 882,
+        "fisher_score": 56.25513169067233,
+        "activation_freq": 0.125,
+        "mean_norm": 7.042614459991455,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9247657248266795,
+          0.07427427158668172,
+          0.0009600035866388824
+        ],
+        "n_feature_values_active": 15,
+        "cyclic_score": 0.43572340085502936
+      },
+      {
+        "expert_id": 419,
+        "fisher_score": 37.783750019019564,
+        "activation_freq": 0.19444444444444445,
+        "mean_norm": 7.265315532684326,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7818670474165575,
+          0.2145970067300063,
+          0.003535945853436219
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 386,
+        "fisher_score": 35.19761381320865,
+        "activation_freq": 0.18055555555555555,
+        "mean_norm": 8.304012298583984,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7762513131359066,
+          0.22249484942892367,
+          0.001253837435169841
+        ],
+        "n_feature_values_active": 21,
+        "cyclic_score": 0.440716435332423
+      },
+      {
+        "expert_id": 918,
+        "fisher_score": 25.39128018450091,
+        "activation_freq": 0.2777777777777778,
+        "mean_norm": 11.272348403930664,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.98696605868285,
+          0.01261892170368519,
+          0.0004150196134647141
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.7845307296327293
+      },
+      {
+        "expert_id": 61,
+        "fisher_score": 24.028595648733322,
+        "activation_freq": 0.06944444444444445,
+        "mean_norm": 7.274112701416016,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6386640272992475,
+          0.35474699409203453,
+          0.006588978608717933
+        ],
+        "n_feature_values_active": 6,
+        "cyclic_score": 0.412663676779048
+      },
+      {
+        "expert_id": 309,
+        "fisher_score": 22.571391564616206,
+        "activation_freq": 0.125,
+        "mean_norm": 6.951225280761719,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9063989500351725,
+          0.09098588963294756,
+          0.00261516033188
+        ],
+        "n_feature_values_active": 15,
+        "cyclic_score": 0.4306456438537978
+      },
+      {
+        "expert_id": 221,
+        "fisher_score": 20.063945544390908,
+        "activation_freq": 0.1875,
+        "mean_norm": 6.576245307922363,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8389276916727328,
+          0.12109658737588928,
+          0.039975720951377865
+        ],
+        "n_feature_values_active": 16,
+        "cyclic_score": 0.14409021387941756
+      },
+      {
+        "expert_id": 892,
+        "fisher_score": 19.67785972623394,
+        "activation_freq": 0.20833333333333334,
+        "mean_norm": 6.597794532775879,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7793193352208078,
+          0.21416995489800267,
+          0.006510709881189589
+        ],
+        "n_feature_values_active": 22,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 680,
+        "fisher_score": 19.043502858945985,
+        "activation_freq": 0.08333333333333333,
+        "mean_norm": 6.244470596313477,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9359202076036167,
+          0.05795803915930597,
+          0.006121753237077162
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.07029710178142434
+      },
+      {
+        "expert_id": 940,
+        "fisher_score": 18.07026974949652,
+        "activation_freq": 0.19444444444444445,
+        "mean_norm": 7.406976222991943,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9211148778741394,
+          0.06519622886109472,
+          0.013688893264765913
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 827,
+        "fisher_score": 16.066100844169213,
+        "activation_freq": 0.2013888888888889,
+        "mean_norm": 10.12256908416748,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9833678910688377,
+          0.013002258335467257,
+          0.0036298505956949894
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.7506797203334883
+      },
+      {
+        "expert_id": 382,
+        "fisher_score": 15.36621672499235,
+        "activation_freq": 0.3333333333333333,
+        "mean_norm": 7.630758285522461,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9929422194642477,
+          0.0036080505231957925,
+          0.003449730012556547
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 381,
+        "fisher_score": 15.079002798079351,
+        "activation_freq": 0.2152777777777778,
+        "mean_norm": 6.593197822570801,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8216939691975057,
+          0.1749303751605619,
+          0.0033756556419323957
+        ],
+        "n_feature_values_active": 23,
+        "cyclic_score": 0.43962851214454535
+      },
+      {
+        "expert_id": 862,
+        "fisher_score": 14.616165683941189,
+        "activation_freq": 0.09722222222222222,
+        "mean_norm": 6.606576442718506,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7792180461645009,
+          0.21662413165448094,
+          0.004157822181018355
+        ],
+        "n_feature_values_active": 11,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 1022,
+        "fisher_score": 13.652500090645027,
+        "activation_freq": 0.3125,
+        "mean_norm": 8.083952903747559,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9785339846353814,
+          0.020415475829797993,
+          0.001050539534820489
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.6623710455847959
+      },
+      {
+        "expert_id": 868,
+        "fisher_score": 12.7337869821529,
+        "activation_freq": 0.2222222222222222,
+        "mean_norm": 6.744464874267578,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8321500490015294,
+          0.14025370813796809,
+          0.027596242860502513
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.33597806880936054
+      },
+      {
+        "expert_id": 72,
+        "fisher_score": 10.036634950202927,
+        "activation_freq": 0.2916666666666667,
+        "mean_norm": 7.426680088043213,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9873872209491424,
+          0.01229374144332668,
+          0.00031903760753077616
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.9474745792691769
+      },
+      {
+        "expert_id": 672,
+        "fisher_score": 9.431496109796607,
+        "activation_freq": 0.2152777777777778,
+        "mean_norm": 6.8928937911987305,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.815676821305033,
+          0.178860576728581,
+          0.005462601966385835
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.7626747334495689
+      }
+    ]
+  },
+  {
+    "task": "time_units",
+    "description": "Time duration units - expected line/plume (log scale)",
+    "n_feature_values": 13,
+    "n_templates": 6,
+    "n_examples": 78,
+    "cyclic": false,
+    "expert_summaries": [
+      {
+        "expert_id": 439,
+        "fisher_score": 324.52749795271563,
+        "activation_freq": 0.19230769230769232,
+        "mean_norm": 7.749955654144287,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9835395280869207,
+          0.01598599976120563,
+          0.00047447215187364266
+        ],
+        "n_feature_values_active": 11,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 887,
+        "fisher_score": 201.81146794585857,
+        "activation_freq": 0.20512820512820512,
+        "mean_norm": 10.189011573791504,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8004452596696818,
+          0.19853872905357517,
+          0.0010160112767429895
+        ],
+        "n_feature_values_active": 13,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 652,
+        "fisher_score": 163.0940595128295,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 6.99787712097168,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8774250403004639,
+          0.09579315346451844,
+          0.02678180623501757
+        ],
+        "n_feature_values_active": 10,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 334,
+        "fisher_score": 158.60261215028675,
+        "activation_freq": 0.21794871794871795,
+        "mean_norm": 9.109631538391113,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9945039331602564,
+          0.004953071356837825,
+          0.0005429954829057677
+        ],
+        "n_feature_values_active": 13,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 91,
+        "fisher_score": 101.01585955816817,
+        "activation_freq": 0.24358974358974358,
+        "mean_norm": 8.102232933044434,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9912540308492147,
+          0.008580677516234692,
+          0.0001652916345506073
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 578,
+        "fisher_score": 86.32467127537566,
+        "activation_freq": 0.2948717948717949,
+        "mean_norm": 8.851755142211914,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9844027826122055,
+          0.01478676370388677,
+          0.0008104536839078966
+        ],
+        "n_feature_values_active": 13,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 960,
+        "fisher_score": 79.85164140581021,
+        "activation_freq": 0.1794871794871795,
+        "mean_norm": 9.151721000671387,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8709217081578656,
+          0.12450133834742191,
+          0.004576953494712343
+        ],
+        "n_feature_values_active": 11,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 851,
+        "fisher_score": 66.72225139016254,
+        "activation_freq": 0.19230769230769232,
+        "mean_norm": 10.833720207214355,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8424128499605673,
+          0.15543767374392384,
+          0.002149476295508903
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 755,
+        "fisher_score": 44.92979799136621,
+        "activation_freq": 0.19230769230769232,
+        "mean_norm": 10.408842086791992,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9972687671514767,
+          0.0019030929811906354,
+          0.0008281398673327142
+        ],
+        "n_feature_values_active": 11,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 233,
+        "fisher_score": 41.478586432024116,
+        "activation_freq": 0.14102564102564102,
+        "mean_norm": 6.828260898590088,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.822147879253709,
+          0.16980187785662976,
+          0.008050242889661254
+        ],
+        "n_feature_values_active": 6,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 249,
+        "fisher_score": 41.39447559653094,
+        "activation_freq": 0.15384615384615385,
+        "mean_norm": 12.0945463180542,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9735522883899429,
+          0.01601881413376032,
+          0.010428897476296821
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 408,
+        "fisher_score": 39.80696285044621,
+        "activation_freq": 0.1282051282051282,
+        "mean_norm": 7.387957572937012,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6819689850358565,
+          0.3174628611574828,
+          0.0005681538066606874
+        ],
+        "n_feature_values_active": 6,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 918,
+        "fisher_score": 38.81058875255067,
+        "activation_freq": 0.24358974358974358,
+        "mean_norm": 9.95752239227295,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9894245794076477,
+          0.00953406407166356,
+          0.0010413565206886341
+        ],
+        "n_feature_values_active": 13,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 304,
+        "fisher_score": 28.50157491386104,
+        "activation_freq": 0.34615384615384615,
+        "mean_norm": 7.562624454498291,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9875114796024987,
+          0.011686439464587103,
+          0.0008020809329141325
+        ],
+        "n_feature_values_active": 11,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 136,
+        "fisher_score": 26.682716131003872,
+        "activation_freq": 0.1282051282051282,
+        "mean_norm": 8.79707145690918,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8258751705779462,
+          0.17410701089608954,
+          1.7818525964237256e-05
+        ],
+        "n_feature_values_active": 4,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 147,
+        "fisher_score": 26.401554025065217,
+        "activation_freq": 0.19230769230769232,
+        "mean_norm": 7.9474263191223145,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9734603180039809,
+          0.02594828956627699,
+          0.0005913924297420223
+        ],
+        "n_feature_values_active": 10,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 878,
+        "fisher_score": 26.17661491732912,
+        "activation_freq": 0.15384615384615385,
+        "mean_norm": 6.871432781219482,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9662582886235862,
+          0.033406340406823574,
+          0.00033537096959028304
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 615,
+        "fisher_score": 21.179164003259714,
+        "activation_freq": 0.19230769230769232,
+        "mean_norm": 7.7461371421813965,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9205422957543316,
+          0.07906038939548247,
+          0.000397314850185832
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 83,
+        "fisher_score": 20.768546212834572,
+        "activation_freq": 0.1282051282051282,
+        "mean_norm": 7.0181989669799805,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8054480890429992,
+          0.1668901029033572,
+          0.02766180805364352
+        ],
+        "n_feature_values_active": 6,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 845,
+        "fisher_score": 18.313521293070476,
+        "activation_freq": 0.21794871794871795,
+        "mean_norm": 6.849380970001221,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9012483717648044,
+          0.07927646470027305,
+          0.019475163534922693
+        ],
+        "n_feature_values_active": 10,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 171,
+        "fisher_score": 15.77319629984784,
+        "activation_freq": 0.2692307692307692,
+        "mean_norm": 11.181510925292969,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9452635449345234,
+          0.051048118745591814,
+          0.003688336319884819
+        ],
+        "n_feature_values_active": 13,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 428,
+        "fisher_score": 15.112066888843902,
+        "activation_freq": 0.23076923076923078,
+        "mean_norm": 11.016828536987305,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9867226323542883,
+          0.012034915503787335,
+          0.0012424521419244312
+        ],
+        "n_feature_values_active": 13,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 35,
+        "fisher_score": 14.3552258762002,
+        "activation_freq": 0.14102564102564102,
+        "mean_norm": 9.227073669433594,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9973169240024167,
+          0.0014931725486920326,
+          0.0011899034488913889
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 188,
+        "fisher_score": 12.062629660175077,
+        "activation_freq": 0.24358974358974358,
+        "mean_norm": 9.379501342773438,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9816398198253036,
+          0.018249459855336166,
+          0.0001107203193602828
+        ],
+        "n_feature_values_active": 11,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 964,
+        "fisher_score": 11.985474189327673,
+        "activation_freq": 0.1282051282051282,
+        "mean_norm": 6.835698127746582,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9979469318027641,
+          0.001863692973921203,
+          0.00018937522331464023
+        ],
+        "n_feature_values_active": 5,
+        "cyclic_score": 0.0
+      }
+    ]
+  },
+  {
+    "task": "numbers",
+    "description": "Numbers 1-100 - expected line or curve",
+    "n_feature_values": 100,
+    "n_templates": 5,
+    "n_examples": 500,
+    "cyclic": false,
+    "expert_summaries": [
+      {
+        "expert_id": 147,
+        "fisher_score": 15445.170658717718,
+        "activation_freq": 0.136,
+        "mean_norm": 7.624927997589111,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9888345725906905,
+          0.01107816501658743,
+          8.72623927219799e-05
+        ],
+        "n_feature_values_active": 65,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 1004,
+        "fisher_score": 153.9832282610407,
+        "activation_freq": 0.208,
+        "mean_norm": 9.011415481567383,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9620942988412403,
+          0.028515547728297,
+          0.009390153430462574
+        ],
+        "n_feature_values_active": 100,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 7,
+        "fisher_score": 105.08684463944601,
+        "activation_freq": 0.186,
+        "mean_norm": 7.977752208709717,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7740191130208093,
+          0.19350851148154025,
+          0.03247237549765044
+        ],
+        "n_feature_values_active": 90,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 265,
+        "fisher_score": 89.70144593417001,
+        "activation_freq": 0.21,
+        "mean_norm": 12.337350845336914,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9685747598149909,
+          0.030530158802217006,
+          0.0008950813827921881
+        ],
+        "n_feature_values_active": 100,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 96,
+        "fisher_score": 87.32557596707815,
+        "activation_freq": 0.03,
+        "mean_norm": 6.239634990692139,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.5713903065833784,
+          0.3487600375852161,
+          0.07984965583140546
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 78,
+        "fisher_score": 80.47819794202115,
+        "activation_freq": 0.1,
+        "mean_norm": 6.588926315307617,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9387374110140473,
+          0.039659770556346625,
+          0.02160281842960614
+        ],
+        "n_feature_values_active": 45,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 618,
+        "fisher_score": 73.34354238034558,
+        "activation_freq": 0.168,
+        "mean_norm": 6.802218437194824,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9773006788473151,
+          0.01952313158343506,
+          0.0031761895692498207
+        ],
+        "n_feature_values_active": 80,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 578,
+        "fisher_score": 54.655955481423874,
+        "activation_freq": 0.212,
+        "mean_norm": 12.88963794708252,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8755281232697011,
+          0.11992695487114058,
+          0.004544921859158302
+        ],
+        "n_feature_values_active": 100,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 236,
+        "fisher_score": 39.04102617684396,
+        "activation_freq": 0.202,
+        "mean_norm": 8.201562881469727,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9975159548555355,
+          0.0016452030836511808,
+          0.0008388420608133355
+        ],
+        "n_feature_values_active": 96,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 316,
+        "fisher_score": 33.632014607658945,
+        "activation_freq": 0.142,
+        "mean_norm": 6.863635540008545,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.8683315190220369,
+          0.06961780351919392,
+          0.06205067745876914
+        ],
+        "n_feature_values_active": 66,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 233,
+        "fisher_score": 33.30631200666268,
+        "activation_freq": 0.188,
+        "mean_norm": 6.539196491241455,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9901113328616672,
+          0.00830453833757483,
+          0.0015841288007579929
+        ],
+        "n_feature_values_active": 85,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 592,
+        "fisher_score": 32.29673292990483,
+        "activation_freq": 0.092,
+        "mean_norm": 7.1162261962890625,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9928084672790716,
+          0.006770751346152234,
+          0.0004207813747761711
+        ],
+        "n_feature_values_active": 41,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 690,
+        "fisher_score": 23.509014475014247,
+        "activation_freq": 0.152,
+        "mean_norm": 7.7070112228393555,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9847727138294359,
+          0.013074065475377462,
+          0.0021532206951865957
+        ],
+        "n_feature_values_active": 64,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 228,
+        "fisher_score": 22.401256578272385,
+        "activation_freq": 0.164,
+        "mean_norm": 7.134629249572754,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.49718769402889307,
+          0.2634935330882381,
+          0.23931877288286893
+        ],
+        "n_feature_values_active": 71,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 35,
+        "fisher_score": 20.375041123847232,
+        "activation_freq": 0.056,
+        "mean_norm": 6.895256996154785,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8721557072602284,
+          0.11586412170001113,
+          0.011980171039760392
+        ],
+        "n_feature_values_active": 25,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 107,
+        "fisher_score": 20.21102307530058,
+        "activation_freq": 0.116,
+        "mean_norm": 8.207988739013672,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9472678567578054,
+          0.04154588578380604,
+          0.011186257458388443
+        ],
+        "n_feature_values_active": 41,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 229,
+        "fisher_score": 14.916111637843436,
+        "activation_freq": 0.214,
+        "mean_norm": 7.349434852600098,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.5771599221672962,
+          0.3973304550000193,
+          0.025509622832684545
+        ],
+        "n_feature_values_active": 100,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 1,
+        "fisher_score": 13.99783970144653,
+        "activation_freq": 0.208,
+        "mean_norm": 14.268402099609375,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9440958507090313,
+          0.054177263789789765,
+          0.0017268855011788615
+        ],
+        "n_feature_values_active": 100,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 301,
+        "fisher_score": 13.653368907473855,
+        "activation_freq": 0.188,
+        "mean_norm": 10.059399604797363,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9807319819505353,
+          0.018669371497786386,
+          0.0005986465516781778
+        ],
+        "n_feature_values_active": 81,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 541,
+        "fisher_score": 12.700968468038973,
+        "activation_freq": 0.068,
+        "mean_norm": 7.358825206756592,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9863513585814174,
+          0.01161828232365463,
+          0.0020303590949278224
+        ],
+        "n_feature_values_active": 31,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 649,
+        "fisher_score": 12.065879502059406,
+        "activation_freq": 0.234,
+        "mean_norm": 7.9286723136901855,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9554170721151983,
+          0.042230604604399445,
+          0.002352323280402192
+        ],
+        "n_feature_values_active": 100,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 419,
+        "fisher_score": 11.678188404411644,
+        "activation_freq": 0.082,
+        "mean_norm": 6.350356578826904,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9812586928721625,
+          0.01762006499058895,
+          0.0011212421372486215
+        ],
+        "n_feature_values_active": 36,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 306,
+        "fisher_score": 11.61060407123182,
+        "activation_freq": 0.192,
+        "mean_norm": 11.239008903503418,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9651441057253493,
+          0.02557475012476032,
+          0.009281144149890376
+        ],
+        "n_feature_values_active": 76,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 241,
+        "fisher_score": 11.574046315340643,
+        "activation_freq": 0.112,
+        "mean_norm": 6.91890287399292,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7780747625416174,
+          0.2203089618158249,
+          0.0016162756425576606
+        ],
+        "n_feature_values_active": 50,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 661,
+        "fisher_score": 10.39396402956936,
+        "activation_freq": 0.212,
+        "mean_norm": 38.901729583740234,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9990146740601445,
+          0.0009477403684329325,
+          3.7585571422418985e-05
+        ],
+        "n_feature_values_active": 100,
+        "cyclic_score": 0.0
+      }
+    ]
+  },
+  {
+    "task": "first_names",
+    "description": "Common first names - expected clusters",
+    "n_feature_values": 36,
+    "n_templates": 6,
+    "n_examples": 216,
+    "cyclic": false,
+    "expert_summaries": [
+      {
+        "expert_id": 600,
+        "fisher_score": 493.02481824094457,
+        "activation_freq": 0.18055555555555555,
+        "mean_norm": 6.94157075881958,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8829637133070153,
+          0.1132954800947646,
+          0.0037408065982201706
+        ],
+        "n_feature_values_active": 36,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 870,
+        "fisher_score": 173.7159473545119,
+        "activation_freq": 0.10185185185185185,
+        "mean_norm": 7.761905193328857,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9765181410963509,
+          0.022084788089639276,
+          0.0013970708140097737
+        ],
+        "n_feature_values_active": 19,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 582,
+        "fisher_score": 125.01311738239878,
+        "activation_freq": 0.12962962962962962,
+        "mean_norm": 6.667672157287598,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9967582462072807,
+          0.0029143805709693524,
+          0.00032737322174984656
+        ],
+        "n_feature_values_active": 23,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 160,
+        "fisher_score": 104.70453185285112,
+        "activation_freq": 0.07407407407407407,
+        "mean_norm": 6.721991062164307,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.5977004946968025,
+          0.37720638210880153,
+          0.025093123194395887
+        ],
+        "n_feature_values_active": 13,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 228,
+        "fisher_score": 81.87207744140535,
+        "activation_freq": 0.10185185185185185,
+        "mean_norm": 7.518810749053955,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8589416799038865,
+          0.1319054401920873,
+          0.009152879904026119
+        ],
+        "n_feature_values_active": 14,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 650,
+        "fisher_score": 67.68425294078429,
+        "activation_freq": 0.14351851851851852,
+        "mean_norm": 6.450634479522705,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9692401852628058,
+          0.028946486592705756,
+          0.0018133281444884612
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 396,
+        "fisher_score": 36.89130510774211,
+        "activation_freq": 0.12037037037037036,
+        "mean_norm": 7.221728324890137,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9074001050491618,
+          0.08681111899252282,
+          0.005788775958315385
+        ],
+        "n_feature_values_active": 21,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 57,
+        "fisher_score": 26.047108178316748,
+        "activation_freq": 0.8935185185185185,
+        "mean_norm": 16.07284927368164,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9946506795783564,
+          0.005221400880590024,
+          0.00012791954105358222
+        ],
+        "n_feature_values_active": 36,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 447,
+        "fisher_score": 25.05515259530194,
+        "activation_freq": 0.25925925925925924,
+        "mean_norm": 7.205776691436768,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7485348256642029,
+          0.23216492091023863,
+          0.01930025342555865
+        ],
+        "n_feature_values_active": 29,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 1021,
+        "fisher_score": 23.322239153168127,
+        "activation_freq": 0.19444444444444445,
+        "mean_norm": 6.974886417388916,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9368834820317733,
+          0.04146158567578028,
+          0.021654932292446333
+        ],
+        "n_feature_values_active": 35,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 357,
+        "fisher_score": 20.189758004482414,
+        "activation_freq": 0.09722222222222222,
+        "mean_norm": 9.913349151611328,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8957348401879579,
+          0.10035557382956513,
+          0.0039095859824768405
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 499,
+        "fisher_score": 19.672233221527875,
+        "activation_freq": 0.2222222222222222,
+        "mean_norm": 45.972225189208984,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9995668670073333,
+          0.0003606432207633718,
+          7.24897719031943e-05
+        ],
+        "n_feature_values_active": 36,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 939,
+        "fisher_score": 17.98563946796591,
+        "activation_freq": 0.2638888888888889,
+        "mean_norm": 8.269762992858887,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9906548189360508,
+          0.009102316518236592,
+          0.00024286454571283508
+        ],
+        "n_feature_values_active": 35,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 408,
+        "fisher_score": 17.22607113943798,
+        "activation_freq": 0.2175925925925926,
+        "mean_norm": 8.954647064208984,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8377356696843805,
+          0.152354036278882,
+          0.009910294036737469
+        ],
+        "n_feature_values_active": 36,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 660,
+        "fisher_score": 16.035982874940935,
+        "activation_freq": 0.20833333333333334,
+        "mean_norm": 9.925743103027344,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9096056889582891,
+          0.07486306542566432,
+          0.015531245616046716
+        ],
+        "n_feature_values_active": 36,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 729,
+        "fisher_score": 14.895979669910151,
+        "activation_freq": 0.22685185185185186,
+        "mean_norm": 7.447065830230713,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6480087750035189,
+          0.3471871587235351,
+          0.004804066272945901
+        ],
+        "n_feature_values_active": 36,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 358,
+        "fisher_score": 13.505843409319866,
+        "activation_freq": 0.39814814814814814,
+        "mean_norm": 11.550704956054688,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9725836892582901,
+          0.021469842375661467,
+          0.005946468366048294
+        ],
+        "n_feature_values_active": 36,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 802,
+        "fisher_score": 13.030772014594008,
+        "activation_freq": 0.14351851851851852,
+        "mean_norm": 7.643229007720947,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9036638431289167,
+          0.09424690903252253,
+          0.0020892478385606756
+        ],
+        "n_feature_values_active": 26,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 193,
+        "fisher_score": 12.847133306259352,
+        "activation_freq": 0.14351851851851852,
+        "mean_norm": 7.138256072998047,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6276851550265525,
+          0.34312208768918967,
+          0.02919275728425769
+        ],
+        "n_feature_values_active": 25,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 171,
+        "fisher_score": 12.798376096546185,
+        "activation_freq": 0.32407407407407407,
+        "mean_norm": 13.24702262878418,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8451458576412627,
+          0.1530189748934851,
+          0.0018351674652521484
+        ],
+        "n_feature_values_active": 36,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 972,
+        "fisher_score": 12.469558354407225,
+        "activation_freq": 0.3333333333333333,
+        "mean_norm": 8.341649055480957,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9254698641970356,
+          0.0432680941465717,
+          0.031262041656392785
+        ],
+        "n_feature_values_active": 36,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 935,
+        "fisher_score": 11.527726593073341,
+        "activation_freq": 0.3101851851851852,
+        "mean_norm": 9.134202003479004,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7574554613344068,
+          0.2402036024373716,
+          0.0023409362282215433
+        ],
+        "n_feature_values_active": 36,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 572,
+        "fisher_score": 11.235794235135995,
+        "activation_freq": 0.32407407407407407,
+        "mean_norm": 7.974767208099365,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6788831300097703,
+          0.318247705766459,
+          0.002869164223770719
+        ],
+        "n_feature_values_active": 35,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 652,
+        "fisher_score": 11.135475743784966,
+        "activation_freq": 0.18518518518518517,
+        "mean_norm": 7.4852142333984375,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9771668697663305,
+          0.02074261041091638,
+          0.002090519822753328
+        ],
+        "n_feature_values_active": 28,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 146,
+        "fisher_score": 10.277501396327004,
+        "activation_freq": 0.18981481481481483,
+        "mean_norm": 10.681889533996582,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8703922687853212,
+          0.12084602078234039,
+          0.008761710432338374
+        ],
+        "n_feature_values_active": 36,
+        "cyclic_score": 0.0
+      }
+    ]
+  },
+  {
+    "task": "body_parts",
+    "description": "Body parts - expected sheet/spatial manifold",
+    "n_feature_values": 24,
+    "n_templates": 6,
+    "n_examples": 144,
+    "cyclic": false,
+    "expert_summaries": [
+      {
+        "expert_id": 615,
+        "fisher_score": 2228.200283384566,
+        "activation_freq": 0.1875,
+        "mean_norm": 7.636119842529297,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8768540311128559,
+          0.12162329576731513,
+          0.0015226731198289994
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 454,
+        "fisher_score": 27.876313576566563,
+        "activation_freq": 0.18055555555555555,
+        "mean_norm": 6.593127250671387,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7895881643540462,
+          0.19947318457638966,
+          0.01093865106956404
+        ],
+        "n_feature_values_active": 23,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 964,
+        "fisher_score": 25.84197270094812,
+        "activation_freq": 0.2013888888888889,
+        "mean_norm": 6.780776023864746,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.983638472788097,
+          0.015333384771342173,
+          0.0010281424405608507
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 817,
+        "fisher_score": 24.765705701176227,
+        "activation_freq": 0.10416666666666667,
+        "mean_norm": 6.471020698547363,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.7074850360482995,
+          0.22314583920329253,
+          0.06936912474840803
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 32,
+        "fisher_score": 22.2732685136273,
+        "activation_freq": 0.1111111111111111,
+        "mean_norm": 6.703581809997559,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.823085060351725,
+          0.11626382040444284,
+          0.06065111924383218
+        ],
+        "n_feature_values_active": 13,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 600,
+        "fisher_score": 21.563592247748034,
+        "activation_freq": 0.10416666666666667,
+        "mean_norm": 6.431735515594482,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9671964800889389,
+          0.032662762568227165,
+          0.0001407573428338303
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 255,
+        "fisher_score": 18.618031169545763,
+        "activation_freq": 0.1527777777777778,
+        "mean_norm": 6.647804260253906,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9444301429174692,
+          0.0304394024709714,
+          0.02513045461155943
+        ],
+        "n_feature_values_active": 16,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 250,
+        "fisher_score": 11.77795037547751,
+        "activation_freq": 0.09722222222222222,
+        "mean_norm": 6.655787467956543,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7043065869170478,
+          0.29176212471679097,
+          0.003931288366161176
+        ],
+        "n_feature_values_active": 10,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 845,
+        "fisher_score": 9.594146054275281,
+        "activation_freq": 0.2152777777777778,
+        "mean_norm": 7.028067111968994,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9647668568322401,
+          0.02616430352099104,
+          0.00906883964676889
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 102,
+        "fisher_score": 9.292006499479456,
+        "activation_freq": 0.2847222222222222,
+        "mean_norm": 7.506301403045654,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7541961636690572,
+          0.2088057212934491,
+          0.03699811503749382
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 393,
+        "fisher_score": 8.895218895210657,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 7.273332118988037,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8187945076585831,
+          0.16998090901870366,
+          0.011224583322713194
+        ],
+        "n_feature_values_active": 18,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 578,
+        "fisher_score": 6.9361327346724,
+        "activation_freq": 0.2013888888888889,
+        "mean_norm": 12.52499008178711,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9955909448479927,
+          0.0030444485458996935,
+          0.0013646066061075973
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 382,
+        "fisher_score": 6.138987648808481,
+        "activation_freq": 0.0763888888888889,
+        "mean_norm": 6.606103420257568,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.894354302829896,
+          0.10379678016814041,
+          0.0018489170019634817
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 740,
+        "fisher_score": 5.677965495051326,
+        "activation_freq": 0.2916666666666667,
+        "mean_norm": 6.929712295532227,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8988130378170214,
+          0.08827782640671973,
+          0.012909135776258771
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 703,
+        "fisher_score": 5.322749110673421,
+        "activation_freq": 0.18055555555555555,
+        "mean_norm": 6.744868278503418,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7046251404366729,
+          0.29073544942526586,
+          0.004639410138061132
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 72,
+        "fisher_score": 4.986165790023961,
+        "activation_freq": 0.1597222222222222,
+        "mean_norm": 6.89232063293457,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9903798379446965,
+          0.00934804876038358,
+          0.0002721132949198626
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 158,
+        "fisher_score": 4.752399648992198,
+        "activation_freq": 0.4513888888888889,
+        "mean_norm": 7.918900966644287,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9245550849099893,
+          0.043547276858587086,
+          0.03189763823142363
+        ],
+        "n_feature_values_active": 24,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 410,
+        "fisher_score": 4.664331212616884,
+        "activation_freq": 0.22916666666666666,
+        "mean_norm": 6.926913261413574,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7906863064163606,
+          0.1844919237685433,
+          0.024821769815096144
+        ],
+        "n_feature_values_active": 23,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 936,
+        "fisher_score": 4.2235317326471975,
+        "activation_freq": 0.2361111111111111,
+        "mean_norm": 6.981753349304199,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9883690544182113,
+          0.008449347115245868,
+          0.0031815984665429353
+        ],
+        "n_feature_values_active": 22,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 61,
+        "fisher_score": 4.077976111239168,
+        "activation_freq": 0.1875,
+        "mean_norm": 6.527913570404053,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9907454182523636,
+          0.007844640048911715,
+          0.0014099416987247086
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 489,
+        "fisher_score": 4.044084002719057,
+        "activation_freq": 0.2708333333333333,
+        "mean_norm": 7.248191833496094,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9965926971156934,
+          0.00293833143068217,
+          0.0004689714536243305
+        ],
+        "n_feature_values_active": 23,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 691,
+        "fisher_score": 4.03339876901688,
+        "activation_freq": 0.1875,
+        "mean_norm": 7.327431678771973,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.991977843502396,
+          0.007438898465572096,
+          0.0005832580320317774
+        ],
+        "n_feature_values_active": 23,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 100,
+        "fisher_score": 3.8314041515855797,
+        "activation_freq": 0.2916666666666667,
+        "mean_norm": 6.701054096221924,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8529501493072961,
+          0.13099241045707585,
+          0.016057440235628093
+        ],
+        "n_feature_values_active": 21,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 212,
+        "fisher_score": 3.793942357666197,
+        "activation_freq": 0.125,
+        "mean_norm": 6.928668975830078,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8272458600278741,
+          0.16558101636282635,
+          0.007173123609299481
+        ],
+        "n_feature_values_active": 14,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 569,
+        "fisher_score": 3.631645062269815,
+        "activation_freq": 0.2777777777777778,
+        "mean_norm": 6.715497016906738,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8739730590460489,
+          0.0939292281278699,
+          0.03209771282608109
+        ],
+        "n_feature_values_active": 23,
+        "cyclic_score": 0.0
+      }
+    ]
+  },
+  {
+    "task": "colors",
+    "description": "Colors - expected ring through color space",
+    "n_feature_values": 12,
+    "n_templates": 6,
+    "n_examples": 72,
+    "cyclic": true,
+    "expert_summaries": [
+      {
+        "expert_id": 557,
+        "fisher_score": 83.75699010710862,
+        "activation_freq": 0.18055555555555555,
+        "mean_norm": 6.543835639953613,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6378131645881476,
+          0.342387569658622,
+          0.019799265753230304
+        ],
+        "n_feature_values_active": 10,
+        "cyclic_score": 0.33791982234053575
+      },
+      {
+        "expert_id": 681,
+        "fisher_score": 37.054896549973876,
+        "activation_freq": 0.20833333333333334,
+        "mean_norm": 7.467227458953857,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6394885233730092,
+          0.31683260443340094,
+          0.043678872193589915
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.39353916117965215
+      },
+      {
+        "expert_id": 1016,
+        "fisher_score": 18.506298981534552,
+        "activation_freq": 0.20833333333333334,
+        "mean_norm": 8.195378303527832,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6092239458942427,
+          0.38532699450726593,
+          0.0054490595984914595
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.23279212028067398
+      },
+      {
+        "expert_id": 477,
+        "fisher_score": 13.646535043786223,
+        "activation_freq": 0.25,
+        "mean_norm": 7.0669732093811035,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8481762377410346,
+          0.1356427055278409,
+          0.016181056731124525
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.5419445982138571
+      },
+      {
+        "expert_id": 887,
+        "fisher_score": 8.164340830156643,
+        "activation_freq": 0.2222222222222222,
+        "mean_norm": 9.64858627319336,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.665863613562425,
+          0.3316228984393549,
+          0.0025134879982203076
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.6153043128451896
+      },
+      {
+        "expert_id": 386,
+        "fisher_score": 7.327967881105579,
+        "activation_freq": 0.25,
+        "mean_norm": 7.293179035186768,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7746494129170924,
+          0.22483324827873133,
+          0.0005173388041761609
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 107,
+        "fisher_score": 4.893254458870592,
+        "activation_freq": 0.16666666666666666,
+        "mean_norm": 8.53958797454834,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9795429063076597,
+          0.018667135447907893,
+          0.0017899582444323632
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.4964547078504564
+      },
+      {
+        "expert_id": 458,
+        "fisher_score": 4.8020256512641835,
+        "activation_freq": 0.19444444444444445,
+        "mean_norm": 9.317112922668457,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8690262848365956,
+          0.12798127390577785,
+          0.002992441257626585
+        ],
+        "n_feature_values_active": 10,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 578,
+        "fisher_score": 4.452516345160534,
+        "activation_freq": 0.4027777777777778,
+        "mean_norm": 7.8647613525390625,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9905792582007659,
+          0.008946147123624675,
+          0.00047459467560945895
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.6976913144001405
+      },
+      {
+        "expert_id": 330,
+        "fisher_score": 4.270839546095893,
+        "activation_freq": 0.3333333333333333,
+        "mean_norm": 10.415373802185059,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9986581306872966,
+          0.000779521625011181,
+          0.0005623476876922274
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.4532181362365677
+      },
+      {
+        "expert_id": 398,
+        "fisher_score": 3.9123635582709504,
+        "activation_freq": 0.2638888888888889,
+        "mean_norm": 6.772655963897705,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8194779895684036,
+          0.15316294568537822,
+          0.027359064746218267
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.8521195619063795
+      },
+      {
+        "expert_id": 207,
+        "fisher_score": 3.734654868903357,
+        "activation_freq": 0.3055555555555556,
+        "mean_norm": 7.473209857940674,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6959937698444397,
+          0.288009054381271,
+          0.015997175774289305
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.7381385466113214
+      },
+      {
+        "expert_id": 627,
+        "fisher_score": 3.623617928481646,
+        "activation_freq": 0.3194444444444444,
+        "mean_norm": 17.879610061645508,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9563847820095401,
+          0.04343689180340512,
+          0.000178326187054727
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 949,
+        "fisher_score": 3.6032070003642973,
+        "activation_freq": 0.2361111111111111,
+        "mean_norm": 7.8726725578308105,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9829531449836996,
+          0.01191854541550383,
+          0.005128309600796576
+        ],
+        "n_feature_values_active": 11,
+        "cyclic_score": 0.48496463428783476
+      },
+      {
+        "expert_id": 559,
+        "fisher_score": 3.566580521395963,
+        "activation_freq": 0.2222222222222222,
+        "mean_norm": 7.0041704177856445,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.99688008690344,
+          0.003028693250095597,
+          9.12198464645239e-05
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.30117650733740087
+      },
+      {
+        "expert_id": 563,
+        "fisher_score": 3.5248090156207557,
+        "activation_freq": 0.2916666666666667,
+        "mean_norm": 11.019688606262207,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9781131520181909,
+          0.015434506586684221,
+          0.0064523413951248715
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 814,
+        "fisher_score": 3.369854645626565,
+        "activation_freq": 0.18055555555555555,
+        "mean_norm": 6.973145484924316,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9953128872930864,
+          0.00447088796270553,
+          0.0002162247442080547
+        ],
+        "n_feature_values_active": 10,
+        "cyclic_score": 0.9526888228488011
+      },
+      {
+        "expert_id": 240,
+        "fisher_score": 3.308170919720352,
+        "activation_freq": 0.2777777777777778,
+        "mean_norm": 7.414172172546387,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8873414679579115,
+          0.10733430365570237,
+          0.005324228386386204
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.5275791380255024
+      },
+      {
+        "expert_id": 978,
+        "fisher_score": 3.274890572121557,
+        "activation_freq": 0.2916666666666667,
+        "mean_norm": 6.837987422943115,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.5995907742541806,
+          0.32917184885877054,
+          0.07123737688704873
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.45675693207075807
+      },
+      {
+        "expert_id": 793,
+        "fisher_score": 3.246493851936116,
+        "activation_freq": 0.2777777777777778,
+        "mean_norm": 9.514467239379883,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9646697707987535,
+          0.03364451022445301,
+          0.0016857189767935086
+        ],
+        "n_feature_values_active": 11,
+        "cyclic_score": 0.6211591581587103
+      },
+      {
+        "expert_id": 373,
+        "fisher_score": 3.217364767494472,
+        "activation_freq": 0.3333333333333333,
+        "mean_norm": 6.661706924438477,
+        "intrinsic_dim": 3,
+        "pca_explained_variance": [
+          0.8453510054661011,
+          0.1026595564804475,
+          0.05198943805345141
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 691,
+        "fisher_score": 3.2157333353617616,
+        "activation_freq": 0.2638888888888889,
+        "mean_norm": 12.39515209197998,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9965157979423592,
+          0.0030524311522601524,
+          0.00043177090538061336
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 377,
+        "fisher_score": 3.065408683187104,
+        "activation_freq": 0.2638888888888889,
+        "mean_norm": 8.428114891052246,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7197378022256763,
+          0.2653168875047324,
+          0.0149453102695912
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.8925092977135183
+      },
+      {
+        "expert_id": 541,
+        "fisher_score": 2.948135691697849,
+        "activation_freq": 0.5,
+        "mean_norm": 15.971089363098145,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9926565068543666,
+          0.005659492668915117,
+          0.0016840004767183906
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.12629406956852984
+      },
+      {
+        "expert_id": 72,
+        "fisher_score": 2.943708653010748,
+        "activation_freq": 0.2361111111111111,
+        "mean_norm": 31.491138458251953,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9968811100001427,
+          0.0030462103378039963,
+          7.267966205327391e-05
+        ],
+        "n_feature_values_active": 12,
+        "cyclic_score": 0.8796127412274665
+      }
+    ]
+  },
+  {
+    "task": "directions",
+    "description": "Compass directions - expected ring",
+    "n_feature_values": 8,
+    "n_templates": 5,
+    "n_examples": 40,
+    "cyclic": true,
+    "expert_summaries": [
+      {
+        "expert_id": 1010,
+        "fisher_score": 84291.30267716621,
+        "activation_freq": 0.3,
+        "mean_norm": 6.9564595222473145,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9996425699654791,
+          0.000352341309633262,
+          5.088724887602693e-06
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.9478129537890382
+      },
+      {
+        "expert_id": 356,
+        "fisher_score": 3632.802025993642,
+        "activation_freq": 0.25,
+        "mean_norm": 7.998571872711182,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9995659250766747,
+          0.00041570469952500376,
+          1.8370223800289036e-05
+        ],
+        "n_feature_values_active": 6,
+        "cyclic_score": 0.19686705272189697
+      },
+      {
+        "expert_id": 691,
+        "fisher_score": 198.7106490011357,
+        "activation_freq": 0.275,
+        "mean_norm": 7.015215873718262,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9994221194044824,
+          0.0005511376556595363,
+          2.6742939858138055e-05
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.9603199998658326
+      },
+      {
+        "expert_id": 753,
+        "fisher_score": 80.0425623636634,
+        "activation_freq": 0.325,
+        "mean_norm": 6.93297815322876,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9683781606681429,
+          0.030491892514871083,
+          0.001129946816986037
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.38285173921285265
+      },
+      {
+        "expert_id": 333,
+        "fisher_score": 72.43911101145181,
+        "activation_freq": 0.3,
+        "mean_norm": 8.356400489807129,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9999152954005277,
+          6.611509549673868e-05,
+          1.8589503975596506e-05
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.9434690771678884
+      },
+      {
+        "expert_id": 940,
+        "fisher_score": 45.37564548207022,
+        "activation_freq": 0.275,
+        "mean_norm": 7.800819396972656,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9248559184463727,
+          0.06884612361033537,
+          0.006297957943291995
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.8134905231615396
+      },
+      {
+        "expert_id": 207,
+        "fisher_score": 32.53553861181186,
+        "activation_freq": 0.3,
+        "mean_norm": 7.289833068847656,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.918581809963633,
+          0.0809135348168183,
+          0.0005046552195487544
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.3558999408143788
+      },
+      {
+        "expert_id": 626,
+        "fisher_score": 30.50958473347951,
+        "activation_freq": 0.475,
+        "mean_norm": 8.042654037475586,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9974056158124132,
+          0.0025828990769529974,
+          1.1485110633793572e-05
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.5672250070084157
+      },
+      {
+        "expert_id": 690,
+        "fisher_score": 29.42825395250844,
+        "activation_freq": 0.4,
+        "mean_norm": 7.9412946701049805,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9990428202715376,
+          0.0007320538855778269,
+          0.00022512584288455315
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.5384522885563894
+      },
+      {
+        "expert_id": 1003,
+        "fisher_score": 25.618150857895387,
+        "activation_freq": 0.275,
+        "mean_norm": 6.5278639793396,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.833675597827635,
+          0.13239877393813151,
+          0.033925628234233625
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.5222669749773998
+      },
+      {
+        "expert_id": 53,
+        "fisher_score": 20.994984819028844,
+        "activation_freq": 0.4,
+        "mean_norm": 15.61229419708252,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9990537919892045,
+          0.0007012126754122083,
+          0.00024499533538341014
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.5275119892310898
+      },
+      {
+        "expert_id": 141,
+        "fisher_score": 17.099915859754404,
+        "activation_freq": 0.3,
+        "mean_norm": 8.243354797363281,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9871846400735789,
+          0.012782102324784514,
+          3.325760163659796e-05
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.46936250439064375
+      },
+      {
+        "expert_id": 410,
+        "fisher_score": 15.474400355395122,
+        "activation_freq": 0.4,
+        "mean_norm": 8.915689468383789,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9902358149605982,
+          0.009474083365790744,
+          0.00029010167361110897
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.5042556397978672
+      },
+      {
+        "expert_id": 755,
+        "fisher_score": 12.483730896312457,
+        "activation_freq": 0.4,
+        "mean_norm": 7.297705173492432,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9652655632359023,
+          0.02349901222110412,
+          0.01123542454299365
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.15247257349361754
+      },
+      {
+        "expert_id": 760,
+        "fisher_score": 12.382472117650195,
+        "activation_freq": 0.4,
+        "mean_norm": 8.86750602722168,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.983233523631735,
+          0.0166984891499312,
+          6.798721833381464e-05
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.31892811236589524
+      },
+      {
+        "expert_id": 77,
+        "fisher_score": 11.717488959364054,
+        "activation_freq": 0.525,
+        "mean_norm": 8.891542434692383,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9983493732370815,
+          0.0015967911458695508,
+          5.3835617048873764e-05
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.44742538576217605
+      },
+      {
+        "expert_id": 43,
+        "fisher_score": 10.593496643575824,
+        "activation_freq": 0.3,
+        "mean_norm": 8.025814056396484,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9880667874153681,
+          0.011468945786785836,
+          0.000464266797846004
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.6043700221947321
+      },
+      {
+        "expert_id": 309,
+        "fisher_score": 10.29899217982226,
+        "activation_freq": 0.3,
+        "mean_norm": 7.8091511726379395,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8996063400827082,
+          0.09758372228711974,
+          0.002809937630172158
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.8581624839269135
+      },
+      {
+        "expert_id": 834,
+        "fisher_score": 9.975191883940951,
+        "activation_freq": 0.55,
+        "mean_norm": 9.177367210388184,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8545894059333591,
+          0.13876351684462968,
+          0.006647077222011211
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.3529114055777832
+      },
+      {
+        "expert_id": 621,
+        "fisher_score": 9.575170224596105,
+        "activation_freq": 0.375,
+        "mean_norm": 7.83151388168335,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9936899480969876,
+          0.006306982690581553,
+          3.069212430822143e-06
+        ],
+        "n_feature_values_active": 6,
+        "cyclic_score": 0.9862860808460651
+      },
+      {
+        "expert_id": 314,
+        "fisher_score": 9.345642441890611,
+        "activation_freq": 0.325,
+        "mean_norm": 6.777900218963623,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8516739580813508,
+          0.13149839665836352,
+          0.016827645260285646
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.263903918884531
+      },
+      {
+        "expert_id": 329,
+        "fisher_score": 9.134219381118443,
+        "activation_freq": 0.3,
+        "mean_norm": 7.145939350128174,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8972245642147533,
+          0.09601455776617616,
+          0.00676087801907052
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.52815224357487
+      },
+      {
+        "expert_id": 377,
+        "fisher_score": 8.91263470863156,
+        "activation_freq": 0.4,
+        "mean_norm": 7.888823986053467,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.902845295679252,
+          0.0728068730439484,
+          0.024347831276799715
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.5636624856471061
+      },
+      {
+        "expert_id": 458,
+        "fisher_score": 8.429992037814703,
+        "activation_freq": 0.275,
+        "mean_norm": 7.025672435760498,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8777630922575432,
+          0.12150468708805487,
+          0.0007322206544019606
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.5003427740488703
+      },
+      {
+        "expert_id": 91,
+        "fisher_score": 8.139863155754933,
+        "activation_freq": 0.4,
+        "mean_norm": 9.172718048095703,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9877117613688512,
+          0.011913092055078067,
+          0.0003751465760707273
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.5013145664495557
+      }
+    ]
+  },
+  {
+    "task": "sizes",
+    "description": "Ordinal sizes - expected line",
+    "n_feature_values": 9,
+    "n_templates": 5,
+    "n_examples": 45,
+    "cyclic": false,
+    "expert_summaries": [
+      {
+        "expert_id": 1022,
+        "fisher_score": 2401.4938614974444,
+        "activation_freq": 0.24444444444444444,
+        "mean_norm": 10.653153419494629,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9045193313664796,
+          0.0923905634227197,
+          0.0030901052108006613
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 293,
+        "fisher_score": 348.9308374423787,
+        "activation_freq": 0.26666666666666666,
+        "mean_norm": 8.873196601867676,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9531576402706511,
+          0.046730944913355714,
+          0.00011141481599322457
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 774,
+        "fisher_score": 28.071542677088974,
+        "activation_freq": 0.24444444444444444,
+        "mean_norm": 7.160431385040283,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.877067212923869,
+          0.09756606002707628,
+          0.02536672704905466
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 198,
+        "fisher_score": 23.12548864668495,
+        "activation_freq": 0.28888888888888886,
+        "mean_norm": 9.089111328125,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9816304443896403,
+          0.018064868464919465,
+          0.000304687145440221
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 382,
+        "fisher_score": 22.616931019767577,
+        "activation_freq": 0.24444444444444444,
+        "mean_norm": 6.772189617156982,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.698483460001813,
+          0.2862690741295934,
+          0.015247465868593445
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 304,
+        "fisher_score": 22.01624992046691,
+        "activation_freq": 0.37777777777777777,
+        "mean_norm": 7.386379241943359,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.676144490182481,
+          0.3181192483389685,
+          0.005736261478550444
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 446,
+        "fisher_score": 16.674829691406266,
+        "activation_freq": 0.28888888888888886,
+        "mean_norm": 7.4667744636535645,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8799547427894789,
+          0.11114594324992377,
+          0.0088993139605973
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 81,
+        "fisher_score": 15.556771851841429,
+        "activation_freq": 0.3333333333333333,
+        "mean_norm": 8.400442123413086,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.877399720761269,
+          0.12240528103755882,
+          0.00019499820117196905
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 356,
+        "fisher_score": 12.59691819830185,
+        "activation_freq": 0.28888888888888886,
+        "mean_norm": 10.088395118713379,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9952164917543406,
+          0.00369646714501034,
+          0.0010870411006490156
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 130,
+        "fisher_score": 11.93398187682263,
+        "activation_freq": 0.4444444444444444,
+        "mean_norm": 7.8893609046936035,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9446167121985763,
+          0.053695467904787644,
+          0.0016878198966360656
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 627,
+        "fisher_score": 11.764641419121316,
+        "activation_freq": 0.8222222222222222,
+        "mean_norm": 32.96731185913086,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9988993810845368,
+          0.0008751459948154835,
+          0.00022547292064781514
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 592,
+        "fisher_score": 11.123957652105995,
+        "activation_freq": 0.3111111111111111,
+        "mean_norm": 8.617146492004395,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9989258073305832,
+          0.0010007802183270682,
+          7.341245108976441e-05
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 241,
+        "fisher_score": 10.59029386149048,
+        "activation_freq": 0.26666666666666666,
+        "mean_norm": 8.023249626159668,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8209720030822001,
+          0.17776662921363887,
+          0.0012613677041609867
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 747,
+        "fisher_score": 9.44797366825577,
+        "activation_freq": 0.4,
+        "mean_norm": 89.24803924560547,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8580686622726964,
+          0.1394261749701055,
+          0.0025051627571981484
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 605,
+        "fisher_score": 9.19315980364626,
+        "activation_freq": 0.4222222222222222,
+        "mean_norm": 11.487080574035645,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.871367512347516,
+          0.1285621344399991,
+          7.03532124850603e-05
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 123,
+        "fisher_score": 8.599822395649158,
+        "activation_freq": 0.3333333333333333,
+        "mean_norm": 9.806624412536621,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8764969518797411,
+          0.11196563681718491,
+          0.011537411303074044
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 274,
+        "fisher_score": 8.143873299861276,
+        "activation_freq": 0.4,
+        "mean_norm": 9.863251686096191,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9699155056711285,
+          0.024052444200908376,
+          0.006032050127963232
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 250,
+        "fisher_score": 7.26809456863931,
+        "activation_freq": 0.4,
+        "mean_norm": 7.73253059387207,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9987171341835979,
+          0.0011469141576675394,
+          0.00013595165873459512
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 125,
+        "fisher_score": 6.486426948290017,
+        "activation_freq": 0.3333333333333333,
+        "mean_norm": 7.0284247398376465,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.983937264463184,
+          0.014717433955745042,
+          0.0013453015810709439
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 541,
+        "fisher_score": 6.1876351573842925,
+        "activation_freq": 0.3333333333333333,
+        "mean_norm": 18.83738899230957,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9990435796500773,
+          0.0008991997942001822,
+          5.7220555722538785e-05
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 537,
+        "fisher_score": 6.036073675338779,
+        "activation_freq": 0.6444444444444445,
+        "mean_norm": 11.75051498413086,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9981483966519654,
+          0.0012715589827973133,
+          0.0005800443652372642
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 107,
+        "fisher_score": 5.9012866522722405,
+        "activation_freq": 0.2222222222222222,
+        "mean_norm": 6.729161739349365,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9840374582805834,
+          0.01587898309743761,
+          8.355862197895794e-05
+        ],
+        "n_feature_values_active": 6,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 881,
+        "fisher_score": 5.74542332619413,
+        "activation_freq": 0.35555555555555557,
+        "mean_norm": 14.137956619262695,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9982220895924641,
+          0.0013484165602701392,
+          0.00042949384726574024
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 285,
+        "fisher_score": 5.36631173678595,
+        "activation_freq": 0.4222222222222222,
+        "mean_norm": 7.287998199462891,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8724868166486554,
+          0.12378470724761492,
+          0.0037284761037296387
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 64,
+        "fisher_score": 5.279608530801328,
+        "activation_freq": 0.37777777777777777,
+        "mean_norm": 33.926353454589844,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9992483233655849,
+          0.0005686639048191094,
+          0.00018301272959593472
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      }
+    ]
+  },
+  {
+    "task": "temperatures",
+    "description": "Temperature words - expected line",
+    "n_feature_values": 8,
+    "n_templates": 5,
+    "n_examples": 40,
+    "cyclic": false,
+    "expert_summaries": [
+      {
+        "expert_id": 64,
+        "fisher_score": 18596.36565533739,
+        "activation_freq": 0.25,
+        "mean_norm": 10.73499870300293,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9943843523291145,
+          0.0051773125538802115,
+          0.0004383351170053285
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 188,
+        "fisher_score": 325.31772176495315,
+        "activation_freq": 0.25,
+        "mean_norm": 8.647442817687988,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9369114610591242,
+          0.062448218046059545,
+          0.0006403208948163803
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 253,
+        "fisher_score": 85.91702608822601,
+        "activation_freq": 0.275,
+        "mean_norm": 6.850803852081299,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9729760629080182,
+          0.02251464075521989,
+          0.0045092963367617984
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 1013,
+        "fisher_score": 32.11703731005095,
+        "activation_freq": 0.275,
+        "mean_norm": 7.30220365524292,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.5521749161634709,
+          0.40385632176995157,
+          0.04396876206657748
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 814,
+        "fisher_score": 18.195407469577006,
+        "activation_freq": 0.275,
+        "mean_norm": 7.0902419090271,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9955722444606538,
+          0.00362600967805364,
+          0.0008017458612925444
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 834,
+        "fisher_score": 17.176409441255032,
+        "activation_freq": 0.275,
+        "mean_norm": 10.143998146057129,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9749330419310589,
+          0.024350782366892327,
+          0.0007161757020488755
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 356,
+        "fisher_score": 16.37484678124076,
+        "activation_freq": 0.3,
+        "mean_norm": 13.464034080505371,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9966064791825568,
+          0.0030970166653004525,
+          0.0002965041521427025
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 935,
+        "fisher_score": 14.146342242071942,
+        "activation_freq": 0.575,
+        "mean_norm": 11.30041790008545,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9207342297635219,
+          0.07916957939049625,
+          9.619084598182588e-05
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 627,
+        "fisher_score": 12.26247835266718,
+        "activation_freq": 0.8,
+        "mean_norm": 14.868569374084473,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9260508357480439,
+          0.07378693787233888,
+          0.00016222637961713825
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 669,
+        "fisher_score": 12.069055122547024,
+        "activation_freq": 0.325,
+        "mean_norm": 9.191605567932129,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9794802417916239,
+          0.016346221796182968,
+          0.004173536412193216
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 753,
+        "fisher_score": 11.270682870058076,
+        "activation_freq": 0.275,
+        "mean_norm": 6.968899250030518,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7299740923691203,
+          0.23941614683050189,
+          0.030609760800377805
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 793,
+        "fisher_score": 11.10766763268364,
+        "activation_freq": 0.425,
+        "mean_norm": 11.080066680908203,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9739898492162372,
+          0.024389735065530955,
+          0.0016204157182317849
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 563,
+        "fisher_score": 9.377386454897572,
+        "activation_freq": 0.3,
+        "mean_norm": 8.993351936340332,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9978392592078881,
+          0.0015880225454251893,
+          0.0005727182466868226
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 43,
+        "fisher_score": 8.916677083861412,
+        "activation_freq": 0.45,
+        "mean_norm": 8.880502700805664,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9472280746723198,
+          0.047484000123777584,
+          0.005287925203902542
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 290,
+        "fisher_score": 7.81223709029862,
+        "activation_freq": 0.425,
+        "mean_norm": 20.425748825073242,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.999896071084801,
+          7.75161920363423e-05,
+          2.6412723162558357e-05
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 221,
+        "fisher_score": 7.539933191835417,
+        "activation_freq": 0.325,
+        "mean_norm": 7.553844928741455,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8525799272399099,
+          0.14416955096197742,
+          0.0032505217981126768
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 605,
+        "fisher_score": 7.514111692695508,
+        "activation_freq": 0.275,
+        "mean_norm": 6.834856986999512,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9503874581220676,
+          0.049584381335919456,
+          2.8160542012807996e-05
+        ],
+        "n_feature_values_active": 6,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 536,
+        "fisher_score": 7.310370471408298,
+        "activation_freq": 0.3,
+        "mean_norm": 7.415494441986084,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8205803129468902,
+          0.17524336815071526,
+          0.004176318902394484
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 862,
+        "fisher_score": 5.875400096011603,
+        "activation_freq": 0.325,
+        "mean_norm": 10.684946060180664,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.962004914760824,
+          0.037266375343014906,
+          0.0007287098961610861
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 452,
+        "fisher_score": 5.759012512309896,
+        "activation_freq": 0.75,
+        "mean_norm": 12.744796752929688,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8725683875520409,
+          0.12617335850920838,
+          0.001258253938750802
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 421,
+        "fisher_score": 5.37930705311547,
+        "activation_freq": 0.25,
+        "mean_norm": 7.207861423492432,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8295933871818025,
+          0.16325912693936412,
+          0.007147485878833283
+        ],
+        "n_feature_values_active": 6,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 764,
+        "fisher_score": 5.090431413129712,
+        "activation_freq": 0.4,
+        "mean_norm": 7.525184154510498,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8647407939687468,
+          0.13225481814051124,
+          0.0030043878907419605
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 524,
+        "fisher_score": 4.743612819815988,
+        "activation_freq": 0.35,
+        "mean_norm": 15.520796775817871,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9871944972677106,
+          0.01235444502932226,
+          0.00045105770296723454
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 592,
+        "fisher_score": 4.449475312330023,
+        "activation_freq": 0.275,
+        "mean_norm": 8.508179664611816,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9880881729997272,
+          0.011254602382717088,
+          0.0006572246175558171
+        ],
+        "n_feature_values_active": 7,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 841,
+        "fisher_score": 4.41059557296848,
+        "activation_freq": 0.975,
+        "mean_norm": 25.853805541992188,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9965169243858762,
+          0.002836755018324558,
+          0.0006463205957993119
+        ],
+        "n_feature_values_active": 8,
+        "cyclic_score": 0.0
+      }
+    ]
+  },
+  {
+    "task": "countries",
+    "description": "Countries - expected spatial/geographic structure",
+    "n_feature_values": 20,
+    "n_templates": 5,
+    "n_examples": 100,
+    "cyclic": false,
+    "expert_summaries": [
+      {
+        "expert_id": 357,
+        "fisher_score": 4335.643495918188,
+        "activation_freq": 0.13,
+        "mean_norm": 7.605255126953125,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8016995322368078,
+          0.19748355609908083,
+          0.000816911664111244
+        ],
+        "n_feature_values_active": 9,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 1010,
+        "fisher_score": 224.39221061506345,
+        "activation_freq": 0.24,
+        "mean_norm": 10.043835639953613,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9184511560591566,
+          0.07177215997652457,
+          0.009776683964318786
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 679,
+        "fisher_score": 20.57294171005323,
+        "activation_freq": 0.19,
+        "mean_norm": 7.714369297027588,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9977344920279644,
+          0.0014337756198335844,
+          0.0008317323522019837
+        ],
+        "n_feature_values_active": 16,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 317,
+        "fisher_score": 19.586074265976187,
+        "activation_freq": 0.13,
+        "mean_norm": 6.632153511047363,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9230777701058228,
+          0.07352735916639534,
+          0.0033948707277817913
+        ],
+        "n_feature_values_active": 10,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 669,
+        "fisher_score": 19.00437577016956,
+        "activation_freq": 0.25,
+        "mean_norm": 8.009976387023926,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.996391393998007,
+          0.0026923131515737783,
+          0.0009162928504192714
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 795,
+        "fisher_score": 17.821296439633727,
+        "activation_freq": 0.16,
+        "mean_norm": 6.5690436363220215,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6401651532215351,
+          0.3189703832487518,
+          0.04086446352971309
+        ],
+        "n_feature_values_active": 13,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 82,
+        "fisher_score": 16.079670311501896,
+        "activation_freq": 0.26,
+        "mean_norm": 12.53254222869873,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9922722840994959,
+          0.0075436509075443685,
+          0.00018406499295978043
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 915,
+        "fisher_score": 10.061276036092506,
+        "activation_freq": 0.25,
+        "mean_norm": 7.56787109375,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7963817950325208,
+          0.2006753432201653,
+          0.0029428617473139023
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 582,
+        "fisher_score": 9.840155209210181,
+        "activation_freq": 0.24,
+        "mean_norm": 7.78868293762207,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7484911901256199,
+          0.2381967314786139,
+          0.013312078395766182
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 518,
+        "fisher_score": 8.012203175723213,
+        "activation_freq": 0.26,
+        "mean_norm": 9.425073623657227,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9082623764230117,
+          0.08683487616474898,
+          0.004902747412239258
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 834,
+        "fisher_score": 7.512693223541445,
+        "activation_freq": 0.28,
+        "mean_norm": 16.333772659301758,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9871025387417532,
+          0.012195200482889808,
+          0.0007022607753568311
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 570,
+        "fisher_score": 7.180473708708713,
+        "activation_freq": 0.15,
+        "mean_norm": 6.529013633728027,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6291677975530527,
+          0.33885241451833725,
+          0.031979787928610066
+        ],
+        "n_feature_values_active": 11,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 677,
+        "fisher_score": 7.146360292131332,
+        "activation_freq": 0.23,
+        "mean_norm": 6.80798864364624,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7606900399873426,
+          0.23672781545700713,
+          0.002582144555650166
+        ],
+        "n_feature_values_active": 16,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 572,
+        "fisher_score": 6.8213489126822555,
+        "activation_freq": 0.2,
+        "mean_norm": 6.5146379470825195,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.8362827208638774,
+          0.1444237869175343,
+          0.01929349221858829
+        ],
+        "n_feature_values_active": 13,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 962,
+        "fisher_score": 6.344942642377835,
+        "activation_freq": 0.28,
+        "mean_norm": 9.628083229064941,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.955169815386639,
+          0.04030580492868022,
+          0.004524379684680702
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 732,
+        "fisher_score": 6.234461628495994,
+        "activation_freq": 0.29,
+        "mean_norm": 8.592389106750488,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9241287402133886,
+          0.06499587147357666,
+          0.010875388313034667
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 621,
+        "fisher_score": 5.890926460393981,
+        "activation_freq": 0.17,
+        "mean_norm": 6.745257377624512,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9751462679615286,
+          0.02474254467748884,
+          0.0001111873609825237
+        ],
+        "n_feature_values_active": 13,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 1018,
+        "fisher_score": 5.722108429550622,
+        "activation_freq": 0.14,
+        "mean_norm": 6.5891876220703125,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9241271545008299,
+          0.07470068139419747,
+          0.0011721641049724548
+        ],
+        "n_feature_values_active": 11,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 198,
+        "fisher_score": 4.974898829212737,
+        "activation_freq": 0.29,
+        "mean_norm": 11.437137603759766,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.9492825758783223,
+          0.05015165364077067,
+          0.0005657704809070081
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 605,
+        "fisher_score": 4.88342028429197,
+        "activation_freq": 0.4,
+        "mean_norm": 9.399943351745605,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.869321672056552,
+          0.1304035807653567,
+          0.000274747178091171
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 610,
+        "fisher_score": 4.530942271893345,
+        "activation_freq": 0.2,
+        "mean_norm": 6.3272385597229,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9953630923333007,
+          0.004369383767451446,
+          0.0002675238992479809
+        ],
+        "n_feature_values_active": 13,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 841,
+        "fisher_score": 4.348832910060034,
+        "activation_freq": 0.32,
+        "mean_norm": 9.349157333374023,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.7745140626396961,
+          0.22431940737621492,
+          0.001166529984088902
+        ],
+        "n_feature_values_active": 18,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 408,
+        "fisher_score": 4.110292170676467,
+        "activation_freq": 0.24,
+        "mean_norm": 7.46185827255249,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6889281154204958,
+          0.30553652867959824,
+          0.0055353558999059705
+        ],
+        "n_feature_values_active": 20,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 96,
+        "fisher_score": 4.08071637547282,
+        "activation_freq": 0.31,
+        "mean_norm": 6.441715240478516,
+        "intrinsic_dim": 2,
+        "pca_explained_variance": [
+          0.6455513244701394,
+          0.33292090251524964,
+          0.021527773014611017
+        ],
+        "n_feature_values_active": 19,
+        "cyclic_score": 0.0
+      },
+      {
+        "expert_id": 91,
+        "fisher_score": 4.0200968996695465,
+        "activation_freq": 0.19,
+        "mean_norm": 7.57966947555542,
+        "intrinsic_dim": 1,
+        "pca_explained_variance": [
+          0.9907789979304686,
+          0.0081435386057163,
+          0.0010774634638150182
+        ],
+        "n_feature_values_active": 15,
+        "cyclic_score": 0.0
+      }
+    ]
+  }
+]
