@@ -28,6 +28,7 @@ class SMIXAEConfig(SAEConfig):
     d_expert: int = 16
     # k_experts: int = 8
     d_bottleneck: int = 3
+    b_gate_init: float = -0.1
 
     # jump_relu_bandwidth: float = 0.05
     # jump_relu_init_threshold = 0.1
@@ -154,6 +155,7 @@ class SMIXAETrainingConfig(TrainingSAEConfig):
     d_bottleneck: int = 3
     k_experts: int = 8  # L0 = d_expert * k_experts
     aux_loss_coefficient: float = 1 / 32
+    b_gate_init: float = -0.1
     # expert_threshold: float = 0.1
 
     # jump_relu_bandwidth: float = 0.05
@@ -452,11 +454,12 @@ def _init_weights_smixae(
 
     # Add gate bias term to allow more expressivity - pre relu
     sae.b_gate = nn.Parameter(
-        torch.zeros(
+        torch.ones(
             sae.cfg.n_experts * sae.cfg.d_expert,
             dtype=sae.dtype,
             device=sae.device,
         )
+        * sae.cfg.b_gate_init
     )
 
     sae.W_bottleneck = nn.Parameter(
