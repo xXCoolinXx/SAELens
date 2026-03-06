@@ -59,8 +59,8 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     # export CUDA_VISIBLE_DEVICES=1 # Hot fix because ASAX doesn't properly change GPU visibility :/
     # Train an SAE
     # /scratch/Collin/envs/sae/bin/python3 context-sae-train.py
-    CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python3 smixae_run.py
-    # /scratch/Collin/envs/sae/bin/python3 /scratch/Collin/SAELens/probing_tasks.py  # manifold_visualization_smixae.py #
+    # CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python3 smixae_run.py
+    /scratch/Collin/envs/sae/bin/python3 /scratch/Collin/SAELens/probing_tasks.py  # manifold_visualization_smixae.py #
 
 
     # Test autointerp, requires two GPUS for autointerp

@@ -46,7 +46,7 @@ source_repo = "monology/pile-uncopyrighted"
 device = "cuda"
 
 batch_size = 4096
-total_tokens = 250_000_000
+total_tokens = 100_000_000
 # total_tokens = 1000 * batch_size
 
 total_training_steps = total_tokens // batch_size
@@ -61,7 +61,7 @@ cfg = LanguageModelSAERunnerConfig(
         n_experts=1024,  # Good amount of features, compare to Gemma Scope
         d_expert=16,
         d_bottleneck=3,
-        d_sae=8 * 512,  # this parameter is ignored
+        d_sae=16 * 512,  # this parameter is ignored
         # l0_coefficient=1.0,
         k_experts=32,
         aux_loss_coefficient=1 / 32,
@@ -87,7 +87,7 @@ cfg = LanguageModelSAERunnerConfig(
     # Wandb
     logger=LoggingConfig(
         log_to_wandb=True,
-        wandb_project="SMIXAE on pythia 160M",
+        wandb_project="SMIXAE on Gemma 2-2B, Matching Pursuit",
         wandb_log_frequency=30,
         eval_every_n_wandb_logs=5000000,
     ),

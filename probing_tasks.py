@@ -34,7 +34,8 @@ from sae_lens.saes.smixae import matching_pursuit_decode
 MODEL_NAME = "gemma-2-2b"
 HOOK_NAME = "blocks.12.hook_resid_post"
 CHECKPOINT_PATH = (
-    "/scratch/Collin/SAELens/checkpoints/619m0oe0/final_250003456"  # UPDATE THIS
+    # "/scratch/Collin/SAELens/checkpoints/619m0oe0/final_250003456"  # UPDATE THIS
+    "/scratch/Collin/SAELens/checkpoints/7ajlxjnb/final_100003840"
 )
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 OUTPUT_DIR = Path("manifold_probing_results")
