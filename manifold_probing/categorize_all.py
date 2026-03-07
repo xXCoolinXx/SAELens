@@ -140,7 +140,7 @@ def collect_activations(
     print(
         f"Streaming {dataset_name} (Note: using already downloaded datasets is not yet implemented)"
     )
-    dataset = load_dataset(dataset_name, split=None, streaming=True)
+    dataset = load_dataset(dataset_name, streaming=True, split="train")
 
     print("Collecting activations...")
 

@@ -62,7 +62,7 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     # CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python3 smixae_run.py
     # /scratch/Collin/envs/sae/bin/python3 /scratch/Collin/SAELens/probing_tasks.py  # manifold_visualization_smixae.py #
 
-    python manifold_probing/categorize_all.py \
+    /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py \
     --checkpoint-path "/scratch/Collin/SAELens/checkpoints/7ajlxjnb/final_100003840" \
     --base-model-name "gemma-2-2b" \
     --hook-point  "blocks.12.hook_resid_post" \
@@ -72,9 +72,9 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     --output-dir "manifold_analysis" \
     --k-neighbors 10 \
     --device "cuda" \
-    --llm_batch_size 32 \
-    --sae_batch_size 2048 \
-    --k_neighbors 10 
+    --llm-batch-size 32 \
+    --sae-batch-size 2048 \
+    --k-neighbors 10 
 
     # Test autointerp, requires two GPUS for autointerp
     # CUDA_VISIBLE_DEVICES=0 /scratch/Collin/envs/sae/bin/python -m vllm.entrypoints.openai.api_server \
