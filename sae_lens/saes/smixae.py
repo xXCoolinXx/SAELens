@@ -81,6 +81,7 @@ class SMIXAE(SAE[SMIXAEConfig]):
         )
 
         self.hook_decode_mask = HookPoint()
+        self.setup()  # Rerun set up to add hook point
 
         self.cfg.apply_b_dec_to_input = False  # Remove bias term - destroys structure
 

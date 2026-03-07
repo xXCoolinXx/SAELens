@@ -22,10 +22,11 @@ class Expert:
         llm_activations: torch.Tensor,
         expert_activations: torch.Tensor,
     ):
-        self.expert_activations = expert_activations[active_mask].float()
-        self.llm_activations = llm_activations[active_mask].float()
+        # ── CHANGE: .cpu() so expert data lives in system RAM, not VRAM ──
+        self.expert_activations = expert_activations[active_mask].float().cpu()
+        self.llm_activations = llm_activations[active_mask].float().cpu()
 
-        assert expert_activations.shape[0] == llm_activations.shape[0], (
+        assert self.expert_activations.shape[0] == self.llm_activations.shape[0], (
             "Different number of expert activations and embeddings. Did you forget to pre-filter?"
         )
 
@@ -33,24 +34,33 @@ class Expert:
         self.active_indices = active_mask.nonzero().cpu().tolist()
         self.local_continuity_scores: torch.Tensor | None = None
 
-    def evaluate_manifold(self, k_neighbors: int = 10) -> torch.Tensor:
+    # ── CHANGE: accept a device arg, move data onto GPU only for the computation ──
+    def evaluate_manifold(
+        self, k_neighbors: int = 10, device: str = "cuda"
+    ) -> torch.Tensor:
+        # Move to GPU just for this computation
+        expert_acts_gpu = self.expert_activations.to(device)
+        llm_acts_gpu = self.llm_activations.to(device)
+
         # Compute Euclidean distance in the bottleneck space
-        dists = torch.cdist(self.expert_activations, self.expert_activations)
+        dists = torch.cdist(expert_acts_gpu, expert_acts_gpu)
 
         _, indices = torch.topk(dists, k=k_neighbors + 1, largest=False)
-
-        # Remove the point itself
         indices = indices[:, 1:]
 
-        # Normalize to compute cosine_similarity - this should be a somewhat useful distant metric
-        llm_activations = F.normalize(self.llm_activations, p=2, dim=-1)
+        del dists  # ── CHANGE: free the big N×N matrix immediately ──
 
-        llm_neighbors = llm_activations[indices]
-
-        center = llm_activations.unsqueeze(1)
-
+        llm_normed = F.normalize(llm_acts_gpu, p=2, dim=-1)
+        llm_neighbors = llm_normed[indices]
+        center = llm_normed.unsqueeze(1)
         sims = (center * llm_neighbors).sum(dim=-1)
-        self.local_continuity_scores = sims.mean(dim=-1)
+
+        # ── CHANGE: result back to CPU ──
+        self.local_continuity_scores = sims.mean(dim=-1).cpu()
+
+        # ── CHANGE: free transient GPU tensors ──
+        del expert_acts_gpu, llm_acts_gpu, llm_normed, llm_neighbors, center, sims
+        torch.cuda.empty_cache()
 
         return self.local_continuity_scores
 
@@ -58,23 +68,14 @@ class Expert:
         self, str_tokens: list[list[str]], context_window: int = 10
     ) -> list[str]:
         contexts = []
-
-        # Unpack the exact [batch, seq] coordinate for every active point
         for batch_idx, seq_idx in self.active_indices:
             seq = str_tokens[batch_idx]
-
-            # Calculate bounds, preventing index out-of-bounds
             start = max(0, seq_idx - context_window)
             end = min(len(seq), seq_idx + context_window + 1)
-
-            # Slice the list and bold the exact token that fired
             window = list(seq[start:end])
             target_rel_idx = seq_idx - start
             window[target_rel_idx] = f"<b>[{window[target_rel_idx]}]</b>"
-
-            # Join back to a string and format linebreaks for Plotly
             contexts.append("".join(window).replace("\n", "<br>"))
-
         return contexts
 
     def get_plot(
@@ -82,18 +83,14 @@ class Expert:
         str_tokens: list[list[str]],
         k_neighbors: int = 10,
         context_window: int = 10,
+        device: str = "cuda",  # ── CHANGE: pass device through ──
     ) -> Figure:
-        """
-        Evaluates the manifold, builds context strings, and returns an interactive 3D plot.
-        """
-        # 1. Compute geometry and text contexts
         if self.local_continuity_scores is None:
-            self.evaluate_manifold(k_neighbors=k_neighbors)
+            self.evaluate_manifold(k_neighbors=k_neighbors, device=device)
         contexts = self.get_context_windows(str_tokens, context_window=context_window)
 
-        # 2. Detach and move to CPU/NumPy
-        pts = self.expert_activations.detach().cpu().numpy()
-        scores_np = self.local_continuity_scores.detach().cpu().numpy()  # type: ignore
+        pts = self.expert_activations.numpy()  # already on CPU
+        scores_np = self.local_continuity_scores.numpy()  # type: ignore  # already on CPU
 
         df = pd.DataFrame(
             {
@@ -105,7 +102,6 @@ class Expert:
             }
         )
 
-        # 4. Generate the Plotly figure
         fig = px.scatter_3d(
             df,
             x="x",
@@ -117,10 +113,7 @@ class Expert:
             title=f"Expert {self.expert_id} Manifold (n={pts.shape[0]} points)",
             opacity=0.8,
         )
-
-        # Adjust marker size for better visibility
         fig.update_traces(marker=dict(size=4))
-
         return fig
 
 
@@ -134,12 +127,9 @@ def collect_activations(
     llm_batch_size: int,
 ) -> tuple[torch.Tensor, list[str] | list[list[str]]]:
     print(f"Loading {model_name} to collect activations")
-
     model = HookedTransformer.from_pretrained(model_name, device=device)
 
-    print(
-        f"Streaming {dataset_name} (Note: using already downloaded datasets is not yet implemented)"
-    )
+    print(f"Streaming {dataset_name}")
     dataset = load_dataset(dataset_name, streaming=True, split="train")
 
     print("Collecting activations...")
@@ -155,21 +145,27 @@ def collect_activations(
     ]
 
     all_acts = []
-
-    # Collect batch-wise
     for i in tqdm(range(0, n_input_samples, llm_batch_size)):
         batch = tokenized[i : i + llm_batch_size, :].to(device)
 
-        # Run the batch through the model
+        with torch.no_grad():  # ── CHANGE: no_grad for inference ──
+            _, cache = model.run_with_cache(batch, names_filter=hook_name)
 
-        _, cache = model.run_with_cache(batch, names_filter=hook_name)
-        acts = cache[hook_name]
+        # ── CHANGE: move each batch's activations to CPU immediately ──
+        all_acts.append(cache[hook_name].cpu())
+        del cache
+        torch.cuda.empty_cache()
 
-        all_acts.append(acts)
+    # ── CHANGE: concatenate on CPU — this is your "cold storage" tensor ──
+    activations = torch.cat(all_acts, dim=0)
+    del all_acts
 
-    activations = torch.cat(all_acts, dim=0).to(device)
+    str_tokens = [model.to_str_tokens(tokenized[i]) for i in range(tokenized.shape[0])]
 
-    str_tokens = model.to_str_tokens(tokenized)
+    # ── CHANGE: free the entire LLM before returning ──
+    del model
+    torch.cuda.empty_cache()
+    print("LLM deleted and GPU memory freed.")
 
     return activations, str_tokens
 
@@ -177,21 +173,25 @@ def collect_activations(
 def get_sae_activations(
     checkpoint_path: str,
     device: str,
-    activations: torch.Tensor,
+    activations: torch.Tensor,  # ── now lives on CPU ──
     sae_batch_size: int,
     active_threshold: float = 1e-5,
     min_points: int = 15,
+    max_points: int = 1000,
 ) -> list[Expert]:
     print(f"Loading SAE from {checkpoint_path}")
     sae = SAE.load_from_disk(path=checkpoint_path, device=device)
 
     sae_activations = []
 
-    with torch.no_grad():
-        # z = sae.encode(activations)
+    # Flatten to avoid issues with SMIXAE implentation for extra seq_len dimension
+    B, S, D = activations.shape
+    activations_flat = activations.reshape(B * S, D)
 
-        for i in tqdm(range(0, len(activations), sae_batch_size)):
-            batch = activations[i : i + sae_batch_size, ...]
+    with torch.no_grad():
+        for i in tqdm(range(0, B * S, sae_batch_size)):
+            # ── CHANGE: move each batch to GPU, then result back to CPU ──
+            batch = activations_flat[i : i + sae_batch_size].to(device)
 
             _, cache = sae.run_with_cache(
                 batch, names_filter=["hook_sae_acts_post", "hook_decode_mask"]
@@ -201,31 +201,59 @@ def get_sae_activations(
                 "hook_decode_mask"
             ].unsqueeze(-1)
 
-            sae_activations.append(active_experts)
+            # ── CHANGE: immediately move to CPU ──
+            sae_activations.append(active_experts.cpu())
+            del cache, active_experts, batch
+            torch.cuda.empty_cache()
 
-    sae_activations = torch.cat(sae_activations, dim=0).to(device)
+    # ── CHANGE: free the SAE ──
+    del sae
+    torch.cuda.empty_cache()
+    print("SAE deleted and GPU memory freed.")
 
-    # Package experts
+    # ── CHANGE: concatenate on CPU ──
+    sae_activations_cat = torch.cat(sae_activations, dim=0)
+    del sae_activations
+
+    # Reshape back to original size
+    sae_activations_cat = sae_activations_cat.view(
+        B, S, sae_activations_cat.shape[1], sae_activations_cat.shape[2]
+    )
+
+    # Package experts — everything is on CPU now
     experts = []
-    n_experts = sae_activations.shape[-2]  # Get n_experts
+    n_experts = sae_activations_cat.shape[-2]
 
     for i in tqdm(range(n_experts)):
-        # Grab points
-        expert_pts = sae_activations[..., i, :]
-
+        expert_pts = sae_activations_cat[..., i, :]
+        # shape: (B, S, D')
         active_mask = torch.norm(expert_pts, p=2, dim=-1) > active_threshold
+        # shape: (B, S)
+        n_active = active_mask.sum().item()
 
-        # Check if there are enough points to do anything interesting
-        if active_mask.sum() >= min_points:
-            expert = Expert(
-                active_mask,
-                i,
-                activations,
-                expert_pts,
-            )
+        if n_active < min_points:
+            continue
 
-            experts.append(expert)
+        # ── NEW: randomly subsample active points if above max_points ──
+        # If max_points == 0, treat as "no cap"
+        if max_points and n_active > max_points:
+            # Indices of all active points in (B, S)
+            active_indices = active_mask.nonzero(as_tuple=False)  # (n_active, 2)
 
+            # Randomly choose max_points indices without replacement
+            perm = torch.randperm(n_active)[:max_points]
+            chosen = active_indices[perm]
+
+            # Build a new mask that is True only at the chosen points
+            sampled_mask = torch.zeros_like(active_mask, dtype=torch.bool)
+            sampled_mask[chosen[:, 0], chosen[:, 1]] = True
+            active_mask = sampled_mask
+
+        expert = Expert(active_mask, i, activations, expert_pts)
+        experts.append(expert)
+
+    # ── CHANGE: free the big concatenated tensor once experts are built ──
+    del sae_activations_cat
     return experts
 
 
@@ -262,19 +290,15 @@ def main(
         "expert_plots", help="Base directory to save the HTML plots"
     ),
 ):
-    # Parse the checkpoint path to dynamically create the output subfolder
-    # Example: /scratch/.../qkkhpjf1/final_250003456 -> folder: qkkhpjf1_250003456
     ckpt_path_obj = Path(checkpoint_path)
     run_hash = ckpt_path_obj.parent.name
     run_step = ckpt_path_obj.name.replace("final_", "")
-
     run_folder_name = f"{run_hash}_{run_step}"
     final_output_dir = os.path.join(output_dir, run_folder_name)
-
     os.makedirs(final_output_dir, exist_ok=True)
     print(f"Plots will be saved to: {final_output_dir}")
 
-    # 1. Collect Base LLM Activations
+    # 1. Collect — LLM is freed inside this function
     llm_acts, str_tokens = collect_activations(
         model_name=base_model_name,
         hook_name=hook_point,
@@ -284,8 +308,9 @@ def main(
         device=device,
         llm_batch_size=llm_batch_size,
     )
+    # At this point: GPU is empty, llm_acts is on CPU
 
-    # 2. Extract and Package SAE Experts
+    # 2. SAE encoding — SAE is freed inside this function
     experts = get_sae_activations(
         checkpoint_path=checkpoint_path,
         device=device,
@@ -294,20 +319,27 @@ def main(
         active_threshold=active_threshold,
         min_points=min_points,
     )
+    # At this point: GPU is empty, expert data is on CPU
+
+    # ── CHANGE: llm_acts is no longer needed (experts have their own copies) ──
+    del llm_acts
 
     if not experts:
         print("No experts fired enough times to exceed the min_points threshold.")
         return
 
-    # 3. Compute geometric continuity
+    # 3. Evaluate manifolds — each expert temporarily uses GPU then frees it
     print(f"Evaluating manifolds for continuity (k={k_neighbors})...")
     for expert in tqdm(experts):
-        expert.evaluate_manifold(k_neighbors=k_neighbors)
+        expert.evaluate_manifold(k_neighbors=k_neighbors, device=device)
 
-    # 4. Sort descending by the mean continuity score
-    experts.sort(key=lambda e: e.local_continuity_scores.mean().item(), reverse=True)  # type: ignore
+    # 4. Sort
+    experts.sort(
+        key=lambda e: e.local_continuity_scores.mean().item(),  # type: ignore
+        reverse=True,
+    )
 
-    # 5. Output and Plot
+    # 5. Plot
     print(
         f"\nSaving top {n_interesting_experts_to_plot} most structured experts to '{final_output_dir}/'..."
     )
@@ -316,33 +348,20 @@ def main(
         mean_score = expert.local_continuity_scores.mean().item()  # type: ignore
 
         print(
-            f"Rank {i + 1:02d} | Expert {expert.expert_id:4d} | Mean Continuity: {mean_score:.4f} | Points: {expert.expert_activations.shape[0]}"
+            f"Rank {i + 1:02d} | Expert {expert.expert_id:4d} | "
+            f"Mean Continuity: {mean_score:.4f} | Points: {expert.expert_activations.shape[0]}"
         )
 
         fig = expert.get_plot(
             str_tokens=str_tokens,  # type: ignore
             k_neighbors=k_neighbors,
             context_window=context_window_display,
+            device=device,
         )
 
-        # Save to HTML with a clean, sortable naming scheme
         filename = f"rank_{i + 1:02d}_expert_{expert.expert_id:04d}_score_{mean_score:.4f}.html"
-        filepath = os.path.join(final_output_dir, filename)
-
-        fig.write_html(filepath)
+        fig.write_html(os.path.join(final_output_dir, filename))
 
 
 if __name__ == "__main__":
     typer.run(main)
-
-
-# python analyze_experts.py \
-#     --checkpoint-path "/scratch/Collin/SAELens/checkpoints/qkkhpjf1/final_250003456" \
-#     --nase-model-name "your-model-here" \
-#     --hook-point "your-hook-point" \
-#     --n-input-samples 1500 \
-#     --input-sequence-length 128 \
-#     --n-interesting-experts-to-plot 100 \
-#     --output-dir "manifold_analysis" \
-#     --k-neighbors 10 \
-#     --device "cuda"
