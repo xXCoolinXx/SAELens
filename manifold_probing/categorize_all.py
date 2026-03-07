@@ -1,7 +1,10 @@
 import torch
 import typer
 from datasets import load_dataset
+from tqdm import tqdm
 from transformer_lens import HookedTransformer
+
+from sae_lens import SAE
 
 
 def collect_activations(
@@ -37,7 +40,7 @@ def collect_activations(
     all_acts = []
 
     # Collect batch-wise
-    for i in range(0, n_input_samples, llm_batch_size):
+    for i in tqdm(range(0, n_input_samples, llm_batch_size)):
         batch = tokenized[i : i + llm_batch_size, :].to(device)
 
         # Run the batch through the model
@@ -54,11 +57,33 @@ def collect_activations(
     return activations, str_tokens
 
 
-def get_sae_activations():
-    pass
+def get_sae_activations(
+    checkpoint_path: str,
+    device: str,
+    activations: torch.Tensor,
+):
+    print(f"Loading SAE from {checkpoint_path}")
+    sae = SAE.load_from_disk(path=checkpoint_path, device=device)
+
+    with torch.no_grad():
+        # z = sae.encode(activations)
+
+        _, cache = sae.run_with_cache(
+            activations, names_filter=["hook_sae_acts_post", "hook_decode_mask"]
+        )
+
+        active_experts = cache["hook_sae_acts_post"] * cache[
+            "hook_decode_mask"
+        ].unsqueeze(-1)
+
+    return active_experts
 
 
 def persistent_homology():
+    pass
+
+
+def geometric_categorization():
     pass
 
 

@@ -80,6 +80,8 @@ class SMIXAE(SAE[SMIXAEConfig]):
             ),
         )
 
+        self.hook_decode_mask = HookPoint()
+
         self.cfg.apply_b_dec_to_input = False  # Remove bias term - destroys structure
 
     @override
@@ -101,6 +103,7 @@ class SMIXAE(SAE[SMIXAEConfig]):
         self.sae_in = self.process_sae_in(x)
         _, _, z = smixae_encode(self, self.sae_in)  # (batch, n_experts, d_bottleneck)
 
+        self.hook_sae_acts_post(z)
         # z_norm_mask = z.norm(dim=-1) > self.threshold  # type: ignore # (batch, n_experts) mask
 
         # z = z * z_norm_mask.unsqueeze(-1)  # Apply mask per bottelneck
@@ -133,9 +136,11 @@ class SMIXAE(SAE[SMIXAEConfig]):
         # sae_out_pre = torch.einsum("bnd,nde->bne", feature_acts, self.W_latent_dec)
         # sae_out_pre = sae_out_pre.flatten(-2, -1)
         # sae_out_pre = sae_out_pre @ self.W_dec  # + self.b_dec
-        sae_out_pre, _ = matching_pursuit_decode(
+        sae_out_pre, decode_mask = matching_pursuit_decode(
             feature_acts, self.sae_in, self, self.cfg.k_experts, 0, True, 128
         )
+
+        self.hook_decode_mask(decode_mask)
 
         sae_out_pre = self.hook_sae_recons(sae_out_pre)
         sae_out_pre = self.run_time_activation_norm_fn_out(sae_out_pre)
