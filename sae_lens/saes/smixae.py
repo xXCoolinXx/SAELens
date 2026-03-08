@@ -157,6 +157,7 @@ class SMIXAETrainingConfig(TrainingSAEConfig):
     k_experts: int = 8  # L0 = d_expert * k_experts
     aux_loss_coefficient: float = 1 / 32
     b_gate_init: float = -0.1
+    rescale_acts_by_decoder_norm: bool = False
     # expert_threshold: float = 0.1
 
     # jump_relu_bandwidth: float = 0.05
