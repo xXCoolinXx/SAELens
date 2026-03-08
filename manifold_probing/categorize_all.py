@@ -14,6 +14,83 @@ from transformer_lens import HookedTransformer
 from sae_lens import SAE
 
 
+# ======================================================================
+# Label distance loading
+# ======================================================================
+def load_label_distances(
+    path: str,
+    label_names: dict[int, str],
+) -> torch.Tensor:
+    n_classes = len(label_names)
+    label_to_id = {v: k for k, v in label_names.items()}
+
+    df_indexed = pd.read_csv(path, index_col=0)
+
+    is_square = df_indexed.shape[0] == df_indexed.shape[1] and set(
+        df_indexed.index.astype(str)
+    ) == set(df_indexed.columns.astype(str))
+
+    if is_square:
+        print(f"Loaded {path} as distance matrix ({df_indexed.shape[0]} labels)")
+        dist_matrix = torch.zeros(n_classes, n_classes)
+        for i in range(n_classes):
+            for j in range(n_classes):
+                li = label_names[i]
+                lj = label_names[j]
+                if li in df_indexed.index and lj in df_indexed.columns:
+                    dist_matrix[i, j] = float(df_indexed.loc[li, lj])
+                elif i != j:
+                    dist_matrix[i, j] = -1
+        valid = dist_matrix[dist_matrix >= 0]
+        fill_val = valid.max().item() + 1 if valid.numel() > 0 else 1.0
+        dist_matrix[dist_matrix < 0] = fill_val
+        return dist_matrix
+    df = pd.read_csv(path)
+    label_col = df.columns[0]
+    coord_cols = df.columns[1:]
+    n_dims = len(coord_cols)
+    print(f"Loaded {path} as label embeddings ({len(df)} labels × {n_dims} dims)")
+    embeddings = torch.zeros(n_classes, n_dims)
+    found = set()
+    for _, row in df.iterrows():
+        label = str(row[label_col])
+        if label in label_to_id:
+            idx = label_to_id[label]
+            embeddings[idx] = torch.tensor([float(row[c]) for c in coord_cols])
+            found.add(label)
+    missing = set(label_to_id.keys()) - found
+    if missing:
+        print(
+            f"  Warning: {len(missing)} labels not found in embedding file: "
+            f"{', '.join(sorted(missing)[:5])}{'…' if len(missing) > 5 else ''}"
+        )
+    dist_matrix = torch.cdist(embeddings, embeddings)
+    nonzero = dist_matrix[dist_matrix > 0]
+    if nonzero.numel() > 0:
+        print(
+            f"  Distance stats — min: {nonzero.min():.3f}, "
+            f"max: {nonzero.max():.3f}, "
+            f"mean: {nonzero.mean():.3f}"
+        )
+    return dist_matrix
+
+
+def compute_max_label_distance(
+    n_classes: int,
+    cyclical: bool,
+    label_distances: torch.Tensor | None,
+) -> float:
+    """Maximum possible label distance, for normalizing ordering score."""
+    if label_distances is not None:
+        return float(label_distances.max().item())
+    if cyclical:
+        return n_classes / 2.0
+    return float(n_classes - 1)
+
+
+# ======================================================================
+# Expert
+# ======================================================================
 class Expert:
     def __init__(
         self,
@@ -23,19 +100,17 @@ class Expert:
         expert_activations: torch.Tensor,
         labels: torch.Tensor | None = None,
         seq_positions: torch.Tensor | None = None,
+        n_classes: int = 0,
+        label_distances: torch.Tensor | None = None,
+        max_label_distance: float = 1.0,
     ):
-        """
-        Parameters
-        ----------
-        seq_positions : (B,) tensor, optional
-            Maps each batch index to the *original* sequence position of the
-            token that was encoded.  Only set in last-token-only mode so that
-            context windows render around the correct position.
-        """
         self.expert_activations = expert_activations[active_mask].float().cpu()
         self.llm_activations = llm_activations[active_mask].float().cpu()
         self.labels = labels[active_mask].long().cpu() if labels is not None else None
-        self.seq_positions = seq_positions  # kept as full (B,) lookup table
+        self.seq_positions = seq_positions
+        self.n_classes = n_classes
+        self.label_distances = label_distances
+        self.max_label_distance = max_label_distance
 
         assert self.expert_activations.shape[0] == self.llm_activations.shape[0], (
             "Different number of expert activations and embeddings. "
@@ -44,26 +119,102 @@ class Expert:
 
         self.expert_id = expert_id
         self.active_indices = active_mask.nonzero().cpu().tolist()
+
+        # Metrics (populated lazily)
         self.local_continuity_scores: torch.Tensor | None = None
-        self.concept_purity_scores: torch.Tensor | None = None
+        self.strict_purity_scores: torch.Tensor | None = None
+        self.relaxed_purity_scores: torch.Tensor | None = None
+        self.mean_neighbor_distances: torch.Tensor | None = None
         self.concept_scores: dict[str, torch.Tensor] = {}
 
-    # ── unified accessor ──────────────────────────────────────────────
+    # ── score accessors ───────────────────────────────────────────────
     @property
-    def scores(self) -> torch.Tensor:
-        if self.concept_purity_scores is not None:
-            return self.concept_purity_scores
-        if self.local_continuity_scores is not None:
-            return self.local_continuity_scores
-        raise ValueError(
-            "No scores computed yet. Call evaluate_manifold or evaluate_concept first."
-        )
+    def mean_continuity(self) -> float | None:
+        if self.local_continuity_scores is None:
+            return None
+        return float(self.local_continuity_scores.mean().item())
 
     @property
-    def score_name(self) -> str:
-        if self.concept_purity_scores is not None:
-            return "Purity"
-        return "Continuity"
+    def mean_ring(self) -> float | None:
+        o = self.ordering_score
+        r = self.mean_relaxed_purity
+        if o is None or r is None:
+            return None
+        return o * r
+
+    @property
+    def mean_strict_purity(self) -> float | None:
+        if self.strict_purity_scores is None:
+            return None
+        return float(self.strict_purity_scores.mean().item())
+
+    @property
+    def mean_relaxed_purity(self) -> float | None:
+        if self.relaxed_purity_scores is None:
+            return None
+        return float(self.relaxed_purity_scores.mean().item())
+
+    @property
+    def mean_neighbor_distance(self) -> float | None:
+        if self.mean_neighbor_distances is None:
+            return None
+        return float(self.mean_neighbor_distances.mean().item())
+
+    @property
+    def ordering_score(self) -> float | None:
+        d = self.mean_neighbor_distance
+        if d is None:
+            return None
+        return 1.0 - d / self.max_label_distance
+
+    @property
+    def mean_ordered(self) -> float | None:
+        """High when clusters exist AND they're arranged by label order."""
+        s = self.mean_strict_purity
+        o = self.ordering_score
+        if s is None or o is None:
+            return None
+        return s * o
+
+    @property
+    def mean_mixed(self) -> float | None:
+        c = self.mean_continuity
+        s = self.mean_strict_purity
+        if c is None or s is None:
+            return None
+        return c * (1.0 - s)
+
+    @property
+    def mean_both(self) -> float | None:
+        c = self.mean_continuity
+        s = self.mean_strict_purity
+        if c is None or s is None:
+            return None
+        return c * s
+
+    @property
+    def n_unique_labels(self) -> int | None:
+        if self.labels is None:
+            return None
+        return int(self.labels.unique().numel())
+
+    def sort_key(self, sort_by: str) -> float:
+        mapping: dict[str, float | None] = {
+            "strict_purity": self.mean_strict_purity,
+            "purity": self.mean_relaxed_purity,
+            "continuity": self.mean_continuity,
+            "mixed": self.mean_mixed,
+            "both": self.mean_both,
+            "ordered": self.mean_ordered,
+            "ordering": self.ordering_score,
+            "mean_ring": self.mean_ring,
+        }
+        if sort_by not in mapping:
+            raise ValueError(
+                f"Unknown sort_by: {sort_by}. Options: {', '.join(mapping.keys())}"
+            )
+        v = mapping[sort_by]
+        return v if v is not None else float("-inf")
 
     # ── shared KNN helper ─────────────────────────────────────────────
     def _evaluate_util(
@@ -99,36 +250,110 @@ class Expert:
 
         return self.local_continuity_scores
 
-    # ── labelled metric ───────────────────────────────────────────────
-    def evaluate_concept(
+    # ── label metrics core ────────────────────────────────────────────
+    def _compute_label_distances(
         self,
-        concept: str | None = None,
-        concept_labels: torch.Tensor | None = None,
-        k_neighbors: int = 10,
-        device: str = "cuda",
+        indices: torch.Tensor,
+        cyclical: bool = False,
     ) -> torch.Tensor:
-        _, _, indices = self._evaluate_util(k_neighbors, device)
-        indices = indices.cpu()
-        torch.cuda.empty_cache()
+        """
+        Compute per-neighbor label distances. Returns (N, k) tensor.
+        """
+        if self.labels is None:
+            raise ValueError("No labels stored on Expert.")
 
-        if concept_labels is not None:
-            labels = concept_labels.long()
-        elif self.labels is not None:
-            labels = self.labels
-        else:
-            raise ValueError(
-                "No labels provided to evaluate_concept and none stored on Expert."
-            )
-
+        labels = self.labels
         neighbor_labels = labels[indices]
         center_labels = labels.unsqueeze(1).expand_as(neighbor_labels)
-        purity = (neighbor_labels == center_labels).float().mean(dim=-1)
+
+        if self.label_distances is not None:
+            dist = self.label_distances[center_labels, neighbor_labels]
+        else:
+            dist = (neighbor_labels - center_labels).abs().float()
+            if cyclical and self.n_classes > 0:
+                dist = torch.min(dist, self.n_classes - dist)
+
+        return dist
+
+    def _compute_label_metrics(
+        self,
+        indices: torch.Tensor,
+        adjacency_radius: float = 1.0,
+        cyclical: bool = False,
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """
+        Returns (strict_purity, relaxed_purity, mean_neighbor_distance)
+        all shape (N,).
+        """
+        dist = self._compute_label_distances(indices, cyclical)
+
+        strict_purity = (dist == 0).float().mean(dim=-1)
+        relaxed_purity = (dist <= adjacency_radius).float().mean(dim=-1)
+        mean_dist = dist.float().mean(dim=-1)
+
+        return strict_purity, relaxed_purity, mean_dist
+
+    # ── labelled evaluation ───────────────────────────────────────────
+    def evaluate_labels(
+        self,
+        concept: str | None = None,
+        k_neighbors: int = 10,
+        device: str = "cuda",
+        adjacency_radius: float = 1.0,
+        cyclical: bool = False,
+    ) -> None:
+        """Compute all label-based metrics in a single KNN pass."""
+        _, _, indices = self._evaluate_util(k_neighbors, device)
+        indices_cpu = indices.cpu()
+        torch.cuda.empty_cache()
+
+        strict, relaxed, mean_dist = self._compute_label_metrics(
+            indices_cpu, adjacency_radius, cyclical
+        )
+
+        self.strict_purity_scores = strict
+        self.relaxed_purity_scores = relaxed
+        self.mean_neighbor_distances = mean_dist
 
         if concept is not None:
-            self.concept_scores[concept] = purity
-        self.concept_purity_scores = purity
+            self.concept_scores[concept] = relaxed
 
-        return purity
+    # ── both continuity + label metrics ───────────────────────────────
+    def evaluate_all(
+        self,
+        concept: str | None = None,
+        k_neighbors: int = 10,
+        device: str = "cuda",
+        adjacency_radius: float = 1.0,
+        cyclical: bool = False,
+    ) -> None:
+        """Compute continuity AND all label metrics in one KNN pass."""
+        llm_acts_gpu, expert_acts_gpu, indices = self._evaluate_util(
+            k_neighbors, device
+        )
+
+        # Continuity
+        llm_normed = F.normalize(llm_acts_gpu, p=2, dim=-1)
+        llm_neighbors = llm_normed[indices]
+        center = llm_normed.unsqueeze(1)
+        sims = (center * llm_neighbors).sum(dim=-1)
+        self.local_continuity_scores = sims.mean(dim=-1).cpu()
+
+        del llm_acts_gpu, expert_acts_gpu, llm_normed, llm_neighbors, center, sims
+        torch.cuda.empty_cache()
+
+        # Label metrics
+        indices_cpu = indices.cpu()
+        strict, relaxed, mean_dist = self._compute_label_metrics(
+            indices_cpu, adjacency_radius, cyclical
+        )
+
+        self.strict_purity_scores = strict
+        self.relaxed_purity_scores = relaxed
+        self.mean_neighbor_distances = mean_dist
+
+        if concept is not None:
+            self.concept_scores[concept] = relaxed
 
     # ── context windows ───────────────────────────────────────────────
     def get_context_windows(
@@ -137,12 +362,8 @@ class Expert:
         contexts = []
         for batch_idx, seq_idx in self.active_indices:
             seq = str_tokens[batch_idx]
-
-            # In last-token-only mode the internal seq_idx is always 0;
-            # map it back to the real position in the full sequence.
             if self.seq_positions is not None:
                 seq_idx = int(self.seq_positions[batch_idx].item())
-
             start = max(0, seq_idx - context_window)
             end = min(len(seq), seq_idx + context_window + 1)
             window = list(seq[start:end])
@@ -152,6 +373,24 @@ class Expert:
         return contexts
 
     # ── plotting ──────────────────────────────────────────────────────
+    def _make_title(self) -> str:
+        parts = [f"Expert {self.expert_id}  (n={self.expert_activations.shape[0]}"]
+        if self.n_unique_labels is not None:
+            parts.append(f"labels={self.n_unique_labels}")
+        if self.mean_strict_purity is not None:
+            parts.append(f"s_pur={self.mean_strict_purity:.3f}")
+        if self.mean_relaxed_purity is not None:
+            parts.append(f"r_pur={self.mean_relaxed_purity:.3f}")
+        if self.ordering_score is not None:
+            parts.append(f"ord={self.ordering_score:.3f}")
+        if self.mean_ordered is not None:
+            parts.append(f"ordered={self.mean_ordered:.3f}")
+        if self.mean_continuity is not None:
+            parts.append(f"cont={self.mean_continuity:.3f}")
+        if self.mean_ring is not None:
+            parts.append(f"ring={self.mean_ring:.3f}")
+        return ", ".join(parts) + ")"
+
     def get_plot(
         self,
         str_tokens: list[list[str]],
@@ -159,77 +398,101 @@ class Expert:
         context_window: int = 10,
         device: str = "cuda",
         label_names: dict[int, str] | None = None,
+        adjacency_radius: float = 1.0,
+        cyclical: bool = False,
     ) -> Figure:
-        if self.concept_purity_scores is None and self.local_continuity_scores is None:
+        # Lazy-evaluate
+        if self.strict_purity_scores is None and self.local_continuity_scores is None:
             if self.labels is not None:
-                self.evaluate_concept(k_neighbors=k_neighbors, device=device)
+                self.evaluate_all(
+                    k_neighbors=k_neighbors,
+                    device=device,
+                    adjacency_radius=adjacency_radius,
+                    cyclical=cyclical,
+                )
             else:
                 self.evaluate_manifold(k_neighbors=k_neighbors, device=device)
 
         contexts = self.get_context_windows(str_tokens, context_window=context_window)
         pts = self.expert_activations.numpy()
-        scores_np = self.scores.numpy()
-        mean_score = float(scores_np.mean())
-        score_col = f"{self.score_name} Score"
 
         use_label_colour = self.labels is not None and label_names is not None
+
+        hover_extra: dict[str, list[float] | bool] = {"Context": True}
+        score_arrays: dict[str, list[float]] = {}
+        if self.local_continuity_scores is not None:
+            score_arrays["Continuity"] = self.local_continuity_scores.numpy().tolist()
+        if self.strict_purity_scores is not None:
+            score_arrays["Strict Purity"] = self.strict_purity_scores.numpy().tolist()
+        if self.relaxed_purity_scores is not None:
+            score_arrays["Relaxed Purity"] = self.relaxed_purity_scores.numpy().tolist()
+        if self.mean_neighbor_distances is not None:
+            score_arrays["Neighbor Distance"] = (
+                self.mean_neighbor_distances.numpy().tolist()
+            )
 
         if use_label_colour:
             label_strs = [
                 label_names.get(l.item(), str(l.item()))
                 for l in self.labels  # type: ignore[union-attr]
             ]
-            df = pd.DataFrame(
-                {
-                    "x": pts[:, 0],
-                    "y": pts[:, 1],
-                    "z": pts[:, 2],
-                    score_col: scores_np,
-                    "Label": label_strs,
-                    "Context": contexts,
-                }
-            )
+            df_dict: dict[str, list] = {
+                "x": pts[:, 0].tolist(),
+                "y": pts[:, 1].tolist(),
+                "z": pts[:, 2].tolist(),
+                "Label": label_strs,
+                "Context": contexts,
+            }
+            for k, v in score_arrays.items():
+                df_dict[k] = v
+                hover_extra[k] = True
+            hover_extra.update({"x": False, "y": False, "z": False})
+
+            df = pd.DataFrame(df_dict)
             fig = px.scatter_3d(
                 df,
                 x="x",
                 y="y",
                 z="z",
                 color="Label",
-                hover_data={
-                    "Context": True,
-                    score_col: True,
-                    "x": False,
-                    "y": False,
-                    "z": False,
-                },
-                title=(
-                    f"Expert {self.expert_id}  "
-                    f"(n={pts.shape[0]}, mean {self.score_name.lower()}={mean_score:.4f})"
-                ),
+                hover_data=hover_extra,
+                title=self._make_title(),
                 opacity=0.8,
             )
         else:
-            df = pd.DataFrame(
-                {
-                    "x": pts[:, 0],
-                    "y": pts[:, 1],
-                    "z": pts[:, 2],
-                    score_col: scores_np,
-                    "Context": contexts,
-                }
-            )
+            if self.local_continuity_scores is not None:
+                color_col = "Continuity"
+                color_vals = self.local_continuity_scores.numpy().tolist()
+            elif self.strict_purity_scores is not None:
+                color_col = "Strict Purity"
+                color_vals = self.strict_purity_scores.numpy().tolist()
+            else:
+                color_col = "Score"
+                color_vals = [0.0] * pts.shape[0]
+
+            df_dict = {
+                "x": pts[:, 0].tolist(),
+                "y": pts[:, 1].tolist(),
+                "z": pts[:, 2].tolist(),
+                color_col: color_vals,
+                "Context": contexts,
+            }
+            for k, v in score_arrays.items():
+                if k != color_col:
+                    df_dict[k] = v
+                    hover_extra[k] = True
+            hover_extra.update({"x": False, "y": False, "z": False})
+
+            df = pd.DataFrame(df_dict)
             fig = px.scatter_3d(
                 df,
                 x="x",
                 y="y",
                 z="z",
-                color=score_col,
+                color=color_col,
                 color_continuous_scale="Viridis",
-                hover_data={"Context": True, "x": False, "y": False, "z": False},
-                title=(
-                    f"Expert {self.expert_id}  "
-                    f"(n={pts.shape[0]}, mean {self.score_name.lower()}={mean_score:.4f})"
-                ),
+                hover_data=hover_extra,
+                title=self._make_title(),
                 opacity=0.8,
             )
 
@@ -257,20 +520,11 @@ def collect_activations(
     torch.Tensor | None,
     dict[int, str] | None,
     torch.Tensor,
+    int,
 ]:
-    """
-    Returns
-    -------
-    activations          : (B, S, D) on CPU
-    str_tokens           : list[list[str]] — full sequences for context windows
-    labels               : (B, S) long tensor on CPU, or None
-    label_names          : {int → str} mapping, or None
-    last_token_positions : (B,) long tensor — index of last non-pad token per seq
-    """
     print(f"Loading {model_name} to collect activations")
     model = HookedTransformer.from_pretrained(model_name, device=device)
 
-    # ── 1. Load texts (+ optional raw labels) ────────────────────────
     texts: list[str] = []
     raw_labels: list[str | int] | None = [] if label_column else None
 
@@ -302,40 +556,37 @@ def collect_activations(
     else:
         raise ValueError("Provide either --dataset-name or --dataframe-path.")
 
-    # ── 2. Encode labels → integer ids ────────────────────────────────
     labels_tensor: torch.Tensor | None = None
     label_names: dict[int, str] | None = None
+    n_classes: int = 0
 
     if raw_labels is not None and len(raw_labels) > 0:
         unique = sorted({str(l) for l in raw_labels})
+        n_classes = len(unique)
         label_to_id = {l: i for i, l in enumerate(unique)}
         label_names = {i: l for l, i in label_to_id.items()}
         label_ids = torch.tensor(
             [label_to_id[str(l)] for l in raw_labels], dtype=torch.long
         )
         print(
-            f"Found {len(unique)} unique labels: "
-            f"{', '.join(unique[:10])}{'…' if len(unique) > 10 else ''}"
+            f"Found {n_classes} unique labels (sorted → ordinal ids): "
+            f"{', '.join(unique[:10])}{'…' if n_classes > 10 else ''}"
         )
     else:
         label_ids = None
 
-    # ── 3. Tokenise ───────────────────────────────────────────────────
     print("Collecting activations...")
     tokenized = model.to_tokens(texts, prepend_bos=True, move_to_device=False)[
         :, :max_length
     ]
     B, S = tokenized.shape
 
-    # Broadcast document-level labels → token-level (B, S)
     if label_ids is not None:
         labels_tensor = label_ids[:B].unsqueeze(1).expand(B, S).clone()
 
-    # ── 4. Find last non-pad position per sequence ────────────────────
     pad_token_id = getattr(model.tokenizer, "pad_token_id", None)
     if pad_token_id is not None:
-        non_pad_mask = tokenized != pad_token_id  # (B, S)
-        # Build column indices, mask out pad positions with -1, then take max
+        non_pad_mask = tokenized != pad_token_id
         col_indices = torch.arange(S).unsqueeze(0).expand(B, S)
         last_token_positions = (
             col_indices.masked_fill(~non_pad_mask, -1).max(dim=1).values
@@ -351,7 +602,6 @@ def collect_activations(
         f"(seq length {S})"
     )
 
-    # ── 5. Forward pass ───────────────────────────────────────────────
     all_acts = []
     for i in tqdm(range(0, B, llm_batch_size)):
         batch = tokenized[i : i + llm_batch_size].to(device)
@@ -370,7 +620,14 @@ def collect_activations(
     torch.cuda.empty_cache()
     print("LLM deleted and GPU memory freed.")
 
-    return activations, str_tokens, labels_tensor, label_names, last_token_positions
+    return (
+        activations,
+        str_tokens,
+        labels_tensor,
+        label_names,
+        last_token_positions,
+        n_classes,
+    )
 
 
 # ======================================================================
@@ -387,34 +644,30 @@ def get_sae_activations(
     labels: torch.Tensor | None = None,
     last_token_only: bool = False,
     last_token_positions: torch.Tensor | None = None,
+    n_classes: int = 0,
+    label_distances: torch.Tensor | None = None,
+    max_label_distance: float = 1.0,
 ) -> list[Expert]:
     print(f"Loading SAE from {checkpoint_path}")
     sae = SAE.load_from_disk(path=checkpoint_path, device=device)
 
     B, S_full, D = activations.shape
 
-    # ── When labelled, only encode the last *non-pad* token per seq ───
     seq_positions: torch.Tensor | None = None
     if last_token_only:
         if last_token_positions is None:
             raise ValueError(
                 "last_token_only=True but no last_token_positions provided."
             )
-
-        seq_positions = last_token_positions  # (B,) — lookup for context windows
-
-        # Gather the single token per sequence
-        # activations: (B, S_full, D) → (B, 1, D)
+        seq_positions = last_token_positions
         gather_idx = last_token_positions.unsqueeze(1).unsqueeze(2).expand(B, 1, D)
         activations = activations.gather(1, gather_idx)
-
         if labels is not None:
-            label_idx = last_token_positions.unsqueeze(1)  # (B, 1)
+            label_idx = last_token_positions.unsqueeze(1)
             labels = labels.gather(1, label_idx)
-
         S = 1
         print(
-            f"last_token_only=True → gathered 1 token per sequence "
+            f"last_token_only=True → gathered last non-pad token per sequence "
             f"({B * S_full} → {B} tokens through SAE)"
         )
     else:
@@ -451,7 +704,7 @@ def get_sae_activations(
     n_experts = sae_activations_cat.shape[-2]
 
     for i in tqdm(range(n_experts)):
-        expert_pts = sae_activations_cat[..., i, :]  # (B, S, D')
+        expert_pts = sae_activations_cat[..., i, :]
         active_mask = torch.norm(expert_pts, p=2, dim=-1) > active_threshold
         n_active = int(active_mask.sum().item())
 
@@ -473,6 +726,9 @@ def get_sae_activations(
             expert_pts,
             labels=labels,
             seq_positions=seq_positions,
+            n_classes=n_classes,
+            label_distances=label_distances,
+            max_label_distance=max_label_distance,
         )
         experts.append(expert)
 
@@ -489,7 +745,7 @@ def main(
     hook_point: str = typer.Option(
         ..., help="The hook point where your SAE was trained"
     ),
-    # ── data source (supply one) ──
+    # ── data source ──
     dataset_name: str | None = typer.Option(
         None, help="HF dataset to stream (unlabelled)"
     ),
@@ -499,8 +755,36 @@ def main(
     text_column: str = typer.Option("text", help="Column containing text"),
     label_column: str | None = typer.Option(
         None,
-        help="Column containing labels (enables concept-purity evaluation, "
+        help="Column containing labels (enables purity evaluation, "
         "last-token-only mode)",
+    ),
+    # ── label distances ──
+    label_distance_path: str | None = typer.Option(
+        None,
+        help="CSV defining label relationships: embedding file "
+        "(label, dim1, dim2, …) or square distance matrix.",
+    ),
+    adjacency_radius: float = typer.Option(
+        1.0,
+        help="KNN neighbors within this label distance count as 'matching' "
+        "for relaxed purity. 0 = exact match only.",
+    ),
+    cyclical_labels: bool = typer.Option(
+        False,
+        help="Treat ordinal label ordering as cyclical (wrap-around). "
+        "Ignored when --label-distance-path is set.",
+    ),
+    # ── sorting ──
+    sort_by: str = typer.Option(
+        "auto",
+        help="Metric to sort by: 'strict_purity', 'purity' (relaxed), "
+        "'continuity', 'mixed' (cont×(1−strict)), 'both' (cont×strict), "
+        "'ordering' (1−mean_dist/max_dist), "
+        "'ordered' (strict×ordering — finds ordered clusters), "
+        "or 'auto' (ordered when labelled, continuity when not).",
+    ),
+    sort_ascending: bool = typer.Option(
+        False, help="Sort ascending instead of descending."
     ),
     # ── general ──
     n_input_samples: int = typer.Option(1000, help="Number of input texts to sample"),
@@ -540,8 +824,8 @@ def main(
     os.makedirs(final_output_dir, exist_ok=True)
     print(f"Plots will be saved to: {final_output_dir}")
 
-    # ── 1. Collect LLM activations (+ optional labels) ────────────────
-    llm_acts, str_tokens, labels, label_names, last_token_positions = (
+    # ── 1. Collect LLM activations ────────────────────────────────────
+    llm_acts, str_tokens, labels, label_names, last_token_positions, n_classes = (
         collect_activations(
             model_name=base_model_name,
             hook_name=hook_point,
@@ -558,6 +842,28 @@ def main(
 
     is_labelled = labels is not None
 
+    # ── 1b. Label distances ───────────────────────────────────────────
+    label_distances: torch.Tensor | None = None
+    if label_distance_path is not None and label_names is not None:
+        label_distances = load_label_distances(label_distance_path, label_names)
+
+    max_label_dist = compute_max_label_distance(
+        n_classes, cyclical_labels, label_distances
+    )
+
+    if is_labelled:
+        dist_desc = (
+            f"from {label_distance_path}"
+            if label_distances is not None
+            else f"ordinal (cyclical={cyclical_labels})"
+        )
+        print(
+            f"Label distances: {dist_desc}, "
+            f"adjacency_radius={adjacency_radius}, "
+            f"max_label_distance={max_label_dist:.2f}, "
+            f"n_classes={n_classes}"
+        )
+
     # ── 2. SAE encoding ───────────────────────────────────────────────
     experts = get_sae_activations(
         checkpoint_path=checkpoint_path,
@@ -570,6 +876,9 @@ def main(
         labels=labels,
         last_token_only=is_labelled,
         last_token_positions=last_token_positions,
+        n_classes=n_classes,
+        label_distances=label_distances,
+        max_label_distance=max_label_dist,
     )
 
     del llm_acts, labels
@@ -580,20 +889,32 @@ def main(
 
     # ── 3. Evaluate ───────────────────────────────────────────────────
     if is_labelled:
-        metric_name = "Purity"
-        print(f"Evaluating concept purity (k={k_neighbors})…")
+        print(
+            f"Evaluating continuity + label metrics "
+            f"(k={k_neighbors}, adj={adjacency_radius})…"
+        )
         for expert in tqdm(experts):
-            expert.evaluate_concept(
-                concept=label_column, k_neighbors=k_neighbors, device=device
+            expert.evaluate_all(
+                concept=label_column,
+                k_neighbors=k_neighbors,
+                device=device,
+                adjacency_radius=adjacency_radius,
+                cyclical=cyclical_labels,
             )
     else:
-        metric_name = "Continuity"
         print(f"Evaluating manifold continuity (k={k_neighbors})…")
         for expert in tqdm(experts):
             expert.evaluate_manifold(k_neighbors=k_neighbors, device=device)
 
-    # ── 4. Sort (best first) ──────────────────────────────────────────
-    experts.sort(key=lambda e: e.scores.mean().item(), reverse=True)
+    # ── 4. Sort ───────────────────────────────────────────────────────
+    if sort_by == "auto":
+        sort_by = "ordered" if is_labelled else "continuity"
+
+    print(f"Sorting by {sort_by} ({'ascending' if sort_ascending else 'descending'})…")
+    experts.sort(
+        key=lambda e: e.sort_key(sort_by),
+        reverse=not sort_ascending,
+    )
 
     # ── 5. Plot ───────────────────────────────────────────────────────
     n_to_plot = min(n_interesting_experts_to_plot, len(experts))
@@ -601,13 +922,28 @@ def main(
 
     for i in range(n_to_plot):
         expert = experts[i]
-        mean_score = expert.scores.mean().item()
+        score_val = expert.sort_key(sort_by)
 
-        print(
-            f"Rank {i + 1:02d} | Expert {expert.expert_id:4d} | "
-            f"Mean {metric_name}: {mean_score:.4f} | "
-            f"Points: {expert.expert_activations.shape[0]}"
-        )
+        parts = [
+            f"Rank {i + 1:02d}",
+            f"Expert {expert.expert_id:4d}",
+        ]
+        if expert.n_unique_labels is not None:
+            parts.append(f"Labels: {expert.n_unique_labels}/{n_classes}")
+        if expert.mean_strict_purity is not None:
+            parts.append(f"S_Pur: {expert.mean_strict_purity:.4f}")
+        if expert.mean_relaxed_purity is not None:
+            parts.append(f"R_Pur: {expert.mean_relaxed_purity:.4f}")
+        if expert.ordering_score is not None:
+            parts.append(f"Ord: {expert.ordering_score:.4f}")
+        if expert.mean_ordered is not None:
+            parts.append(f"Ordered: {expert.mean_ordered:.4f}")
+        if expert.mean_continuity is not None:
+            parts.append(f"Cont: {expert.mean_continuity:.4f}")
+        if expert.mean_ring is not None:
+            parts.append(f"Ring: {expert.mean_ring:.4f}")
+        parts.append(f"Points: {expert.expert_activations.shape[0]}")
+        print(" | ".join(parts))
 
         fig = expert.get_plot(
             str_tokens=str_tokens,  # type: ignore[arg-type]
@@ -615,11 +951,13 @@ def main(
             context_window=context_window_display,
             device=device,
             label_names=label_names,
+            adjacency_radius=adjacency_radius,
+            cyclical=cyclical_labels,
         )
 
         filename = (
             f"rank_{i + 1:02d}_expert_{expert.expert_id:04d}"
-            f"_{metric_name.lower()}_{mean_score:.4f}.html"
+            f"_{sort_by}_{score_val:.4f}.html"
         )
         fig.write_html(os.path.join(final_output_dir, filename))
 

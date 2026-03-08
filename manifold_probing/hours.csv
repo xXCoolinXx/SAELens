@@ -1,0 +1,1001 @@
+,Sentence,Label
+0,Prof. Wang reported a power surge around 12,11_12
+1,Update the project management board by 5,4_5
+2,The cooling system cycles off at 6,5_6
+3,Update the project management board by 6,5_6
+4,Monitor the heart rate variability until 9,8_9
+5,Please check the sample integrity at 3,2_3
+6,Expect the delivery of isotopes by 12,11_12
+7,The lab access logs recorded an entry at 3,2_3
+8,Please shut down the workstations by 8,7_8
+9,The server maintenance window begins at 8,7_8
+10,Safety inspections are conducted at 3,2_3
+11,James will start the titration at 2,1_2
+12,James will start the titration at 10,9_10
+13,The lab access logs recorded an entry at 11,10_11
+14,Pressure readings must be logged at 6,5_6
+15,Prof. Wang set the alarm for 4,3_4
+16,The ventilation system increases flow at 7,6_7
+17,Charlie will upload the raw data at 8,7_8
+18,The server maintenance window begins at 2,1_2
+19,The incubation period ends at 8,7_8
+20,Final calibration is scheduled for 12,11_12
+21,Final calibration is scheduled for 10,9_10
+22,Charlie will start the titration at 3,2_3
+23,Charlie is scheduled for bench work at 5,4_5
+24,Charlie is scheduled for bench work at 9,8_9
+25,Please shut down the workstations by 2,1_2
+26,Bob will start the titration at 7,6_7
+27,the technician set the alarm for 1,0_1
+28,Final calibration is scheduled for 8,7_8
+29,Data synchronization will occur at 10,9_10
+30,The chemical reaction reached peak at 2,1_2
+31,The ventilation system increases flow at 4,3_4
+32,The automated sequence is programmed for 6,5_6
+33,Please check the sample integrity at 3,2_3
+34,Review the preliminary results at 5,4_5
+35,Monitor the heart rate variability until 11,10_11
+36,The chemical reaction reached peak at 12,11_12
+37,The incubation period ends at 2,1_2
+38,Dr. Smith will calibrate the sensors at 7,6_7
+39,Review the preliminary results at 11,10_11
+40,James will start the titration at 10,9_10
+41,Emergency backup systems were tested at 10,9_10
+42,Emergency backup systems were tested at 12,11_12
+43,Monitor the heart rate variability until 10,9_10
+44,The centrifuge run finishes at 12,11_12
+45,Emergency backup systems were tested at 11,10_11
+46,Please shut down the workstations by 7,6_7
+47,Dr. Smith will upload the raw data at 7,6_7
+48,The lab access logs recorded an entry at 5,4_5
+49,The ventilation system increases flow at 9,8_9
+50,Monitor the heart rate variability until 11,10_11
+51,Pressure readings must be logged at 6,5_6
+52,Final calibration is scheduled for 6,5_6
+53,Please shut down the workstations by 3,2_3
+54,The ventilation system increases flow at 4,3_4
+55,Bob reported a power surge around 4,3_4
+56,Please check the sample integrity at 1,0_1
+57,The sterilization cycle completes at 5,4_5
+58,Alice reported a power surge around 4,3_4
+59,Shift handover is prompt at 8,7_8
+60,Data synchronization will occur at 12,11_12
+61,Expect the delivery of isotopes by 4,3_4
+62,Review the preliminary results at 5,4_5
+63,Review the preliminary results at 4,3_4
+64,The server maintenance window begins at 12,11_12
+65,The chemical reaction reached peak at 4,3_4
+66,The chemical reaction reached peak at 10,9_10
+67,Prof. Wang set the alarm for 7,6_7
+68,The last observation was recorded at 9,8_9
+69,Please shut down the workstations by 6,5_6
+70,Shift handover is prompt at 3,2_3
+71,Pressure readings must be logged at 7,6_7
+72,Please check the sample integrity at 4,3_4
+73,The centrifuge run finishes at 11,10_11
+74,Data synchronization will occur at 2,1_2
+75,Review the preliminary results at 2,1_2
+76,Shift handover is prompt at 12,11_12
+77,Charlie set the alarm for 7,6_7
+78,Data synchronization will occur at 9,8_9
+79,Charlie will calibrate the sensors at 3,2_3
+80,The cooling system cycles off at 8,7_8
+81,Meeting with the ethics board starts at 4,3_4
+82,the technician will upload the raw data at 10,9_10
+83,Monitor the heart rate variability until 12,11_12
+84,The lab access logs recorded an entry at 12,11_12
+85,The centrifuge run finishes at 11,10_11
+86,Please check the sample integrity at 9,8_9
+87,Safety inspections are conducted at 9,8_9
+88,Alice will upload the raw data at 6,5_6
+89,The sterilization cycle completes at 2,1_2
+90,The cooling system cycles off at 9,8_9
+91,Final calibration is scheduled for 11,10_11
+92,The last observation was recorded at 5,4_5
+93,The sterilization cycle completes at 7,6_7
+94,Charlie will calibrate the sensors at 3,2_3
+95,Review the preliminary results at 9,8_9
+96,Safety inspections are conducted at 11,10_11
+97,Pressure readings must be logged at 7,6_7
+98,Meeting with the ethics board starts at 9,8_9
+99,Expect the delivery of isotopes by 4,3_4
+100,Shift handover is prompt at 4,3_4
+101,The incubation period ends at 9,8_9
+102,The ventilation system increases flow at 12,11_12
+103,James reported a power surge around 4,3_4
+104,Bob will start the titration at 10,9_10
+105,Meeting with the ethics board starts at 7,6_7
+106,The biopsy results are expected by 1,0_1
+107,The automated sequence is programmed for 9,8_9
+108,Expect the delivery of isotopes by 2,1_2
+109,Bob will calibrate the sensors at 11,10_11
+110,Data synchronization will occur at 10,9_10
+111,Bob will upload the raw data at 5,4_5
+112,Please shut down the workstations by 10,9_10
+113,The chemical reaction reached peak at 6,5_6
+114,Expect the delivery of isotopes by 2,1_2
+115,Please check the sample integrity at 3,2_3
+116,The server maintenance window begins at 6,5_6
+117,Emergency backup systems were tested at 12,11_12
+118,Update the project management board by 6,5_6
+119,Emergency backup systems were tested at 5,4_5
+120,Meeting with the ethics board starts at 10,9_10
+121,The sterilization cycle completes at 5,4_5
+122,The centrifuge run finishes at 9,8_9
+123,the technician will start the titration at 2,1_2
+124,Emergency backup systems were tested at 3,2_3
+125,Meeting with the ethics board starts at 3,2_3
+126,Data synchronization will occur at 7,6_7
+127,Monitor the heart rate variability until 5,4_5
+128,The server maintenance window begins at 11,10_11
+129,The ventilation system increases flow at 6,5_6
+130,Safety inspections are conducted at 2,1_2
+131,Expect the delivery of isotopes by 8,7_8
+132,The lab access logs recorded an entry at 6,5_6
+133,Data synchronization will occur at 4,3_4
+134,James is scheduled for bench work at 4,3_4
+135,The ventilation system increases flow at 8,7_8
+136,Dr. Smith will calibrate the sensors at 3,2_3
+137,Dr. Smith reported a power surge around 10,9_10
+138,Review the preliminary results at 11,10_11
+139,The server maintenance window begins at 5,4_5
+140,Safety inspections are conducted at 4,3_4
+141,Pressure readings must be logged at 8,7_8
+142,Please check the sample integrity at 8,7_8
+143,Please shut down the workstations by 7,6_7
+144,Meeting with the ethics board starts at 12,11_12
+145,Alice will start the titration at 1,0_1
+146,Please shut down the workstations by 12,11_12
+147,The cooling system cycles off at 1,0_1
+148,Monitor the heart rate variability until 2,1_2
+149,Alice will upload the raw data at 9,8_9
+150,The incubation period ends at 7,6_7
+151,The server maintenance window begins at 11,10_11
+152,The last observation was recorded at 9,8_9
+153,Review the preliminary results at 12,11_12
+154,The ventilation system increases flow at 7,6_7
+155,Update the project management board by 7,6_7
+156,The lab access logs recorded an entry at 9,8_9
+157,The centrifuge run finishes at 11,10_11
+158,The last observation was recorded at 6,5_6
+159,Meeting with the ethics board starts at 3,2_3
+160,The sterilization cycle completes at 6,5_6
+161,Elena will calibrate the sensors at 10,9_10
+162,The centrifuge run finishes at 10,9_10
+163,Please shut down the workstations by 8,7_8
+164,The biopsy results are expected by 4,3_4
+165,Emergency backup systems were tested at 2,1_2
+166,The chemical reaction reached peak at 7,6_7
+167,Meeting with the ethics board starts at 6,5_6
+168,Review the preliminary results at 4,3_4
+169,The biopsy results are expected by 11,10_11
+170,Pressure readings must be logged at 5,4_5
+171,The cooling system cycles off at 4,3_4
+172,The centrifuge run finishes at 3,2_3
+173,Please shut down the workstations by 6,5_6
+174,The biopsy results are expected by 9,8_9
+175,Shift handover is prompt at 10,9_10
+176,Meeting with the ethics board starts at 7,6_7
+177,Alice will start the titration at 10,9_10
+178,Please shut down the workstations by 3,2_3
+179,James will calibrate the sensors at 8,7_8
+180,Monitor the heart rate variability until 11,10_11
+181,Bob will start the titration at 3,2_3
+182,Emergency backup systems were tested at 11,10_11
+183,Emergency backup systems were tested at 12,11_12
+184,Review the preliminary results at 5,4_5
+185,Meeting with the ethics board starts at 4,3_4
+186,Pressure readings must be logged at 3,2_3
+187,Shift handover is prompt at 4,3_4
+188,Update the project management board by 2,1_2
+189,The biopsy results are expected by 2,1_2
+190,The centrifuge run finishes at 6,5_6
+191,Update the project management board by 5,4_5
+192,The incubation period ends at 11,10_11
+193,Alice set the alarm for 11,10_11
+194,James will calibrate the sensors at 9,8_9
+195,Expect the delivery of isotopes by 11,10_11
+196,The cooling system cycles off at 11,10_11
+197,The last observation was recorded at 12,11_12
+198,Monitor the heart rate variability until 1,0_1
+199,James will start the titration at 9,8_9
+200,Dr. Smith will calibrate the sensors at 2,1_2
+201,Bob is scheduled for bench work at 12,11_12
+202,Charlie will start the titration at 6,5_6
+203,Review the preliminary results at 7,6_7
+204,Update the project management board by 9,8_9
+205,Please check the sample integrity at 5,4_5
+206,The biopsy results are expected by 7,6_7
+207,Expect the delivery of isotopes by 3,2_3
+208,the PI is scheduled for bench work at 8,7_8
+209,Shift handover is prompt at 12,11_12
+210,Meeting with the ethics board starts at 11,10_11
+211,The automated sequence is programmed for 2,1_2
+212,Monitor the heart rate variability until 3,2_3
+213,The chemical reaction reached peak at 4,3_4
+214,The server maintenance window begins at 10,9_10
+215,Review the preliminary results at 6,5_6
+216,Dr. Smith is scheduled for bench work at 9,8_9
+217,Sarah reported a power surge around 8,7_8
+218,The server maintenance window begins at 7,6_7
+219,Charlie set the alarm for 5,4_5
+220,Dr. Smith reported a power surge around 7,6_7
+221,The last observation was recorded at 2,1_2
+222,The ventilation system increases flow at 2,1_2
+223,Expect the delivery of isotopes by 2,1_2
+224,The cooling system cycles off at 9,8_9
+225,The cooling system cycles off at 11,10_11
+226,Shift handover is prompt at 12,11_12
+227,Update the project management board by 8,7_8
+228,Monitor the heart rate variability until 12,11_12
+229,Prof. Wang will calibrate the sensors at 7,6_7
+230,James set the alarm for 11,10_11
+231,Safety inspections are conducted at 12,11_12
+232,Please check the sample integrity at 12,11_12
+233,Safety inspections are conducted at 10,9_10
+234,The automated sequence is programmed for 4,3_4
+235,Monitor the heart rate variability until 1,0_1
+236,Pressure readings must be logged at 5,4_5
+237,Update the project management board by 4,3_4
+238,Data synchronization will occur at 1,0_1
+239,The server maintenance window begins at 8,7_8
+240,The incubation period ends at 8,7_8
+241,Final calibration is scheduled for 9,8_9
+242,the technician set the alarm for 11,10_11
+243,Sarah reported a power surge around 4,3_4
+244,The automated sequence is programmed for 6,5_6
+245,Safety inspections are conducted at 9,8_9
+246,Monitor the heart rate variability until 1,0_1
+247,The automated sequence is programmed for 11,10_11
+248,The server maintenance window begins at 11,10_11
+249,The cooling system cycles off at 2,1_2
+250,The incubation period ends at 2,1_2
+251,Data synchronization will occur at 12,11_12
+252,the technician is scheduled for bench work at 3,2_3
+253,Elena reported a power surge around 2,1_2
+254,the technician will start the titration at 5,4_5
+255,The ventilation system increases flow at 8,7_8
+256,Sarah will calibrate the sensors at 3,2_3
+257,The last observation was recorded at 10,9_10
+258,Please shut down the workstations by 4,3_4
+259,Bob reported a power surge around 6,5_6
+260,Please shut down the workstations by 1,0_1
+261,Prof. Wang is scheduled for bench work at 12,11_12
+262,Bob will calibrate the sensors at 4,3_4
+263,Please shut down the workstations by 11,10_11
+264,Expect the delivery of isotopes by 9,8_9
+265,Please check the sample integrity at 8,7_8
+266,The automated sequence is programmed for 10,9_10
+267,The incubation period ends at 10,9_10
+268,The last observation was recorded at 8,7_8
+269,Monitor the heart rate variability until 11,10_11
+270,The ventilation system increases flow at 10,9_10
+271,The cooling system cycles off at 1,0_1
+272,James reported a power surge around 8,7_8
+273,Charlie will upload the raw data at 10,9_10
+274,Please check the sample integrity at 1,0_1
+275,The automated sequence is programmed for 5,4_5
+276,Data synchronization will occur at 8,7_8
+277,Please shut down the workstations by 10,9_10
+278,Expect the delivery of isotopes by 8,7_8
+279,The cooling system cycles off at 12,11_12
+280,The automated sequence is programmed for 3,2_3
+281,Dr. Smith set the alarm for 1,0_1
+282,The automated sequence is programmed for 1,0_1
+283,The centrifuge run finishes at 10,9_10
+284,The chemical reaction reached peak at 6,5_6
+285,Pressure readings must be logged at 11,10_11
+286,The biopsy results are expected by 12,11_12
+287,The chemical reaction reached peak at 2,1_2
+288,Review the preliminary results at 2,1_2
+289,James will calibrate the sensors at 8,7_8
+290,The automated sequence is programmed for 12,11_12
+291,Shift handover is prompt at 1,0_1
+292,Data synchronization will occur at 5,4_5
+293,The lab access logs recorded an entry at 6,5_6
+294,The automated sequence is programmed for 12,11_12
+295,Emergency backup systems were tested at 3,2_3
+296,Please shut down the workstations by 3,2_3
+297,The chemical reaction reached peak at 9,8_9
+298,Emergency backup systems were tested at 8,7_8
+299,Safety inspections are conducted at 1,0_1
+300,Please check the sample integrity at 3,2_3
+301,The ventilation system increases flow at 12,11_12
+302,Expect the delivery of isotopes by 9,8_9
+303,Charlie will start the titration at 11,10_11
+304,The server maintenance window begins at 2,1_2
+305,Monitor the heart rate variability until 4,3_4
+306,Shift handover is prompt at 3,2_3
+307,Data synchronization will occur at 1,0_1
+308,The sterilization cycle completes at 6,5_6
+309,Update the project management board by 11,10_11
+310,Please shut down the workstations by 8,7_8
+311,The incubation period ends at 5,4_5
+312,Charlie will calibrate the sensors at 1,0_1
+313,The centrifuge run finishes at 4,3_4
+314,The centrifuge run finishes at 2,1_2
+315,The cooling system cycles off at 7,6_7
+316,Review the preliminary results at 7,6_7
+317,The last observation was recorded at 4,3_4
+318,The cooling system cycles off at 6,5_6
+319,Meeting with the ethics board starts at 9,8_9
+320,Update the project management board by 8,7_8
+321,The server maintenance window begins at 8,7_8
+322,James reported a power surge around 10,9_10
+323,The centrifuge run finishes at 5,4_5
+324,Update the project management board by 1,0_1
+325,James will upload the raw data at 9,8_9
+326,Please check the sample integrity at 2,1_2
+327,Expect the delivery of isotopes by 3,2_3
+328,The server maintenance window begins at 7,6_7
+329,Review the preliminary results at 12,11_12
+330,Prof. Wang reported a power surge around 6,5_6
+331,Safety inspections are conducted at 1,0_1
+332,The lab access logs recorded an entry at 10,9_10
+333,The server maintenance window begins at 7,6_7
+334,Please shut down the workstations by 10,9_10
+335,Review the preliminary results at 5,4_5
+336,The centrifuge run finishes at 1,0_1
+337,The chemical reaction reached peak at 8,7_8
+338,Please check the sample integrity at 4,3_4
+339,The ventilation system increases flow at 4,3_4
+340,Final calibration is scheduled for 10,9_10
+341,Safety inspections are conducted at 9,8_9
+342,The incubation period ends at 5,4_5
+343,Emergency backup systems were tested at 9,8_9
+344,the technician will upload the raw data at 7,6_7
+345,Safety inspections are conducted at 9,8_9
+346,The server maintenance window begins at 6,5_6
+347,Please check the sample integrity at 9,8_9
+348,The chemical reaction reached peak at 10,9_10
+349,Update the project management board by 7,6_7
+350,Please shut down the workstations by 1,0_1
+351,The incubation period ends at 5,4_5
+352,The ventilation system increases flow at 7,6_7
+353,Emergency backup systems were tested at 12,11_12
+354,Please shut down the workstations by 6,5_6
+355,Shift handover is prompt at 1,0_1
+356,Bob will calibrate the sensors at 4,3_4
+357,The sterilization cycle completes at 12,11_12
+358,The lab access logs recorded an entry at 2,1_2
+359,Prof. Wang will start the titration at 3,2_3
+360,Final calibration is scheduled for 7,6_7
+361,Safety inspections are conducted at 11,10_11
+362,Expect the delivery of isotopes by 4,3_4
+363,The chemical reaction reached peak at 9,8_9
+364,The biopsy results are expected by 1,0_1
+365,The sterilization cycle completes at 4,3_4
+366,Data synchronization will occur at 10,9_10
+367,Emergency backup systems were tested at 9,8_9
+368,Shift handover is prompt at 12,11_12
+369,James will upload the raw data at 10,9_10
+370,The server maintenance window begins at 12,11_12
+371,Meeting with the ethics board starts at 3,2_3
+372,The server maintenance window begins at 8,7_8
+373,The last observation was recorded at 4,3_4
+374,Prof. Wang will upload the raw data at 4,3_4
+375,Expect the delivery of isotopes by 8,7_8
+376,Pressure readings must be logged at 3,2_3
+377,Alice will start the titration at 7,6_7
+378,The last observation was recorded at 12,11_12
+379,The lab access logs recorded an entry at 4,3_4
+380,The automated sequence is programmed for 6,5_6
+381,The server maintenance window begins at 5,4_5
+382,The chemical reaction reached peak at 6,5_6
+383,James is scheduled for bench work at 11,10_11
+384,The biopsy results are expected by 11,10_11
+385,The chemical reaction reached peak at 6,5_6
+386,Monitor the heart rate variability until 6,5_6
+387,Final calibration is scheduled for 6,5_6
+388,Elena is scheduled for bench work at 7,6_7
+389,The biopsy results are expected by 10,9_10
+390,The chemical reaction reached peak at 2,1_2
+391,Sarah reported a power surge around 12,11_12
+392,The centrifuge run finishes at 12,11_12
+393,Data synchronization will occur at 11,10_11
+394,Review the preliminary results at 12,11_12
+395,The server maintenance window begins at 11,10_11
+396,the technician will calibrate the sensors at 5,4_5
+397,the PI will calibrate the sensors at 1,0_1
+398,Emergency backup systems were tested at 3,2_3
+399,Please shut down the workstations by 3,2_3
+400,Bob will upload the raw data at 1,0_1
+401,The automated sequence is programmed for 10,9_10
+402,The automated sequence is programmed for 8,7_8
+403,Pressure readings must be logged at 7,6_7
+404,The biopsy results are expected by 9,8_9
+405,The automated sequence is programmed for 9,8_9
+406,The incubation period ends at 3,2_3
+407,The biopsy results are expected by 7,6_7
+408,Bob reported a power surge around 12,11_12
+409,The ventilation system increases flow at 7,6_7
+410,Review the preliminary results at 4,3_4
+411,The cooling system cycles off at 11,10_11
+412,Elena will calibrate the sensors at 9,8_9
+413,The server maintenance window begins at 7,6_7
+414,Dr. Smith will calibrate the sensors at 4,3_4
+415,The automated sequence is programmed for 12,11_12
+416,Emergency backup systems were tested at 1,0_1
+417,Safety inspections are conducted at 11,10_11
+418,The centrifuge run finishes at 11,10_11
+419,Sarah is scheduled for bench work at 6,5_6
+420,Update the project management board by 2,1_2
+421,the PI will upload the raw data at 4,3_4
+422,Data synchronization will occur at 12,11_12
+423,Monitor the heart rate variability until 12,11_12
+424,The incubation period ends at 11,10_11
+425,The last observation was recorded at 8,7_8
+426,James is scheduled for bench work at 7,6_7
+427,Prof. Wang will calibrate the sensors at 3,2_3
+428,Final calibration is scheduled for 1,0_1
+429,The cooling system cycles off at 2,1_2
+430,Please check the sample integrity at 9,8_9
+431,Data synchronization will occur at 9,8_9
+432,Update the project management board by 10,9_10
+433,The incubation period ends at 8,7_8
+434,Update the project management board by 3,2_3
+435,Final calibration is scheduled for 11,10_11
+436,The cooling system cycles off at 6,5_6
+437,The ventilation system increases flow at 11,10_11
+438,Final calibration is scheduled for 11,10_11
+439,Review the preliminary results at 11,10_11
+440,Bob is scheduled for bench work at 11,10_11
+441,Emergency backup systems were tested at 3,2_3
+442,The last observation was recorded at 8,7_8
+443,The lab access logs recorded an entry at 1,0_1
+444,The ventilation system increases flow at 9,8_9
+445,Update the project management board by 10,9_10
+446,Please shut down the workstations by 1,0_1
+447,The incubation period ends at 10,9_10
+448,The last observation was recorded at 8,7_8
+449,Expect the delivery of isotopes by 7,6_7
+450,Update the project management board by 4,3_4
+451,Prof. Wang will calibrate the sensors at 9,8_9
+452,Please check the sample integrity at 7,6_7
+453,Charlie will start the titration at 8,7_8
+454,Emergency backup systems were tested at 1,0_1
+455,the technician is scheduled for bench work at 12,11_12
+456,The incubation period ends at 7,6_7
+457,Alice will start the titration at 4,3_4
+458,Please shut down the workstations by 12,11_12
+459,Expect the delivery of isotopes by 6,5_6
+460,Data synchronization will occur at 9,8_9
+461,The cooling system cycles off at 11,10_11
+462,Review the preliminary results at 2,1_2
+463,The server maintenance window begins at 9,8_9
+464,Data synchronization will occur at 9,8_9
+465,Meeting with the ethics board starts at 12,11_12
+466,Please shut down the workstations by 2,1_2
+467,James will calibrate the sensors at 9,8_9
+468,Pressure readings must be logged at 12,11_12
+469,The lab access logs recorded an entry at 3,2_3
+470,Charlie reported a power surge around 12,11_12
+471,the technician will calibrate the sensors at 6,5_6
+472,The lab access logs recorded an entry at 8,7_8
+473,Expect the delivery of isotopes by 8,7_8
+474,Update the project management board by 5,4_5
+475,Monitor the heart rate variability until 5,4_5
+476,Dr. Smith set the alarm for 7,6_7
+477,Monitor the heart rate variability until 1,0_1
+478,The sterilization cycle completes at 6,5_6
+479,The automated sequence is programmed for 4,3_4
+480,The sterilization cycle completes at 12,11_12
+481,the PI reported a power surge around 11,10_11
+482,Alice is scheduled for bench work at 5,4_5
+483,The last observation was recorded at 2,1_2
+484,The biopsy results are expected by 9,8_9
+485,The centrifuge run finishes at 10,9_10
+486,Meeting with the ethics board starts at 4,3_4
+487,Dr. Smith set the alarm for 1,0_1
+488,The lab access logs recorded an entry at 8,7_8
+489,Please check the sample integrity at 8,7_8
+490,The server maintenance window begins at 2,1_2
+491,Charlie reported a power surge around 6,5_6
+492,the PI reported a power surge around 5,4_5
+493,Data synchronization will occur at 7,6_7
+494,The chemical reaction reached peak at 7,6_7
+495,Data synchronization will occur at 4,3_4
+496,Emergency backup systems were tested at 11,10_11
+497,The automated sequence is programmed for 5,4_5
+498,Bob will start the titration at 8,7_8
+499,Monitor the heart rate variability until 8,7_8
+500,Expect the delivery of isotopes by 4,3_4
+501,Final calibration is scheduled for 5,4_5
+502,The chemical reaction reached peak at 3,2_3
+503,Prof. Wang reported a power surge around 12,11_12
+504,Review the preliminary results at 3,2_3
+505,The biopsy results are expected by 12,11_12
+506,The biopsy results are expected by 5,4_5
+507,Sarah is scheduled for bench work at 11,10_11
+508,Emergency backup systems were tested at 6,5_6
+509,Review the preliminary results at 1,0_1
+510,Dr. Smith will upload the raw data at 10,9_10
+511,Monitor the heart rate variability until 4,3_4
+512,Final calibration is scheduled for 8,7_8
+513,Sarah set the alarm for 11,10_11
+514,Final calibration is scheduled for 3,2_3
+515,Final calibration is scheduled for 11,10_11
+516,The chemical reaction reached peak at 5,4_5
+517,The incubation period ends at 5,4_5
+518,The server maintenance window begins at 3,2_3
+519,Safety inspections are conducted at 10,9_10
+520,The biopsy results are expected by 11,10_11
+521,Please shut down the workstations by 2,1_2
+522,James set the alarm for 7,6_7
+523,Pressure readings must be logged at 5,4_5
+524,Please check the sample integrity at 4,3_4
+525,Monitor the heart rate variability until 3,2_3
+526,Shift handover is prompt at 10,9_10
+527,Dr. Smith reported a power surge around 7,6_7
+528,Review the preliminary results at 3,2_3
+529,The cooling system cycles off at 7,6_7
+530,Shift handover is prompt at 3,2_3
+531,The cooling system cycles off at 7,6_7
+532,Final calibration is scheduled for 2,1_2
+533,Safety inspections are conducted at 12,11_12
+534,Data synchronization will occur at 3,2_3
+535,The incubation period ends at 8,7_8
+536,The incubation period ends at 8,7_8
+537,Update the project management board by 1,0_1
+538,Charlie set the alarm for 2,1_2
+539,The server maintenance window begins at 1,0_1
+540,Final calibration is scheduled for 3,2_3
+541,Prof. Wang will start the titration at 4,3_4
+542,Review the preliminary results at 6,5_6
+543,Review the preliminary results at 1,0_1
+544,The lab access logs recorded an entry at 2,1_2
+545,The lab access logs recorded an entry at 12,11_12
+546,Expect the delivery of isotopes by 8,7_8
+547,Update the project management board by 8,7_8
+548,The last observation was recorded at 11,10_11
+549,The cooling system cycles off at 1,0_1
+550,Elena will upload the raw data at 12,11_12
+551,Emergency backup systems were tested at 11,10_11
+552,The server maintenance window begins at 4,3_4
+553,The lab access logs recorded an entry at 3,2_3
+554,The last observation was recorded at 9,8_9
+555,Prof. Wang reported a power surge around 7,6_7
+556,Safety inspections are conducted at 2,1_2
+557,The automated sequence is programmed for 12,11_12
+558,The biopsy results are expected by 4,3_4
+559,Safety inspections are conducted at 11,10_11
+560,The ventilation system increases flow at 9,8_9
+561,Expect the delivery of isotopes by 12,11_12
+562,the PI will start the titration at 12,11_12
+563,Safety inspections are conducted at 10,9_10
+564,Shift handover is prompt at 11,10_11
+565,The biopsy results are expected by 8,7_8
+566,Please shut down the workstations by 6,5_6
+567,Shift handover is prompt at 6,5_6
+568,Please check the sample integrity at 4,3_4
+569,Shift handover is prompt at 7,6_7
+570,James will start the titration at 5,4_5
+571,Meeting with the ethics board starts at 5,4_5
+572,Please shut down the workstations by 11,10_11
+573,Meeting with the ethics board starts at 7,6_7
+574,Review the preliminary results at 3,2_3
+575,The incubation period ends at 2,1_2
+576,the technician set the alarm for 9,8_9
+577,The automated sequence is programmed for 11,10_11
+578,The incubation period ends at 3,2_3
+579,Data synchronization will occur at 1,0_1
+580,Alice set the alarm for 9,8_9
+581,The server maintenance window begins at 3,2_3
+582,Sarah will start the titration at 6,5_6
+583,Please shut down the workstations by 5,4_5
+584,Emergency backup systems were tested at 11,10_11
+585,Bob set the alarm for 4,3_4
+586,The automated sequence is programmed for 11,10_11
+587,Charlie reported a power surge around 9,8_9
+588,Emergency backup systems were tested at 8,7_8
+589,James is scheduled for bench work at 2,1_2
+590,Update the project management board by 6,5_6
+591,Please check the sample integrity at 9,8_9
+592,The server maintenance window begins at 9,8_9
+593,Expect the delivery of isotopes by 7,6_7
+594,Bob set the alarm for 11,10_11
+595,Pressure readings must be logged at 7,6_7
+596,Pressure readings must be logged at 9,8_9
+597,Emergency backup systems were tested at 8,7_8
+598,The last observation was recorded at 5,4_5
+599,Pressure readings must be logged at 9,8_9
+600,Alice reported a power surge around 9,8_9
+601,The server maintenance window begins at 5,4_5
+602,the PI will calibrate the sensors at 9,8_9
+603,Monitor the heart rate variability until 10,9_10
+604,Data synchronization will occur at 5,4_5
+605,The chemical reaction reached peak at 7,6_7
+606,The centrifuge run finishes at 1,0_1
+607,The sterilization cycle completes at 5,4_5
+608,Meeting with the ethics board starts at 4,3_4
+609,Update the project management board by 5,4_5
+610,The biopsy results are expected by 9,8_9
+611,The last observation was recorded at 4,3_4
+612,Please check the sample integrity at 3,2_3
+613,Emergency backup systems were tested at 2,1_2
+614,Please shut down the workstations by 1,0_1
+615,Please check the sample integrity at 6,5_6
+616,Sarah is scheduled for bench work at 2,1_2
+617,The centrifuge run finishes at 6,5_6
+618,The last observation was recorded at 4,3_4
+619,Please check the sample integrity at 2,1_2
+620,The sterilization cycle completes at 8,7_8
+621,The ventilation system increases flow at 6,5_6
+622,Meeting with the ethics board starts at 11,10_11
+623,The automated sequence is programmed for 7,6_7
+624,Please shut down the workstations by 8,7_8
+625,Monitor the heart rate variability until 11,10_11
+626,Dr. Smith will calibrate the sensors at 7,6_7
+627,Shift handover is prompt at 11,10_11
+628,Please shut down the workstations by 8,7_8
+629,The automated sequence is programmed for 9,8_9
+630,Safety inspections are conducted at 10,9_10
+631,James is scheduled for bench work at 8,7_8
+632,Charlie will upload the raw data at 12,11_12
+633,Elena will calibrate the sensors at 2,1_2
+634,Update the project management board by 12,11_12
+635,The centrifuge run finishes at 8,7_8
+636,The biopsy results are expected by 12,11_12
+637,Review the preliminary results at 1,0_1
+638,Update the project management board by 8,7_8
+639,Please shut down the workstations by 5,4_5
+640,Elena is scheduled for bench work at 10,9_10
+641,Please check the sample integrity at 4,3_4
+642,The last observation was recorded at 6,5_6
+643,Review the preliminary results at 6,5_6
+644,The last observation was recorded at 7,6_7
+645,Update the project management board by 6,5_6
+646,The cooling system cycles off at 5,4_5
+647,James will start the titration at 10,9_10
+648,The sterilization cycle completes at 10,9_10
+649,The chemical reaction reached peak at 11,10_11
+650,Monitor the heart rate variability until 12,11_12
+651,Please check the sample integrity at 9,8_9
+652,The biopsy results are expected by 10,9_10
+653,Monitor the heart rate variability until 10,9_10
+654,The ventilation system increases flow at 8,7_8
+655,The sterilization cycle completes at 5,4_5
+656,The cooling system cycles off at 7,6_7
+657,The automated sequence is programmed for 11,10_11
+658,Final calibration is scheduled for 10,9_10
+659,Data synchronization will occur at 8,7_8
+660,the technician reported a power surge around 8,7_8
+661,the PI reported a power surge around 12,11_12
+662,Expect the delivery of isotopes by 9,8_9
+663,James will start the titration at 5,4_5
+664,Safety inspections are conducted at 9,8_9
+665,the technician will calibrate the sensors at 8,7_8
+666,Pressure readings must be logged at 2,1_2
+667,Elena will upload the raw data at 8,7_8
+668,The sterilization cycle completes at 10,9_10
+669,the technician reported a power surge around 10,9_10
+670,The centrifuge run finishes at 10,9_10
+671,The biopsy results are expected by 1,0_1
+672,Safety inspections are conducted at 9,8_9
+673,The automated sequence is programmed for 8,7_8
+674,The automated sequence is programmed for 3,2_3
+675,Final calibration is scheduled for 2,1_2
+676,Monitor the heart rate variability until 8,7_8
+677,Final calibration is scheduled for 2,1_2
+678,The cooling system cycles off at 7,6_7
+679,Data synchronization will occur at 10,9_10
+680,Final calibration is scheduled for 4,3_4
+681,Elena set the alarm for 11,10_11
+682,Prof. Wang will start the titration at 6,5_6
+683,The centrifuge run finishes at 9,8_9
+684,The incubation period ends at 10,9_10
+685,Please shut down the workstations by 1,0_1
+686,The chemical reaction reached peak at 8,7_8
+687,The last observation was recorded at 12,11_12
+688,Meeting with the ethics board starts at 9,8_9
+689,Emergency backup systems were tested at 6,5_6
+690,Bob will start the titration at 1,0_1
+691,Alice set the alarm for 7,6_7
+692,the technician set the alarm for 2,1_2
+693,Pressure readings must be logged at 4,3_4
+694,The biopsy results are expected by 5,4_5
+695,the PI will calibrate the sensors at 7,6_7
+696,The ventilation system increases flow at 3,2_3
+697,Please shut down the workstations by 11,10_11
+698,James will calibrate the sensors at 2,1_2
+699,Review the preliminary results at 2,1_2
+700,Please shut down the workstations by 1,0_1
+701,The lab access logs recorded an entry at 4,3_4
+702,Monitor the heart rate variability until 6,5_6
+703,Update the project management board by 1,0_1
+704,The biopsy results are expected by 8,7_8
+705,Safety inspections are conducted at 8,7_8
+706,Emergency backup systems were tested at 8,7_8
+707,Emergency backup systems were tested at 10,9_10
+708,Data synchronization will occur at 8,7_8
+709,The ventilation system increases flow at 1,0_1
+710,Expect the delivery of isotopes by 1,0_1
+711,Review the preliminary results at 8,7_8
+712,Data synchronization will occur at 9,8_9
+713,Review the preliminary results at 10,9_10
+714,Review the preliminary results at 11,10_11
+715,The server maintenance window begins at 5,4_5
+716,The cooling system cycles off at 2,1_2
+717,The ventilation system increases flow at 6,5_6
+718,Meeting with the ethics board starts at 6,5_6
+719,Please check the sample integrity at 7,6_7
+720,Bob will upload the raw data at 9,8_9
+721,the technician will start the titration at 10,9_10
+722,Update the project management board by 5,4_5
+723,The cooling system cycles off at 6,5_6
+724,Dr. Smith reported a power surge around 12,11_12
+725,Alice will calibrate the sensors at 8,7_8
+726,The chemical reaction reached peak at 3,2_3
+727,Dr. Smith reported a power surge around 4,3_4
+728,The chemical reaction reached peak at 11,10_11
+729,The biopsy results are expected by 5,4_5
+730,Safety inspections are conducted at 6,5_6
+731,Shift handover is prompt at 11,10_11
+732,Data synchronization will occur at 7,6_7
+733,The centrifuge run finishes at 3,2_3
+734,Shift handover is prompt at 1,0_1
+735,the PI will calibrate the sensors at 9,8_9
+736,The sterilization cycle completes at 11,10_11
+737,Final calibration is scheduled for 9,8_9
+738,The centrifuge run finishes at 10,9_10
+739,The chemical reaction reached peak at 2,1_2
+740,Expect the delivery of isotopes by 6,5_6
+741,Monitor the heart rate variability until 9,8_9
+742,The sterilization cycle completes at 8,7_8
+743,Data synchronization will occur at 10,9_10
+744,Monitor the heart rate variability until 1,0_1
+745,Update the project management board by 6,5_6
+746,The chemical reaction reached peak at 6,5_6
+747,The lab access logs recorded an entry at 2,1_2
+748,Dr. Smith will calibrate the sensors at 11,10_11
+749,The ventilation system increases flow at 3,2_3
+750,The centrifuge run finishes at 3,2_3
+751,The last observation was recorded at 3,2_3
+752,Meeting with the ethics board starts at 2,1_2
+753,Meeting with the ethics board starts at 8,7_8
+754,Final calibration is scheduled for 5,4_5
+755,The server maintenance window begins at 2,1_2
+756,The sterilization cycle completes at 7,6_7
+757,Data synchronization will occur at 5,4_5
+758,Expect the delivery of isotopes by 10,9_10
+759,The automated sequence is programmed for 2,1_2
+760,Final calibration is scheduled for 4,3_4
+761,Data synchronization will occur at 1,0_1
+762,The server maintenance window begins at 12,11_12
+763,Please check the sample integrity at 1,0_1
+764,Monitor the heart rate variability until 2,1_2
+765,The centrifuge run finishes at 8,7_8
+766,Final calibration is scheduled for 1,0_1
+767,The automated sequence is programmed for 4,3_4
+768,Alice will start the titration at 11,10_11
+769,Please check the sample integrity at 5,4_5
+770,The incubation period ends at 9,8_9
+771,Emergency backup systems were tested at 10,9_10
+772,The biopsy results are expected by 12,11_12
+773,The automated sequence is programmed for 3,2_3
+774,Alice set the alarm for 10,9_10
+775,the technician reported a power surge around 9,8_9
+776,The biopsy results are expected by 3,2_3
+777,The biopsy results are expected by 10,9_10
+778,Please shut down the workstations by 12,11_12
+779,Safety inspections are conducted at 12,11_12
+780,The biopsy results are expected by 3,2_3
+781,Expect the delivery of isotopes by 8,7_8
+782,The incubation period ends at 6,5_6
+783,The chemical reaction reached peak at 12,11_12
+784,The chemical reaction reached peak at 5,4_5
+785,The automated sequence is programmed for 3,2_3
+786,The biopsy results are expected by 5,4_5
+787,Expect the delivery of isotopes by 6,5_6
+788,Shift handover is prompt at 4,3_4
+789,The last observation was recorded at 3,2_3
+790,The last observation was recorded at 1,0_1
+791,Pressure readings must be logged at 8,7_8
+792,The automated sequence is programmed for 2,1_2
+793,Emergency backup systems were tested at 10,9_10
+794,Expect the delivery of isotopes by 5,4_5
+795,Please check the sample integrity at 11,10_11
+796,Review the preliminary results at 5,4_5
+797,Data synchronization will occur at 12,11_12
+798,The sterilization cycle completes at 9,8_9
+799,Emergency backup systems were tested at 7,6_7
+800,The server maintenance window begins at 8,7_8
+801,Monitor the heart rate variability until 7,6_7
+802,Safety inspections are conducted at 12,11_12
+803,The incubation period ends at 11,10_11
+804,The centrifuge run finishes at 7,6_7
+805,the technician set the alarm for 12,11_12
+806,the PI reported a power surge around 2,1_2
+807,Please shut down the workstations by 5,4_5
+808,Data synchronization will occur at 7,6_7
+809,Please shut down the workstations by 9,8_9
+810,The cooling system cycles off at 8,7_8
+811,The sterilization cycle completes at 6,5_6
+812,The centrifuge run finishes at 6,5_6
+813,The lab access logs recorded an entry at 11,10_11
+814,The cooling system cycles off at 11,10_11
+815,Final calibration is scheduled for 5,4_5
+816,Safety inspections are conducted at 12,11_12
+817,Dr. Smith set the alarm for 8,7_8
+818,The sterilization cycle completes at 5,4_5
+819,the PI will calibrate the sensors at 1,0_1
+820,Please check the sample integrity at 5,4_5
+821,Expect the delivery of isotopes by 8,7_8
+822,Pressure readings must be logged at 8,7_8
+823,The automated sequence is programmed for 2,1_2
+824,Monitor the heart rate variability until 7,6_7
+825,the technician will upload the raw data at 9,8_9
+826,Please shut down the workstations by 11,10_11
+827,The lab access logs recorded an entry at 7,6_7
+828,The automated sequence is programmed for 9,8_9
+829,Review the preliminary results at 6,5_6
+830,Shift handover is prompt at 2,1_2
+831,The automated sequence is programmed for 1,0_1
+832,The server maintenance window begins at 3,2_3
+833,Meeting with the ethics board starts at 3,2_3
+834,James will upload the raw data at 3,2_3
+835,The server maintenance window begins at 12,11_12
+836,Update the project management board by 2,1_2
+837,Charlie will start the titration at 5,4_5
+838,Meeting with the ethics board starts at 5,4_5
+839,Charlie set the alarm for 7,6_7
+840,Alice is scheduled for bench work at 8,7_8
+841,Please shut down the workstations by 2,1_2
+842,Review the preliminary results at 11,10_11
+843,The last observation was recorded at 12,11_12
+844,The incubation period ends at 6,5_6
+845,Data synchronization will occur at 4,3_4
+846,Data synchronization will occur at 6,5_6
+847,Please shut down the workstations by 12,11_12
+848,Review the preliminary results at 2,1_2
+849,Elena is scheduled for bench work at 1,0_1
+850,Review the preliminary results at 5,4_5
+851,The centrifuge run finishes at 7,6_7
+852,Update the project management board by 1,0_1
+853,The chemical reaction reached peak at 6,5_6
+854,The automated sequence is programmed for 9,8_9
+855,The sterilization cycle completes at 5,4_5
+856,The centrifuge run finishes at 6,5_6
+857,The last observation was recorded at 8,7_8
+858,Please shut down the workstations by 9,8_9
+859,Shift handover is prompt at 5,4_5
+860,James reported a power surge around 8,7_8
+861,Meeting with the ethics board starts at 11,10_11
+862,The server maintenance window begins at 6,5_6
+863,The chemical reaction reached peak at 12,11_12
+864,The centrifuge run finishes at 3,2_3
+865,Expect the delivery of isotopes by 6,5_6
+866,Charlie will calibrate the sensors at 5,4_5
+867,Please shut down the workstations by 1,0_1
+868,The centrifuge run finishes at 2,1_2
+869,Review the preliminary results at 1,0_1
+870,The lab access logs recorded an entry at 6,5_6
+871,The sterilization cycle completes at 7,6_7
+872,Review the preliminary results at 4,3_4
+873,The server maintenance window begins at 10,9_10
+874,Please check the sample integrity at 11,10_11
+875,Update the project management board by 6,5_6
+876,The lab access logs recorded an entry at 1,0_1
+877,The ventilation system increases flow at 8,7_8
+878,The server maintenance window begins at 2,1_2
+879,The last observation was recorded at 2,1_2
+880,Dr. Smith is scheduled for bench work at 11,10_11
+881,Please check the sample integrity at 1,0_1
+882,Elena reported a power surge around 10,9_10
+883,Meeting with the ethics board starts at 1,0_1
+884,The server maintenance window begins at 5,4_5
+885,James reported a power surge around 2,1_2
+886,Data synchronization will occur at 1,0_1
+887,The sterilization cycle completes at 10,9_10
+888,Please check the sample integrity at 10,9_10
+889,The ventilation system increases flow at 8,7_8
+890,Pressure readings must be logged at 2,1_2
+891,James set the alarm for 4,3_4
+892,James will calibrate the sensors at 5,4_5
+893,the technician will calibrate the sensors at 12,11_12
+894,Final calibration is scheduled for 12,11_12
+895,The last observation was recorded at 11,10_11
+896,The last observation was recorded at 2,1_2
+897,The ventilation system increases flow at 2,1_2
+898,The last observation was recorded at 7,6_7
+899,Meeting with the ethics board starts at 2,1_2
+900,The centrifuge run finishes at 11,10_11
+901,Safety inspections are conducted at 12,11_12
+902,Pressure readings must be logged at 11,10_11
+903,Please shut down the workstations by 7,6_7
+904,The centrifuge run finishes at 3,2_3
+905,the PI will start the titration at 1,0_1
+906,Meeting with the ethics board starts at 11,10_11
+907,Sarah reported a power surge around 1,0_1
+908,Sarah will start the titration at 2,1_2
+909,Please check the sample integrity at 10,9_10
+910,Shift handover is prompt at 8,7_8
+911,Sarah will upload the raw data at 3,2_3
+912,Review the preliminary results at 9,8_9
+913,James reported a power surge around 5,4_5
+914,Shift handover is prompt at 11,10_11
+915,The automated sequence is programmed for 5,4_5
+916,Bob is scheduled for bench work at 3,2_3
+917,Review the preliminary results at 10,9_10
+918,The chemical reaction reached peak at 1,0_1
+919,The chemical reaction reached peak at 10,9_10
+920,Emergency backup systems were tested at 1,0_1
+921,The server maintenance window begins at 6,5_6
+922,Please check the sample integrity at 1,0_1
+923,Sarah will upload the raw data at 3,2_3
+924,Bob set the alarm for 11,10_11
+925,Review the preliminary results at 7,6_7
+926,The chemical reaction reached peak at 4,3_4
+927,Monitor the heart rate variability until 8,7_8
+928,Prof. Wang is scheduled for bench work at 11,10_11
+929,The centrifuge run finishes at 9,8_9
+930,the technician will upload the raw data at 10,9_10
+931,Data synchronization will occur at 4,3_4
+932,Dr. Smith is scheduled for bench work at 3,2_3
+933,Expect the delivery of isotopes by 4,3_4
+934,Pressure readings must be logged at 5,4_5
+935,Dr. Smith set the alarm for 11,10_11
+936,Please shut down the workstations by 2,1_2
+937,Prof. Wang set the alarm for 4,3_4
+938,The sterilization cycle completes at 10,9_10
+939,The server maintenance window begins at 2,1_2
+940,Review the preliminary results at 3,2_3
+941,The biopsy results are expected by 2,1_2
+942,Pressure readings must be logged at 7,6_7
+943,Alice will calibrate the sensors at 3,2_3
+944,Please check the sample integrity at 1,0_1
+945,Please shut down the workstations by 7,6_7
+946,The cooling system cycles off at 11,10_11
+947,The server maintenance window begins at 9,8_9
+948,The chemical reaction reached peak at 7,6_7
+949,Please shut down the workstations by 5,4_5
+950,Pressure readings must be logged at 7,6_7
+951,Final calibration is scheduled for 8,7_8
+952,The last observation was recorded at 6,5_6
+953,The cooling system cycles off at 11,10_11
+954,Monitor the heart rate variability until 5,4_5
+955,The ventilation system increases flow at 3,2_3
+956,The centrifuge run finishes at 7,6_7
+957,Final calibration is scheduled for 5,4_5
+958,The lab access logs recorded an entry at 12,11_12
+959,Please check the sample integrity at 6,5_6
+960,Dr. Smith will start the titration at 11,10_11
+961,Safety inspections are conducted at 9,8_9
+962,The server maintenance window begins at 11,10_11
+963,Expect the delivery of isotopes by 1,0_1
+964,Monitor the heart rate variability until 12,11_12
+965,The automated sequence is programmed for 11,10_11
+966,The chemical reaction reached peak at 5,4_5
+967,The cooling system cycles off at 2,1_2
+968,The server maintenance window begins at 2,1_2
+969,Prof. Wang will start the titration at 5,4_5
+970,Data synchronization will occur at 12,11_12
+971,Safety inspections are conducted at 10,9_10
+972,The incubation period ends at 8,7_8
+973,the PI is scheduled for bench work at 5,4_5
+974,Bob reported a power surge around 12,11_12
+975,The automated sequence is programmed for 11,10_11
+976,Please check the sample integrity at 7,6_7
+977,The automated sequence is programmed for 3,2_3
+978,The ventilation system increases flow at 6,5_6
+979,Meeting with the ethics board starts at 10,9_10
+980,Please shut down the workstations by 1,0_1
+981,Update the project management board by 3,2_3
+982,Expect the delivery of isotopes by 12,11_12
+983,Shift handover is prompt at 1,0_1
+984,Update the project management board by 5,4_5
+985,The ventilation system increases flow at 6,5_6
+986,Expect the delivery of isotopes by 9,8_9
+987,The sterilization cycle completes at 7,6_7
+988,Meeting with the ethics board starts at 7,6_7
+989,Emergency backup systems were tested at 2,1_2
+990,Please check the sample integrity at 3,2_3
+991,Monitor the heart rate variability until 1,0_1
+992,Elena will upload the raw data at 3,2_3
+993,Final calibration is scheduled for 10,9_10
+994,The sterilization cycle completes at 7,6_7
+995,the technician will start the titration at 8,7_8
+996,The centrifuge run finishes at 1,0_1
+997,The cooling system cycles off at 6,5_6
+998,The automated sequence is programmed for 1,0_1
+999,The lab access logs recorded an entry at 7,6_7

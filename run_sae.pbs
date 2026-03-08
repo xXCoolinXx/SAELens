@@ -83,15 +83,17 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     --n-input-samples 1500 \
     --input-sequence-length 128 \
     --n-interesting-experts-to-plot 100 \
-    --output-dir "manifold_analysis/weekdays" \
+    --output-dir "manifold_analysis/hours" \
     --k-neighbors 10 \
     --device "cuda" \
     --llm-batch-size 32 \
     --sae-batch-size 2048 \
-    --k-neighbors 10 \
-    --dataframe-path "./manifold_probing/weekdays.csv" \
+    --dataframe-path "./manifold_probing/hours.csv" \
     --text-column "Sentence" \
-    --label-column "Label"
+    --label-column "Label" \
+    --sort-by "mean_ring" \
+    --cyclical-labels \
+    --adjacency-radius 1
 
     # Test autointerp, requires two GPUS for autointerp
     # CUDA_VISIBLE_DEVICES=0 /scratch/Collin/envs/sae/bin/python -m vllm.entrypoints.openai.api_server \
