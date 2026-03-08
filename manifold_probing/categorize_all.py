@@ -33,11 +33,11 @@ class Expert:
         self.expert_id = expert_id
         self.active_indices = active_mask.nonzero().cpu().tolist()
         self.local_continuity_scores: torch.Tensor | None = None
+        self.concept_scores = {}
 
-    # ── CHANGE: accept a device arg, move data onto GPU only for the computation ──
-    def evaluate_manifold(
+    def _evaluate_util(
         self, k_neighbors: int = 10, device: str = "cuda"
-    ) -> torch.Tensor:
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         # Move to GPU just for this computation
         expert_acts_gpu = self.expert_activations.to(device)
         llm_acts_gpu = self.llm_activations.to(device)
@@ -49,6 +49,16 @@ class Expert:
         indices = indices[:, 1:]
 
         del dists  # ── CHANGE: free the big N×N matrix immediately ──
+
+        return llm_acts_gpu, expert_acts_gpu, indices
+
+    # ── CHANGE: accept a device arg, move data onto GPU only for the computation ──
+    def evaluate_manifold(
+        self, k_neighbors: int = 10, device: str = "cuda"
+    ) -> torch.Tensor:
+        llm_acts_gpu, expert_acts_gpu, indices = self._evaluate_util(
+            k_neighbors, device
+        )
 
         llm_normed = F.normalize(llm_acts_gpu, p=2, dim=-1)
         llm_neighbors = llm_normed[indices]
@@ -63,6 +73,27 @@ class Expert:
         torch.cuda.empty_cache()
 
         return self.local_continuity_scores
+
+    def evaluate_concept(
+        self,
+        concept: str,
+        concept_labels: torch.Tensor,
+        k_neighbors: int = 10,
+        device: str = "cuda",
+    ) -> torch.Tensor:
+        _, _, indices = self._evaluate_util(k_neighbors, device)
+        indices = indices.cpu()
+
+        torch.cuda.empty_cache()
+
+        labels = concept_labels.long()
+        neighbor_labels = labels[indices]
+        center_labels = labels.unsqueeze(1).expand_as(neighbor_labels)
+        purity = (neighbor_labels == center_labels).float().mean(dim=-1)
+
+        self.concept_scores[concept] = purity
+
+        return purity
 
     def get_context_windows(
         self, str_tokens: list[list[str]], context_window: int = 10
