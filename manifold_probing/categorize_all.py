@@ -21,38 +21,57 @@ class Expert:
         expert_id: int,
         llm_activations: torch.Tensor,
         expert_activations: torch.Tensor,
+        labels: torch.Tensor | None = None,
+        seq_position_offset: int = 0,
     ):
-        # ── CHANGE: .cpu() so expert data lives in system RAM, not VRAM ──
         self.expert_activations = expert_activations[active_mask].float().cpu()
         self.llm_activations = llm_activations[active_mask].float().cpu()
+        self.labels = labels[active_mask].long().cpu() if labels is not None else None
+        self.seq_position_offset = seq_position_offset
 
         assert self.expert_activations.shape[0] == self.llm_activations.shape[0], (
-            "Different number of expert activations and embeddings. Did you forget to pre-filter?"
+            "Different number of expert activations and embeddings. "
+            "Did you forget to pre-filter?"
         )
 
         self.expert_id = expert_id
         self.active_indices = active_mask.nonzero().cpu().tolist()
         self.local_continuity_scores: torch.Tensor | None = None
-        self.concept_scores = {}
+        self.concept_purity_scores: torch.Tensor | None = None
+        self.concept_scores: dict[str, torch.Tensor] = {}
 
+    # ── unified accessor ──────────────────────────────────────────────
+    @property
+    def scores(self) -> torch.Tensor:
+        if self.concept_purity_scores is not None:
+            return self.concept_purity_scores
+        if self.local_continuity_scores is not None:
+            return self.local_continuity_scores
+        raise ValueError(
+            "No scores computed yet. Call evaluate_manifold or evaluate_concept first."
+        )
+
+    @property
+    def score_name(self) -> str:
+        if self.concept_purity_scores is not None:
+            return "Purity"
+        return "Continuity"
+
+    # ── shared KNN helper ─────────────────────────────────────────────
     def _evaluate_util(
         self, k_neighbors: int = 10, device: str = "cuda"
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-        # Move to GPU just for this computation
         expert_acts_gpu = self.expert_activations.to(device)
         llm_acts_gpu = self.llm_activations.to(device)
 
-        # Compute Euclidean distance in the bottleneck space
         dists = torch.cdist(expert_acts_gpu, expert_acts_gpu)
-
         _, indices = torch.topk(dists, k=k_neighbors + 1, largest=False)
         indices = indices[:, 1:]
-
-        del dists  # ── CHANGE: free the big N×N matrix immediately ──
+        del dists
 
         return llm_acts_gpu, expert_acts_gpu, indices
 
-    # ── CHANGE: accept a device arg, move data onto GPU only for the computation ──
+    # ── unlabelled metric ─────────────────────────────────────────────
     def evaluate_manifold(
         self, k_neighbors: int = 10, device: str = "cuda"
     ) -> torch.Tensor:
@@ -65,42 +84,53 @@ class Expert:
         center = llm_normed.unsqueeze(1)
         sims = (center * llm_neighbors).sum(dim=-1)
 
-        # ── CHANGE: result back to CPU ──
         self.local_continuity_scores = sims.mean(dim=-1).cpu()
 
-        # ── CHANGE: free transient GPU tensors ──
         del expert_acts_gpu, llm_acts_gpu, llm_normed, llm_neighbors, center, sims
         torch.cuda.empty_cache()
 
         return self.local_continuity_scores
 
+    # ── labelled metric ───────────────────────────────────────────────
     def evaluate_concept(
         self,
-        concept: str,
-        concept_labels: torch.Tensor,
+        concept: str | None = None,
+        concept_labels: torch.Tensor | None = None,
         k_neighbors: int = 10,
         device: str = "cuda",
     ) -> torch.Tensor:
         _, _, indices = self._evaluate_util(k_neighbors, device)
         indices = indices.cpu()
-
         torch.cuda.empty_cache()
 
-        labels = concept_labels.long()
+        if concept_labels is not None:
+            labels = concept_labels.long()
+        elif self.labels is not None:
+            labels = self.labels
+        else:
+            raise ValueError(
+                "No labels provided to evaluate_concept and none stored on Expert."
+            )
+
         neighbor_labels = labels[indices]
         center_labels = labels.unsqueeze(1).expand_as(neighbor_labels)
         purity = (neighbor_labels == center_labels).float().mean(dim=-1)
 
-        self.concept_scores[concept] = purity
+        if concept is not None:
+            self.concept_scores[concept] = purity
+        self.concept_purity_scores = purity
 
         return purity
 
+    # ── context windows ───────────────────────────────────────────────
     def get_context_windows(
         self, str_tokens: list[list[str]], context_window: int = 10
     ) -> list[str]:
         contexts = []
         for batch_idx, seq_idx in self.active_indices:
             seq = str_tokens[batch_idx]
+            # Map back to the original sequence position when last-token-only
+            seq_idx = seq_idx + self.seq_position_offset
             start = max(0, seq_idx - context_window)
             end = min(len(seq), seq_idx + context_window + 1)
             window = list(seq[start:end])
@@ -109,194 +139,320 @@ class Expert:
             contexts.append("".join(window).replace("\n", "<br>"))
         return contexts
 
+    # ── plotting ──────────────────────────────────────────────────────
     def get_plot(
         self,
         str_tokens: list[list[str]],
         k_neighbors: int = 10,
         context_window: int = 10,
-        device: str = "cuda",  # ── CHANGE: pass device through ──
+        device: str = "cuda",
+        label_names: dict[int, str] | None = None,
     ) -> Figure:
-        if self.local_continuity_scores is None:
-            self.evaluate_manifold(k_neighbors=k_neighbors, device=device)
+        # Lazy-evaluate if nothing has been computed yet
+        if self.concept_purity_scores is None and self.local_continuity_scores is None:
+            if self.labels is not None:
+                self.evaluate_concept(k_neighbors=k_neighbors, device=device)
+            else:
+                self.evaluate_manifold(k_neighbors=k_neighbors, device=device)
+
         contexts = self.get_context_windows(str_tokens, context_window=context_window)
+        pts = self.expert_activations.numpy()
+        scores_np = self.scores.numpy()
+        mean_score = float(scores_np.mean())
+        score_col = f"{self.score_name} Score"
 
-        pts = self.expert_activations.numpy()  # already on CPU
-        scores_np = self.local_continuity_scores.numpy()  # type: ignore  # already on CPU
+        use_label_colour = self.labels is not None and label_names is not None
 
-        df = pd.DataFrame(
-            {
-                "x": pts[:, 0],
-                "y": pts[:, 1],
-                "z": pts[:, 2],
-                "Continuity Score": scores_np,
-                "Context": contexts,
-            }
-        )
+        if use_label_colour:
+            label_strs = [
+                label_names.get(l.item(), str(l.item()))
+                for l in self.labels  # type: ignore[union-attr]
+            ]
+            df = pd.DataFrame(
+                {
+                    "x": pts[:, 0],
+                    "y": pts[:, 1],
+                    "z": pts[:, 2],
+                    score_col: scores_np,
+                    "Label": label_strs,
+                    "Context": contexts,
+                }
+            )
+            fig = px.scatter_3d(
+                df,
+                x="x",
+                y="y",
+                z="z",
+                color="Label",
+                hover_data={
+                    "Context": True,
+                    score_col: True,
+                    "x": False,
+                    "y": False,
+                    "z": False,
+                },
+                title=(
+                    f"Expert {self.expert_id}  "
+                    f"(n={pts.shape[0]}, mean {self.score_name.lower()}={mean_score:.4f})"
+                ),
+                opacity=0.8,
+            )
+        else:
+            df = pd.DataFrame(
+                {
+                    "x": pts[:, 0],
+                    "y": pts[:, 1],
+                    "z": pts[:, 2],
+                    score_col: scores_np,
+                    "Context": contexts,
+                }
+            )
+            fig = px.scatter_3d(
+                df,
+                x="x",
+                y="y",
+                z="z",
+                color=score_col,
+                color_continuous_scale="Viridis",
+                hover_data={"Context": True, "x": False, "y": False, "z": False},
+                title=(
+                    f"Expert {self.expert_id}  "
+                    f"(n={pts.shape[0]}, mean {self.score_name.lower()}={mean_score:.4f})"
+                ),
+                opacity=0.8,
+            )
 
-        fig = px.scatter_3d(
-            df,
-            x="x",
-            y="y",
-            z="z",
-            color="Continuity Score",
-            color_continuous_scale="Viridis",
-            hover_data={"Context": True, "x": False, "y": False, "z": False},
-            title=f"Expert {self.expert_id} Manifold (n={pts.shape[0]} points)",
-            opacity=0.8,
-        )
         fig.update_traces(marker=dict(size=4))
         return fig
 
 
+# ======================================================================
+# Data loading + LLM activation collection
+# ======================================================================
 def collect_activations(
     model_name: str,
     hook_name: str,
-    dataset_name: str,
     max_length: int,
     n_input_samples: int,
     device: str,
     llm_batch_size: int,
-) -> tuple[torch.Tensor, list[str] | list[list[str]]]:
+    dataset_name: str | None = None,
+    dataframe_path: str | None = None,
+    text_column: str = "text",
+    label_column: str | None = None,
+) -> tuple[torch.Tensor, list[list[str]], torch.Tensor | None, dict[int, str] | None]:
+    """
+    Returns
+    -------
+    activations : (B, S, D) on CPU
+    str_tokens  : list[list[str]]  – always full sequences for context windows
+    labels      : (B, S) long tensor on CPU, or None
+    label_names : {int → str} mapping, or None
+    """
     print(f"Loading {model_name} to collect activations")
     model = HookedTransformer.from_pretrained(model_name, device=device)
 
-    print(f"Streaming {dataset_name}")
-    dataset = load_dataset(dataset_name, streaming=True, split="train")
+    # ── 1. Load texts (+ optional raw labels) ────────────────────────
+    texts: list[str] = []
+    raw_labels: list[str | int] | None = [] if label_column else None
 
+    if dataframe_path is not None:
+        print(f"Loading data from {dataframe_path}")
+        ext = Path(dataframe_path).suffix.lower()
+        if ext == ".csv":
+            df = pd.read_csv(dataframe_path)
+        elif ext in (".parquet", ".pq"):
+            df = pd.read_parquet(dataframe_path)
+        elif ext in (".json", ".jsonl"):
+            df = pd.read_json(dataframe_path, lines=(ext == ".jsonl"))
+        else:
+            raise ValueError(f"Unsupported file extension: {ext}")
+
+        texts = df[text_column].tolist()[:n_input_samples]
+        if raw_labels is not None:
+            raw_labels = df[label_column].tolist()[:n_input_samples]  # type: ignore[index]
+
+    elif dataset_name is not None:
+        print(f"Streaming {dataset_name}")
+        dataset = load_dataset(dataset_name, streaming=True, split="train")
+        for i, sample in enumerate(dataset):
+            if i == n_input_samples:
+                break
+            texts.append(sample[text_column])
+            if raw_labels is not None:
+                raw_labels.append(sample[label_column])  # type: ignore[index]
+    else:
+        raise ValueError("Provide either --dataset-name or --dataframe-path.")
+
+    # ── 2. Encode labels → integer ids ────────────────────────────────
+    labels_tensor: torch.Tensor | None = None
+    label_names: dict[int, str] | None = None
+
+    if raw_labels is not None and len(raw_labels) > 0:
+        unique = sorted({str(l) for l in raw_labels})
+        label_to_id = {l: i for i, l in enumerate(unique)}
+        label_names = {i: l for l, i in label_to_id.items()}
+        label_ids = torch.tensor(
+            [label_to_id[str(l)] for l in raw_labels], dtype=torch.long
+        )
+        print(
+            f"Found {len(unique)} unique labels: "
+            f"{', '.join(unique[:10])}{'…' if len(unique) > 10 else ''}"
+        )
+    else:
+        label_ids = None
+
+    # ── 3. Tokenise ───────────────────────────────────────────────────
     print("Collecting activations...")
-
-    texts = []
-    for i, sample in enumerate(dataset):
-        if i == n_input_samples:
-            break
-        texts.append(sample["text"])
-
     tokenized = model.to_tokens(texts, prepend_bos=True, move_to_device=False)[
         :, :max_length
     ]
+    B, S = tokenized.shape
 
+    # Broadcast document-level labels → token-level (B, S)
+    if label_ids is not None:
+        labels_tensor = label_ids[:B].unsqueeze(1).expand(B, S).clone()
+
+    # ── 4. Forward pass ───────────────────────────────────────────────
     all_acts = []
-    for i in tqdm(range(0, n_input_samples, llm_batch_size)):
-        batch = tokenized[i : i + llm_batch_size, :].to(device)
-
-        with torch.no_grad():  # ── CHANGE: no_grad for inference ──
+    for i in tqdm(range(0, B, llm_batch_size)):
+        batch = tokenized[i : i + llm_batch_size].to(device)
+        with torch.no_grad():
             _, cache = model.run_with_cache(batch, names_filter=hook_name)
-
-        # ── CHANGE: move each batch's activations to CPU immediately ──
         all_acts.append(cache[hook_name].cpu())
         del cache
         torch.cuda.empty_cache()
 
-    # ── CHANGE: concatenate on CPU — this is your "cold storage" tensor ──
     activations = torch.cat(all_acts, dim=0)
     del all_acts
 
-    str_tokens = [model.to_str_tokens(tokenized[i]) for i in range(tokenized.shape[0])]
+    # Keep full str_tokens regardless of last_token_only (needed for context windows)
+    str_tokens = [model.to_str_tokens(tokenized[i]) for i in range(B)]
 
-    # ── CHANGE: free the entire LLM before returning ──
     del model
     torch.cuda.empty_cache()
     print("LLM deleted and GPU memory freed.")
 
-    return activations, str_tokens
+    return activations, str_tokens, labels_tensor, label_names
 
 
+# ======================================================================
+# SAE encoding → Expert construction
+# ======================================================================
 def get_sae_activations(
     checkpoint_path: str,
     device: str,
-    activations: torch.Tensor,  # ── now lives on CPU ──
+    activations: torch.Tensor,
     sae_batch_size: int,
     active_threshold: float = 1e-5,
     min_points: int = 15,
     max_points: int = 1000,
+    labels: torch.Tensor | None = None,
+    last_token_only: bool = False,
 ) -> list[Expert]:
     print(f"Loading SAE from {checkpoint_path}")
     sae = SAE.load_from_disk(path=checkpoint_path, device=device)
 
-    sae_activations = []
+    B, S_full, D = activations.shape
 
-    # Flatten to avoid issues with SMIXAE implentation for extra seq_len dimension
-    B, S, D = activations.shape
+    # ── When labelled, only encode the last token per sequence ────────
+    seq_position_offset = 0
+    if last_token_only:
+        print(
+            f"last_token_only=True → extracting position {S_full - 1} "
+            f"from each sequence ({B * S_full} → {B} tokens through SAE)"
+        )
+        activations = activations[:, -1:, :]  # (B, 1, D)
+        if labels is not None:
+            labels = labels[:, -1:]  # (B, 1)
+        seq_position_offset = S_full - 1
+        S = 1
+    else:
+        S = S_full
+
     activations_flat = activations.reshape(B * S, D)
 
+    sae_activations: list[torch.Tensor] = []
     with torch.no_grad():
         for i in tqdm(range(0, B * S, sae_batch_size)):
-            # ── CHANGE: move each batch to GPU, then result back to CPU ──
             batch = activations_flat[i : i + sae_batch_size].to(device)
-
             _, cache = sae.run_with_cache(
                 batch, names_filter=["hook_sae_acts_post", "hook_decode_mask"]
             )
-
             active_experts = cache["hook_sae_acts_post"] * cache[
                 "hook_decode_mask"
             ].unsqueeze(-1)
-
-            # ── CHANGE: immediately move to CPU ──
             sae_activations.append(active_experts.cpu())
             del cache, active_experts, batch
             torch.cuda.empty_cache()
 
-    # ── CHANGE: free the SAE ──
     del sae
     torch.cuda.empty_cache()
     print("SAE deleted and GPU memory freed.")
 
-    # ── CHANGE: concatenate on CPU ──
     sae_activations_cat = torch.cat(sae_activations, dim=0)
     del sae_activations
 
-    # Reshape back to original size
     sae_activations_cat = sae_activations_cat.view(
         B, S, sae_activations_cat.shape[1], sae_activations_cat.shape[2]
     )
 
-    # Package experts — everything is on CPU now
-    experts = []
+    experts: list[Expert] = []
     n_experts = sae_activations_cat.shape[-2]
 
     for i in tqdm(range(n_experts)):
-        expert_pts = sae_activations_cat[..., i, :]
-        # shape: (B, S, D')
+        expert_pts = sae_activations_cat[..., i, :]  # (B, S, D')
         active_mask = torch.norm(expert_pts, p=2, dim=-1) > active_threshold
-        # shape: (B, S)
-        n_active = active_mask.sum().item()
+        n_active = int(active_mask.sum().item())
 
         if n_active < min_points:
             continue
 
-        # ── NEW: randomly subsample active points if above max_points ──
-        # If max_points == 0, treat as "no cap"
         if max_points and n_active > max_points:
-            # Indices of all active points in (B, S)
-            active_indices = active_mask.nonzero(as_tuple=False)  # (n_active, 2)
-
-            # Randomly choose max_points indices without replacement
+            active_indices = active_mask.nonzero(as_tuple=False)
             perm = torch.randperm(n_active)[:max_points]
             chosen = active_indices[perm]
-
-            # Build a new mask that is True only at the chosen points
             sampled_mask = torch.zeros_like(active_mask, dtype=torch.bool)
             sampled_mask[chosen[:, 0], chosen[:, 1]] = True
             active_mask = sampled_mask
 
-        expert = Expert(active_mask, i, activations, expert_pts)
+        expert = Expert(
+            active_mask,
+            i,
+            activations,
+            expert_pts,
+            labels=labels,
+            seq_position_offset=seq_position_offset,
+        )
         experts.append(expert)
 
-    # ── CHANGE: free the big concatenated tensor once experts are built ──
     del sae_activations_cat
     return experts
 
 
+# ======================================================================
+# CLI entry-point
+# ======================================================================
 def main(
     checkpoint_path: str = typer.Option(..., help="Path to your checkpoint"),
     base_model_name: str = typer.Option(..., help="Model to load"),
     hook_point: str = typer.Option(
         ..., help="The hook point where your SAE was trained"
     ),
-    dataset_name: str = typer.Option(
-        "monology/pile-uncopyrighted", help="Dataset to stream"
+    # ── data source (supply one) ──
+    dataset_name: str | None = typer.Option(
+        None, help="HF dataset to stream (unlabelled)"
     ),
+    dataframe_path: str | None = typer.Option(
+        None, help="Path to a CSV / Parquet / JSON(L) file"
+    ),
+    text_column: str = typer.Option("text", help="Column containing text"),
+    label_column: str | None = typer.Option(
+        None,
+        help="Column containing labels (enables concept-purity evaluation, "
+        "last-token-only mode)",
+    ),
+    # ── general ──
     n_input_samples: int = typer.Option(1000, help="Number of input texts to sample"),
     input_sequence_length: int = typer.Option(128, help="Input sequence length"),
     context_window_display: int = typer.Option(
@@ -308,19 +464,25 @@ def main(
     device: str = typer.Option("cuda", help="Device to load models on"),
     llm_batch_size: int = typer.Option(16, help="Batch size for base LLM inference"),
     sae_batch_size: int = typer.Option(2048, help="Batch size for SAE inference"),
-    k_neighbors: int = typer.Option(
-        10, help="Number of neighbors for local continuity (KNN)"
-    ),
+    k_neighbors: int = typer.Option(10, help="Number of neighbors for KNN evaluation"),
     active_threshold: float = typer.Option(
         1e-5, help="L2 norm threshold to consider an expert active"
     ),
     min_points: int = typer.Option(
         15, help="Minimum active tokens required to evaluate an expert"
     ),
+    max_points: int = typer.Option(
+        1000, help="Max active tokens per expert (0 = no cap)"
+    ),
     output_dir: str = typer.Option(
         "expert_plots", help="Base directory to save the HTML plots"
     ),
 ):
+    # Fall back to a default HF dataset when nothing is specified
+    if dataset_name is None and dataframe_path is None:
+        dataset_name = "monology/pile-uncopyrighted"
+        print(f"No data source specified — defaulting to {dataset_name}")
+
     ckpt_path_obj = Path(checkpoint_path)
     run_hash = ckpt_path_obj.parent.name
     run_step = ckpt_path_obj.name.replace("final_", "")
@@ -329,19 +491,23 @@ def main(
     os.makedirs(final_output_dir, exist_ok=True)
     print(f"Plots will be saved to: {final_output_dir}")
 
-    # 1. Collect — LLM is freed inside this function
-    llm_acts, str_tokens = collect_activations(
+    # ── 1. Collect LLM activations (+ optional labels) ────────────────
+    llm_acts, str_tokens, labels, label_names = collect_activations(
         model_name=base_model_name,
         hook_name=hook_point,
-        dataset_name=dataset_name,
         max_length=input_sequence_length,
         n_input_samples=n_input_samples,
         device=device,
         llm_batch_size=llm_batch_size,
+        dataset_name=dataset_name,
+        dataframe_path=dataframe_path,
+        text_column=text_column,
+        label_column=label_column,
     )
-    # At this point: GPU is empty, llm_acts is on CPU
 
-    # 2. SAE encoding — SAE is freed inside this function
+    is_labelled = labels is not None
+
+    # ── 2. SAE encoding ───────────────────────────────────────────────
     experts = get_sae_activations(
         checkpoint_path=checkpoint_path,
         device=device,
@@ -349,48 +515,60 @@ def main(
         sae_batch_size=sae_batch_size,
         active_threshold=active_threshold,
         min_points=min_points,
+        max_points=max_points,
+        labels=labels,
+        last_token_only=is_labelled,
     )
-    # At this point: GPU is empty, expert data is on CPU
 
-    # ── CHANGE: llm_acts is no longer needed (experts have their own copies) ──
-    del llm_acts
+    del llm_acts, labels
 
     if not experts:
         print("No experts fired enough times to exceed the min_points threshold.")
         return
 
-    # 3. Evaluate manifolds — each expert temporarily uses GPU then frees it
-    print(f"Evaluating manifolds for continuity (k={k_neighbors})...")
-    for expert in tqdm(experts):
-        expert.evaluate_manifold(k_neighbors=k_neighbors, device=device)
+    # ── 3. Evaluate ───────────────────────────────────────────────────
+    if is_labelled:
+        metric_name = "Purity"
+        print(f"Evaluating concept purity (k={k_neighbors})…")
+        for expert in tqdm(experts):
+            expert.evaluate_concept(
+                concept=label_column, k_neighbors=k_neighbors, device=device
+            )
+    else:
+        metric_name = "Continuity"
+        print(f"Evaluating manifold continuity (k={k_neighbors})…")
+        for expert in tqdm(experts):
+            expert.evaluate_manifold(k_neighbors=k_neighbors, device=device)
 
-    # 4. Sort
-    experts.sort(
-        key=lambda e: e.local_continuity_scores.mean().item(),  # type: ignore
-        reverse=True,
-    )
+    # ── 4. Sort (best first) ──────────────────────────────────────────
+    experts.sort(key=lambda e: e.scores.mean().item(), reverse=True)
 
-    # 5. Plot
-    print(
-        f"\nSaving top {n_interesting_experts_to_plot} most structured experts to '{final_output_dir}/'..."
-    )
-    for i in range(min(n_interesting_experts_to_plot, len(experts))):
+    # ── 5. Plot ───────────────────────────────────────────────────────
+    n_to_plot = min(n_interesting_experts_to_plot, len(experts))
+    print(f"\nSaving top {n_to_plot} experts to '{final_output_dir}/'…")
+
+    for i in range(n_to_plot):
         expert = experts[i]
-        mean_score = expert.local_continuity_scores.mean().item()  # type: ignore
+        mean_score = expert.scores.mean().item()
 
         print(
             f"Rank {i + 1:02d} | Expert {expert.expert_id:4d} | "
-            f"Mean Continuity: {mean_score:.4f} | Points: {expert.expert_activations.shape[0]}"
+            f"Mean {metric_name}: {mean_score:.4f} | "
+            f"Points: {expert.expert_activations.shape[0]}"
         )
 
         fig = expert.get_plot(
-            str_tokens=str_tokens,  # type: ignore
+            str_tokens=str_tokens,  # type: ignore[arg-type]
             k_neighbors=k_neighbors,
             context_window=context_window_display,
             device=device,
+            label_names=label_names,
         )
 
-        filename = f"rank_{i + 1:02d}_expert_{expert.expert_id:04d}_score_{mean_score:.4f}.html"
+        filename = (
+            f"rank_{i + 1:02d}_expert_{expert.expert_id:04d}"
+            f"_{metric_name.lower()}_{mean_score:.4f}.html"
+        )
         fig.write_html(os.path.join(final_output_dir, filename))
 
 

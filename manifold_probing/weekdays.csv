@@ -1,0 +1,1001 @@
+,Sentence,Label
+0,Is the centrifuge maintenance occurring on Monday,Monday
+1,The chemical waste pickup is every Friday,Friday
+2,The microscope calibration is due on Monday,Monday
+3,Alice is responsible for the morning rounds on Monday,Monday
+4,The lab will be closed for the holiday on Wednesday,Wednesday
+5,The longitudinal study concludes on Saturday,Saturday
+6,We expect the peer review feedback by Thursday,Thursday
+7,Data backup must be completed every Monday,Monday
+8,We will start the sequencing run on Thursday,Thursday
+9,The clinical trial phase begins this Thursday,Thursday
+10,The lab will be closed for the holiday on Thursday,Thursday
+11,The autoclave is out of service until Monday,Monday
+12,Submit the grant proposal before Friday,Friday
+13,We will start the sequencing run on Saturday,Saturday
+14,The longitudinal study concludes on Monday,Monday
+15,The microscope calibration is due on Tuesday,Tuesday
+16,The ethics committee will meet on Wednesday,Wednesday
+17,The microscope calibration is due on Wednesday,Wednesday
+18,Alice scheduled the MRI scan for Sunday,Sunday
+19,The autoclave is out of service until Friday,Friday
+20,The liquid nitrogen refill happens on Sunday,Sunday
+21,The department seminar is hosted on Tuesday,Tuesday
+22,The department seminar is hosted on Saturday,Saturday
+23,Please verify the freezer temperature logs for Sunday,Sunday
+24,The shipment of reagents is scheduled for Friday,Friday
+25,Please verify the freezer temperature logs for Monday,Monday
+26,Our collaborator is visiting the facility on Friday,Friday
+27,We will start the sequencing run on Monday,Monday
+28,Check the titration levels again on Monday,Monday
+29,Are we still on track for the launch this Sunday,Sunday
+30,The shipment of reagents is scheduled for Friday,Friday
+31,We expect the peer review feedback by Tuesday,Tuesday
+32,Check the titration levels again on Saturday,Saturday
+33,The department seminar is hosted on Sunday,Sunday
+34,The chemical waste pickup is every Tuesday,Tuesday
+35,The liquid nitrogen refill happens on Wednesday,Wednesday
+36,Data backup must be completed every Wednesday,Wednesday
+37,Sarah is responsible for the morning rounds on Friday,Friday
+38,The department seminar is hosted on Sunday,Sunday
+39,The longitudinal study concludes on Tuesday,Tuesday
+40,The final abstract is due this Wednesday,Wednesday
+41,The statistical analysis will be performed on Monday,Monday
+42,The ethics committee will meet on Thursday,Thursday
+43,Charlie is presenting the literature review on Monday,Monday
+44,The clinical trial phase begins this Wednesday,Wednesday
+45,The microscope calibration is due on Tuesday,Tuesday
+46,The liquid nitrogen refill happens on Tuesday,Tuesday
+47,Please verify the freezer temperature logs for Thursday,Thursday
+48,Our collaborator is visiting the facility on Saturday,Saturday
+49,The chemical waste pickup is every Sunday,Sunday
+50,The sample size will be recalculated on Monday,Monday
+51,We will start the sequencing run on Thursday,Thursday
+52,The autoclave is out of service until Wednesday,Wednesday
+53,The autoclave is out of service until Monday,Monday
+54,Prof. Wang will finalize the PCR results on Thursday,Thursday
+55,The ethics committee will meet on Thursday,Thursday
+56,Alice is responsible for the morning rounds on Tuesday,Tuesday
+57,Elena will finalize the PCR results on Saturday,Saturday
+58,We will start the sequencing run on Saturday,Saturday
+59,The longitudinal study concludes on Friday,Friday
+60,The longitudinal study concludes on Wednesday,Wednesday
+61,Is the centrifuge maintenance occurring on Saturday,Saturday
+62,The statistical analysis will be performed on Saturday,Saturday
+63,Our collaborator is visiting the facility on Friday,Friday
+64,The clinical trial phase begins this Monday,Monday
+65,The liquid nitrogen refill happens on Sunday,Sunday
+66,Elena scheduled the MRI scan for Thursday,Thursday
+67,The weekly lab sync has been moved to Tuesday,Tuesday
+68,Our collaborator is visiting the facility on Monday,Monday
+69,The shipment of reagents is scheduled for Wednesday,Wednesday
+70,Alice will finalize the PCR results on Saturday,Saturday
+71,We will start the sequencing run on Saturday,Saturday
+72,The lab will be closed for the holiday on Monday,Monday
+73,Data backup must be completed every Tuesday,Tuesday
+74,Please verify the freezer temperature logs for Thursday,Thursday
+75,The statistical analysis will be performed on Saturday,Saturday
+76,Re-calibrate the mass spectrometer on Monday,Monday
+77,The department seminar is hosted on Friday,Friday
+78,The chemical waste pickup is every Tuesday,Tuesday
+79,The final abstract is due this Thursday,Thursday
+80,The chemical waste pickup is every Sunday,Sunday
+81,The statistical analysis will be performed on Sunday,Sunday
+82,We expect the peer review feedback by Saturday,Saturday
+83,Our collaborator is visiting the facility on Thursday,Thursday
+84,Please ensure the incubator is cleaned by Friday,Friday
+85,Data backup must be completed every Monday,Monday
+86,The weekly lab sync has been moved to Monday,Monday
+87,Is the centrifuge maintenance occurring on Wednesday,Wednesday
+88,We expect the peer review feedback by Wednesday,Wednesday
+89,Check the titration levels again on Thursday,Thursday
+90,The ethics committee will meet on Tuesday,Tuesday
+91,the PI scheduled the MRI scan for Tuesday,Tuesday
+92,The final abstract is due this Monday,Monday
+93,Are we still on track for the launch this Friday,Friday
+94,The liquid nitrogen refill happens on Friday,Friday
+95,We expect the peer review feedback by Wednesday,Wednesday
+96,The longitudinal study concludes on Sunday,Sunday
+97,The department seminar is hosted on Thursday,Thursday
+98,We will start the sequencing run on Wednesday,Wednesday
+99,the technician will finalize the PCR results on Friday,Friday
+100,The longitudinal study concludes on Saturday,Saturday
+101,The microscope calibration is due on Saturday,Saturday
+102,The final abstract is due this Thursday,Thursday
+103,Elena will finalize the PCR results on Wednesday,Wednesday
+104,the PI scheduled the MRI scan for Sunday,Sunday
+105,Dr. Smith is responsible for the morning rounds on Thursday,Thursday
+106,Check the titration levels again on Friday,Friday
+107,Elena is presenting the literature review on Tuesday,Tuesday
+108,Alice is presenting the literature review on Sunday,Sunday
+109,The lab will be closed for the holiday on Friday,Friday
+110,Are we still on track for the launch this Monday,Monday
+111,Check the titration levels again on Monday,Monday
+112,The final abstract is due this Monday,Monday
+113,Please verify the freezer temperature logs for Monday,Monday
+114,Data backup must be completed every Thursday,Thursday
+115,The clinical trial phase begins this Tuesday,Tuesday
+116,Our collaborator is visiting the facility on Saturday,Saturday
+117,The weekly lab sync has been moved to Friday,Friday
+118,The statistical analysis will be performed on Friday,Friday
+119,We will start the sequencing run on Sunday,Sunday
+120,The lab will be closed for the holiday on Friday,Friday
+121,Please verify the freezer temperature logs for Thursday,Thursday
+122,The microscope calibration is due on Wednesday,Wednesday
+123,The weekly lab sync has been moved to Tuesday,Tuesday
+124,The sample size will be recalculated on Friday,Friday
+125,The ethics committee will meet on Monday,Monday
+126,The ethics committee will meet on Saturday,Saturday
+127,The microscope calibration is due on Saturday,Saturday
+128,Please verify the freezer temperature logs for Sunday,Sunday
+129,Check the titration levels again on Monday,Monday
+130,The shipment of reagents is scheduled for Thursday,Thursday
+131,The department seminar is hosted on Wednesday,Wednesday
+132,the PI will finalize the PCR results on Tuesday,Tuesday
+133,Sarah is responsible for the morning rounds on Friday,Friday
+134,The autoclave is out of service until Tuesday,Tuesday
+135,Prof. Wang noted a discrepancy in the logs from Monday,Monday
+136,Re-calibrate the mass spectrometer on Friday,Friday
+137,Please ensure the incubator is cleaned by Wednesday,Wednesday
+138,Please ensure the incubator is cleaned by Tuesday,Tuesday
+139,Our collaborator is visiting the facility on Tuesday,Tuesday
+140,The final abstract is due this Thursday,Thursday
+141,The autoclave is out of service until Saturday,Saturday
+142,We expect the peer review feedback by Sunday,Sunday
+143,The final abstract is due this Monday,Monday
+144,Our collaborator is visiting the facility on Tuesday,Tuesday
+145,The lab will be closed for the holiday on Monday,Monday
+146,Our collaborator is visiting the facility on Sunday,Sunday
+147,The ethics committee will meet on Monday,Monday
+148,The weekly lab sync has been moved to Tuesday,Tuesday
+149,Data backup must be completed every Tuesday,Tuesday
+150,The statistical analysis will be performed on Monday,Monday
+151,Are we still on track for the launch this Sunday,Sunday
+152,The clinical trial phase begins this Sunday,Sunday
+153,We expect the peer review feedback by Thursday,Thursday
+154,The liquid nitrogen refill happens on Friday,Friday
+155,The statistical analysis will be performed on Tuesday,Tuesday
+156,The chemical waste pickup is every Wednesday,Wednesday
+157,Data backup must be completed every Thursday,Thursday
+158,The liquid nitrogen refill happens on Friday,Friday
+159,Elena is responsible for the morning rounds on Saturday,Saturday
+160,The microscope calibration is due on Saturday,Saturday
+161,The lab will be closed for the holiday on Saturday,Saturday
+162,The final abstract is due this Sunday,Sunday
+163,Re-calibrate the mass spectrometer on Saturday,Saturday
+164,The chemical waste pickup is every Sunday,Sunday
+165,The liquid nitrogen refill happens on Tuesday,Tuesday
+166,The shipment of reagents is scheduled for Sunday,Sunday
+167,The chemical waste pickup is every Sunday,Sunday
+168,Please ensure the incubator is cleaned by Friday,Friday
+169,The final abstract is due this Wednesday,Wednesday
+170,We expect the peer review feedback by Thursday,Thursday
+171,The weekly lab sync has been moved to Wednesday,Wednesday
+172,The sample size will be recalculated on Saturday,Saturday
+173,The liquid nitrogen refill happens on Saturday,Saturday
+174,Charlie is presenting the literature review on Friday,Friday
+175,Re-calibrate the mass spectrometer on Friday,Friday
+176,The clinical trial phase begins this Monday,Monday
+177,The longitudinal study concludes on Thursday,Thursday
+178,The sample size will be recalculated on Wednesday,Wednesday
+179,The shipment of reagents is scheduled for Friday,Friday
+180,We will start the sequencing run on Tuesday,Tuesday
+181,the technician noted a discrepancy in the logs from Wednesday,Wednesday
+182,We will start the sequencing run on Wednesday,Wednesday
+183,Data backup must be completed every Sunday,Sunday
+184,Please verify the freezer temperature logs for Monday,Monday
+185,The ethics committee will meet on Tuesday,Tuesday
+186,Check the titration levels again on Friday,Friday
+187,Bob noted a discrepancy in the logs from Friday,Friday
+188,Elena is responsible for the morning rounds on Wednesday,Wednesday
+189,Please verify the freezer temperature logs for Sunday,Sunday
+190,Data backup must be completed every Sunday,Sunday
+191,The weekly lab sync has been moved to Saturday,Saturday
+192,Charlie noted a discrepancy in the logs from Thursday,Thursday
+193,The clinical trial phase begins this Monday,Monday
+194,The longitudinal study concludes on Wednesday,Wednesday
+195,Elena is presenting the literature review on Saturday,Saturday
+196,Check the titration levels again on Saturday,Saturday
+197,Our collaborator is visiting the facility on Wednesday,Wednesday
+198,The liquid nitrogen refill happens on Saturday,Saturday
+199,We will start the sequencing run on Thursday,Thursday
+200,The statistical analysis will be performed on Wednesday,Wednesday
+201,Please ensure the incubator is cleaned by Monday,Monday
+202,Re-calibrate the mass spectrometer on Monday,Monday
+203,The microscope calibration is due on Tuesday,Tuesday
+204,Submit the grant proposal before Sunday,Sunday
+205,We will start the sequencing run on Monday,Monday
+206,The chemical waste pickup is every Saturday,Saturday
+207,The department seminar is hosted on Wednesday,Wednesday
+208,The shipment of reagents is scheduled for Sunday,Sunday
+209,The clinical trial phase begins this Sunday,Sunday
+210,The microscope calibration is due on Tuesday,Tuesday
+211,The microscope calibration is due on Sunday,Sunday
+212,Charlie will finalize the PCR results on Saturday,Saturday
+213,The department seminar is hosted on Monday,Monday
+214,The clinical trial phase begins this Saturday,Saturday
+215,Check the titration levels again on Monday,Monday
+216,Our collaborator is visiting the facility on Thursday,Thursday
+217,The final abstract is due this Thursday,Thursday
+218,the technician is presenting the literature review on Monday,Monday
+219,Alice is responsible for the morning rounds on Saturday,Saturday
+220,The chemical waste pickup is every Tuesday,Tuesday
+221,Our collaborator is visiting the facility on Monday,Monday
+222,The sample size will be recalculated on Saturday,Saturday
+223,Is the centrifuge maintenance occurring on Sunday,Sunday
+224,The statistical analysis will be performed on Sunday,Sunday
+225,The lab will be closed for the holiday on Monday,Monday
+226,The longitudinal study concludes on Friday,Friday
+227,Prof. Wang is presenting the literature review on Sunday,Sunday
+228,The clinical trial phase begins this Wednesday,Wednesday
+229,Our collaborator is visiting the facility on Monday,Monday
+230,The autoclave is out of service until Thursday,Thursday
+231,The longitudinal study concludes on Monday,Monday
+232,the PI noted a discrepancy in the logs from Sunday,Sunday
+233,Bob is presenting the literature review on Thursday,Thursday
+234,Submit the grant proposal before Sunday,Sunday
+235,We will start the sequencing run on Thursday,Thursday
+236,The longitudinal study concludes on Saturday,Saturday
+237,The microscope calibration is due on Wednesday,Wednesday
+238,the PI is presenting the literature review on Thursday,Thursday
+239,Sarah noted a discrepancy in the logs from Saturday,Saturday
+240,Please verify the freezer temperature logs for Thursday,Thursday
+241,The longitudinal study concludes on Tuesday,Tuesday
+242,We will start the sequencing run on Sunday,Sunday
+243,Check the titration levels again on Monday,Monday
+244,The sample size will be recalculated on Wednesday,Wednesday
+245,The weekly lab sync has been moved to Sunday,Sunday
+246,Submit the grant proposal before Saturday,Saturday
+247,Re-calibrate the mass spectrometer on Monday,Monday
+248,The chemical waste pickup is every Saturday,Saturday
+249,the PI will finalize the PCR results on Tuesday,Tuesday
+250,The sample size will be recalculated on Wednesday,Wednesday
+251,The department seminar is hosted on Monday,Monday
+252,The statistical analysis will be performed on Saturday,Saturday
+253,We will start the sequencing run on Saturday,Saturday
+254,The statistical analysis will be performed on Saturday,Saturday
+255,Are we still on track for the launch this Saturday,Saturday
+256,Is the centrifuge maintenance occurring on Saturday,Saturday
+257,The ethics committee will meet on Wednesday,Wednesday
+258,Check the titration levels again on Saturday,Saturday
+259,The chemical waste pickup is every Wednesday,Wednesday
+260,The shipment of reagents is scheduled for Wednesday,Wednesday
+261,The weekly lab sync has been moved to Monday,Monday
+262,The sample size will be recalculated on Wednesday,Wednesday
+263,We will start the sequencing run on Monday,Monday
+264,Are we still on track for the launch this Thursday,Thursday
+265,The final abstract is due this Wednesday,Wednesday
+266,Dr. Smith is responsible for the morning rounds on Tuesday,Tuesday
+267,Please ensure the incubator is cleaned by Friday,Friday
+268,The statistical analysis will be performed on Sunday,Sunday
+269,Our collaborator is visiting the facility on Monday,Monday
+270,The longitudinal study concludes on Monday,Monday
+271,The weekly lab sync has been moved to Thursday,Thursday
+272,the technician is presenting the literature review on Saturday,Saturday
+273,The clinical trial phase begins this Sunday,Sunday
+274,The autoclave is out of service until Monday,Monday
+275,The weekly lab sync has been moved to Friday,Friday
+276,The ethics committee will meet on Tuesday,Tuesday
+277,Check the titration levels again on Friday,Friday
+278,Charlie is presenting the literature review on Saturday,Saturday
+279,The chemical waste pickup is every Sunday,Sunday
+280,Sarah will finalize the PCR results on Monday,Monday
+281,The clinical trial phase begins this Tuesday,Tuesday
+282,James scheduled the MRI scan for Wednesday,Wednesday
+283,The autoclave is out of service until Monday,Monday
+284,The clinical trial phase begins this Wednesday,Wednesday
+285,Dr. Smith noted a discrepancy in the logs from Friday,Friday
+286,Check the titration levels again on Tuesday,Tuesday
+287,Submit the grant proposal before Friday,Friday
+288,The department seminar is hosted on Monday,Monday
+289,the PI is presenting the literature review on Sunday,Sunday
+290,The ethics committee will meet on Friday,Friday
+291,We will start the sequencing run on Wednesday,Wednesday
+292,The lab will be closed for the holiday on Tuesday,Tuesday
+293,Alice will finalize the PCR results on Tuesday,Tuesday
+294,The autoclave is out of service until Thursday,Thursday
+295,The longitudinal study concludes on Monday,Monday
+296,Please ensure the incubator is cleaned by Sunday,Sunday
+297,The weekly lab sync has been moved to Sunday,Sunday
+298,Is the centrifuge maintenance occurring on Saturday,Saturday
+299,Is the centrifuge maintenance occurring on Saturday,Saturday
+300,The clinical trial phase begins this Thursday,Thursday
+301,The department seminar is hosted on Saturday,Saturday
+302,The department seminar is hosted on Wednesday,Wednesday
+303,Alice is responsible for the morning rounds on Tuesday,Tuesday
+304,The department seminar is hosted on Wednesday,Wednesday
+305,The autoclave is out of service until Friday,Friday
+306,Please verify the freezer temperature logs for Tuesday,Tuesday
+307,The microscope calibration is due on Wednesday,Wednesday
+308,The clinical trial phase begins this Sunday,Sunday
+309,Please verify the freezer temperature logs for Friday,Friday
+310,The longitudinal study concludes on Tuesday,Tuesday
+311,The final abstract is due this Tuesday,Tuesday
+312,Please ensure the incubator is cleaned by Saturday,Saturday
+313,The chemical waste pickup is every Wednesday,Wednesday
+314,Our collaborator is visiting the facility on Sunday,Sunday
+315,The weekly lab sync has been moved to Wednesday,Wednesday
+316,Is the centrifuge maintenance occurring on Monday,Monday
+317,We will start the sequencing run on Sunday,Sunday
+318,The liquid nitrogen refill happens on Sunday,Sunday
+319,The autoclave is out of service until Tuesday,Tuesday
+320,The department seminar is hosted on Thursday,Thursday
+321,Data backup must be completed every Wednesday,Wednesday
+322,The ethics committee will meet on Wednesday,Wednesday
+323,Re-calibrate the mass spectrometer on Thursday,Thursday
+324,The autoclave is out of service until Thursday,Thursday
+325,The weekly lab sync has been moved to Sunday,Sunday
+326,Elena is responsible for the morning rounds on Monday,Monday
+327,James noted a discrepancy in the logs from Sunday,Sunday
+328,The final abstract is due this Saturday,Saturday
+329,We expect the peer review feedback by Friday,Friday
+330,Is the centrifuge maintenance occurring on Wednesday,Wednesday
+331,The department seminar is hosted on Sunday,Sunday
+332,Alice is responsible for the morning rounds on Wednesday,Wednesday
+333,The microscope calibration is due on Monday,Monday
+334,The chemical waste pickup is every Wednesday,Wednesday
+335,The autoclave is out of service until Monday,Monday
+336,Dr. Smith scheduled the MRI scan for Friday,Friday
+337,The longitudinal study concludes on Friday,Friday
+338,The clinical trial phase begins this Saturday,Saturday
+339,The shipment of reagents is scheduled for Sunday,Sunday
+340,The lab will be closed for the holiday on Friday,Friday
+341,Prof. Wang is responsible for the morning rounds on Monday,Monday
+342,The final abstract is due this Sunday,Sunday
+343,The department seminar is hosted on Monday,Monday
+344,The longitudinal study concludes on Tuesday,Tuesday
+345,The autoclave is out of service until Friday,Friday
+346,The autoclave is out of service until Friday,Friday
+347,Alice scheduled the MRI scan for Thursday,Thursday
+348,Elena scheduled the MRI scan for Tuesday,Tuesday
+349,Alice will finalize the PCR results on Tuesday,Tuesday
+350,The autoclave is out of service until Saturday,Saturday
+351,the technician will finalize the PCR results on Wednesday,Wednesday
+352,The department seminar is hosted on Saturday,Saturday
+353,The chemical waste pickup is every Tuesday,Tuesday
+354,Elena noted a discrepancy in the logs from Saturday,Saturday
+355,The weekly lab sync has been moved to Monday,Monday
+356,The statistical analysis will be performed on Monday,Monday
+357,The department seminar is hosted on Monday,Monday
+358,The statistical analysis will be performed on Saturday,Saturday
+359,The statistical analysis will be performed on Wednesday,Wednesday
+360,The liquid nitrogen refill happens on Tuesday,Tuesday
+361,Re-calibrate the mass spectrometer on Tuesday,Tuesday
+362,The lab will be closed for the holiday on Wednesday,Wednesday
+363,Submit the grant proposal before Wednesday,Wednesday
+364,The final abstract is due this Wednesday,Wednesday
+365,the PI scheduled the MRI scan for Sunday,Sunday
+366,Check the titration levels again on Monday,Monday
+367,Is the centrifuge maintenance occurring on Saturday,Saturday
+368,We expect the peer review feedback by Monday,Monday
+369,Elena is responsible for the morning rounds on Friday,Friday
+370,The clinical trial phase begins this Monday,Monday
+371,Elena will finalize the PCR results on Thursday,Thursday
+372,The autoclave is out of service until Thursday,Thursday
+373,Are we still on track for the launch this Tuesday,Tuesday
+374,The clinical trial phase begins this Sunday,Sunday
+375,The sample size will be recalculated on Friday,Friday
+376,Data backup must be completed every Saturday,Saturday
+377,Submit the grant proposal before Thursday,Thursday
+378,James is presenting the literature review on Thursday,Thursday
+379,The shipment of reagents is scheduled for Thursday,Thursday
+380,The ethics committee will meet on Tuesday,Tuesday
+381,Alice will finalize the PCR results on Friday,Friday
+382,The shipment of reagents is scheduled for Friday,Friday
+383,Sarah noted a discrepancy in the logs from Sunday,Sunday
+384,The statistical analysis will be performed on Tuesday,Tuesday
+385,Is the centrifuge maintenance occurring on Friday,Friday
+386,The final abstract is due this Sunday,Sunday
+387,Bob noted a discrepancy in the logs from Wednesday,Wednesday
+388,James is responsible for the morning rounds on Sunday,Sunday
+389,Prof. Wang scheduled the MRI scan for Friday,Friday
+390,The department seminar is hosted on Wednesday,Wednesday
+391,Sarah will finalize the PCR results on Friday,Friday
+392,Charlie will finalize the PCR results on Saturday,Saturday
+393,Is the centrifuge maintenance occurring on Wednesday,Wednesday
+394,The autoclave is out of service until Thursday,Thursday
+395,The ethics committee will meet on Saturday,Saturday
+396,The weekly lab sync has been moved to Wednesday,Wednesday
+397,Data backup must be completed every Tuesday,Tuesday
+398,Is the centrifuge maintenance occurring on Saturday,Saturday
+399,Is the centrifuge maintenance occurring on Monday,Monday
+400,Submit the grant proposal before Sunday,Sunday
+401,Sarah is presenting the literature review on Thursday,Thursday
+402,Charlie is presenting the literature review on Monday,Monday
+403,The department seminar is hosted on Tuesday,Tuesday
+404,the PI scheduled the MRI scan for Sunday,Sunday
+405,The weekly lab sync has been moved to Friday,Friday
+406,Is the centrifuge maintenance occurring on Sunday,Sunday
+407,The department seminar is hosted on Saturday,Saturday
+408,Please verify the freezer temperature logs for Friday,Friday
+409,We will start the sequencing run on Wednesday,Wednesday
+410,Please ensure the incubator is cleaned by Thursday,Thursday
+411,Prof. Wang noted a discrepancy in the logs from Thursday,Thursday
+412,The ethics committee will meet on Sunday,Sunday
+413,We will start the sequencing run on Sunday,Sunday
+414,The statistical analysis will be performed on Monday,Monday
+415,The chemical waste pickup is every Saturday,Saturday
+416,We will start the sequencing run on Monday,Monday
+417,The ethics committee will meet on Friday,Friday
+418,The statistical analysis will be performed on Sunday,Sunday
+419,Alice noted a discrepancy in the logs from Thursday,Thursday
+420,The liquid nitrogen refill happens on Friday,Friday
+421,We will start the sequencing run on Friday,Friday
+422,The department seminar is hosted on Monday,Monday
+423,We will start the sequencing run on Sunday,Sunday
+424,Data backup must be completed every Thursday,Thursday
+425,The liquid nitrogen refill happens on Tuesday,Tuesday
+426,Prof. Wang is presenting the literature review on Friday,Friday
+427,Our collaborator is visiting the facility on Tuesday,Tuesday
+428,The liquid nitrogen refill happens on Saturday,Saturday
+429,The sample size will be recalculated on Sunday,Sunday
+430,We expect the peer review feedback by Sunday,Sunday
+431,Re-calibrate the mass spectrometer on Tuesday,Tuesday
+432,Check the titration levels again on Monday,Monday
+433,Dr. Smith will finalize the PCR results on Wednesday,Wednesday
+434,The clinical trial phase begins this Monday,Monday
+435,The weekly lab sync has been moved to Tuesday,Tuesday
+436,Please ensure the incubator is cleaned by Monday,Monday
+437,Check the titration levels again on Thursday,Thursday
+438,We expect the peer review feedback by Wednesday,Wednesday
+439,Sarah is responsible for the morning rounds on Sunday,Sunday
+440,The microscope calibration is due on Saturday,Saturday
+441,The longitudinal study concludes on Tuesday,Tuesday
+442,The liquid nitrogen refill happens on Tuesday,Tuesday
+443,The liquid nitrogen refill happens on Wednesday,Wednesday
+444,The autoclave is out of service until Thursday,Thursday
+445,The department seminar is hosted on Wednesday,Wednesday
+446,The microscope calibration is due on Wednesday,Wednesday
+447,The department seminar is hosted on Friday,Friday
+448,The autoclave is out of service until Monday,Monday
+449,The statistical analysis will be performed on Friday,Friday
+450,Submit the grant proposal before Thursday,Thursday
+451,The clinical trial phase begins this Thursday,Thursday
+452,We will start the sequencing run on Saturday,Saturday
+453,We expect the peer review feedback by Friday,Friday
+454,We expect the peer review feedback by Monday,Monday
+455,Alice is responsible for the morning rounds on Friday,Friday
+456,The microscope calibration is due on Wednesday,Wednesday
+457,Please verify the freezer temperature logs for Saturday,Saturday
+458,The autoclave is out of service until Tuesday,Tuesday
+459,the technician is responsible for the morning rounds on Friday,Friday
+460,Bob is presenting the literature review on Wednesday,Wednesday
+461,We expect the peer review feedback by Tuesday,Tuesday
+462,Alice is presenting the literature review on Friday,Friday
+463,The liquid nitrogen refill happens on Wednesday,Wednesday
+464,Submit the grant proposal before Friday,Friday
+465,Please ensure the incubator is cleaned by Wednesday,Wednesday
+466,The liquid nitrogen refill happens on Tuesday,Tuesday
+467,Check the titration levels again on Tuesday,Tuesday
+468,Our collaborator is visiting the facility on Friday,Friday
+469,The department seminar is hosted on Monday,Monday
+470,the technician will finalize the PCR results on Sunday,Sunday
+471,Please verify the freezer temperature logs for Saturday,Saturday
+472,The clinical trial phase begins this Thursday,Thursday
+473,Charlie will finalize the PCR results on Saturday,Saturday
+474,Please verify the freezer temperature logs for Saturday,Saturday
+475,the PI will finalize the PCR results on Wednesday,Wednesday
+476,Are we still on track for the launch this Wednesday,Wednesday
+477,Submit the grant proposal before Saturday,Saturday
+478,Sarah scheduled the MRI scan for Sunday,Sunday
+479,Are we still on track for the launch this Wednesday,Wednesday
+480,The ethics committee will meet on Friday,Friday
+481,Data backup must be completed every Wednesday,Wednesday
+482,We will start the sequencing run on Tuesday,Tuesday
+483,The final abstract is due this Tuesday,Tuesday
+484,The statistical analysis will be performed on Saturday,Saturday
+485,Please verify the freezer temperature logs for Monday,Monday
+486,The microscope calibration is due on Tuesday,Tuesday
+487,Is the centrifuge maintenance occurring on Monday,Monday
+488,The chemical waste pickup is every Sunday,Sunday
+489,The final abstract is due this Wednesday,Wednesday
+490,The lab will be closed for the holiday on Wednesday,Wednesday
+491,We expect the peer review feedback by Sunday,Sunday
+492,We expect the peer review feedback by Wednesday,Wednesday
+493,Alice will finalize the PCR results on Tuesday,Tuesday
+494,the technician is presenting the literature review on Friday,Friday
+495,Data backup must be completed every Saturday,Saturday
+496,Check the titration levels again on Friday,Friday
+497,Is the centrifuge maintenance occurring on Sunday,Sunday
+498,We expect the peer review feedback by Wednesday,Wednesday
+499,The chemical waste pickup is every Friday,Friday
+500,The chemical waste pickup is every Monday,Monday
+501,Is the centrifuge maintenance occurring on Monday,Monday
+502,The microscope calibration is due on Thursday,Thursday
+503,Charlie will finalize the PCR results on Tuesday,Tuesday
+504,The statistical analysis will be performed on Friday,Friday
+505,The autoclave is out of service until Wednesday,Wednesday
+506,Data backup must be completed every Monday,Monday
+507,Prof. Wang is responsible for the morning rounds on Monday,Monday
+508,the PI scheduled the MRI scan for Sunday,Sunday
+509,The microscope calibration is due on Tuesday,Tuesday
+510,Is the centrifuge maintenance occurring on Friday,Friday
+511,The microscope calibration is due on Sunday,Sunday
+512,The clinical trial phase begins this Wednesday,Wednesday
+513,the PI scheduled the MRI scan for Friday,Friday
+514,The ethics committee will meet on Thursday,Thursday
+515,We will start the sequencing run on Friday,Friday
+516,The liquid nitrogen refill happens on Tuesday,Tuesday
+517,The chemical waste pickup is every Sunday,Sunday
+518,The autoclave is out of service until Tuesday,Tuesday
+519,The sample size will be recalculated on Wednesday,Wednesday
+520,The microscope calibration is due on Saturday,Saturday
+521,We will start the sequencing run on Saturday,Saturday
+522,We expect the peer review feedback by Thursday,Thursday
+523,Check the titration levels again on Friday,Friday
+524,The shipment of reagents is scheduled for Saturday,Saturday
+525,The microscope calibration is due on Wednesday,Wednesday
+526,The ethics committee will meet on Saturday,Saturday
+527,the PI is responsible for the morning rounds on Wednesday,Wednesday
+528,Please ensure the incubator is cleaned by Friday,Friday
+529,The statistical analysis will be performed on Thursday,Thursday
+530,The sample size will be recalculated on Saturday,Saturday
+531,The sample size will be recalculated on Friday,Friday
+532,The weekly lab sync has been moved to Wednesday,Wednesday
+533,The liquid nitrogen refill happens on Tuesday,Tuesday
+534,The shipment of reagents is scheduled for Friday,Friday
+535,Our collaborator is visiting the facility on Sunday,Sunday
+536,Is the centrifuge maintenance occurring on Tuesday,Tuesday
+537,The statistical analysis will be performed on Wednesday,Wednesday
+538,Elena is presenting the literature review on Saturday,Saturday
+539,The chemical waste pickup is every Friday,Friday
+540,The chemical waste pickup is every Saturday,Saturday
+541,The sample size will be recalculated on Sunday,Sunday
+542,Re-calibrate the mass spectrometer on Saturday,Saturday
+543,the technician will finalize the PCR results on Saturday,Saturday
+544,The weekly lab sync has been moved to Sunday,Sunday
+545,The weekly lab sync has been moved to Tuesday,Tuesday
+546,The statistical analysis will be performed on Wednesday,Wednesday
+547,Our collaborator is visiting the facility on Sunday,Sunday
+548,The department seminar is hosted on Friday,Friday
+549,Are we still on track for the launch this Thursday,Thursday
+550,The final abstract is due this Monday,Monday
+551,The lab will be closed for the holiday on Thursday,Thursday
+552,The longitudinal study concludes on Sunday,Sunday
+553,The weekly lab sync has been moved to Monday,Monday
+554,The final abstract is due this Saturday,Saturday
+555,Dr. Smith is responsible for the morning rounds on Tuesday,Tuesday
+556,Dr. Smith scheduled the MRI scan for Sunday,Sunday
+557,The chemical waste pickup is every Sunday,Sunday
+558,The sample size will be recalculated on Thursday,Thursday
+559,Bob noted a discrepancy in the logs from Friday,Friday
+560,The longitudinal study concludes on Monday,Monday
+561,the technician is presenting the literature review on Sunday,Sunday
+562,The microscope calibration is due on Sunday,Sunday
+563,The lab will be closed for the holiday on Wednesday,Wednesday
+564,Prof. Wang is responsible for the morning rounds on Tuesday,Tuesday
+565,The ethics committee will meet on Saturday,Saturday
+566,The final abstract is due this Friday,Friday
+567,We will start the sequencing run on Tuesday,Tuesday
+568,Alice noted a discrepancy in the logs from Thursday,Thursday
+569,Sarah will finalize the PCR results on Sunday,Sunday
+570,The final abstract is due this Monday,Monday
+571,The clinical trial phase begins this Saturday,Saturday
+572,Please verify the freezer temperature logs for Friday,Friday
+573,Data backup must be completed every Thursday,Thursday
+574,the PI is responsible for the morning rounds on Friday,Friday
+575,the PI is presenting the literature review on Saturday,Saturday
+576,James scheduled the MRI scan for Thursday,Thursday
+577,Check the titration levels again on Friday,Friday
+578,Check the titration levels again on Sunday,Sunday
+579,The department seminar is hosted on Wednesday,Wednesday
+580,We expect the peer review feedback by Sunday,Sunday
+581,Check the titration levels again on Friday,Friday
+582,The final abstract is due this Thursday,Thursday
+583,Data backup must be completed every Wednesday,Wednesday
+584,The liquid nitrogen refill happens on Tuesday,Tuesday
+585,The ethics committee will meet on Friday,Friday
+586,Are we still on track for the launch this Monday,Monday
+587,Prof. Wang will finalize the PCR results on Saturday,Saturday
+588,The weekly lab sync has been moved to Sunday,Sunday
+589,The autoclave is out of service until Saturday,Saturday
+590,The weekly lab sync has been moved to Friday,Friday
+591,Is the centrifuge maintenance occurring on Friday,Friday
+592,We will start the sequencing run on Thursday,Thursday
+593,The longitudinal study concludes on Wednesday,Wednesday
+594,The lab will be closed for the holiday on Thursday,Thursday
+595,Submit the grant proposal before Sunday,Sunday
+596,Data backup must be completed every Wednesday,Wednesday
+597,Is the centrifuge maintenance occurring on Thursday,Thursday
+598,Submit the grant proposal before Sunday,Sunday
+599,Submit the grant proposal before Wednesday,Wednesday
+600,The microscope calibration is due on Tuesday,Tuesday
+601,Are we still on track for the launch this Monday,Monday
+602,Elena is responsible for the morning rounds on Thursday,Thursday
+603,The department seminar is hosted on Wednesday,Wednesday
+604,Are we still on track for the launch this Sunday,Sunday
+605,The chemical waste pickup is every Sunday,Sunday
+606,Sarah noted a discrepancy in the logs from Monday,Monday
+607,Submit the grant proposal before Saturday,Saturday
+608,the PI is presenting the literature review on Monday,Monday
+609,The chemical waste pickup is every Sunday,Sunday
+610,Re-calibrate the mass spectrometer on Sunday,Sunday
+611,The department seminar is hosted on Monday,Monday
+612,The longitudinal study concludes on Tuesday,Tuesday
+613,Submit the grant proposal before Monday,Monday
+614,The chemical waste pickup is every Sunday,Sunday
+615,Alice scheduled the MRI scan for Friday,Friday
+616,The weekly lab sync has been moved to Saturday,Saturday
+617,Is the centrifuge maintenance occurring on Saturday,Saturday
+618,The weekly lab sync has been moved to Tuesday,Tuesday
+619,the PI will finalize the PCR results on Thursday,Thursday
+620,The sample size will be recalculated on Monday,Monday
+621,The statistical analysis will be performed on Monday,Monday
+622,The autoclave is out of service until Sunday,Sunday
+623,The shipment of reagents is scheduled for Sunday,Sunday
+624,Prof. Wang will finalize the PCR results on Saturday,Saturday
+625,We will start the sequencing run on Thursday,Thursday
+626,The autoclave is out of service until Wednesday,Wednesday
+627,Submit the grant proposal before Friday,Friday
+628,the technician scheduled the MRI scan for Tuesday,Tuesday
+629,the PI is presenting the literature review on Sunday,Sunday
+630,The sample size will be recalculated on Wednesday,Wednesday
+631,Please ensure the incubator is cleaned by Thursday,Thursday
+632,the technician scheduled the MRI scan for Saturday,Saturday
+633,the technician scheduled the MRI scan for Wednesday,Wednesday
+634,Please ensure the incubator is cleaned by Saturday,Saturday
+635,Data backup must be completed every Tuesday,Tuesday
+636,The weekly lab sync has been moved to Saturday,Saturday
+637,We will start the sequencing run on Monday,Monday
+638,The lab will be closed for the holiday on Friday,Friday
+639,We will start the sequencing run on Monday,Monday
+640,We will start the sequencing run on Friday,Friday
+641,The shipment of reagents is scheduled for Sunday,Sunday
+642,The weekly lab sync has been moved to Monday,Monday
+643,The liquid nitrogen refill happens on Friday,Friday
+644,The sample size will be recalculated on Tuesday,Tuesday
+645,We expect the peer review feedback by Monday,Monday
+646,The final abstract is due this Friday,Friday
+647,Please ensure the incubator is cleaned by Friday,Friday
+648,The microscope calibration is due on Saturday,Saturday
+649,The chemical waste pickup is every Thursday,Thursday
+650,The shipment of reagents is scheduled for Monday,Monday
+651,The longitudinal study concludes on Thursday,Thursday
+652,Are we still on track for the launch this Tuesday,Tuesday
+653,Our collaborator is visiting the facility on Friday,Friday
+654,The sample size will be recalculated on Saturday,Saturday
+655,The longitudinal study concludes on Tuesday,Tuesday
+656,The liquid nitrogen refill happens on Sunday,Sunday
+657,The shipment of reagents is scheduled for Friday,Friday
+658,Please ensure the incubator is cleaned by Wednesday,Wednesday
+659,The sample size will be recalculated on Monday,Monday
+660,The lab will be closed for the holiday on Saturday,Saturday
+661,Our collaborator is visiting the facility on Tuesday,Tuesday
+662,The shipment of reagents is scheduled for Sunday,Sunday
+663,Re-calibrate the mass spectrometer on Thursday,Thursday
+664,James scheduled the MRI scan for Friday,Friday
+665,The autoclave is out of service until Monday,Monday
+666,The autoclave is out of service until Wednesday,Wednesday
+667,The department seminar is hosted on Wednesday,Wednesday
+668,The microscope calibration is due on Sunday,Sunday
+669,The chemical waste pickup is every Tuesday,Tuesday
+670,Prof. Wang noted a discrepancy in the logs from Tuesday,Tuesday
+671,Is the centrifuge maintenance occurring on Friday,Friday
+672,The lab will be closed for the holiday on Saturday,Saturday
+673,The ethics committee will meet on Tuesday,Tuesday
+674,Bob scheduled the MRI scan for Monday,Monday
+675,Are we still on track for the launch this Saturday,Saturday
+676,Check the titration levels again on Thursday,Thursday
+677,The department seminar is hosted on Thursday,Thursday
+678,Check the titration levels again on Thursday,Thursday
+679,Bob noted a discrepancy in the logs from Saturday,Saturday
+680,The department seminar is hosted on Thursday,Thursday
+681,Check the titration levels again on Friday,Friday
+682,We will start the sequencing run on Sunday,Sunday
+683,James will finalize the PCR results on Sunday,Sunday
+684,the technician is responsible for the morning rounds on Wednesday,Wednesday
+685,Dr. Smith is presenting the literature review on Saturday,Saturday
+686,Submit the grant proposal before Friday,Friday
+687,Submit the grant proposal before Wednesday,Wednesday
+688,The sample size will be recalculated on Monday,Monday
+689,Bob noted a discrepancy in the logs from Monday,Monday
+690,Please verify the freezer temperature logs for Saturday,Saturday
+691,Submit the grant proposal before Friday,Friday
+692,The chemical waste pickup is every Monday,Monday
+693,The longitudinal study concludes on Friday,Friday
+694,The final abstract is due this Saturday,Saturday
+695,We will start the sequencing run on Monday,Monday
+696,Sarah scheduled the MRI scan for Tuesday,Tuesday
+697,Our collaborator is visiting the facility on Saturday,Saturday
+698,Sarah is presenting the literature review on Sunday,Sunday
+699,The department seminar is hosted on Tuesday,Tuesday
+700,The department seminar is hosted on Friday,Friday
+701,The department seminar is hosted on Saturday,Saturday
+702,The shipment of reagents is scheduled for Friday,Friday
+703,Dr. Smith will finalize the PCR results on Monday,Monday
+704,We will start the sequencing run on Sunday,Sunday
+705,the technician will finalize the PCR results on Saturday,Saturday
+706,The department seminar is hosted on Sunday,Sunday
+707,We will start the sequencing run on Monday,Monday
+708,the technician is responsible for the morning rounds on Friday,Friday
+709,Data backup must be completed every Sunday,Sunday
+710,The ethics committee will meet on Monday,Monday
+711,The microscope calibration is due on Monday,Monday
+712,The chemical waste pickup is every Tuesday,Tuesday
+713,Is the centrifuge maintenance occurring on Wednesday,Wednesday
+714,The liquid nitrogen refill happens on Friday,Friday
+715,The microscope calibration is due on Saturday,Saturday
+716,The sample size will be recalculated on Tuesday,Tuesday
+717,The autoclave is out of service until Sunday,Sunday
+718,The ethics committee will meet on Saturday,Saturday
+719,Prof. Wang will finalize the PCR results on Monday,Monday
+720,The weekly lab sync has been moved to Saturday,Saturday
+721,The weekly lab sync has been moved to Friday,Friday
+722,The clinical trial phase begins this Thursday,Thursday
+723,The final abstract is due this Monday,Monday
+724,The microscope calibration is due on Monday,Monday
+725,Check the titration levels again on Saturday,Saturday
+726,We expect the peer review feedback by Tuesday,Tuesday
+727,We expect the peer review feedback by Wednesday,Wednesday
+728,The chemical waste pickup is every Monday,Monday
+729,The weekly lab sync has been moved to Sunday,Sunday
+730,Please ensure the incubator is cleaned by Monday,Monday
+731,Re-calibrate the mass spectrometer on Wednesday,Wednesday
+732,The microscope calibration is due on Sunday,Sunday
+733,James noted a discrepancy in the logs from Tuesday,Tuesday
+734,The final abstract is due this Saturday,Saturday
+735,Please verify the freezer temperature logs for Monday,Monday
+736,We expect the peer review feedback by Monday,Monday
+737,The lab will be closed for the holiday on Tuesday,Tuesday
+738,Alice scheduled the MRI scan for Tuesday,Tuesday
+739,Check the titration levels again on Tuesday,Tuesday
+740,The autoclave is out of service until Wednesday,Wednesday
+741,James scheduled the MRI scan for Friday,Friday
+742,the technician scheduled the MRI scan for Friday,Friday
+743,The final abstract is due this Monday,Monday
+744,The liquid nitrogen refill happens on Sunday,Sunday
+745,Submit the grant proposal before Sunday,Sunday
+746,James scheduled the MRI scan for Saturday,Saturday
+747,The longitudinal study concludes on Sunday,Sunday
+748,Re-calibrate the mass spectrometer on Tuesday,Tuesday
+749,The autoclave is out of service until Friday,Friday
+750,Re-calibrate the mass spectrometer on Thursday,Thursday
+751,The department seminar is hosted on Monday,Monday
+752,Re-calibrate the mass spectrometer on Thursday,Thursday
+753,Re-calibrate the mass spectrometer on Friday,Friday
+754,Please ensure the incubator is cleaned by Saturday,Saturday
+755,Data backup must be completed every Friday,Friday
+756,Check the titration levels again on Monday,Monday
+757,The final abstract is due this Sunday,Sunday
+758,Submit the grant proposal before Saturday,Saturday
+759,The clinical trial phase begins this Saturday,Saturday
+760,Alice scheduled the MRI scan for Sunday,Sunday
+761,Please ensure the incubator is cleaned by Monday,Monday
+762,Our collaborator is visiting the facility on Friday,Friday
+763,The microscope calibration is due on Tuesday,Tuesday
+764,Is the centrifuge maintenance occurring on Wednesday,Wednesday
+765,Prof. Wang is presenting the literature review on Friday,Friday
+766,The weekly lab sync has been moved to Tuesday,Tuesday
+767,Re-calibrate the mass spectrometer on Saturday,Saturday
+768,The final abstract is due this Friday,Friday
+769,The clinical trial phase begins this Friday,Friday
+770,Check the titration levels again on Sunday,Sunday
+771,Is the centrifuge maintenance occurring on Sunday,Sunday
+772,Submit the grant proposal before Monday,Monday
+773,The lab will be closed for the holiday on Tuesday,Tuesday
+774,The autoclave is out of service until Tuesday,Tuesday
+775,The autoclave is out of service until Thursday,Thursday
+776,The final abstract is due this Friday,Friday
+777,We expect the peer review feedback by Thursday,Thursday
+778,The longitudinal study concludes on Tuesday,Tuesday
+779,The statistical analysis will be performed on Friday,Friday
+780,James is responsible for the morning rounds on Friday,Friday
+781,The chemical waste pickup is every Saturday,Saturday
+782,The final abstract is due this Saturday,Saturday
+783,Check the titration levels again on Sunday,Sunday
+784,The longitudinal study concludes on Monday,Monday
+785,Elena is presenting the literature review on Thursday,Thursday
+786,Re-calibrate the mass spectrometer on Friday,Friday
+787,The weekly lab sync has been moved to Friday,Friday
+788,The microscope calibration is due on Wednesday,Wednesday
+789,The ethics committee will meet on Thursday,Thursday
+790,James will finalize the PCR results on Saturday,Saturday
+791,Are we still on track for the launch this Wednesday,Wednesday
+792,Check the titration levels again on Thursday,Thursday
+793,Alice is responsible for the morning rounds on Wednesday,Wednesday
+794,Are we still on track for the launch this Sunday,Sunday
+795,The weekly lab sync has been moved to Sunday,Sunday
+796,Are we still on track for the launch this Sunday,Sunday
+797,Please ensure the incubator is cleaned by Saturday,Saturday
+798,The final abstract is due this Sunday,Sunday
+799,We will start the sequencing run on Thursday,Thursday
+800,Is the centrifuge maintenance occurring on Tuesday,Tuesday
+801,The final abstract is due this Wednesday,Wednesday
+802,The weekly lab sync has been moved to Wednesday,Wednesday
+803,The department seminar is hosted on Tuesday,Tuesday
+804,Re-calibrate the mass spectrometer on Friday,Friday
+805,the PI noted a discrepancy in the logs from Tuesday,Tuesday
+806,The shipment of reagents is scheduled for Monday,Monday
+807,The lab will be closed for the holiday on Monday,Monday
+808,The autoclave is out of service until Tuesday,Tuesday
+809,The chemical waste pickup is every Monday,Monday
+810,Are we still on track for the launch this Sunday,Sunday
+811,The ethics committee will meet on Tuesday,Tuesday
+812,Our collaborator is visiting the facility on Monday,Monday
+813,We expect the peer review feedback by Thursday,Thursday
+814,The department seminar is hosted on Friday,Friday
+815,Our collaborator is visiting the facility on Sunday,Sunday
+816,Our collaborator is visiting the facility on Saturday,Saturday
+817,Alice is responsible for the morning rounds on Tuesday,Tuesday
+818,Alice is responsible for the morning rounds on Tuesday,Tuesday
+819,James will finalize the PCR results on Thursday,Thursday
+820,Is the centrifuge maintenance occurring on Friday,Friday
+821,The final abstract is due this Tuesday,Tuesday
+822,The lab will be closed for the holiday on Wednesday,Wednesday
+823,Are we still on track for the launch this Sunday,Sunday
+824,The shipment of reagents is scheduled for Saturday,Saturday
+825,Check the titration levels again on Wednesday,Wednesday
+826,The weekly lab sync has been moved to Thursday,Thursday
+827,The statistical analysis will be performed on Saturday,Saturday
+828,The clinical trial phase begins this Saturday,Saturday
+829,The weekly lab sync has been moved to Thursday,Thursday
+830,The weekly lab sync has been moved to Saturday,Saturday
+831,Dr. Smith scheduled the MRI scan for Monday,Monday
+832,The ethics committee will meet on Wednesday,Wednesday
+833,Please ensure the incubator is cleaned by Wednesday,Wednesday
+834,The shipment of reagents is scheduled for Monday,Monday
+835,The statistical analysis will be performed on Friday,Friday
+836,Re-calibrate the mass spectrometer on Friday,Friday
+837,The statistical analysis will be performed on Thursday,Thursday
+838,The department seminar is hosted on Wednesday,Wednesday
+839,Please verify the freezer temperature logs for Thursday,Thursday
+840,We expect the peer review feedback by Saturday,Saturday
+841,Bob is presenting the literature review on Sunday,Sunday
+842,The chemical waste pickup is every Monday,Monday
+843,The statistical analysis will be performed on Sunday,Sunday
+844,The clinical trial phase begins this Thursday,Thursday
+845,Bob scheduled the MRI scan for Saturday,Saturday
+846,The ethics committee will meet on Wednesday,Wednesday
+847,Bob is presenting the literature review on Tuesday,Tuesday
+848,The department seminar is hosted on Tuesday,Tuesday
+849,Sarah will finalize the PCR results on Wednesday,Wednesday
+850,The sample size will be recalculated on Wednesday,Wednesday
+851,Is the centrifuge maintenance occurring on Saturday,Saturday
+852,The microscope calibration is due on Sunday,Sunday
+853,We will start the sequencing run on Monday,Monday
+854,The microscope calibration is due on Monday,Monday
+855,The sample size will be recalculated on Thursday,Thursday
+856,The sample size will be recalculated on Wednesday,Wednesday
+857,We will start the sequencing run on Saturday,Saturday
+858,The microscope calibration is due on Saturday,Saturday
+859,The longitudinal study concludes on Wednesday,Wednesday
+860,The longitudinal study concludes on Wednesday,Wednesday
+861,The shipment of reagents is scheduled for Saturday,Saturday
+862,Is the centrifuge maintenance occurring on Sunday,Sunday
+863,We expect the peer review feedback by Thursday,Thursday
+864,Data backup must be completed every Friday,Friday
+865,The chemical waste pickup is every Thursday,Thursday
+866,Dr. Smith is responsible for the morning rounds on Tuesday,Tuesday
+867,We will start the sequencing run on Wednesday,Wednesday
+868,the technician is responsible for the morning rounds on Friday,Friday
+869,The longitudinal study concludes on Tuesday,Tuesday
+870,Re-calibrate the mass spectrometer on Monday,Monday
+871,Bob scheduled the MRI scan for Thursday,Thursday
+872,The autoclave is out of service until Saturday,Saturday
+873,The longitudinal study concludes on Saturday,Saturday
+874,Sarah is responsible for the morning rounds on Sunday,Sunday
+875,Are we still on track for the launch this Saturday,Saturday
+876,The shipment of reagents is scheduled for Wednesday,Wednesday
+877,The autoclave is out of service until Thursday,Thursday
+878,Charlie is presenting the literature review on Sunday,Sunday
+879,The clinical trial phase begins this Wednesday,Wednesday
+880,The microscope calibration is due on Wednesday,Wednesday
+881,The weekly lab sync has been moved to Friday,Friday
+882,The lab will be closed for the holiday on Thursday,Thursday
+883,The lab will be closed for the holiday on Wednesday,Wednesday
+884,Are we still on track for the launch this Saturday,Saturday
+885,We will start the sequencing run on Tuesday,Tuesday
+886,Submit the grant proposal before Friday,Friday
+887,The department seminar is hosted on Monday,Monday
+888,Please verify the freezer temperature logs for Saturday,Saturday
+889,We expect the peer review feedback by Monday,Monday
+890,The chemical waste pickup is every Friday,Friday
+891,James noted a discrepancy in the logs from Tuesday,Tuesday
+892,We will start the sequencing run on Friday,Friday
+893,The final abstract is due this Monday,Monday
+894,Are we still on track for the launch this Sunday,Sunday
+895,The liquid nitrogen refill happens on Tuesday,Tuesday
+896,The autoclave is out of service until Monday,Monday
+897,The shipment of reagents is scheduled for Sunday,Sunday
+898,The sample size will be recalculated on Tuesday,Tuesday
+899,The chemical waste pickup is every Thursday,Thursday
+900,The clinical trial phase begins this Friday,Friday
+901,The longitudinal study concludes on Sunday,Sunday
+902,We will start the sequencing run on Saturday,Saturday
+903,the PI is presenting the literature review on Friday,Friday
+904,The statistical analysis will be performed on Wednesday,Wednesday
+905,The shipment of reagents is scheduled for Friday,Friday
+906,Are we still on track for the launch this Monday,Monday
+907,the technician scheduled the MRI scan for Sunday,Sunday
+908,The clinical trial phase begins this Monday,Monday
+909,The longitudinal study concludes on Monday,Monday
+910,Alice will finalize the PCR results on Tuesday,Tuesday
+911,The chemical waste pickup is every Thursday,Thursday
+912,The sample size will be recalculated on Thursday,Thursday
+913,The statistical analysis will be performed on Sunday,Sunday
+914,Charlie is presenting the literature review on Tuesday,Tuesday
+915,Dr. Smith is responsible for the morning rounds on Monday,Monday
+916,We will start the sequencing run on Friday,Friday
+917,Bob will finalize the PCR results on Wednesday,Wednesday
+918,The sample size will be recalculated on Saturday,Saturday
+919,The microscope calibration is due on Monday,Monday
+920,Our collaborator is visiting the facility on Thursday,Thursday
+921,Check the titration levels again on Thursday,Thursday
+922,The final abstract is due this Monday,Monday
+923,Are we still on track for the launch this Monday,Monday
+924,We expect the peer review feedback by Monday,Monday
+925,the technician is presenting the literature review on Sunday,Sunday
+926,We will start the sequencing run on Saturday,Saturday
+927,Please ensure the incubator is cleaned by Tuesday,Tuesday
+928,The liquid nitrogen refill happens on Tuesday,Tuesday
+929,The ethics committee will meet on Sunday,Sunday
+930,Please ensure the incubator is cleaned by Sunday,Sunday
+931,The weekly lab sync has been moved to Wednesday,Wednesday
+932,The statistical analysis will be performed on Tuesday,Tuesday
+933,Re-calibrate the mass spectrometer on Tuesday,Tuesday
+934,Alice is presenting the literature review on Wednesday,Wednesday
+935,Are we still on track for the launch this Wednesday,Wednesday
+936,Charlie scheduled the MRI scan for Monday,Monday
+937,Our collaborator is visiting the facility on Sunday,Sunday
+938,The department seminar is hosted on Wednesday,Wednesday
+939,The sample size will be recalculated on Friday,Friday
+940,The shipment of reagents is scheduled for Wednesday,Wednesday
+941,Please ensure the incubator is cleaned by Sunday,Sunday
+942,Submit the grant proposal before Thursday,Thursday
+943,We will start the sequencing run on Thursday,Thursday
+944,The department seminar is hosted on Wednesday,Wednesday
+945,Check the titration levels again on Saturday,Saturday
+946,Please verify the freezer temperature logs for Sunday,Sunday
+947,Bob is presenting the literature review on Tuesday,Tuesday
+948,Submit the grant proposal before Wednesday,Wednesday
+949,The sample size will be recalculated on Monday,Monday
+950,the technician is presenting the literature review on Wednesday,Wednesday
+951,Are we still on track for the launch this Tuesday,Tuesday
+952,The statistical analysis will be performed on Friday,Friday
+953,The statistical analysis will be performed on Saturday,Saturday
+954,The statistical analysis will be performed on Thursday,Thursday
+955,The weekly lab sync has been moved to Sunday,Sunday
+956,Charlie is responsible for the morning rounds on Tuesday,Tuesday
+957,The microscope calibration is due on Tuesday,Tuesday
+958,The autoclave is out of service until Thursday,Thursday
+959,the technician noted a discrepancy in the logs from Saturday,Saturday
+960,Elena noted a discrepancy in the logs from Saturday,Saturday
+961,The sample size will be recalculated on Wednesday,Wednesday
+962,The microscope calibration is due on Monday,Monday
+963,the PI scheduled the MRI scan for Thursday,Thursday
+964,The ethics committee will meet on Thursday,Thursday
+965,Alice noted a discrepancy in the logs from Sunday,Sunday
+966,James is responsible for the morning rounds on Thursday,Thursday
+967,Prof. Wang scheduled the MRI scan for Monday,Monday
+968,Data backup must be completed every Tuesday,Tuesday
+969,Alice is presenting the literature review on Friday,Friday
+970,The final abstract is due this Saturday,Saturday
+971,The microscope calibration is due on Sunday,Sunday
+972,The ethics committee will meet on Sunday,Sunday
+973,The weekly lab sync has been moved to Thursday,Thursday
+974,The liquid nitrogen refill happens on Monday,Monday
+975,Dr. Smith scheduled the MRI scan for Saturday,Saturday
+976,We expect the peer review feedback by Wednesday,Wednesday
+977,Dr. Smith noted a discrepancy in the logs from Saturday,Saturday
+978,Re-calibrate the mass spectrometer on Friday,Friday
+979,James is presenting the literature review on Sunday,Sunday
+980,The chemical waste pickup is every Thursday,Thursday
+981,The autoclave is out of service until Wednesday,Wednesday
+982,The shipment of reagents is scheduled for Tuesday,Tuesday
+983,Is the centrifuge maintenance occurring on Monday,Monday
+984,We will start the sequencing run on Tuesday,Tuesday
+985,The liquid nitrogen refill happens on Sunday,Sunday
+986,The clinical trial phase begins this Friday,Friday
+987,We will start the sequencing run on Tuesday,Tuesday
+988,The ethics committee will meet on Wednesday,Wednesday
+989,The longitudinal study concludes on Friday,Friday
+990,The sample size will be recalculated on Tuesday,Tuesday
+991,We will start the sequencing run on Thursday,Thursday
+992,The weekly lab sync has been moved to Saturday,Saturday
+993,Dr. Smith is presenting the literature review on Wednesday,Wednesday
+994,Elena will finalize the PCR results on Thursday,Thursday
+995,We expect the peer review feedback by Tuesday,Tuesday
+996,the PI will finalize the PCR results on Sunday,Sunday
+997,The autoclave is out of service until Monday,Monday
+998,The final abstract is due this Wednesday,Wednesday
+999,Please verify the freezer temperature logs for Thursday,Thursday

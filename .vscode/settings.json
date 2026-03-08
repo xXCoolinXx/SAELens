@@ -16,5 +16,6 @@
 
   "notebook.formatOnSave.enabled": true,
   "notebook.codeActionsOnSave": {},
-"liveServer.settings.port": 5501
+"liveServer.settings.port": 5501,
+"python.REPL.enableREPLSmartSend": false
 }
