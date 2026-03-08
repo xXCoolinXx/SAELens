@@ -22,12 +22,20 @@ class Expert:
         llm_activations: torch.Tensor,
         expert_activations: torch.Tensor,
         labels: torch.Tensor | None = None,
-        seq_position_offset: int = 0,
+        seq_positions: torch.Tensor | None = None,
     ):
+        """
+        Parameters
+        ----------
+        seq_positions : (B,) tensor, optional
+            Maps each batch index to the *original* sequence position of the
+            token that was encoded.  Only set in last-token-only mode so that
+            context windows render around the correct position.
+        """
         self.expert_activations = expert_activations[active_mask].float().cpu()
         self.llm_activations = llm_activations[active_mask].float().cpu()
         self.labels = labels[active_mask].long().cpu() if labels is not None else None
-        self.seq_position_offset = seq_position_offset
+        self.seq_positions = seq_positions  # kept as full (B,) lookup table
 
         assert self.expert_activations.shape[0] == self.llm_activations.shape[0], (
             "Different number of expert activations and embeddings. "
@@ -129,8 +137,12 @@ class Expert:
         contexts = []
         for batch_idx, seq_idx in self.active_indices:
             seq = str_tokens[batch_idx]
-            # Map back to the original sequence position when last-token-only
-            seq_idx = seq_idx + self.seq_position_offset
+
+            # In last-token-only mode the internal seq_idx is always 0;
+            # map it back to the real position in the full sequence.
+            if self.seq_positions is not None:
+                seq_idx = int(self.seq_positions[batch_idx].item())
+
             start = max(0, seq_idx - context_window)
             end = min(len(seq), seq_idx + context_window + 1)
             window = list(seq[start:end])
@@ -148,7 +160,6 @@ class Expert:
         device: str = "cuda",
         label_names: dict[int, str] | None = None,
     ) -> Figure:
-        # Lazy-evaluate if nothing has been computed yet
         if self.concept_purity_scores is None and self.local_continuity_scores is None:
             if self.labels is not None:
                 self.evaluate_concept(k_neighbors=k_neighbors, device=device)
@@ -240,14 +251,21 @@ def collect_activations(
     dataframe_path: str | None = None,
     text_column: str = "text",
     label_column: str | None = None,
-) -> tuple[torch.Tensor, list[list[str]], torch.Tensor | None, dict[int, str] | None]:
+) -> tuple[
+    torch.Tensor,
+    list[list[str]],
+    torch.Tensor | None,
+    dict[int, str] | None,
+    torch.Tensor,
+]:
     """
     Returns
     -------
-    activations : (B, S, D) on CPU
-    str_tokens  : list[list[str]]  – always full sequences for context windows
-    labels      : (B, S) long tensor on CPU, or None
-    label_names : {int → str} mapping, or None
+    activations          : (B, S, D) on CPU
+    str_tokens           : list[list[str]] — full sequences for context windows
+    labels               : (B, S) long tensor on CPU, or None
+    label_names          : {int → str} mapping, or None
+    last_token_positions : (B,) long tensor — index of last non-pad token per seq
     """
     print(f"Loading {model_name} to collect activations")
     model = HookedTransformer.from_pretrained(model_name, device=device)
@@ -313,7 +331,27 @@ def collect_activations(
     if label_ids is not None:
         labels_tensor = label_ids[:B].unsqueeze(1).expand(B, S).clone()
 
-    # ── 4. Forward pass ───────────────────────────────────────────────
+    # ── 4. Find last non-pad position per sequence ────────────────────
+    pad_token_id = getattr(model.tokenizer, "pad_token_id", None)
+    if pad_token_id is not None:
+        non_pad_mask = tokenized != pad_token_id  # (B, S)
+        # Build column indices, mask out pad positions with -1, then take max
+        col_indices = torch.arange(S).unsqueeze(0).expand(B, S)
+        last_token_positions = (
+            col_indices.masked_fill(~non_pad_mask, -1).max(dim=1).values
+        )
+        last_token_positions = last_token_positions.clamp(min=0)
+    else:
+        last_token_positions = torch.full((B,), S - 1, dtype=torch.long)
+
+    print(
+        f"Last non-pad positions — min: {last_token_positions.min().item()}, "
+        f"max: {last_token_positions.max().item()}, "
+        f"mean: {last_token_positions.float().mean().item():.1f} "
+        f"(seq length {S})"
+    )
+
+    # ── 5. Forward pass ───────────────────────────────────────────────
     all_acts = []
     for i in tqdm(range(0, B, llm_batch_size)):
         batch = tokenized[i : i + llm_batch_size].to(device)
@@ -326,14 +364,13 @@ def collect_activations(
     activations = torch.cat(all_acts, dim=0)
     del all_acts
 
-    # Keep full str_tokens regardless of last_token_only (needed for context windows)
     str_tokens = [model.to_str_tokens(tokenized[i]) for i in range(B)]
 
     del model
     torch.cuda.empty_cache()
     print("LLM deleted and GPU memory freed.")
 
-    return activations, str_tokens, labels_tensor, label_names
+    return activations, str_tokens, labels_tensor, label_names, last_token_positions
 
 
 # ======================================================================
@@ -349,24 +386,37 @@ def get_sae_activations(
     max_points: int = 1000,
     labels: torch.Tensor | None = None,
     last_token_only: bool = False,
+    last_token_positions: torch.Tensor | None = None,
 ) -> list[Expert]:
     print(f"Loading SAE from {checkpoint_path}")
     sae = SAE.load_from_disk(path=checkpoint_path, device=device)
 
     B, S_full, D = activations.shape
 
-    # ── When labelled, only encode the last token per sequence ────────
-    seq_position_offset = 0
+    # ── When labelled, only encode the last *non-pad* token per seq ───
+    seq_positions: torch.Tensor | None = None
     if last_token_only:
-        print(
-            f"last_token_only=True → extracting position {S_full - 1} "
-            f"from each sequence ({B * S_full} → {B} tokens through SAE)"
-        )
-        activations = activations[:, -1:, :]  # (B, 1, D)
+        if last_token_positions is None:
+            raise ValueError(
+                "last_token_only=True but no last_token_positions provided."
+            )
+
+        seq_positions = last_token_positions  # (B,) — lookup for context windows
+
+        # Gather the single token per sequence
+        # activations: (B, S_full, D) → (B, 1, D)
+        gather_idx = last_token_positions.unsqueeze(1).unsqueeze(2).expand(B, 1, D)
+        activations = activations.gather(1, gather_idx)
+
         if labels is not None:
-            labels = labels[:, -1:]  # (B, 1)
-        seq_position_offset = S_full - 1
+            label_idx = last_token_positions.unsqueeze(1)  # (B, 1)
+            labels = labels.gather(1, label_idx)
+
         S = 1
+        print(
+            f"last_token_only=True → gathered 1 token per sequence "
+            f"({B * S_full} → {B} tokens through SAE)"
+        )
     else:
         S = S_full
 
@@ -422,7 +472,7 @@ def get_sae_activations(
             activations,
             expert_pts,
             labels=labels,
-            seq_position_offset=seq_position_offset,
+            seq_positions=seq_positions,
         )
         experts.append(expert)
 
@@ -478,7 +528,6 @@ def main(
         "expert_plots", help="Base directory to save the HTML plots"
     ),
 ):
-    # Fall back to a default HF dataset when nothing is specified
     if dataset_name is None and dataframe_path is None:
         dataset_name = "monology/pile-uncopyrighted"
         print(f"No data source specified — defaulting to {dataset_name}")
@@ -492,17 +541,19 @@ def main(
     print(f"Plots will be saved to: {final_output_dir}")
 
     # ── 1. Collect LLM activations (+ optional labels) ────────────────
-    llm_acts, str_tokens, labels, label_names = collect_activations(
-        model_name=base_model_name,
-        hook_name=hook_point,
-        max_length=input_sequence_length,
-        n_input_samples=n_input_samples,
-        device=device,
-        llm_batch_size=llm_batch_size,
-        dataset_name=dataset_name,
-        dataframe_path=dataframe_path,
-        text_column=text_column,
-        label_column=label_column,
+    llm_acts, str_tokens, labels, label_names, last_token_positions = (
+        collect_activations(
+            model_name=base_model_name,
+            hook_name=hook_point,
+            max_length=input_sequence_length,
+            n_input_samples=n_input_samples,
+            device=device,
+            llm_batch_size=llm_batch_size,
+            dataset_name=dataset_name,
+            dataframe_path=dataframe_path,
+            text_column=text_column,
+            label_column=label_column,
+        )
     )
 
     is_labelled = labels is not None
@@ -518,6 +569,7 @@ def main(
         max_points=max_points,
         labels=labels,
         last_token_only=is_labelled,
+        last_token_positions=last_token_positions,
     )
 
     del llm_acts, labels

@@ -82,8 +82,8 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     --hook-point  "blocks.12.hook_resid_post" \
     --n-input-samples 1500 \
     --input-sequence-length 128 \
-    --n-interesting-experts-to-plot 25 \
-    --output-dir "manifold_analysis" \
+    --n-interesting-experts-to-plot 100 \
+    --output-dir "manifold_analysis/weekdays" \
     --k-neighbors 10 \
     --device "cuda" \
     --llm-batch-size 32 \
