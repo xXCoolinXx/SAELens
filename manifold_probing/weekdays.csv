@@ -1,1001 +1,1001 @@
-,Sentence,Label
-0,Check the titration levels again on Wednesday,2_Wednesday
-1,Data backup must be completed every Wednesday,2_Wednesday
-2,Check the titration levels again on Friday,4_Friday
-3,Are we still on track for the launch this Thursday,3_Thursday
-4,The liquid nitrogen refill happens on Thursday,3_Thursday
-5,The final abstract is due this Thursday,3_Thursday
-6,The longitudinal study concludes on Friday,4_Friday
-7,The ethics committee will meet on Wednesday,2_Wednesday
-8,The statistical analysis will be performed on Wednesday,2_Wednesday
-9,the technician noted a discrepancy in the logs from Friday,4_Friday
-10,The clinical trial phase begins this Saturday,5_Saturday
-11,Please ensure the incubator is cleaned by Sunday,6_Sunday
-12,The lab will be closed for the holiday on Sunday,6_Sunday
-13,Submit the grant proposal before Friday,4_Friday
-14,The chemical waste pickup is every Friday,4_Friday
-15,Our collaborator is visiting the facility on Thursday,3_Thursday
-16,Check the titration levels again on Saturday,5_Saturday
-17,Submit the grant proposal before Thursday,3_Thursday
-18,The chemical waste pickup is every Wednesday,2_Wednesday
-19,James will finalize the PCR results on Wednesday,2_Wednesday
-20,The liquid nitrogen refill happens on Sunday,6_Sunday
-21,The lab will be closed for the holiday on Friday,4_Friday
-22,Please verify the freezer temperature logs for Thursday,3_Thursday
-23,Data backup must be completed every Saturday,5_Saturday
-24,The department seminar is hosted on Saturday,5_Saturday
-25,The autoclave is out of service until Sunday,6_Sunday
-26,Charlie will finalize the PCR results on Wednesday,2_Wednesday
-27,Is the centrifuge maintenance occurring on Tuesday,1_Tuesday
-28,Are we still on track for the launch this Thursday,3_Thursday
-29,The clinical trial phase begins this Wednesday,2_Wednesday
-30,The sample size will be recalculated on Tuesday,1_Tuesday
-31,Is the centrifuge maintenance occurring on Friday,4_Friday
-32,Re-calibrate the mass spectrometer on Wednesday,2_Wednesday
-33,Bob scheduled the MRI scan for Thursday,3_Thursday
-34,James will finalize the PCR results on Monday,0_Monday
-35,The weekly lab sync has been moved to Wednesday,2_Wednesday
-36,Please verify the freezer temperature logs for Saturday,5_Saturday
-37,Please verify the freezer temperature logs for Sunday,6_Sunday
-38,Is the centrifuge maintenance occurring on Thursday,3_Thursday
-39,The shipment of reagents is scheduled for Thursday,3_Thursday
-40,Is the centrifuge maintenance occurring on Thursday,3_Thursday
-41,Prof. Wang will finalize the PCR results on Thursday,3_Thursday
-42,Re-calibrate the mass spectrometer on Sunday,6_Sunday
-43,We will start the sequencing run on Saturday,5_Saturday
-44,Bob is presenting the literature review on Wednesday,2_Wednesday
-45,Charlie is presenting the literature review on Friday,4_Friday
-46,Check the titration levels again on Sunday,6_Sunday
-47,Data backup must be completed every Wednesday,2_Wednesday
-48,Please verify the freezer temperature logs for Thursday,3_Thursday
-49,The sample size will be recalculated on Monday,0_Monday
-50,The ethics committee will meet on Monday,0_Monday
-51,The chemical waste pickup is every Sunday,6_Sunday
-52,The longitudinal study concludes on Saturday,5_Saturday
-53,The liquid nitrogen refill happens on Thursday,3_Thursday
-54,Our collaborator is visiting the facility on Saturday,5_Saturday
-55,The clinical trial phase begins this Thursday,3_Thursday
-56,We expect the peer review feedback by Monday,0_Monday
-57,The chemical waste pickup is every Saturday,5_Saturday
-58,Submit the grant proposal before Wednesday,2_Wednesday
-59,Data backup must be completed every Thursday,3_Thursday
-60,Are we still on track for the launch this Wednesday,2_Wednesday
-61,The lab will be closed for the holiday on Friday,4_Friday
-62,The statistical analysis will be performed on Sunday,6_Sunday
-63,The final abstract is due this Friday,4_Friday
-64,Please verify the freezer temperature logs for Thursday,3_Thursday
-65,Please verify the freezer temperature logs for Friday,4_Friday
-66,Submit the grant proposal before Wednesday,2_Wednesday
-67,The shipment of reagents is scheduled for Wednesday,2_Wednesday
-68,Please verify the freezer temperature logs for Saturday,5_Saturday
-69,Are we still on track for the launch this Wednesday,2_Wednesday
-70,We will start the sequencing run on Tuesday,1_Tuesday
-71,The microscope calibration is due on Sunday,6_Sunday
-72,Please ensure the incubator is cleaned by Sunday,6_Sunday
-73,Bob noted a discrepancy in the logs from Sunday,6_Sunday
-74,Elena is presenting the literature review on Friday,4_Friday
-75,Submit the grant proposal before Thursday,3_Thursday
-76,Data backup must be completed every Saturday,5_Saturday
-77,Re-calibrate the mass spectrometer on Monday,0_Monday
-78,Are we still on track for the launch this Thursday,3_Thursday
-79,The chemical waste pickup is every Sunday,6_Sunday
-80,Our collaborator is visiting the facility on Monday,0_Monday
-81,The sample size will be recalculated on Saturday,5_Saturday
-82,Check the titration levels again on Sunday,6_Sunday
-83,Check the titration levels again on Saturday,5_Saturday
-84,The statistical analysis will be performed on Saturday,5_Saturday
-85,Please verify the freezer temperature logs for Saturday,5_Saturday
-86,The chemical waste pickup is every Friday,4_Friday
-87,Submit the grant proposal before Monday,0_Monday
-88,The ethics committee will meet on Tuesday,1_Tuesday
-89,Alice scheduled the MRI scan for Thursday,3_Thursday
-90,Charlie scheduled the MRI scan for Friday,4_Friday
-91,The clinical trial phase begins this Tuesday,1_Tuesday
-92,The final abstract is due this Sunday,6_Sunday
-93,The clinical trial phase begins this Friday,4_Friday
-94,Sarah noted a discrepancy in the logs from Friday,4_Friday
-95,Is the centrifuge maintenance occurring on Saturday,5_Saturday
-96,The microscope calibration is due on Sunday,6_Sunday
-97,Submit the grant proposal before Wednesday,2_Wednesday
-98,Submit the grant proposal before Sunday,6_Sunday
-99,The clinical trial phase begins this Sunday,6_Sunday
-100,Dr. Smith will finalize the PCR results on Monday,0_Monday
-101,Are we still on track for the launch this Monday,0_Monday
-102,the PI scheduled the MRI scan for Wednesday,2_Wednesday
-103,Please verify the freezer temperature logs for Friday,4_Friday
-104,Data backup must be completed every Thursday,3_Thursday
-105,The final abstract is due this Monday,0_Monday
-106,James is presenting the literature review on Friday,4_Friday
-107,The chemical waste pickup is every Wednesday,2_Wednesday
-108,Please ensure the incubator is cleaned by Friday,4_Friday
-109,The autoclave is out of service until Tuesday,1_Tuesday
-110,The sample size will be recalculated on Friday,4_Friday
-111,The statistical analysis will be performed on Tuesday,1_Tuesday
-112,Elena is presenting the literature review on Tuesday,1_Tuesday
-113,We will start the sequencing run on Tuesday,1_Tuesday
-114,Charlie is responsible for the morning rounds on Tuesday,1_Tuesday
-115,The sample size will be recalculated on Wednesday,2_Wednesday
-116,The weekly lab sync has been moved to Thursday,3_Thursday
-117,James is presenting the literature review on Saturday,5_Saturday
-118,The department seminar is hosted on Wednesday,2_Wednesday
-119,The autoclave is out of service until Friday,4_Friday
-120,Data backup must be completed every Sunday,6_Sunday
-121,The department seminar is hosted on Monday,0_Monday
-122,The chemical waste pickup is every Friday,4_Friday
-123,Sarah is responsible for the morning rounds on Monday,0_Monday
-124,The ethics committee will meet on Sunday,6_Sunday
-125,We will start the sequencing run on Friday,4_Friday
-126,the PI will finalize the PCR results on Saturday,5_Saturday
-127,Bob scheduled the MRI scan for Thursday,3_Thursday
-128,The microscope calibration is due on Tuesday,1_Tuesday
-129,Is the centrifuge maintenance occurring on Tuesday,1_Tuesday
-130,The ethics committee will meet on Tuesday,1_Tuesday
-131,Prof. Wang noted a discrepancy in the logs from Thursday,3_Thursday
-132,The final abstract is due this Monday,0_Monday
-133,The autoclave is out of service until Monday,0_Monday
-134,Submit the grant proposal before Monday,0_Monday
-135,The department seminar is hosted on Friday,4_Friday
-136,James will finalize the PCR results on Saturday,5_Saturday
-137,The microscope calibration is due on Sunday,6_Sunday
-138,Is the centrifuge maintenance occurring on Sunday,6_Sunday
-139,Data backup must be completed every Tuesday,1_Tuesday
-140,Please verify the freezer temperature logs for Tuesday,1_Tuesday
-141,Please ensure the incubator is cleaned by Friday,4_Friday
-142,The final abstract is due this Thursday,3_Thursday
-143,Check the titration levels again on Saturday,5_Saturday
-144,Prof. Wang noted a discrepancy in the logs from Monday,0_Monday
-145,The ethics committee will meet on Wednesday,2_Wednesday
-146,The chemical waste pickup is every Thursday,3_Thursday
-147,The shipment of reagents is scheduled for Monday,0_Monday
-148,The longitudinal study concludes on Wednesday,2_Wednesday
-149,The microscope calibration is due on Sunday,6_Sunday
-150,The microscope calibration is due on Wednesday,2_Wednesday
-151,Please ensure the incubator is cleaned by Friday,4_Friday
-152,Sarah is presenting the literature review on Saturday,5_Saturday
-153,The longitudinal study concludes on Saturday,5_Saturday
-154,the technician will finalize the PCR results on Sunday,6_Sunday
-155,Check the titration levels again on Tuesday,1_Tuesday
-156,Re-calibrate the mass spectrometer on Monday,0_Monday
-157,The weekly lab sync has been moved to Wednesday,2_Wednesday
-158,The clinical trial phase begins this Thursday,3_Thursday
-159,The ethics committee will meet on Tuesday,1_Tuesday
-160,The microscope calibration is due on Wednesday,2_Wednesday
-161,Elena will finalize the PCR results on Tuesday,1_Tuesday
-162,Sarah will finalize the PCR results on Tuesday,1_Tuesday
-163,The department seminar is hosted on Sunday,6_Sunday
-164,Are we still on track for the launch this Monday,0_Monday
-165,the PI scheduled the MRI scan for Monday,0_Monday
-166,The autoclave is out of service until Monday,0_Monday
-167,Re-calibrate the mass spectrometer on Wednesday,2_Wednesday
-168,The microscope calibration is due on Friday,4_Friday
-169,Check the titration levels again on Tuesday,1_Tuesday
-170,Please verify the freezer temperature logs for Tuesday,1_Tuesday
-171,James noted a discrepancy in the logs from Tuesday,1_Tuesday
-172,The statistical analysis will be performed on Sunday,6_Sunday
-173,Dr. Smith noted a discrepancy in the logs from Saturday,5_Saturday
-174,The lab will be closed for the holiday on Tuesday,1_Tuesday
-175,The statistical analysis will be performed on Friday,4_Friday
-176,The clinical trial phase begins this Wednesday,2_Wednesday
-177,The liquid nitrogen refill happens on Friday,4_Friday
-178,We expect the peer review feedback by Friday,4_Friday
-179,We expect the peer review feedback by Monday,0_Monday
-180,We expect the peer review feedback by Monday,0_Monday
-181,The ethics committee will meet on Sunday,6_Sunday
-182,Sarah noted a discrepancy in the logs from Monday,0_Monday
-183,The weekly lab sync has been moved to Thursday,3_Thursday
-184,We will start the sequencing run on Monday,0_Monday
-185,James scheduled the MRI scan for Wednesday,2_Wednesday
-186,The sample size will be recalculated on Monday,0_Monday
-187,Re-calibrate the mass spectrometer on Saturday,5_Saturday
-188,Re-calibrate the mass spectrometer on Wednesday,2_Wednesday
-189,The sample size will be recalculated on Tuesday,1_Tuesday
-190,Re-calibrate the mass spectrometer on Tuesday,1_Tuesday
-191,The weekly lab sync has been moved to Tuesday,1_Tuesday
-192,Check the titration levels again on Saturday,5_Saturday
-193,Re-calibrate the mass spectrometer on Saturday,5_Saturday
-194,The weekly lab sync has been moved to Tuesday,1_Tuesday
-195,James scheduled the MRI scan for Wednesday,2_Wednesday
-196,The statistical analysis will be performed on Friday,4_Friday
-197,The statistical analysis will be performed on Friday,4_Friday
-198,The liquid nitrogen refill happens on Saturday,5_Saturday
-199,The sample size will be recalculated on Wednesday,2_Wednesday
-200,Re-calibrate the mass spectrometer on Sunday,6_Sunday
-201,Check the titration levels again on Monday,0_Monday
-202,The sample size will be recalculated on Saturday,5_Saturday
-203,Please ensure the incubator is cleaned by Sunday,6_Sunday
-204,The liquid nitrogen refill happens on Thursday,3_Thursday
-205,Prof. Wang is presenting the literature review on Saturday,5_Saturday
-206,The autoclave is out of service until Sunday,6_Sunday
-207,The ethics committee will meet on Friday,4_Friday
-208,Dr. Smith is presenting the literature review on Thursday,3_Thursday
-209,The department seminar is hosted on Sunday,6_Sunday
-210,The shipment of reagents is scheduled for Saturday,5_Saturday
-211,Our collaborator is visiting the facility on Sunday,6_Sunday
-212,Data backup must be completed every Friday,4_Friday
-213,The weekly lab sync has been moved to Sunday,6_Sunday
-214,Our collaborator is visiting the facility on Wednesday,2_Wednesday
-215,the technician noted a discrepancy in the logs from Wednesday,2_Wednesday
-216,Prof. Wang is responsible for the morning rounds on Friday,4_Friday
-217,Data backup must be completed every Sunday,6_Sunday
-218,We will start the sequencing run on Saturday,5_Saturday
-219,The lab will be closed for the holiday on Saturday,5_Saturday
-220,The longitudinal study concludes on Monday,0_Monday
-221,The statistical analysis will be performed on Saturday,5_Saturday
-222,Please verify the freezer temperature logs for Tuesday,1_Tuesday
-223,The statistical analysis will be performed on Monday,0_Monday
-224,The clinical trial phase begins this Saturday,5_Saturday
-225,Check the titration levels again on Wednesday,2_Wednesday
-226,The sample size will be recalculated on Sunday,6_Sunday
-227,We expect the peer review feedback by Saturday,5_Saturday
-228,the PI will finalize the PCR results on Friday,4_Friday
-229,the technician scheduled the MRI scan for Thursday,3_Thursday
-230,Please ensure the incubator is cleaned by Thursday,3_Thursday
-231,The final abstract is due this Friday,4_Friday
-232,Re-calibrate the mass spectrometer on Wednesday,2_Wednesday
-233,The chemical waste pickup is every Tuesday,1_Tuesday
-234,The ethics committee will meet on Monday,0_Monday
-235,Check the titration levels again on Saturday,5_Saturday
-236,Please ensure the incubator is cleaned by Monday,0_Monday
-237,The shipment of reagents is scheduled for Friday,4_Friday
-238,The shipment of reagents is scheduled for Thursday,3_Thursday
-239,The sample size will be recalculated on Friday,4_Friday
-240,The lab will be closed for the holiday on Thursday,3_Thursday
-241,The statistical analysis will be performed on Friday,4_Friday
-242,We will start the sequencing run on Monday,0_Monday
-243,Re-calibrate the mass spectrometer on Saturday,5_Saturday
-244,The weekly lab sync has been moved to Monday,0_Monday
-245,The ethics committee will meet on Wednesday,2_Wednesday
-246,The microscope calibration is due on Saturday,5_Saturday
-247,Check the titration levels again on Sunday,6_Sunday
-248,The lab will be closed for the holiday on Monday,0_Monday
-249,Check the titration levels again on Monday,0_Monday
-250,The statistical analysis will be performed on Friday,4_Friday
-251,The weekly lab sync has been moved to Thursday,3_Thursday
-252,The microscope calibration is due on Monday,0_Monday
-253,The department seminar is hosted on Tuesday,1_Tuesday
-254,The sample size will be recalculated on Tuesday,1_Tuesday
-255,Please ensure the incubator is cleaned by Saturday,5_Saturday
-256,The final abstract is due this Saturday,5_Saturday
-257,The department seminar is hosted on Thursday,3_Thursday
-258,We will start the sequencing run on Wednesday,2_Wednesday
-259,Data backup must be completed every Saturday,5_Saturday
-260,Data backup must be completed every Saturday,5_Saturday
-261,James scheduled the MRI scan for Tuesday,1_Tuesday
-262,Elena noted a discrepancy in the logs from Thursday,3_Thursday
-263,Re-calibrate the mass spectrometer on Wednesday,2_Wednesday
-264,Please ensure the incubator is cleaned by Thursday,3_Thursday
-265,Elena is responsible for the morning rounds on Saturday,5_Saturday
-266,The chemical waste pickup is every Saturday,5_Saturday
-267,The final abstract is due this Friday,4_Friday
-268,Are we still on track for the launch this Wednesday,2_Wednesday
-269,Alice scheduled the MRI scan for Saturday,5_Saturday
-270,The weekly lab sync has been moved to Sunday,6_Sunday
-271,The microscope calibration is due on Saturday,5_Saturday
-272,The autoclave is out of service until Thursday,3_Thursday
-273,The microscope calibration is due on Saturday,5_Saturday
-274,The statistical analysis will be performed on Tuesday,1_Tuesday
-275,The clinical trial phase begins this Tuesday,1_Tuesday
-276,The ethics committee will meet on Wednesday,2_Wednesday
-277,Re-calibrate the mass spectrometer on Sunday,6_Sunday
-278,The lab will be closed for the holiday on Tuesday,1_Tuesday
-279,Our collaborator is visiting the facility on Tuesday,1_Tuesday
-280,Please ensure the incubator is cleaned by Wednesday,2_Wednesday
-281,Our collaborator is visiting the facility on Sunday,6_Sunday
-282,Are we still on track for the launch this Friday,4_Friday
-283,James is responsible for the morning rounds on Wednesday,2_Wednesday
-284,The shipment of reagents is scheduled for Wednesday,2_Wednesday
-285,the technician is presenting the literature review on Friday,4_Friday
-286,Data backup must be completed every Thursday,3_Thursday
-287,The shipment of reagents is scheduled for Monday,0_Monday
-288,The ethics committee will meet on Tuesday,1_Tuesday
-289,The statistical analysis will be performed on Saturday,5_Saturday
-290,Our collaborator is visiting the facility on Friday,4_Friday
-291,Dr. Smith will finalize the PCR results on Sunday,6_Sunday
-292,The clinical trial phase begins this Monday,0_Monday
-293,Are we still on track for the launch this Friday,4_Friday
-294,The clinical trial phase begins this Tuesday,1_Tuesday
-295,Elena is presenting the literature review on Wednesday,2_Wednesday
-296,Please verify the freezer temperature logs for Friday,4_Friday
-297,The sample size will be recalculated on Wednesday,2_Wednesday
-298,Please verify the freezer temperature logs for Tuesday,1_Tuesday
-299,Submit the grant proposal before Sunday,6_Sunday
-300,Data backup must be completed every Wednesday,2_Wednesday
-301,Re-calibrate the mass spectrometer on Tuesday,1_Tuesday
-302,the technician will finalize the PCR results on Sunday,6_Sunday
-303,Submit the grant proposal before Monday,0_Monday
-304,The sample size will be recalculated on Sunday,6_Sunday
-305,Please verify the freezer temperature logs for Monday,0_Monday
-306,The longitudinal study concludes on Friday,4_Friday
-307,The clinical trial phase begins this Friday,4_Friday
-308,We expect the peer review feedback by Thursday,3_Thursday
-309,Re-calibrate the mass spectrometer on Wednesday,2_Wednesday
-310,the technician is presenting the literature review on Sunday,6_Sunday
-311,Submit the grant proposal before Wednesday,2_Wednesday
-312,Is the centrifuge maintenance occurring on Wednesday,2_Wednesday
-313,The liquid nitrogen refill happens on Wednesday,2_Wednesday
-314,The chemical waste pickup is every Friday,4_Friday
-315,The chemical waste pickup is every Tuesday,1_Tuesday
-316,Are we still on track for the launch this Friday,4_Friday
-317,The chemical waste pickup is every Thursday,3_Thursday
-318,The chemical waste pickup is every Tuesday,1_Tuesday
-319,The department seminar is hosted on Thursday,3_Thursday
-320,The ethics committee will meet on Thursday,3_Thursday
-321,The ethics committee will meet on Friday,4_Friday
-322,The ethics committee will meet on Tuesday,1_Tuesday
-323,We expect the peer review feedback by Thursday,3_Thursday
-324,The liquid nitrogen refill happens on Thursday,3_Thursday
-325,Data backup must be completed every Saturday,5_Saturday
-326,The lab will be closed for the holiday on Saturday,5_Saturday
-327,Data backup must be completed every Monday,0_Monday
-328,The ethics committee will meet on Thursday,3_Thursday
-329,The chemical waste pickup is every Monday,0_Monday
-330,Elena noted a discrepancy in the logs from Saturday,5_Saturday
-331,The liquid nitrogen refill happens on Sunday,6_Sunday
-332,Please verify the freezer temperature logs for Sunday,6_Sunday
-333,Bob is presenting the literature review on Saturday,5_Saturday
-334,Please ensure the incubator is cleaned by Friday,4_Friday
-335,The final abstract is due this Thursday,3_Thursday
-336,Are we still on track for the launch this Monday,0_Monday
-337,Are we still on track for the launch this Friday,4_Friday
-338,Our collaborator is visiting the facility on Sunday,6_Sunday
-339,The lab will be closed for the holiday on Tuesday,1_Tuesday
-340,Data backup must be completed every Friday,4_Friday
-341,The department seminar is hosted on Monday,0_Monday
-342,Dr. Smith is responsible for the morning rounds on Friday,4_Friday
-343,The lab will be closed for the holiday on Saturday,5_Saturday
-344,We will start the sequencing run on Monday,0_Monday
-345,The final abstract is due this Thursday,3_Thursday
-346,Please ensure the incubator is cleaned by Saturday,5_Saturday
-347,Dr. Smith will finalize the PCR results on Monday,0_Monday
-348,Data backup must be completed every Sunday,6_Sunday
-349,Bob is presenting the literature review on Saturday,5_Saturday
-350,The microscope calibration is due on Thursday,3_Thursday
-351,The microscope calibration is due on Sunday,6_Sunday
-352,Charlie scheduled the MRI scan for Sunday,6_Sunday
-353,The final abstract is due this Tuesday,1_Tuesday
-354,The autoclave is out of service until Friday,4_Friday
-355,Alice will finalize the PCR results on Wednesday,2_Wednesday
-356,Check the titration levels again on Sunday,6_Sunday
-357,The chemical waste pickup is every Wednesday,2_Wednesday
-358,the PI is presenting the literature review on Monday,0_Monday
-359,The microscope calibration is due on Wednesday,2_Wednesday
-360,The liquid nitrogen refill happens on Wednesday,2_Wednesday
-361,Are we still on track for the launch this Monday,0_Monday
-362,Charlie is presenting the literature review on Sunday,6_Sunday
-363,The department seminar is hosted on Wednesday,2_Wednesday
-364,The autoclave is out of service until Friday,4_Friday
-365,Data backup must be completed every Sunday,6_Sunday
-366,Please ensure the incubator is cleaned by Tuesday,1_Tuesday
-367,The sample size will be recalculated on Saturday,5_Saturday
-368,Check the titration levels again on Tuesday,1_Tuesday
-369,We will start the sequencing run on Sunday,6_Sunday
-370,Check the titration levels again on Saturday,5_Saturday
-371,Check the titration levels again on Tuesday,1_Tuesday
-372,The autoclave is out of service until Monday,0_Monday
-373,The final abstract is due this Saturday,5_Saturday
-374,The liquid nitrogen refill happens on Thursday,3_Thursday
-375,Is the centrifuge maintenance occurring on Wednesday,2_Wednesday
-376,The sample size will be recalculated on Saturday,5_Saturday
-377,Dr. Smith is responsible for the morning rounds on Tuesday,1_Tuesday
-378,Our collaborator is visiting the facility on Tuesday,1_Tuesday
-379,The shipment of reagents is scheduled for Friday,4_Friday
-380,The longitudinal study concludes on Wednesday,2_Wednesday
-381,Re-calibrate the mass spectrometer on Saturday,5_Saturday
-382,We will start the sequencing run on Thursday,3_Thursday
-383,The final abstract is due this Thursday,3_Thursday
-384,Re-calibrate the mass spectrometer on Saturday,5_Saturday
-385,The final abstract is due this Saturday,5_Saturday
-386,Bob scheduled the MRI scan for Saturday,5_Saturday
-387,The microscope calibration is due on Thursday,3_Thursday
-388,The autoclave is out of service until Saturday,5_Saturday
-389,The liquid nitrogen refill happens on Saturday,5_Saturday
-390,Charlie noted a discrepancy in the logs from Saturday,5_Saturday
-391,The weekly lab sync has been moved to Tuesday,1_Tuesday
-392,the PI scheduled the MRI scan for Friday,4_Friday
-393,The final abstract is due this Friday,4_Friday
-394,Please verify the freezer temperature logs for Tuesday,1_Tuesday
-395,Our collaborator is visiting the facility on Tuesday,1_Tuesday
-396,Is the centrifuge maintenance occurring on Tuesday,1_Tuesday
-397,Re-calibrate the mass spectrometer on Saturday,5_Saturday
-398,The shipment of reagents is scheduled for Monday,0_Monday
-399,Please ensure the incubator is cleaned by Sunday,6_Sunday
-400,The chemical waste pickup is every Tuesday,1_Tuesday
-401,The liquid nitrogen refill happens on Thursday,3_Thursday
-402,The liquid nitrogen refill happens on Friday,4_Friday
-403,The ethics committee will meet on Monday,0_Monday
-404,The department seminar is hosted on Thursday,3_Thursday
-405,The autoclave is out of service until Monday,0_Monday
-406,the technician is presenting the literature review on Thursday,3_Thursday
-407,Prof. Wang is responsible for the morning rounds on Thursday,3_Thursday
-408,Is the centrifuge maintenance occurring on Wednesday,2_Wednesday
-409,Dr. Smith is responsible for the morning rounds on Thursday,3_Thursday
-410,We will start the sequencing run on Thursday,3_Thursday
-411,The microscope calibration is due on Monday,0_Monday
-412,The department seminar is hosted on Sunday,6_Sunday
-413,We expect the peer review feedback by Tuesday,1_Tuesday
-414,The sample size will be recalculated on Thursday,3_Thursday
-415,The final abstract is due this Wednesday,2_Wednesday
-416,We will start the sequencing run on Tuesday,1_Tuesday
-417,The microscope calibration is due on Saturday,5_Saturday
-418,Re-calibrate the mass spectrometer on Sunday,6_Sunday
-419,Sarah is presenting the literature review on Wednesday,2_Wednesday
-420,We expect the peer review feedback by Friday,4_Friday
-421,The shipment of reagents is scheduled for Sunday,6_Sunday
-422,We will start the sequencing run on Sunday,6_Sunday
-423,The longitudinal study concludes on Wednesday,2_Wednesday
-424,The department seminar is hosted on Sunday,6_Sunday
-425,The shipment of reagents is scheduled for Friday,4_Friday
-426,Submit the grant proposal before Thursday,3_Thursday
-427,The autoclave is out of service until Thursday,3_Thursday
-428,Are we still on track for the launch this Monday,0_Monday
-429,The sample size will be recalculated on Friday,4_Friday
-430,We expect the peer review feedback by Thursday,3_Thursday
-431,The microscope calibration is due on Wednesday,2_Wednesday
-432,The lab will be closed for the holiday on Saturday,5_Saturday
-433,Sarah scheduled the MRI scan for Saturday,5_Saturday
-434,Prof. Wang noted a discrepancy in the logs from Friday,4_Friday
-435,The clinical trial phase begins this Tuesday,1_Tuesday
-436,Check the titration levels again on Tuesday,1_Tuesday
-437,Are we still on track for the launch this Monday,0_Monday
-438,The microscope calibration is due on Saturday,5_Saturday
-439,The clinical trial phase begins this Wednesday,2_Wednesday
-440,Are we still on track for the launch this Wednesday,2_Wednesday
-441,The chemical waste pickup is every Thursday,3_Thursday
-442,The statistical analysis will be performed on Tuesday,1_Tuesday
-443,Data backup must be completed every Saturday,5_Saturday
-444,Submit the grant proposal before Wednesday,2_Wednesday
-445,We expect the peer review feedback by Saturday,5_Saturday
-446,Prof. Wang is presenting the literature review on Wednesday,2_Wednesday
-447,The chemical waste pickup is every Saturday,5_Saturday
-448,Charlie scheduled the MRI scan for Monday,0_Monday
-449,We expect the peer review feedback by Monday,0_Monday
-450,The microscope calibration is due on Sunday,6_Sunday
-451,We will start the sequencing run on Monday,0_Monday
-452,The autoclave is out of service until Sunday,6_Sunday
-453,The microscope calibration is due on Friday,4_Friday
-454,We will start the sequencing run on Sunday,6_Sunday
-455,The clinical trial phase begins this Tuesday,1_Tuesday
-456,We expect the peer review feedback by Sunday,6_Sunday
-457,Our collaborator is visiting the facility on Sunday,6_Sunday
-458,Elena scheduled the MRI scan for Sunday,6_Sunday
-459,The sample size will be recalculated on Sunday,6_Sunday
-460,The clinical trial phase begins this Sunday,6_Sunday
-461,The final abstract is due this Saturday,5_Saturday
-462,The weekly lab sync has been moved to Wednesday,2_Wednesday
-463,We expect the peer review feedback by Wednesday,2_Wednesday
-464,The clinical trial phase begins this Friday,4_Friday
-465,Please ensure the incubator is cleaned by Thursday,3_Thursday
-466,The microscope calibration is due on Sunday,6_Sunday
-467,Our collaborator is visiting the facility on Friday,4_Friday
-468,The chemical waste pickup is every Tuesday,1_Tuesday
-469,Charlie will finalize the PCR results on Tuesday,1_Tuesday
-470,Re-calibrate the mass spectrometer on Friday,4_Friday
-471,Re-calibrate the mass spectrometer on Wednesday,2_Wednesday
-472,Re-calibrate the mass spectrometer on Thursday,3_Thursday
-473,The autoclave is out of service until Wednesday,2_Wednesday
-474,The weekly lab sync has been moved to Wednesday,2_Wednesday
-475,Are we still on track for the launch this Thursday,3_Thursday
-476,The lab will be closed for the holiday on Thursday,3_Thursday
-477,The autoclave is out of service until Tuesday,1_Tuesday
-478,Are we still on track for the launch this Wednesday,2_Wednesday
-479,Please verify the freezer temperature logs for Saturday,5_Saturday
-480,The lab will be closed for the holiday on Wednesday,2_Wednesday
-481,The shipment of reagents is scheduled for Monday,0_Monday
-482,We will start the sequencing run on Friday,4_Friday
-483,The autoclave is out of service until Wednesday,2_Wednesday
-484,Please verify the freezer temperature logs for Tuesday,1_Tuesday
-485,The lab will be closed for the holiday on Sunday,6_Sunday
-486,The statistical analysis will be performed on Thursday,3_Thursday
-487,The weekly lab sync has been moved to Wednesday,2_Wednesday
-488,Are we still on track for the launch this Monday,0_Monday
-489,The autoclave is out of service until Monday,0_Monday
-490,The longitudinal study concludes on Tuesday,1_Tuesday
-491,The sample size will be recalculated on Tuesday,1_Tuesday
-492,The liquid nitrogen refill happens on Wednesday,2_Wednesday
-493,The autoclave is out of service until Monday,0_Monday
-494,The lab will be closed for the holiday on Tuesday,1_Tuesday
-495,The final abstract is due this Tuesday,1_Tuesday
-496,The longitudinal study concludes on Thursday,3_Thursday
-497,the technician will finalize the PCR results on Tuesday,1_Tuesday
-498,The shipment of reagents is scheduled for Tuesday,1_Tuesday
-499,The longitudinal study concludes on Wednesday,2_Wednesday
-500,The longitudinal study concludes on Thursday,3_Thursday
-501,Our collaborator is visiting the facility on Wednesday,2_Wednesday
-502,Our collaborator is visiting the facility on Saturday,5_Saturday
-503,Please ensure the incubator is cleaned by Sunday,6_Sunday
-504,The autoclave is out of service until Thursday,3_Thursday
-505,Are we still on track for the launch this Tuesday,1_Tuesday
-506,Submit the grant proposal before Thursday,3_Thursday
-507,The chemical waste pickup is every Thursday,3_Thursday
-508,The weekly lab sync has been moved to Wednesday,2_Wednesday
-509,Please ensure the incubator is cleaned by Tuesday,1_Tuesday
-510,Submit the grant proposal before Tuesday,1_Tuesday
-511,The liquid nitrogen refill happens on Friday,4_Friday
-512,We will start the sequencing run on Friday,4_Friday
-513,Sarah is presenting the literature review on Wednesday,2_Wednesday
-514,The weekly lab sync has been moved to Friday,4_Friday
-515,The liquid nitrogen refill happens on Sunday,6_Sunday
-516,Data backup must be completed every Friday,4_Friday
-517,Dr. Smith noted a discrepancy in the logs from Saturday,5_Saturday
-518,Please verify the freezer temperature logs for Saturday,5_Saturday
-519,Please verify the freezer temperature logs for Monday,0_Monday
-520,The microscope calibration is due on Sunday,6_Sunday
-521,Are we still on track for the launch this Monday,0_Monday
-522,The ethics committee will meet on Wednesday,2_Wednesday
-523,The final abstract is due this Saturday,5_Saturday
-524,Elena is responsible for the morning rounds on Saturday,5_Saturday
-525,The liquid nitrogen refill happens on Wednesday,2_Wednesday
-526,The final abstract is due this Thursday,3_Thursday
-527,Is the centrifuge maintenance occurring on Friday,4_Friday
-528,The weekly lab sync has been moved to Monday,0_Monday
-529,Please ensure the incubator is cleaned by Wednesday,2_Wednesday
-530,The liquid nitrogen refill happens on Thursday,3_Thursday
-531,The final abstract is due this Sunday,6_Sunday
-532,Charlie will finalize the PCR results on Thursday,3_Thursday
-533,The final abstract is due this Friday,4_Friday
-534,The liquid nitrogen refill happens on Monday,0_Monday
-535,We will start the sequencing run on Monday,0_Monday
-536,Is the centrifuge maintenance occurring on Sunday,6_Sunday
-537,Submit the grant proposal before Monday,0_Monday
-538,The final abstract is due this Thursday,3_Thursday
-539,The chemical waste pickup is every Friday,4_Friday
-540,The final abstract is due this Tuesday,1_Tuesday
-541,The liquid nitrogen refill happens on Saturday,5_Saturday
-542,The ethics committee will meet on Monday,0_Monday
-543,The liquid nitrogen refill happens on Wednesday,2_Wednesday
-544,Prof. Wang is presenting the literature review on Friday,4_Friday
-545,Elena scheduled the MRI scan for Sunday,6_Sunday
-546,Check the titration levels again on Tuesday,1_Tuesday
-547,The weekly lab sync has been moved to Monday,0_Monday
-548,Re-calibrate the mass spectrometer on Wednesday,2_Wednesday
-549,The department seminar is hosted on Thursday,3_Thursday
-550,Sarah noted a discrepancy in the logs from Monday,0_Monday
-551,Please ensure the incubator is cleaned by Monday,0_Monday
-552,The shipment of reagents is scheduled for Thursday,3_Thursday
-553,The final abstract is due this Friday,4_Friday
-554,the PI will finalize the PCR results on Saturday,5_Saturday
-555,We expect the peer review feedback by Friday,4_Friday
-556,The sample size will be recalculated on Saturday,5_Saturday
-557,Our collaborator is visiting the facility on Thursday,3_Thursday
-558,Our collaborator is visiting the facility on Friday,4_Friday
-559,Check the titration levels again on Sunday,6_Sunday
-560,The weekly lab sync has been moved to Wednesday,2_Wednesday
-561,The statistical analysis will be performed on Wednesday,2_Wednesday
-562,Dr. Smith scheduled the MRI scan for Thursday,3_Thursday
-563,Elena will finalize the PCR results on Saturday,5_Saturday
-564,The longitudinal study concludes on Monday,0_Monday
-565,the technician scheduled the MRI scan for Sunday,6_Sunday
-566,Submit the grant proposal before Wednesday,2_Wednesday
-567,The department seminar is hosted on Thursday,3_Thursday
-568,James is responsible for the morning rounds on Friday,4_Friday
-569,The department seminar is hosted on Wednesday,2_Wednesday
-570,The longitudinal study concludes on Thursday,3_Thursday
-571,The longitudinal study concludes on Friday,4_Friday
-572,The final abstract is due this Sunday,6_Sunday
-573,The final abstract is due this Wednesday,2_Wednesday
-574,Check the titration levels again on Saturday,5_Saturday
-575,Re-calibrate the mass spectrometer on Tuesday,1_Tuesday
-576,Sarah noted a discrepancy in the logs from Wednesday,2_Wednesday
-577,The final abstract is due this Wednesday,2_Wednesday
-578,The longitudinal study concludes on Friday,4_Friday
-579,The weekly lab sync has been moved to Sunday,6_Sunday
-580,Data backup must be completed every Wednesday,2_Wednesday
-581,The autoclave is out of service until Monday,0_Monday
-582,The shipment of reagents is scheduled for Wednesday,2_Wednesday
-583,We expect the peer review feedback by Tuesday,1_Tuesday
-584,The shipment of reagents is scheduled for Wednesday,2_Wednesday
-585,Sarah scheduled the MRI scan for Saturday,5_Saturday
-586,The sample size will be recalculated on Wednesday,2_Wednesday
-587,Charlie is presenting the literature review on Tuesday,1_Tuesday
-588,Data backup must be completed every Sunday,6_Sunday
-589,The clinical trial phase begins this Friday,4_Friday
-590,The statistical analysis will be performed on Saturday,5_Saturday
-591,The microscope calibration is due on Tuesday,1_Tuesday
-592,Are we still on track for the launch this Wednesday,2_Wednesday
-593,The statistical analysis will be performed on Thursday,3_Thursday
-594,The autoclave is out of service until Saturday,5_Saturday
-595,The shipment of reagents is scheduled for Thursday,3_Thursday
-596,We expect the peer review feedback by Sunday,6_Sunday
-597,the PI scheduled the MRI scan for Saturday,5_Saturday
-598,Prof. Wang is presenting the literature review on Saturday,5_Saturday
-599,The weekly lab sync has been moved to Sunday,6_Sunday
-600,Please verify the freezer temperature logs for Saturday,5_Saturday
-601,The lab will be closed for the holiday on Friday,4_Friday
-602,The sample size will be recalculated on Saturday,5_Saturday
-603,The microscope calibration is due on Sunday,6_Sunday
-604,We expect the peer review feedback by Friday,4_Friday
-605,The shipment of reagents is scheduled for Monday,0_Monday
-606,The longitudinal study concludes on Monday,0_Monday
-607,We will start the sequencing run on Monday,0_Monday
-608,We expect the peer review feedback by Friday,4_Friday
-609,Check the titration levels again on Thursday,3_Thursday
-610,Check the titration levels again on Monday,0_Monday
-611,James is responsible for the morning rounds on Tuesday,1_Tuesday
-612,Please verify the freezer temperature logs for Tuesday,1_Tuesday
-613,The microscope calibration is due on Tuesday,1_Tuesday
-614,The sample size will be recalculated on Thursday,3_Thursday
-615,Re-calibrate the mass spectrometer on Tuesday,1_Tuesday
-616,Are we still on track for the launch this Saturday,5_Saturday
-617,The longitudinal study concludes on Monday,0_Monday
-618,Elena scheduled the MRI scan for Tuesday,1_Tuesday
-619,The autoclave is out of service until Saturday,5_Saturday
-620,We expect the peer review feedback by Tuesday,1_Tuesday
-621,Charlie noted a discrepancy in the logs from Tuesday,1_Tuesday
-622,Bob is presenting the literature review on Monday,0_Monday
-623,The statistical analysis will be performed on Thursday,3_Thursday
-624,Dr. Smith noted a discrepancy in the logs from Monday,0_Monday
-625,We will start the sequencing run on Saturday,5_Saturday
-626,We will start the sequencing run on Sunday,6_Sunday
-627,Data backup must be completed every Friday,4_Friday
-628,Alice is responsible for the morning rounds on Saturday,5_Saturday
-629,Re-calibrate the mass spectrometer on Friday,4_Friday
-630,Please verify the freezer temperature logs for Saturday,5_Saturday
-631,The shipment of reagents is scheduled for Thursday,3_Thursday
-632,The liquid nitrogen refill happens on Monday,0_Monday
-633,We expect the peer review feedback by Monday,0_Monday
-634,James noted a discrepancy in the logs from Wednesday,2_Wednesday
-635,The liquid nitrogen refill happens on Sunday,6_Sunday
-636,The autoclave is out of service until Saturday,5_Saturday
-637,The ethics committee will meet on Saturday,5_Saturday
-638,Is the centrifuge maintenance occurring on Friday,4_Friday
-639,Is the centrifuge maintenance occurring on Tuesday,1_Tuesday
-640,Check the titration levels again on Friday,4_Friday
-641,The chemical waste pickup is every Wednesday,2_Wednesday
-642,The lab will be closed for the holiday on Tuesday,1_Tuesday
-643,Submit the grant proposal before Thursday,3_Thursday
-644,Re-calibrate the mass spectrometer on Saturday,5_Saturday
-645,The chemical waste pickup is every Monday,0_Monday
-646,the PI scheduled the MRI scan for Tuesday,1_Tuesday
-647,The autoclave is out of service until Saturday,5_Saturday
-648,The department seminar is hosted on Tuesday,1_Tuesday
-649,Our collaborator is visiting the facility on Monday,0_Monday
-650,Data backup must be completed every Sunday,6_Sunday
-651,Are we still on track for the launch this Friday,4_Friday
-652,The lab will be closed for the holiday on Wednesday,2_Wednesday
-653,The chemical waste pickup is every Tuesday,1_Tuesday
-654,The clinical trial phase begins this Sunday,6_Sunday
-655,Charlie scheduled the MRI scan for Wednesday,2_Wednesday
-656,Prof. Wang will finalize the PCR results on Saturday,5_Saturday
-657,The sample size will be recalculated on Sunday,6_Sunday
-658,the technician will finalize the PCR results on Sunday,6_Sunday
-659,Re-calibrate the mass spectrometer on Monday,0_Monday
-660,The statistical analysis will be performed on Thursday,3_Thursday
-661,Please verify the freezer temperature logs for Saturday,5_Saturday
-662,Prof. Wang is responsible for the morning rounds on Tuesday,1_Tuesday
-663,The clinical trial phase begins this Saturday,5_Saturday
-664,Are we still on track for the launch this Saturday,5_Saturday
-665,We will start the sequencing run on Friday,4_Friday
-666,Are we still on track for the launch this Saturday,5_Saturday
-667,The ethics committee will meet on Sunday,6_Sunday
-668,The final abstract is due this Friday,4_Friday
-669,Please ensure the incubator is cleaned by Thursday,3_Thursday
-670,Are we still on track for the launch this Thursday,3_Thursday
-671,the PI scheduled the MRI scan for Monday,0_Monday
-672,Submit the grant proposal before Thursday,3_Thursday
-673,The autoclave is out of service until Sunday,6_Sunday
-674,We expect the peer review feedback by Tuesday,1_Tuesday
-675,The lab will be closed for the holiday on Thursday,3_Thursday
-676,The autoclave is out of service until Saturday,5_Saturday
-677,The statistical analysis will be performed on Monday,0_Monday
-678,James will finalize the PCR results on Tuesday,1_Tuesday
-679,The ethics committee will meet on Friday,4_Friday
-680,The microscope calibration is due on Sunday,6_Sunday
-681,The clinical trial phase begins this Tuesday,1_Tuesday
-682,the technician noted a discrepancy in the logs from Wednesday,2_Wednesday
-683,The clinical trial phase begins this Thursday,3_Thursday
-684,Re-calibrate the mass spectrometer on Wednesday,2_Wednesday
-685,Check the titration levels again on Saturday,5_Saturday
-686,Re-calibrate the mass spectrometer on Saturday,5_Saturday
-687,The shipment of reagents is scheduled for Friday,4_Friday
-688,The microscope calibration is due on Friday,4_Friday
-689,Bob will finalize the PCR results on Wednesday,2_Wednesday
-690,Is the centrifuge maintenance occurring on Saturday,5_Saturday
-691,Please ensure the incubator is cleaned by Friday,4_Friday
-692,The microscope calibration is due on Wednesday,2_Wednesday
-693,Dr. Smith is responsible for the morning rounds on Thursday,3_Thursday
-694,Are we still on track for the launch this Tuesday,1_Tuesday
-695,The department seminar is hosted on Monday,0_Monday
-696,The ethics committee will meet on Friday,4_Friday
-697,The department seminar is hosted on Thursday,3_Thursday
-698,The shipment of reagents is scheduled for Friday,4_Friday
-699,The lab will be closed for the holiday on Saturday,5_Saturday
-700,the technician will finalize the PCR results on Monday,0_Monday
-701,Please ensure the incubator is cleaned by Friday,4_Friday
-702,Submit the grant proposal before Tuesday,1_Tuesday
-703,Alice is responsible for the morning rounds on Wednesday,2_Wednesday
-704,Bob noted a discrepancy in the logs from Sunday,6_Sunday
-705,The statistical analysis will be performed on Monday,0_Monday
-706,James will finalize the PCR results on Thursday,3_Thursday
-707,The statistical analysis will be performed on Friday,4_Friday
-708,The weekly lab sync has been moved to Monday,0_Monday
-709,Are we still on track for the launch this Tuesday,1_Tuesday
-710,Are we still on track for the launch this Sunday,6_Sunday
-711,The clinical trial phase begins this Monday,0_Monday
-712,The longitudinal study concludes on Thursday,3_Thursday
-713,The ethics committee will meet on Tuesday,1_Tuesday
-714,The department seminar is hosted on Wednesday,2_Wednesday
-715,Check the titration levels again on Wednesday,2_Wednesday
-716,Dr. Smith is responsible for the morning rounds on Saturday,5_Saturday
-717,The microscope calibration is due on Tuesday,1_Tuesday
-718,Alice will finalize the PCR results on Monday,0_Monday
-719,The longitudinal study concludes on Saturday,5_Saturday
-720,Please verify the freezer temperature logs for Sunday,6_Sunday
-721,Are we still on track for the launch this Sunday,6_Sunday
-722,Please verify the freezer temperature logs for Sunday,6_Sunday
-723,The longitudinal study concludes on Friday,4_Friday
-724,The microscope calibration is due on Sunday,6_Sunday
-725,Re-calibrate the mass spectrometer on Wednesday,2_Wednesday
-726,Is the centrifuge maintenance occurring on Thursday,3_Thursday
-727,The weekly lab sync has been moved to Wednesday,2_Wednesday
-728,Charlie will finalize the PCR results on Thursday,3_Thursday
-729,The shipment of reagents is scheduled for Thursday,3_Thursday
-730,The lab will be closed for the holiday on Thursday,3_Thursday
-731,The lab will be closed for the holiday on Friday,4_Friday
-732,Check the titration levels again on Saturday,5_Saturday
-733,The department seminar is hosted on Friday,4_Friday
-734,The liquid nitrogen refill happens on Wednesday,2_Wednesday
-735,Data backup must be completed every Sunday,6_Sunday
-736,The lab will be closed for the holiday on Friday,4_Friday
-737,Data backup must be completed every Tuesday,1_Tuesday
-738,The chemical waste pickup is every Sunday,6_Sunday
-739,Is the centrifuge maintenance occurring on Monday,0_Monday
-740,Is the centrifuge maintenance occurring on Sunday,6_Sunday
-741,Our collaborator is visiting the facility on Sunday,6_Sunday
-742,Are we still on track for the launch this Sunday,6_Sunday
-743,We will start the sequencing run on Tuesday,1_Tuesday
-744,Submit the grant proposal before Saturday,5_Saturday
-745,Re-calibrate the mass spectrometer on Sunday,6_Sunday
-746,The liquid nitrogen refill happens on Saturday,5_Saturday
-747,The liquid nitrogen refill happens on Tuesday,1_Tuesday
-748,The longitudinal study concludes on Monday,0_Monday
-749,Our collaborator is visiting the facility on Friday,4_Friday
-750,The autoclave is out of service until Saturday,5_Saturday
-751,The final abstract is due this Tuesday,1_Tuesday
-752,We expect the peer review feedback by Monday,0_Monday
-753,The final abstract is due this Friday,4_Friday
-754,Re-calibrate the mass spectrometer on Friday,4_Friday
-755,The shipment of reagents is scheduled for Thursday,3_Thursday
-756,Please verify the freezer temperature logs for Thursday,3_Thursday
-757,The weekly lab sync has been moved to Saturday,5_Saturday
-758,The microscope calibration is due on Tuesday,1_Tuesday
-759,The sample size will be recalculated on Tuesday,1_Tuesday
-760,Are we still on track for the launch this Sunday,6_Sunday
-761,Bob is responsible for the morning rounds on Thursday,3_Thursday
-762,The longitudinal study concludes on Wednesday,2_Wednesday
-763,the PI noted a discrepancy in the logs from Sunday,6_Sunday
-764,Please verify the freezer temperature logs for Wednesday,2_Wednesday
-765,Please verify the freezer temperature logs for Monday,0_Monday
-766,Re-calibrate the mass spectrometer on Monday,0_Monday
-767,Bob scheduled the MRI scan for Monday,0_Monday
-768,We expect the peer review feedback by Friday,4_Friday
-769,The liquid nitrogen refill happens on Monday,0_Monday
-770,The weekly lab sync has been moved to Sunday,6_Sunday
-771,Check the titration levels again on Sunday,6_Sunday
-772,Are we still on track for the launch this Saturday,5_Saturday
-773,The clinical trial phase begins this Saturday,5_Saturday
-774,Please verify the freezer temperature logs for Thursday,3_Thursday
-775,The liquid nitrogen refill happens on Wednesday,2_Wednesday
-776,We will start the sequencing run on Friday,4_Friday
-777,The shipment of reagents is scheduled for Saturday,5_Saturday
-778,Elena scheduled the MRI scan for Monday,0_Monday
-779,Bob is responsible for the morning rounds on Sunday,6_Sunday
-780,The autoclave is out of service until Sunday,6_Sunday
-781,The final abstract is due this Wednesday,2_Wednesday
-782,Please verify the freezer temperature logs for Wednesday,2_Wednesday
-783,Sarah is presenting the literature review on Monday,0_Monday
-784,Is the centrifuge maintenance occurring on Sunday,6_Sunday
-785,Data backup must be completed every Tuesday,1_Tuesday
-786,The department seminar is hosted on Tuesday,1_Tuesday
-787,Data backup must be completed every Wednesday,2_Wednesday
-788,Please ensure the incubator is cleaned by Sunday,6_Sunday
-789,Are we still on track for the launch this Saturday,5_Saturday
-790,The longitudinal study concludes on Sunday,6_Sunday
-791,The ethics committee will meet on Monday,0_Monday
-792,Please ensure the incubator is cleaned by Monday,0_Monday
-793,Elena is presenting the literature review on Tuesday,1_Tuesday
-794,The longitudinal study concludes on Sunday,6_Sunday
-795,Check the titration levels again on Friday,4_Friday
-796,James noted a discrepancy in the logs from Saturday,5_Saturday
-797,James noted a discrepancy in the logs from Sunday,6_Sunday
-798,The statistical analysis will be performed on Monday,0_Monday
-799,The microscope calibration is due on Saturday,5_Saturday
-800,Is the centrifuge maintenance occurring on Thursday,3_Thursday
-801,The ethics committee will meet on Monday,0_Monday
-802,Re-calibrate the mass spectrometer on Saturday,5_Saturday
-803,Re-calibrate the mass spectrometer on Friday,4_Friday
-804,Submit the grant proposal before Saturday,5_Saturday
-805,The clinical trial phase begins this Sunday,6_Sunday
-806,Our collaborator is visiting the facility on Tuesday,1_Tuesday
-807,The liquid nitrogen refill happens on Thursday,3_Thursday
-808,Re-calibrate the mass spectrometer on Tuesday,1_Tuesday
-809,Re-calibrate the mass spectrometer on Saturday,5_Saturday
-810,The longitudinal study concludes on Tuesday,1_Tuesday
-811,The final abstract is due this Friday,4_Friday
-812,The autoclave is out of service until Sunday,6_Sunday
-813,The statistical analysis will be performed on Wednesday,2_Wednesday
-814,the technician is responsible for the morning rounds on Sunday,6_Sunday
-815,The weekly lab sync has been moved to Monday,0_Monday
-816,The clinical trial phase begins this Tuesday,1_Tuesday
-817,Dr. Smith is presenting the literature review on Monday,0_Monday
-818,The ethics committee will meet on Thursday,3_Thursday
-819,The department seminar is hosted on Saturday,5_Saturday
-820,The shipment of reagents is scheduled for Sunday,6_Sunday
-821,Are we still on track for the launch this Wednesday,2_Wednesday
-822,The final abstract is due this Tuesday,1_Tuesday
-823,The chemical waste pickup is every Monday,0_Monday
-824,We expect the peer review feedback by Friday,4_Friday
-825,James is responsible for the morning rounds on Monday,0_Monday
-826,Bob scheduled the MRI scan for Monday,0_Monday
-827,Please ensure the incubator is cleaned by Tuesday,1_Tuesday
-828,the technician is responsible for the morning rounds on Wednesday,2_Wednesday
-829,Please verify the freezer temperature logs for Thursday,3_Thursday
-830,Our collaborator is visiting the facility on Sunday,6_Sunday
-831,Our collaborator is visiting the facility on Thursday,3_Thursday
-832,The weekly lab sync has been moved to Sunday,6_Sunday
-833,The final abstract is due this Saturday,5_Saturday
-834,The shipment of reagents is scheduled for Thursday,3_Thursday
-835,The shipment of reagents is scheduled for Friday,4_Friday
-836,The statistical analysis will be performed on Wednesday,2_Wednesday
-837,We expect the peer review feedback by Tuesday,1_Tuesday
-838,Data backup must be completed every Friday,4_Friday
-839,Re-calibrate the mass spectrometer on Tuesday,1_Tuesday
-840,The statistical analysis will be performed on Saturday,5_Saturday
-841,Is the centrifuge maintenance occurring on Friday,4_Friday
-842,The statistical analysis will be performed on Saturday,5_Saturday
-843,The sample size will be recalculated on Monday,0_Monday
-844,The microscope calibration is due on Monday,0_Monday
-845,The autoclave is out of service until Monday,0_Monday
-846,We will start the sequencing run on Tuesday,1_Tuesday
-847,Submit the grant proposal before Wednesday,2_Wednesday
-848,We will start the sequencing run on Wednesday,2_Wednesday
-849,Re-calibrate the mass spectrometer on Monday,0_Monday
-850,The liquid nitrogen refill happens on Thursday,3_Thursday
-851,Dr. Smith is responsible for the morning rounds on Friday,4_Friday
-852,Is the centrifuge maintenance occurring on Friday,4_Friday
-853,The weekly lab sync has been moved to Tuesday,1_Tuesday
-854,Submit the grant proposal before Friday,4_Friday
-855,Data backup must be completed every Thursday,3_Thursday
-856,Is the centrifuge maintenance occurring on Tuesday,1_Tuesday
-857,The department seminar is hosted on Monday,0_Monday
-858,The lab will be closed for the holiday on Friday,4_Friday
-859,The chemical waste pickup is every Thursday,3_Thursday
-860,Is the centrifuge maintenance occurring on Sunday,6_Sunday
-861,Data backup must be completed every Wednesday,2_Wednesday
-862,The shipment of reagents is scheduled for Monday,0_Monday
-863,the technician is responsible for the morning rounds on Friday,4_Friday
-864,The chemical waste pickup is every Tuesday,1_Tuesday
-865,Submit the grant proposal before Friday,4_Friday
-866,The ethics committee will meet on Tuesday,1_Tuesday
-867,We will start the sequencing run on Tuesday,1_Tuesday
-868,We expect the peer review feedback by Wednesday,2_Wednesday
-869,Re-calibrate the mass spectrometer on Friday,4_Friday
-870,We will start the sequencing run on Wednesday,2_Wednesday
-871,Alice will finalize the PCR results on Sunday,6_Sunday
-872,the technician will finalize the PCR results on Friday,4_Friday
-873,Prof. Wang scheduled the MRI scan for Wednesday,2_Wednesday
-874,Submit the grant proposal before Monday,0_Monday
-875,Sarah is responsible for the morning rounds on Saturday,5_Saturday
-876,We expect the peer review feedback by Wednesday,2_Wednesday
-877,The department seminar is hosted on Wednesday,2_Wednesday
-878,Sarah noted a discrepancy in the logs from Thursday,3_Thursday
-879,The department seminar is hosted on Thursday,3_Thursday
-880,The sample size will be recalculated on Friday,4_Friday
-881,Dr. Smith noted a discrepancy in the logs from Friday,4_Friday
-882,The chemical waste pickup is every Tuesday,1_Tuesday
-883,The liquid nitrogen refill happens on Saturday,5_Saturday
-884,We expect the peer review feedback by Thursday,3_Thursday
-885,Please verify the freezer temperature logs for Tuesday,1_Tuesday
-886,The sample size will be recalculated on Thursday,3_Thursday
-887,Data backup must be completed every Monday,0_Monday
-888,Re-calibrate the mass spectrometer on Wednesday,2_Wednesday
-889,Elena scheduled the MRI scan for Thursday,3_Thursday
-890,Data backup must be completed every Saturday,5_Saturday
-891,Please verify the freezer temperature logs for Monday,0_Monday
-892,Re-calibrate the mass spectrometer on Friday,4_Friday
-893,Re-calibrate the mass spectrometer on Tuesday,1_Tuesday
-894,The shipment of reagents is scheduled for Saturday,5_Saturday
-895,Please ensure the incubator is cleaned by Thursday,3_Thursday
-896,Are we still on track for the launch this Sunday,6_Sunday
-897,Sarah is presenting the literature review on Friday,4_Friday
-898,The ethics committee will meet on Monday,0_Monday
-899,The chemical waste pickup is every Thursday,3_Thursday
-900,We expect the peer review feedback by Sunday,6_Sunday
-901,The department seminar is hosted on Thursday,3_Thursday
-902,We will start the sequencing run on Tuesday,1_Tuesday
-903,Submit the grant proposal before Thursday,3_Thursday
-904,The lab will be closed for the holiday on Wednesday,2_Wednesday
-905,Dr. Smith scheduled the MRI scan for Thursday,3_Thursday
-906,Data backup must be completed every Thursday,3_Thursday
-907,The chemical waste pickup is every Tuesday,1_Tuesday
-908,The final abstract is due this Thursday,3_Thursday
-909,Is the centrifuge maintenance occurring on Friday,4_Friday
-910,The sample size will be recalculated on Saturday,5_Saturday
-911,The clinical trial phase begins this Thursday,3_Thursday
-912,the PI scheduled the MRI scan for Thursday,3_Thursday
-913,The weekly lab sync has been moved to Sunday,6_Sunday
-914,Data backup must be completed every Tuesday,1_Tuesday
-915,Are we still on track for the launch this Sunday,6_Sunday
-916,Our collaborator is visiting the facility on Monday,0_Monday
-917,We will start the sequencing run on Thursday,3_Thursday
-918,The lab will be closed for the holiday on Wednesday,2_Wednesday
-919,Please ensure the incubator is cleaned by Wednesday,2_Wednesday
-920,The department seminar is hosted on Monday,0_Monday
-921,The shipment of reagents is scheduled for Saturday,5_Saturday
-922,Re-calibrate the mass spectrometer on Sunday,6_Sunday
-923,Our collaborator is visiting the facility on Saturday,5_Saturday
-924,James scheduled the MRI scan for Monday,0_Monday
-925,Check the titration levels again on Thursday,3_Thursday
-926,The clinical trial phase begins this Thursday,3_Thursday
-927,We expect the peer review feedback by Sunday,6_Sunday
-928,The statistical analysis will be performed on Friday,4_Friday
-929,Re-calibrate the mass spectrometer on Sunday,6_Sunday
-930,We expect the peer review feedback by Sunday,6_Sunday
-931,The chemical waste pickup is every Thursday,3_Thursday
-932,Please ensure the incubator is cleaned by Saturday,5_Saturday
-933,The autoclave is out of service until Saturday,5_Saturday
-934,Prof. Wang is presenting the literature review on Wednesday,2_Wednesday
-935,The chemical waste pickup is every Thursday,3_Thursday
-936,The final abstract is due this Sunday,6_Sunday
-937,Please ensure the incubator is cleaned by Sunday,6_Sunday
-938,The lab will be closed for the holiday on Thursday,3_Thursday
-939,The lab will be closed for the holiday on Saturday,5_Saturday
-940,the PI scheduled the MRI scan for Saturday,5_Saturday
-941,Please ensure the incubator is cleaned by Tuesday,1_Tuesday
-942,Sarah will finalize the PCR results on Saturday,5_Saturday
-943,Please ensure the incubator is cleaned by Monday,0_Monday
-944,Are we still on track for the launch this Friday,4_Friday
-945,The liquid nitrogen refill happens on Sunday,6_Sunday
-946,the PI is responsible for the morning rounds on Wednesday,2_Wednesday
-947,Check the titration levels again on Monday,0_Monday
-948,We will start the sequencing run on Wednesday,2_Wednesday
-949,Dr. Smith scheduled the MRI scan for Monday,0_Monday
-950,We will start the sequencing run on Friday,4_Friday
-951,Submit the grant proposal before Thursday,3_Thursday
-952,Dr. Smith will finalize the PCR results on Monday,0_Monday
-953,Check the titration levels again on Friday,4_Friday
-954,The department seminar is hosted on Thursday,3_Thursday
-955,The final abstract is due this Wednesday,2_Wednesday
-956,The autoclave is out of service until Tuesday,1_Tuesday
-957,The lab will be closed for the holiday on Friday,4_Friday
-958,The chemical waste pickup is every Thursday,3_Thursday
-959,Re-calibrate the mass spectrometer on Thursday,3_Thursday
-960,The department seminar is hosted on Monday,0_Monday
-961,Data backup must be completed every Monday,0_Monday
-962,Elena is responsible for the morning rounds on Friday,4_Friday
-963,Re-calibrate the mass spectrometer on Sunday,6_Sunday
-964,The liquid nitrogen refill happens on Thursday,3_Thursday
-965,Sarah scheduled the MRI scan for Friday,4_Friday
-966,We will start the sequencing run on Tuesday,1_Tuesday
-967,The final abstract is due this Tuesday,1_Tuesday
-968,We will start the sequencing run on Wednesday,2_Wednesday
-969,The autoclave is out of service until Saturday,5_Saturday
-970,the technician will finalize the PCR results on Monday,0_Monday
-971,The sample size will be recalculated on Friday,4_Friday
-972,The lab will be closed for the holiday on Sunday,6_Sunday
-973,Our collaborator is visiting the facility on Friday,4_Friday
-974,The chemical waste pickup is every Tuesday,1_Tuesday
-975,Alice scheduled the MRI scan for Sunday,6_Sunday
-976,The weekly lab sync has been moved to Monday,0_Monday
-977,The final abstract is due this Friday,4_Friday
-978,The ethics committee will meet on Saturday,5_Saturday
-979,The autoclave is out of service until Saturday,5_Saturday
-980,Re-calibrate the mass spectrometer on Wednesday,2_Wednesday
-981,The final abstract is due this Tuesday,1_Tuesday
-982,Is the centrifuge maintenance occurring on Tuesday,1_Tuesday
-983,Alice is presenting the literature review on Tuesday,1_Tuesday
-984,The microscope calibration is due on Sunday,6_Sunday
-985,Sarah scheduled the MRI scan for Friday,4_Friday
-986,The microscope calibration is due on Saturday,5_Saturday
-987,The sample size will be recalculated on Sunday,6_Sunday
-988,Check the titration levels again on Friday,4_Friday
-989,The clinical trial phase begins this Monday,0_Monday
-990,We will start the sequencing run on Tuesday,1_Tuesday
-991,The weekly lab sync has been moved to Thursday,3_Thursday
-992,The lab will be closed for the holiday on Sunday,6_Sunday
-993,The department seminar is hosted on Wednesday,2_Wednesday
-994,We expect the peer review feedback by Monday,0_Monday
-995,The longitudinal study concludes on Monday,0_Monday
-996,Are we still on track for the launch this Thursday,3_Thursday
-997,The lab will be closed for the holiday on Sunday,6_Sunday
-998,The weekly lab sync has been moved to Tuesday,1_Tuesday
-999,The ethics committee will meet on Sunday,6_Sunday
+Sentence,Label
+Yuki scheduled the MRI scan for Sunday,06_Sunday
+the PI scheduled the MRI scan for Sunday,06_Sunday
+Alice noted a discrepancy in the logs from Thursday,03_Thursday
+Sarah is presenting the literature review on Friday,04_Friday
+Elena scheduled the MRI scan for Tuesday,01_Tuesday
+Elena noted a discrepancy in the logs from Saturday,05_Saturday
+the analyst is responsible for the morning rounds on Wednesday,02_Wednesday
+the technician is responsible for the morning rounds on Thursday,03_Thursday
+the supervisor will finalize the PCR results on Thursday,03_Thursday
+the intern noted a discrepancy in the logs from Tuesday,01_Tuesday
+James is presenting the literature review on Sunday,06_Sunday
+Dr. Smith will finalize the PCR results on Monday,00_Monday
+James is presenting the literature review on Tuesday,01_Tuesday
+Charlie noted a discrepancy in the logs from Thursday,03_Thursday
+Dr. Patel is responsible for the morning rounds on Thursday,03_Thursday
+Elena is presenting the literature review on Tuesday,01_Tuesday
+the supervisor is responsible for the morning rounds on Sunday,06_Sunday
+Prof. Kim is presenting the literature review on Sunday,06_Sunday
+Prof. Wang is responsible for the morning rounds on Tuesday,01_Tuesday
+Liam is responsible for the morning rounds on Wednesday,02_Wednesday
+Dr. Smith is responsible for the morning rounds on Tuesday,01_Tuesday
+Prof. Müller is presenting the literature review on Tuesday,01_Tuesday
+The autoclave is out of service until Sunday,06_Sunday
+Fatima scheduled the MRI scan for Friday,04_Friday
+the nurse scheduled the MRI scan for Sunday,06_Sunday
+the nurse scheduled the MRI scan for Monday,00_Monday
+the postdoc noted a discrepancy in the logs from Thursday,03_Thursday
+the analyst noted a discrepancy in the logs from Sunday,06_Sunday
+the coordinator is presenting the literature review on Thursday,03_Thursday
+Bob is responsible for the morning rounds on Saturday,05_Saturday
+Kevin is presenting the literature review on Thursday,03_Thursday
+Maria will finalize the PCR results on Friday,04_Friday
+Dr. Okafor scheduled the MRI scan for Saturday,05_Saturday
+Omar noted a discrepancy in the logs from Monday,00_Monday
+We will start the sequencing run on Thursday,03_Thursday
+The chemical waste pickup is every Tuesday,01_Tuesday
+the analyst noted a discrepancy in the logs from Tuesday,01_Tuesday
+Fatima noted a discrepancy in the logs from Monday,00_Monday
+Sarah is presenting the literature review on Sunday,06_Sunday
+James is presenting the literature review on Saturday,05_Saturday
+Dr. Chen noted a discrepancy in the logs from Monday,00_Monday
+Dr. Chen is responsible for the morning rounds on Thursday,03_Thursday
+Bob is presenting the literature review on Sunday,06_Sunday
+Kevin will finalize the PCR results on Thursday,03_Thursday
+Re-calibrate the mass spectrometer on Monday,00_Monday
+Raj scheduled the MRI scan for Friday,04_Friday
+The weekly lab sync has been moved to Saturday,05_Saturday
+Dr. Patel is responsible for the morning rounds on Saturday,05_Saturday
+James will finalize the PCR results on Monday,00_Monday
+Dr. Rossi is responsible for the morning rounds on Friday,04_Friday
+Dr. Chen is responsible for the morning rounds on Friday,04_Friday
+Fatima is presenting the literature review on Monday,00_Monday
+Alice is responsible for the morning rounds on Tuesday,01_Tuesday
+The lab will be closed for the holiday on Thursday,03_Thursday
+Raj is presenting the literature review on Monday,00_Monday
+the postdoc scheduled the MRI scan for Wednesday,02_Wednesday
+Prof. Kim noted a discrepancy in the logs from Friday,04_Friday
+the nurse noted a discrepancy in the logs from Wednesday,02_Wednesday
+Liam is presenting the literature review on Wednesday,02_Wednesday
+James is responsible for the morning rounds on Wednesday,02_Wednesday
+The clinical trial phase begins this Saturday,05_Saturday
+Dr. Rossi scheduled the MRI scan for Monday,00_Monday
+Dr. Okafor noted a discrepancy in the logs from Friday,04_Friday
+Please ensure the incubator is cleaned by Saturday,05_Saturday
+The department seminar is hosted on Saturday,05_Saturday
+Prof. Kim will finalize the PCR results on Monday,00_Monday
+The ethics committee will meet on Tuesday,01_Tuesday
+Charlie will finalize the PCR results on Monday,00_Monday
+Liam will finalize the PCR results on Thursday,03_Thursday
+The clinical trial phase begins this Wednesday,02_Wednesday
+Dr. Patel noted a discrepancy in the logs from Saturday,05_Saturday
+Please verify the freezer temperature logs for Monday,00_Monday
+Dr. Chen noted a discrepancy in the logs from Sunday,06_Sunday
+Sarah scheduled the MRI scan for Sunday,06_Sunday
+Charlie noted a discrepancy in the logs from Monday,00_Monday
+The sample size will be recalculated on Monday,00_Monday
+Prof. Müller will finalize the PCR results on Tuesday,01_Tuesday
+The statistical analysis will be performed on Monday,00_Monday
+Prof. Müller is responsible for the morning rounds on Friday,04_Friday
+Dr. Rossi will finalize the PCR results on Sunday,06_Sunday
+the postdoc noted a discrepancy in the logs from Friday,04_Friday
+Dr. Chen is presenting the literature review on Monday,00_Monday
+Dr. Rossi scheduled the MRI scan for Tuesday,01_Tuesday
+Dr. Chen is responsible for the morning rounds on Tuesday,01_Tuesday
+Liam noted a discrepancy in the logs from Monday,00_Monday
+Amara is responsible for the morning rounds on Tuesday,01_Tuesday
+The department seminar is hosted on Sunday,06_Sunday
+the coordinator is responsible for the morning rounds on Sunday,06_Sunday
+James scheduled the MRI scan for Friday,04_Friday
+The final abstract is due this Saturday,05_Saturday
+The shipment of reagents is scheduled for Friday,04_Friday
+Dr. Chen will finalize the PCR results on Sunday,06_Sunday
+Yuki scheduled the MRI scan for Thursday,03_Thursday
+Dr. Rossi is presenting the literature review on Monday,00_Monday
+Bob noted a discrepancy in the logs from Wednesday,02_Wednesday
+Sarah noted a discrepancy in the logs from Monday,00_Monday
+Raj scheduled the MRI scan for Saturday,05_Saturday
+Amara scheduled the MRI scan for Monday,00_Monday
+Alice is presenting the literature review on Tuesday,01_Tuesday
+the postdoc is presenting the literature review on Tuesday,01_Tuesday
+The microscope calibration is due on Tuesday,01_Tuesday
+Maria is presenting the literature review on Sunday,06_Sunday
+Charlie will finalize the PCR results on Tuesday,01_Tuesday
+Liam noted a discrepancy in the logs from Sunday,06_Sunday
+the postdoc is responsible for the morning rounds on Tuesday,01_Tuesday
+Dr. Smith will finalize the PCR results on Wednesday,02_Wednesday
+Bob will finalize the PCR results on Thursday,03_Thursday
+The clinical trial phase begins this Sunday,06_Sunday
+Check the titration levels again on Saturday,05_Saturday
+Liam is presenting the literature review on Friday,04_Friday
+Kevin will finalize the PCR results on Sunday,06_Sunday
+Amara will finalize the PCR results on Friday,04_Friday
+the analyst scheduled the MRI scan for Thursday,03_Thursday
+Maria is responsible for the morning rounds on Tuesday,01_Tuesday
+Prof. Wang is presenting the literature review on Friday,04_Friday
+Kevin will finalize the PCR results on Monday,00_Monday
+Maria noted a discrepancy in the logs from Monday,00_Monday
+the nurse is presenting the literature review on Thursday,03_Thursday
+Bob is presenting the literature review on Wednesday,02_Wednesday
+Re-calibrate the mass spectrometer on Wednesday,02_Wednesday
+the nurse scheduled the MRI scan for Saturday,05_Saturday
+Omar is responsible for the morning rounds on Friday,04_Friday
+The chemical waste pickup is every Monday,00_Monday
+Dr. Okafor is presenting the literature review on Tuesday,01_Tuesday
+Dr. Patel is presenting the literature review on Sunday,06_Sunday
+Submit the grant proposal before Saturday,05_Saturday
+the analyst is responsible for the morning rounds on Friday,04_Friday
+Dr. Okafor is presenting the literature review on Wednesday,02_Wednesday
+Prof. Kim is responsible for the morning rounds on Monday,00_Monday
+Prof. Wang is presenting the literature review on Thursday,03_Thursday
+Dr. Chen scheduled the MRI scan for Saturday,05_Saturday
+The lab will be closed for the holiday on Sunday,06_Sunday
+Dr. Okafor is responsible for the morning rounds on Saturday,05_Saturday
+Omar is responsible for the morning rounds on Thursday,03_Thursday
+Dr. Smith is presenting the literature review on Tuesday,01_Tuesday
+The final abstract is due this Friday,04_Friday
+Are we still on track for the launch this Thursday,03_Thursday
+Check the titration levels again on Sunday,06_Sunday
+Dr. Okafor will finalize the PCR results on Saturday,05_Saturday
+Elena noted a discrepancy in the logs from Tuesday,01_Tuesday
+Prof. Wang is presenting the literature review on Wednesday,02_Wednesday
+the PI is presenting the literature review on Tuesday,01_Tuesday
+Liam is responsible for the morning rounds on Thursday,03_Thursday
+Yuki scheduled the MRI scan for Monday,00_Monday
+Omar is presenting the literature review on Thursday,03_Thursday
+Yuki is presenting the literature review on Thursday,03_Thursday
+Amara scheduled the MRI scan for Saturday,05_Saturday
+the coordinator noted a discrepancy in the logs from Friday,04_Friday
+Please verify the freezer temperature logs for Saturday,05_Saturday
+Prof. Wang is presenting the literature review on Sunday,06_Sunday
+Fatima scheduled the MRI scan for Monday,00_Monday
+The weekly lab sync has been moved to Thursday,03_Thursday
+Bob will finalize the PCR results on Monday,00_Monday
+Prof. Müller will finalize the PCR results on Friday,04_Friday
+We will start the sequencing run on Monday,00_Monday
+Alice noted a discrepancy in the logs from Wednesday,02_Wednesday
+Raj is presenting the literature review on Friday,04_Friday
+the technician is responsible for the morning rounds on Friday,04_Friday
+Prof. Kim is responsible for the morning rounds on Friday,04_Friday
+the supervisor scheduled the MRI scan for Friday,04_Friday
+Dr. Rossi is responsible for the morning rounds on Saturday,05_Saturday
+Dr. Patel scheduled the MRI scan for Thursday,03_Thursday
+Maria noted a discrepancy in the logs from Tuesday,01_Tuesday
+Elena is presenting the literature review on Sunday,06_Sunday
+Yuki scheduled the MRI scan for Saturday,05_Saturday
+Prof. Kim is responsible for the morning rounds on Sunday,06_Sunday
+the coordinator scheduled the MRI scan for Tuesday,01_Tuesday
+Dr. Okafor scheduled the MRI scan for Monday,00_Monday
+the PI scheduled the MRI scan for Friday,04_Friday
+Raj will finalize the PCR results on Monday,00_Monday
+Dr. Patel is responsible for the morning rounds on Sunday,06_Sunday
+Prof. Wang scheduled the MRI scan for Friday,04_Friday
+The chemical waste pickup is every Saturday,05_Saturday
+The ethics committee will meet on Sunday,06_Sunday
+Kevin is responsible for the morning rounds on Monday,00_Monday
+the analyst scheduled the MRI scan for Wednesday,02_Wednesday
+The sample size will be recalculated on Tuesday,01_Tuesday
+Dr. Patel is presenting the literature review on Friday,04_Friday
+Prof. Müller noted a discrepancy in the logs from Saturday,05_Saturday
+Fatima is responsible for the morning rounds on Tuesday,01_Tuesday
+The final abstract is due this Tuesday,01_Tuesday
+The final abstract is due this Wednesday,02_Wednesday
+Dr. Chen will finalize the PCR results on Wednesday,02_Wednesday
+the PI is responsible for the morning rounds on Thursday,03_Thursday
+Omar scheduled the MRI scan for Sunday,06_Sunday
+Liam is presenting the literature review on Monday,00_Monday
+Charlie scheduled the MRI scan for Monday,00_Monday
+Charlie will finalize the PCR results on Sunday,06_Sunday
+Is the centrifuge maintenance occurring on Tuesday,01_Tuesday
+Alice noted a discrepancy in the logs from Monday,00_Monday
+the PI scheduled the MRI scan for Monday,00_Monday
+Maria scheduled the MRI scan for Wednesday,02_Wednesday
+the intern is responsible for the morning rounds on Wednesday,02_Wednesday
+the supervisor is responsible for the morning rounds on Tuesday,01_Tuesday
+Omar is responsible for the morning rounds on Wednesday,02_Wednesday
+The clinical trial phase begins this Friday,04_Friday
+Maria will finalize the PCR results on Wednesday,02_Wednesday
+the coordinator will finalize the PCR results on Wednesday,02_Wednesday
+We will start the sequencing run on Saturday,05_Saturday
+The liquid nitrogen refill happens on Tuesday,01_Tuesday
+Fatima noted a discrepancy in the logs from Wednesday,02_Wednesday
+Yuki is responsible for the morning rounds on Sunday,06_Sunday
+Sarah is responsible for the morning rounds on Tuesday,01_Tuesday
+Alice is responsible for the morning rounds on Friday,04_Friday
+Dr. Patel will finalize the PCR results on Saturday,05_Saturday
+Liam is responsible for the morning rounds on Monday,00_Monday
+Dr. Smith is responsible for the morning rounds on Saturday,05_Saturday
+Dr. Chen will finalize the PCR results on Friday,04_Friday
+Prof. Kim will finalize the PCR results on Wednesday,02_Wednesday
+Omar will finalize the PCR results on Sunday,06_Sunday
+Please verify the freezer temperature logs for Sunday,06_Sunday
+Elena will finalize the PCR results on Friday,04_Friday
+Yuki is responsible for the morning rounds on Thursday,03_Thursday
+Dr. Chen scheduled the MRI scan for Wednesday,02_Wednesday
+James noted a discrepancy in the logs from Saturday,05_Saturday
+The microscope calibration is due on Wednesday,02_Wednesday
+Amara noted a discrepancy in the logs from Saturday,05_Saturday
+Charlie is responsible for the morning rounds on Wednesday,02_Wednesday
+Yuki is presenting the literature review on Wednesday,02_Wednesday
+Dr. Patel is presenting the literature review on Monday,00_Monday
+the PI scheduled the MRI scan for Wednesday,02_Wednesday
+the intern scheduled the MRI scan for Tuesday,01_Tuesday
+Kevin will finalize the PCR results on Saturday,05_Saturday
+James noted a discrepancy in the logs from Sunday,06_Sunday
+Prof. Wang is presenting the literature review on Monday,00_Monday
+the technician will finalize the PCR results on Wednesday,02_Wednesday
+The autoclave is out of service until Wednesday,02_Wednesday
+Bob scheduled the MRI scan for Sunday,06_Sunday
+Is the centrifuge maintenance occurring on Saturday,05_Saturday
+Elena is responsible for the morning rounds on Wednesday,02_Wednesday
+Charlie is presenting the literature review on Wednesday,02_Wednesday
+Raj is responsible for the morning rounds on Friday,04_Friday
+the supervisor noted a discrepancy in the logs from Tuesday,01_Tuesday
+Alice scheduled the MRI scan for Thursday,03_Thursday
+Yuki noted a discrepancy in the logs from Wednesday,02_Wednesday
+Prof. Müller is presenting the literature review on Saturday,05_Saturday
+Check the titration levels again on Tuesday,01_Tuesday
+Re-calibrate the mass spectrometer on Thursday,03_Thursday
+The ethics committee will meet on Friday,04_Friday
+Dr. Chen scheduled the MRI scan for Friday,04_Friday
+Amara is presenting the literature review on Saturday,05_Saturday
+Submit the grant proposal before Wednesday,02_Wednesday
+the PI will finalize the PCR results on Saturday,05_Saturday
+Please verify the freezer temperature logs for Wednesday,02_Wednesday
+the PI will finalize the PCR results on Tuesday,01_Tuesday
+the nurse is responsible for the morning rounds on Thursday,03_Thursday
+The department seminar is hosted on Monday,00_Monday
+the intern will finalize the PCR results on Monday,00_Monday
+Sarah will finalize the PCR results on Saturday,05_Saturday
+Dr. Smith is presenting the literature review on Wednesday,02_Wednesday
+Dr. Okafor will finalize the PCR results on Wednesday,02_Wednesday
+James will finalize the PCR results on Wednesday,02_Wednesday
+Fatima will finalize the PCR results on Tuesday,01_Tuesday
+Dr. Okafor scheduled the MRI scan for Friday,04_Friday
+Raj scheduled the MRI scan for Tuesday,01_Tuesday
+The chemical waste pickup is every Wednesday,02_Wednesday
+Dr. Chen will finalize the PCR results on Monday,00_Monday
+the supervisor scheduled the MRI scan for Monday,00_Monday
+Bob scheduled the MRI scan for Thursday,03_Thursday
+the coordinator is presenting the literature review on Wednesday,02_Wednesday
+the intern is presenting the literature review on Thursday,03_Thursday
+Fatima noted a discrepancy in the logs from Tuesday,01_Tuesday
+Bob scheduled the MRI scan for Saturday,05_Saturday
+the analyst is presenting the literature review on Friday,04_Friday
+Dr. Smith is responsible for the morning rounds on Monday,00_Monday
+Prof. Kim is presenting the literature review on Tuesday,01_Tuesday
+Prof. Müller noted a discrepancy in the logs from Tuesday,01_Tuesday
+We expect the peer review feedback by Wednesday,02_Wednesday
+Elena scheduled the MRI scan for Wednesday,02_Wednesday
+Dr. Patel scheduled the MRI scan for Saturday,05_Saturday
+the coordinator scheduled the MRI scan for Thursday,03_Thursday
+Submit the grant proposal before Tuesday,01_Tuesday
+Fatima noted a discrepancy in the logs from Sunday,06_Sunday
+Submit the grant proposal before Thursday,03_Thursday
+Sarah will finalize the PCR results on Wednesday,02_Wednesday
+the nurse will finalize the PCR results on Monday,00_Monday
+Re-calibrate the mass spectrometer on Saturday,05_Saturday
+Please ensure the incubator is cleaned by Thursday,03_Thursday
+Dr. Okafor is presenting the literature review on Monday,00_Monday
+The chemical waste pickup is every Friday,04_Friday
+the postdoc is responsible for the morning rounds on Thursday,03_Thursday
+Dr. Chen noted a discrepancy in the logs from Tuesday,01_Tuesday
+Charlie will finalize the PCR results on Saturday,05_Saturday
+Sarah scheduled the MRI scan for Friday,04_Friday
+Elena scheduled the MRI scan for Thursday,03_Thursday
+Prof. Wang noted a discrepancy in the logs from Wednesday,02_Wednesday
+Elena will finalize the PCR results on Thursday,03_Thursday
+the technician scheduled the MRI scan for Friday,04_Friday
+Raj is responsible for the morning rounds on Thursday,03_Thursday
+Bob is responsible for the morning rounds on Thursday,03_Thursday
+the technician is presenting the literature review on Tuesday,01_Tuesday
+Sarah noted a discrepancy in the logs from Friday,04_Friday
+Yuki noted a discrepancy in the logs from Friday,04_Friday
+The shipment of reagents is scheduled for Monday,00_Monday
+The longitudinal study concludes on Friday,04_Friday
+Alice noted a discrepancy in the logs from Sunday,06_Sunday
+Fatima scheduled the MRI scan for Saturday,05_Saturday
+The ethics committee will meet on Monday,00_Monday
+the supervisor is presenting the literature review on Saturday,05_Saturday
+Is the centrifuge maintenance occurring on Monday,00_Monday
+Dr. Patel will finalize the PCR results on Sunday,06_Sunday
+Maria is responsible for the morning rounds on Sunday,06_Sunday
+Yuki will finalize the PCR results on Thursday,03_Thursday
+the technician scheduled the MRI scan for Thursday,03_Thursday
+Omar is responsible for the morning rounds on Tuesday,01_Tuesday
+Please verify the freezer temperature logs for Tuesday,01_Tuesday
+Yuki is presenting the literature review on Monday,00_Monday
+the coordinator is presenting the literature review on Friday,04_Friday
+The department seminar is hosted on Friday,04_Friday
+Dr. Rossi scheduled the MRI scan for Friday,04_Friday
+Charlie is presenting the literature review on Saturday,05_Saturday
+the supervisor is responsible for the morning rounds on Friday,04_Friday
+Raj is responsible for the morning rounds on Tuesday,01_Tuesday
+the technician scheduled the MRI scan for Saturday,05_Saturday
+Amara noted a discrepancy in the logs from Sunday,06_Sunday
+the supervisor scheduled the MRI scan for Wednesday,02_Wednesday
+Charlie is presenting the literature review on Monday,00_Monday
+Amara is presenting the literature review on Thursday,03_Thursday
+Dr. Smith noted a discrepancy in the logs from Thursday,03_Thursday
+Dr. Smith is responsible for the morning rounds on Wednesday,02_Wednesday
+Check the titration levels again on Monday,00_Monday
+the analyst scheduled the MRI scan for Saturday,05_Saturday
+Sarah noted a discrepancy in the logs from Sunday,06_Sunday
+the supervisor is presenting the literature review on Tuesday,01_Tuesday
+Omar will finalize the PCR results on Wednesday,02_Wednesday
+Liam scheduled the MRI scan for Monday,00_Monday
+Dr. Smith is presenting the literature review on Saturday,05_Saturday
+Fatima is presenting the literature review on Tuesday,01_Tuesday
+Dr. Okafor is responsible for the morning rounds on Sunday,06_Sunday
+Omar is presenting the literature review on Monday,00_Monday
+the postdoc scheduled the MRI scan for Tuesday,01_Tuesday
+Fatima is responsible for the morning rounds on Friday,04_Friday
+Liam is responsible for the morning rounds on Friday,04_Friday
+Maria will finalize the PCR results on Tuesday,01_Tuesday
+Dr. Chen scheduled the MRI scan for Sunday,06_Sunday
+Is the centrifuge maintenance occurring on Friday,04_Friday
+the postdoc will finalize the PCR results on Monday,00_Monday
+Dr. Chen will finalize the PCR results on Tuesday,01_Tuesday
+Dr. Smith scheduled the MRI scan for Tuesday,01_Tuesday
+Dr. Rossi scheduled the MRI scan for Sunday,06_Sunday
+Sarah noted a discrepancy in the logs from Saturday,05_Saturday
+the postdoc is responsible for the morning rounds on Saturday,05_Saturday
+Yuki is responsible for the morning rounds on Wednesday,02_Wednesday
+Yuki noted a discrepancy in the logs from Tuesday,01_Tuesday
+the postdoc is presenting the literature review on Sunday,06_Sunday
+Omar is presenting the literature review on Tuesday,01_Tuesday
+James is presenting the literature review on Monday,00_Monday
+the coordinator will finalize the PCR results on Thursday,03_Thursday
+the analyst will finalize the PCR results on Saturday,05_Saturday
+Bob is presenting the literature review on Friday,04_Friday
+Dr. Okafor is responsible for the morning rounds on Wednesday,02_Wednesday
+Prof. Kim scheduled the MRI scan for Wednesday,02_Wednesday
+James is responsible for the morning rounds on Friday,04_Friday
+Kevin is presenting the literature review on Wednesday,02_Wednesday
+the analyst scheduled the MRI scan for Monday,00_Monday
+the supervisor scheduled the MRI scan for Thursday,03_Thursday
+Raj will finalize the PCR results on Saturday,05_Saturday
+Elena noted a discrepancy in the logs from Wednesday,02_Wednesday
+Data backup must be completed every Thursday,03_Thursday
+Dr. Patel will finalize the PCR results on Thursday,03_Thursday
+Prof. Kim scheduled the MRI scan for Friday,04_Friday
+the analyst will finalize the PCR results on Tuesday,01_Tuesday
+Dr. Chen is responsible for the morning rounds on Monday,00_Monday
+The lab will be closed for the holiday on Tuesday,01_Tuesday
+Omar scheduled the MRI scan for Wednesday,02_Wednesday
+Dr. Okafor scheduled the MRI scan for Tuesday,01_Tuesday
+The longitudinal study concludes on Saturday,05_Saturday
+the intern noted a discrepancy in the logs from Monday,00_Monday
+Bob is presenting the literature review on Tuesday,01_Tuesday
+Raj is responsible for the morning rounds on Sunday,06_Sunday
+Dr. Okafor is presenting the literature review on Saturday,05_Saturday
+James scheduled the MRI scan for Saturday,05_Saturday
+Prof. Kim noted a discrepancy in the logs from Thursday,03_Thursday
+the coordinator is presenting the literature review on Saturday,05_Saturday
+the intern scheduled the MRI scan for Saturday,05_Saturday
+the analyst is responsible for the morning rounds on Thursday,03_Thursday
+The liquid nitrogen refill happens on Friday,04_Friday
+The weekly lab sync has been moved to Wednesday,02_Wednesday
+Prof. Kim will finalize the PCR results on Friday,04_Friday
+Fatima scheduled the MRI scan for Tuesday,01_Tuesday
+the postdoc noted a discrepancy in the logs from Tuesday,01_Tuesday
+the intern is presenting the literature review on Sunday,06_Sunday
+Alice is responsible for the morning rounds on Wednesday,02_Wednesday
+James scheduled the MRI scan for Monday,00_Monday
+Alice is responsible for the morning rounds on Saturday,05_Saturday
+The clinical trial phase begins this Thursday,03_Thursday
+Dr. Chen noted a discrepancy in the logs from Friday,04_Friday
+Omar noted a discrepancy in the logs from Friday,04_Friday
+The microscope calibration is due on Sunday,06_Sunday
+Sarah is responsible for the morning rounds on Monday,00_Monday
+Maria will finalize the PCR results on Saturday,05_Saturday
+Bob is responsible for the morning rounds on Monday,00_Monday
+Data backup must be completed every Saturday,05_Saturday
+The autoclave is out of service until Tuesday,01_Tuesday
+Raj scheduled the MRI scan for Sunday,06_Sunday
+Raj noted a discrepancy in the logs from Friday,04_Friday
+Dr. Chen scheduled the MRI scan for Thursday,03_Thursday
+Prof. Wang noted a discrepancy in the logs from Friday,04_Friday
+the coordinator noted a discrepancy in the logs from Saturday,05_Saturday
+The department seminar is hosted on Tuesday,01_Tuesday
+Prof. Müller will finalize the PCR results on Monday,00_Monday
+the postdoc will finalize the PCR results on Friday,04_Friday
+Raj is presenting the literature review on Thursday,03_Thursday
+the nurse is presenting the literature review on Sunday,06_Sunday
+Prof. Kim will finalize the PCR results on Thursday,03_Thursday
+Sarah is presenting the literature review on Tuesday,01_Tuesday
+the coordinator is responsible for the morning rounds on Saturday,05_Saturday
+Yuki is responsible for the morning rounds on Tuesday,01_Tuesday
+Dr. Rossi is presenting the literature review on Sunday,06_Sunday
+Prof. Kim noted a discrepancy in the logs from Tuesday,01_Tuesday
+Alice is responsible for the morning rounds on Thursday,03_Thursday
+Alice is responsible for the morning rounds on Sunday,06_Sunday
+Omar is presenting the literature review on Friday,04_Friday
+Charlie scheduled the MRI scan for Sunday,06_Sunday
+Sarah is responsible for the morning rounds on Saturday,05_Saturday
+Raj will finalize the PCR results on Sunday,06_Sunday
+the analyst is responsible for the morning rounds on Tuesday,01_Tuesday
+the intern is presenting the literature review on Monday,00_Monday
+the coordinator noted a discrepancy in the logs from Tuesday,01_Tuesday
+the analyst will finalize the PCR results on Friday,04_Friday
+the nurse is responsible for the morning rounds on Friday,04_Friday
+Alice scheduled the MRI scan for Monday,00_Monday
+the PI will finalize the PCR results on Thursday,03_Thursday
+the nurse is responsible for the morning rounds on Wednesday,02_Wednesday
+Dr. Okafor will finalize the PCR results on Tuesday,01_Tuesday
+Dr. Okafor is presenting the literature review on Thursday,03_Thursday
+Fatima is responsible for the morning rounds on Monday,00_Monday
+Prof. Wang is presenting the literature review on Saturday,05_Saturday
+Submit the grant proposal before Sunday,06_Sunday
+Bob is presenting the literature review on Monday,00_Monday
+James noted a discrepancy in the logs from Monday,00_Monday
+The microscope calibration is due on Thursday,03_Thursday
+Elena will finalize the PCR results on Sunday,06_Sunday
+Yuki is responsible for the morning rounds on Saturday,05_Saturday
+the supervisor is responsible for the morning rounds on Thursday,03_Thursday
+Prof. Kim scheduled the MRI scan for Monday,00_Monday
+Alice is responsible for the morning rounds on Monday,00_Monday
+Amara is responsible for the morning rounds on Monday,00_Monday
+The weekly lab sync has been moved to Tuesday,01_Tuesday
+the supervisor is responsible for the morning rounds on Wednesday,02_Wednesday
+Omar noted a discrepancy in the logs from Tuesday,01_Tuesday
+Dr. Rossi noted a discrepancy in the logs from Thursday,03_Thursday
+Omar noted a discrepancy in the logs from Thursday,03_Thursday
+the coordinator is responsible for the morning rounds on Tuesday,01_Tuesday
+Elena is responsible for the morning rounds on Thursday,03_Thursday
+Dr. Okafor noted a discrepancy in the logs from Monday,00_Monday
+Data backup must be completed every Wednesday,02_Wednesday
+Charlie is responsible for the morning rounds on Sunday,06_Sunday
+Alice noted a discrepancy in the logs from Friday,04_Friday
+the nurse noted a discrepancy in the logs from Saturday,05_Saturday
+Dr. Okafor is responsible for the morning rounds on Tuesday,01_Tuesday
+Amara is responsible for the morning rounds on Sunday,06_Sunday
+Prof. Müller is responsible for the morning rounds on Thursday,03_Thursday
+Liam noted a discrepancy in the logs from Thursday,03_Thursday
+the postdoc will finalize the PCR results on Sunday,06_Sunday
+Elena is presenting the literature review on Monday,00_Monday
+Prof. Müller noted a discrepancy in the logs from Friday,04_Friday
+Prof. Müller is responsible for the morning rounds on Monday,00_Monday
+Prof. Müller will finalize the PCR results on Saturday,05_Saturday
+Yuki is presenting the literature review on Tuesday,01_Tuesday
+the PI is presenting the literature review on Thursday,03_Thursday
+Kevin is responsible for the morning rounds on Tuesday,01_Tuesday
+Dr. Okafor is presenting the literature review on Sunday,06_Sunday
+the PI is presenting the literature review on Wednesday,02_Wednesday
+Prof. Kim noted a discrepancy in the logs from Monday,00_Monday
+the postdoc is responsible for the morning rounds on Friday,04_Friday
+Dr. Patel will finalize the PCR results on Tuesday,01_Tuesday
+The longitudinal study concludes on Sunday,06_Sunday
+The ethics committee will meet on Saturday,05_Saturday
+Liam is presenting the literature review on Tuesday,01_Tuesday
+Maria scheduled the MRI scan for Saturday,05_Saturday
+Dr. Patel is presenting the literature review on Thursday,03_Thursday
+the intern will finalize the PCR results on Tuesday,01_Tuesday
+Charlie is responsible for the morning rounds on Saturday,05_Saturday
+Maria scheduled the MRI scan for Tuesday,01_Tuesday
+The weekly lab sync has been moved to Monday,00_Monday
+Charlie will finalize the PCR results on Thursday,03_Thursday
+Prof. Müller is responsible for the morning rounds on Sunday,06_Sunday
+Yuki scheduled the MRI scan for Friday,04_Friday
+Dr. Smith will finalize the PCR results on Sunday,06_Sunday
+We expect the peer review feedback by Saturday,05_Saturday
+the intern noted a discrepancy in the logs from Wednesday,02_Wednesday
+Bob scheduled the MRI scan for Wednesday,02_Wednesday
+Our collaborator is visiting the facility on Monday,00_Monday
+Maria scheduled the MRI scan for Monday,00_Monday
+the supervisor is presenting the literature review on Sunday,06_Sunday
+Dr. Rossi is responsible for the morning rounds on Wednesday,02_Wednesday
+The microscope calibration is due on Saturday,05_Saturday
+the coordinator will finalize the PCR results on Sunday,06_Sunday
+the PI scheduled the MRI scan for Thursday,03_Thursday
+Elena will finalize the PCR results on Monday,00_Monday
+Fatima will finalize the PCR results on Saturday,05_Saturday
+Charlie scheduled the MRI scan for Wednesday,02_Wednesday
+The shipment of reagents is scheduled for Tuesday,01_Tuesday
+Raj is responsible for the morning rounds on Saturday,05_Saturday
+the PI noted a discrepancy in the logs from Saturday,05_Saturday
+Dr. Patel will finalize the PCR results on Friday,04_Friday
+Prof. Kim noted a discrepancy in the logs from Wednesday,02_Wednesday
+James scheduled the MRI scan for Thursday,03_Thursday
+Is the centrifuge maintenance occurring on Wednesday,02_Wednesday
+the supervisor scheduled the MRI scan for Saturday,05_Saturday
+the postdoc noted a discrepancy in the logs from Wednesday,02_Wednesday
+Check the titration levels again on Friday,04_Friday
+the nurse noted a discrepancy in the logs from Monday,00_Monday
+Liam scheduled the MRI scan for Sunday,06_Sunday
+the nurse noted a discrepancy in the logs from Thursday,03_Thursday
+The ethics committee will meet on Wednesday,02_Wednesday
+We will start the sequencing run on Sunday,06_Sunday
+Prof. Kim noted a discrepancy in the logs from Saturday,05_Saturday
+Sarah scheduled the MRI scan for Thursday,03_Thursday
+Omar is presenting the literature review on Sunday,06_Sunday
+the supervisor noted a discrepancy in the logs from Sunday,06_Sunday
+the PI will finalize the PCR results on Sunday,06_Sunday
+Dr. Patel noted a discrepancy in the logs from Sunday,06_Sunday
+the coordinator is responsible for the morning rounds on Friday,04_Friday
+Dr. Smith noted a discrepancy in the logs from Friday,04_Friday
+the coordinator is presenting the literature review on Monday,00_Monday
+Prof. Müller noted a discrepancy in the logs from Sunday,06_Sunday
+Charlie is responsible for the morning rounds on Monday,00_Monday
+the PI is presenting the literature review on Sunday,06_Sunday
+the nurse noted a discrepancy in the logs from Tuesday,01_Tuesday
+Prof. Kim will finalize the PCR results on Tuesday,01_Tuesday
+Fatima is presenting the literature review on Wednesday,02_Wednesday
+The longitudinal study concludes on Thursday,03_Thursday
+Prof. Wang will finalize the PCR results on Wednesday,02_Wednesday
+James noted a discrepancy in the logs from Thursday,03_Thursday
+Dr. Smith scheduled the MRI scan for Wednesday,02_Wednesday
+the PI is presenting the literature review on Friday,04_Friday
+Fatima scheduled the MRI scan for Sunday,06_Sunday
+The lab will be closed for the holiday on Saturday,05_Saturday
+Kevin noted a discrepancy in the logs from Wednesday,02_Wednesday
+The weekly lab sync has been moved to Sunday,06_Sunday
+Amara is responsible for the morning rounds on Wednesday,02_Wednesday
+Elena scheduled the MRI scan for Sunday,06_Sunday
+the technician will finalize the PCR results on Tuesday,01_Tuesday
+the postdoc is presenting the literature review on Saturday,05_Saturday
+Prof. Kim scheduled the MRI scan for Thursday,03_Thursday
+Liam noted a discrepancy in the logs from Friday,04_Friday
+the nurse scheduled the MRI scan for Tuesday,01_Tuesday
+Alice is presenting the literature review on Friday,04_Friday
+Raj is presenting the literature review on Wednesday,02_Wednesday
+Prof. Kim scheduled the MRI scan for Saturday,05_Saturday
+Omar will finalize the PCR results on Tuesday,01_Tuesday
+the technician is presenting the literature review on Monday,00_Monday
+Bob scheduled the MRI scan for Friday,04_Friday
+the postdoc noted a discrepancy in the logs from Saturday,05_Saturday
+Raj scheduled the MRI scan for Thursday,03_Thursday
+the nurse is responsible for the morning rounds on Tuesday,01_Tuesday
+the supervisor scheduled the MRI scan for Sunday,06_Sunday
+Prof. Kim is responsible for the morning rounds on Saturday,05_Saturday
+the technician will finalize the PCR results on Sunday,06_Sunday
+Maria is responsible for the morning rounds on Wednesday,02_Wednesday
+Kevin scheduled the MRI scan for Friday,04_Friday
+Dr. Smith is responsible for the morning rounds on Sunday,06_Sunday
+Dr. Rossi will finalize the PCR results on Wednesday,02_Wednesday
+Dr. Patel is presenting the literature review on Tuesday,01_Tuesday
+Dr. Chen noted a discrepancy in the logs from Thursday,03_Thursday
+The liquid nitrogen refill happens on Saturday,05_Saturday
+The lab will be closed for the holiday on Friday,04_Friday
+The department seminar is hosted on Wednesday,02_Wednesday
+Kevin is presenting the literature review on Tuesday,01_Tuesday
+Alice scheduled the MRI scan for Tuesday,01_Tuesday
+Prof. Müller is responsible for the morning rounds on Tuesday,01_Tuesday
+Charlie will finalize the PCR results on Wednesday,02_Wednesday
+Omar will finalize the PCR results on Saturday,05_Saturday
+the nurse is responsible for the morning rounds on Sunday,06_Sunday
+Sarah is presenting the literature review on Wednesday,02_Wednesday
+the coordinator noted a discrepancy in the logs from Monday,00_Monday
+The weekly lab sync has been moved to Friday,04_Friday
+the coordinator will finalize the PCR results on Friday,04_Friday
+Charlie is presenting the literature review on Friday,04_Friday
+Raj is responsible for the morning rounds on Wednesday,02_Wednesday
+Prof. Kim is presenting the literature review on Monday,00_Monday
+Alice is presenting the literature review on Monday,00_Monday
+the supervisor is presenting the literature review on Monday,00_Monday
+Dr. Smith is presenting the literature review on Friday,04_Friday
+Alice scheduled the MRI scan for Saturday,05_Saturday
+Dr. Chen is presenting the literature review on Wednesday,02_Wednesday
+Kevin scheduled the MRI scan for Monday,00_Monday
+Alice will finalize the PCR results on Wednesday,02_Wednesday
+Dr. Chen is responsible for the morning rounds on Wednesday,02_Wednesday
+Maria is presenting the literature review on Monday,00_Monday
+Amara is presenting the literature review on Wednesday,02_Wednesday
+Amara scheduled the MRI scan for Tuesday,01_Tuesday
+We will start the sequencing run on Tuesday,01_Tuesday
+the intern scheduled the MRI scan for Thursday,03_Thursday
+Dr. Chen is responsible for the morning rounds on Sunday,06_Sunday
+The autoclave is out of service until Monday,00_Monday
+The liquid nitrogen refill happens on Wednesday,02_Wednesday
+Prof. Wang noted a discrepancy in the logs from Sunday,06_Sunday
+Submit the grant proposal before Monday,00_Monday
+Charlie noted a discrepancy in the logs from Friday,04_Friday
+Elena is responsible for the morning rounds on Sunday,06_Sunday
+Yuki noted a discrepancy in the logs from Monday,00_Monday
+Elena is presenting the literature review on Wednesday,02_Wednesday
+The autoclave is out of service until Saturday,05_Saturday
+the nurse is responsible for the morning rounds on Saturday,05_Saturday
+Prof. Wang is responsible for the morning rounds on Thursday,03_Thursday
+Kevin is responsible for the morning rounds on Thursday,03_Thursday
+James is presenting the literature review on Thursday,03_Thursday
+Dr. Rossi is responsible for the morning rounds on Tuesday,01_Tuesday
+the intern noted a discrepancy in the logs from Friday,04_Friday
+Fatima noted a discrepancy in the logs from Friday,04_Friday
+the technician noted a discrepancy in the logs from Friday,04_Friday
+the postdoc scheduled the MRI scan for Saturday,05_Saturday
+Dr. Rossi is presenting the literature review on Saturday,05_Saturday
+Bob is responsible for the morning rounds on Wednesday,02_Wednesday
+the PI noted a discrepancy in the logs from Tuesday,01_Tuesday
+Our collaborator is visiting the facility on Thursday,03_Thursday
+the postdoc will finalize the PCR results on Saturday,05_Saturday
+the technician will finalize the PCR results on Friday,04_Friday
+the intern scheduled the MRI scan for Monday,00_Monday
+Are we still on track for the launch this Wednesday,02_Wednesday
+Charlie is presenting the literature review on Sunday,06_Sunday
+Liam will finalize the PCR results on Friday,04_Friday
+Bob is responsible for the morning rounds on Sunday,06_Sunday
+Please ensure the incubator is cleaned by Sunday,06_Sunday
+Elena will finalize the PCR results on Wednesday,02_Wednesday
+Sarah will finalize the PCR results on Monday,00_Monday
+the coordinator noted a discrepancy in the logs from Thursday,03_Thursday
+Prof. Wang scheduled the MRI scan for Saturday,05_Saturday
+Liam will finalize the PCR results on Monday,00_Monday
+Prof. Kim is responsible for the morning rounds on Tuesday,01_Tuesday
+Charlie noted a discrepancy in the logs from Tuesday,01_Tuesday
+Dr. Smith is presenting the literature review on Sunday,06_Sunday
+Liam is responsible for the morning rounds on Sunday,06_Sunday
+the PI noted a discrepancy in the logs from Sunday,06_Sunday
+Dr. Chen is presenting the literature review on Friday,04_Friday
+Are we still on track for the launch this Monday,00_Monday
+the technician noted a discrepancy in the logs from Tuesday,01_Tuesday
+The longitudinal study concludes on Monday,00_Monday
+Please ensure the incubator is cleaned by Monday,00_Monday
+Yuki is presenting the literature review on Sunday,06_Sunday
+Charlie noted a discrepancy in the logs from Wednesday,02_Wednesday
+Maria scheduled the MRI scan for Sunday,06_Sunday
+Prof. Müller scheduled the MRI scan for Sunday,06_Sunday
+Dr. Rossi noted a discrepancy in the logs from Friday,04_Friday
+The final abstract is due this Sunday,06_Sunday
+Our collaborator is visiting the facility on Friday,04_Friday
+Please verify the freezer temperature logs for Thursday,03_Thursday
+Liam will finalize the PCR results on Wednesday,02_Wednesday
+Prof. Müller is responsible for the morning rounds on Wednesday,02_Wednesday
+The liquid nitrogen refill happens on Thursday,03_Thursday
+the technician is presenting the literature review on Thursday,03_Thursday
+Prof. Müller is presenting the literature review on Sunday,06_Sunday
+Raj will finalize the PCR results on Friday,04_Friday
+Liam is responsible for the morning rounds on Tuesday,01_Tuesday
+the analyst is responsible for the morning rounds on Monday,00_Monday
+the nurse is presenting the literature review on Wednesday,02_Wednesday
+Alice will finalize the PCR results on Sunday,06_Sunday
+James is responsible for the morning rounds on Tuesday,01_Tuesday
+the postdoc scheduled the MRI scan for Sunday,06_Sunday
+the analyst is responsible for the morning rounds on Saturday,05_Saturday
+Charlie scheduled the MRI scan for Thursday,03_Thursday
+We expect the peer review feedback by Monday,00_Monday
+Maria noted a discrepancy in the logs from Saturday,05_Saturday
+the nurse will finalize the PCR results on Saturday,05_Saturday
+Sarah is responsible for the morning rounds on Friday,04_Friday
+Omar will finalize the PCR results on Monday,00_Monday
+the PI scheduled the MRI scan for Tuesday,01_Tuesday
+the supervisor noted a discrepancy in the logs from Thursday,03_Thursday
+the coordinator scheduled the MRI scan for Sunday,06_Sunday
+Maria noted a discrepancy in the logs from Friday,04_Friday
+the technician scheduled the MRI scan for Sunday,06_Sunday
+Prof. Müller is responsible for the morning rounds on Saturday,05_Saturday
+Dr. Chen scheduled the MRI scan for Tuesday,01_Tuesday
+the analyst noted a discrepancy in the logs from Saturday,05_Saturday
+Amara is responsible for the morning rounds on Friday,04_Friday
+Sarah scheduled the MRI scan for Monday,00_Monday
+Dr. Rossi noted a discrepancy in the logs from Wednesday,02_Wednesday
+the coordinator scheduled the MRI scan for Wednesday,02_Wednesday
+Dr. Smith will finalize the PCR results on Saturday,05_Saturday
+the postdoc is presenting the literature review on Monday,00_Monday
+Sarah will finalize the PCR results on Thursday,03_Thursday
+Kevin scheduled the MRI scan for Wednesday,02_Wednesday
+Kevin is responsible for the morning rounds on Sunday,06_Sunday
+Prof. Kim will finalize the PCR results on Saturday,05_Saturday
+Re-calibrate the mass spectrometer on Tuesday,01_Tuesday
+Dr. Patel is responsible for the morning rounds on Monday,00_Monday
+the supervisor will finalize the PCR results on Saturday,05_Saturday
+the PI is responsible for the morning rounds on Saturday,05_Saturday
+Dr. Rossi is presenting the literature review on Wednesday,02_Wednesday
+Sarah will finalize the PCR results on Friday,04_Friday
+The statistical analysis will be performed on Tuesday,01_Tuesday
+the supervisor will finalize the PCR results on Friday,04_Friday
+Bob will finalize the PCR results on Wednesday,02_Wednesday
+Prof. Wang is responsible for the morning rounds on Wednesday,02_Wednesday
+Amara noted a discrepancy in the logs from Tuesday,01_Tuesday
+Prof. Müller scheduled the MRI scan for Monday,00_Monday
+James will finalize the PCR results on Sunday,06_Sunday
+The liquid nitrogen refill happens on Sunday,06_Sunday
+the nurse is presenting the literature review on Monday,00_Monday
+the supervisor is presenting the literature review on Wednesday,02_Wednesday
+Kevin noted a discrepancy in the logs from Thursday,03_Thursday
+Prof. Wang noted a discrepancy in the logs from Thursday,03_Thursday
+Dr. Smith noted a discrepancy in the logs from Monday,00_Monday
+Dr. Chen noted a discrepancy in the logs from Wednesday,02_Wednesday
+Re-calibrate the mass spectrometer on Friday,04_Friday
+the PI will finalize the PCR results on Wednesday,02_Wednesday
+James noted a discrepancy in the logs from Friday,04_Friday
+the nurse scheduled the MRI scan for Thursday,03_Thursday
+Amara will finalize the PCR results on Wednesday,02_Wednesday
+the coordinator is responsible for the morning rounds on Thursday,03_Thursday
+the intern will finalize the PCR results on Thursday,03_Thursday
+the technician is responsible for the morning rounds on Wednesday,02_Wednesday
+Amara will finalize the PCR results on Tuesday,01_Tuesday
+Data backup must be completed every Friday,04_Friday
+the analyst noted a discrepancy in the logs from Wednesday,02_Wednesday
+Omar scheduled the MRI scan for Saturday,05_Saturday
+The longitudinal study concludes on Wednesday,02_Wednesday
+Data backup must be completed every Tuesday,01_Tuesday
+the nurse noted a discrepancy in the logs from Sunday,06_Sunday
+the PI scheduled the MRI scan for Saturday,05_Saturday
+The autoclave is out of service until Friday,04_Friday
+Prof. Wang will finalize the PCR results on Sunday,06_Sunday
+Omar noted a discrepancy in the logs from Wednesday,02_Wednesday
+Prof. Wang is presenting the literature review on Tuesday,01_Tuesday
+The shipment of reagents is scheduled for Wednesday,02_Wednesday
+Raj noted a discrepancy in the logs from Wednesday,02_Wednesday
+Alice scheduled the MRI scan for Sunday,06_Sunday
+Maria is responsible for the morning rounds on Monday,00_Monday
+Charlie is responsible for the morning rounds on Thursday,03_Thursday
+Prof. Wang scheduled the MRI scan for Thursday,03_Thursday
+Prof. Wang is responsible for the morning rounds on Saturday,05_Saturday
+Yuki will finalize the PCR results on Tuesday,01_Tuesday
+The department seminar is hosted on Thursday,03_Thursday
+Please verify the freezer temperature logs for Friday,04_Friday
+Maria is presenting the literature review on Friday,04_Friday
+Elena scheduled the MRI scan for Monday,00_Monday
+Dr. Rossi will finalize the PCR results on Saturday,05_Saturday
+The autoclave is out of service until Thursday,03_Thursday
+The liquid nitrogen refill happens on Monday,00_Monday
+We expect the peer review feedback by Thursday,03_Thursday
+the intern is responsible for the morning rounds on Saturday,05_Saturday
+Prof. Wang will finalize the PCR results on Tuesday,01_Tuesday
+The chemical waste pickup is every Sunday,06_Sunday
+We will start the sequencing run on Wednesday,02_Wednesday
+Fatima noted a discrepancy in the logs from Saturday,05_Saturday
+Kevin noted a discrepancy in the logs from Monday,00_Monday
+Dr. Smith scheduled the MRI scan for Sunday,06_Sunday
+Dr. Smith is presenting the literature review on Monday,00_Monday
+Dr. Patel noted a discrepancy in the logs from Friday,04_Friday
+the nurse is responsible for the morning rounds on Monday,00_Monday
+Prof. Kim scheduled the MRI scan for Tuesday,01_Tuesday
+Fatima noted a discrepancy in the logs from Thursday,03_Thursday
+Dr. Patel is responsible for the morning rounds on Wednesday,02_Wednesday
+Yuki noted a discrepancy in the logs from Thursday,03_Thursday
+the technician is presenting the literature review on Saturday,05_Saturday
+the supervisor will finalize the PCR results on Wednesday,02_Wednesday
+Dr. Okafor will finalize the PCR results on Thursday,03_Thursday
+the technician noted a discrepancy in the logs from Monday,00_Monday
+the coordinator scheduled the MRI scan for Monday,00_Monday
+Sarah noted a discrepancy in the logs from Thursday,03_Thursday
+Dr. Smith noted a discrepancy in the logs from Saturday,05_Saturday
+the coordinator will finalize the PCR results on Monday,00_Monday
+Dr. Okafor noted a discrepancy in the logs from Sunday,06_Sunday
+Re-calibrate the mass spectrometer on Sunday,06_Sunday
+Dr. Patel noted a discrepancy in the logs from Wednesday,02_Wednesday
+Omar will finalize the PCR results on Thursday,03_Thursday
+Yuki is presenting the literature review on Friday,04_Friday
+Raj is responsible for the morning rounds on Monday,00_Monday
+Kevin is presenting the literature review on Saturday,05_Saturday
+Dr. Okafor noted a discrepancy in the logs from Tuesday,01_Tuesday
+the postdoc will finalize the PCR results on Tuesday,01_Tuesday
+Dr. Okafor scheduled the MRI scan for Thursday,03_Thursday
+Please ensure the incubator is cleaned by Friday,04_Friday
+Yuki will finalize the PCR results on Monday,00_Monday
+Please ensure the incubator is cleaned by Wednesday,02_Wednesday
+Liam will finalize the PCR results on Sunday,06_Sunday
+the analyst is presenting the literature review on Monday,00_Monday
+the intern is responsible for the morning rounds on Monday,00_Monday
+We expect the peer review feedback by Sunday,06_Sunday
+Kevin is responsible for the morning rounds on Friday,04_Friday
+the PI noted a discrepancy in the logs from Monday,00_Monday
+Please ensure the incubator is cleaned by Tuesday,01_Tuesday
+Are we still on track for the launch this Friday,04_Friday
+The final abstract is due this Thursday,03_Thursday
+Our collaborator is visiting the facility on Tuesday,01_Tuesday
+the coordinator will finalize the PCR results on Tuesday,01_Tuesday
+Dr. Patel will finalize the PCR results on Monday,00_Monday
+Prof. Müller is presenting the literature review on Monday,00_Monday
+Dr. Chen is presenting the literature review on Thursday,03_Thursday
+Yuki will finalize the PCR results on Sunday,06_Sunday
+The statistical analysis will be performed on Sunday,06_Sunday
+Raj will finalize the PCR results on Wednesday,02_Wednesday
+Liam is presenting the literature review on Saturday,05_Saturday
+The statistical analysis will be performed on Wednesday,02_Wednesday
+James will finalize the PCR results on Saturday,05_Saturday
+the supervisor will finalize the PCR results on Monday,00_Monday
+The shipment of reagents is scheduled for Sunday,06_Sunday
+Prof. Wang will finalize the PCR results on Thursday,03_Thursday
+Kevin scheduled the MRI scan for Tuesday,01_Tuesday
+The shipment of reagents is scheduled for Saturday,05_Saturday
+the supervisor will finalize the PCR results on Sunday,06_Sunday
+Elena scheduled the MRI scan for Friday,04_Friday
+Fatima will finalize the PCR results on Sunday,06_Sunday
+the coordinator is responsible for the morning rounds on Monday,00_Monday
+Dr. Rossi noted a discrepancy in the logs from Saturday,05_Saturday
+the intern is presenting the literature review on Wednesday,02_Wednesday
+Is the centrifuge maintenance occurring on Sunday,06_Sunday
+Alice is presenting the literature review on Wednesday,02_Wednesday
+Are we still on track for the launch this Tuesday,01_Tuesday
+Submit the grant proposal before Friday,04_Friday
+the supervisor noted a discrepancy in the logs from Monday,00_Monday
+Sarah scheduled the MRI scan for Tuesday,01_Tuesday
+Dr. Chen noted a discrepancy in the logs from Saturday,05_Saturday
+Kevin is presenting the literature review on Monday,00_Monday
+Alice is presenting the literature review on Sunday,06_Sunday
+Sarah is responsible for the morning rounds on Wednesday,02_Wednesday
+James scheduled the MRI scan for Tuesday,01_Tuesday
+Alice noted a discrepancy in the logs from Saturday,05_Saturday
+Check the titration levels again on Wednesday,02_Wednesday
+the postdoc scheduled the MRI scan for Thursday,03_Thursday
+Bob noted a discrepancy in the logs from Monday,00_Monday
+Prof. Müller is presenting the literature review on Thursday,03_Thursday
+Dr. Chen is presenting the literature review on Saturday,05_Saturday
+Dr. Patel is responsible for the morning rounds on Tuesday,01_Tuesday
+Raj noted a discrepancy in the logs from Sunday,06_Sunday
+Sarah scheduled the MRI scan for Saturday,05_Saturday
+Alice will finalize the PCR results on Monday,00_Monday
+Raj will finalize the PCR results on Thursday,03_Thursday
+Yuki will finalize the PCR results on Wednesday,02_Wednesday
+Amara noted a discrepancy in the logs from Thursday,03_Thursday
+Prof. Kim will finalize the PCR results on Sunday,06_Sunday
+James is responsible for the morning rounds on Thursday,03_Thursday
+Liam scheduled the MRI scan for Tuesday,01_Tuesday
+the nurse will finalize the PCR results on Friday,04_Friday
+Prof. Kim is presenting the literature review on Saturday,05_Saturday
+the analyst is responsible for the morning rounds on Sunday,06_Sunday
+Maria will finalize the PCR results on Thursday,03_Thursday
+Yuki noted a discrepancy in the logs from Sunday,06_Sunday
+the intern is presenting the literature review on Tuesday,01_Tuesday
+Dr. Rossi is responsible for the morning rounds on Monday,00_Monday
+Yuki is responsible for the morning rounds on Monday,00_Monday
+Charlie is presenting the literature review on Thursday,03_Thursday
+the PI will finalize the PCR results on Monday,00_Monday
+Fatima scheduled the MRI scan for Wednesday,02_Wednesday
+Fatima will finalize the PCR results on Friday,04_Friday
+Prof. Wang is responsible for the morning rounds on Sunday,06_Sunday
+We expect the peer review feedback by Tuesday,01_Tuesday
+The statistical analysis will be performed on Friday,04_Friday
+the analyst is presenting the literature review on Sunday,06_Sunday
+Raj noted a discrepancy in the logs from Tuesday,01_Tuesday
+Maria is presenting the literature review on Saturday,05_Saturday
+Maria is presenting the literature review on Thursday,03_Thursday
+James is presenting the literature review on Friday,04_Friday
+Alice will finalize the PCR results on Thursday,03_Thursday
+the postdoc will finalize the PCR results on Thursday,03_Thursday
+the technician noted a discrepancy in the logs from Saturday,05_Saturday
+the analyst will finalize the PCR results on Thursday,03_Thursday
+the intern is responsible for the morning rounds on Friday,04_Friday
+Elena scheduled the MRI scan for Saturday,05_Saturday
+Yuki is presenting the literature review on Saturday,05_Saturday
+Omar is responsible for the morning rounds on Monday,00_Monday
+Sarah is presenting the literature review on Monday,00_Monday
+The lab will be closed for the holiday on Wednesday,02_Wednesday
+Fatima will finalize the PCR results on Thursday,03_Thursday
+Elena is responsible for the morning rounds on Monday,00_Monday
+Raj is presenting the literature review on Saturday,05_Saturday
+The shipment of reagents is scheduled for Thursday,03_Thursday
+Charlie scheduled the MRI scan for Saturday,05_Saturday
+Prof. Müller will finalize the PCR results on Sunday,06_Sunday
+Prof. Kim is presenting the literature review on Wednesday,02_Wednesday
+Maria noted a discrepancy in the logs from Thursday,03_Thursday
+Bob noted a discrepancy in the logs from Saturday,05_Saturday
+Amara scheduled the MRI scan for Sunday,06_Sunday
+Dr. Rossi is presenting the literature review on Tuesday,01_Tuesday
+Charlie noted a discrepancy in the logs from Saturday,05_Saturday
+Sarah noted a discrepancy in the logs from Tuesday,01_Tuesday
+Prof. Müller scheduled the MRI scan for Saturday,05_Saturday
+the intern will finalize the PCR results on Wednesday,02_Wednesday
+Our collaborator is visiting the facility on Wednesday,02_Wednesday
+James will finalize the PCR results on Friday,04_Friday
+The clinical trial phase begins this Monday,00_Monday
+Prof. Wang scheduled the MRI scan for Tuesday,01_Tuesday
+the coordinator is responsible for the morning rounds on Wednesday,02_Wednesday
+Maria is responsible for the morning rounds on Friday,04_Friday
+The statistical analysis will be performed on Thursday,03_Thursday
+Kevin noted a discrepancy in the logs from Friday,04_Friday
+Liam will finalize the PCR results on Saturday,05_Saturday
+the supervisor noted a discrepancy in the logs from Friday,04_Friday
+Liam scheduled the MRI scan for Wednesday,02_Wednesday
+Fatima is responsible for the morning rounds on Sunday,06_Sunday
+Prof. Wang will finalize the PCR results on Saturday,05_Saturday
+Bob will finalize the PCR results on Tuesday,01_Tuesday
+The microscope calibration is due on Friday,04_Friday
+the PI is presenting the literature review on Monday,00_Monday
+Dr. Patel scheduled the MRI scan for Friday,04_Friday
+Charlie noted a discrepancy in the logs from Sunday,06_Sunday
+Fatima is responsible for the morning rounds on Thursday,03_Thursday
+Liam is responsible for the morning rounds on Saturday,05_Saturday
+The ethics committee will meet on Thursday,03_Thursday
+Our collaborator is visiting the facility on Saturday,05_Saturday
+Our collaborator is visiting the facility on Sunday,06_Sunday
+Raj will finalize the PCR results on Tuesday,01_Tuesday
+The microscope calibration is due on Monday,00_Monday
+Amara scheduled the MRI scan for Wednesday,02_Wednesday
+Liam scheduled the MRI scan for Thursday,03_Thursday
+The lab will be closed for the holiday on Monday,00_Monday
+the technician scheduled the MRI scan for Tuesday,01_Tuesday
+the PI noted a discrepancy in the logs from Thursday,03_Thursday
+the postdoc noted a discrepancy in the logs from Sunday,06_Sunday
+Prof. Müller will finalize the PCR results on Wednesday,02_Wednesday
+We will start the sequencing run on Friday,04_Friday
+Fatima is responsible for the morning rounds on Wednesday,02_Wednesday
+Check the titration levels again on Thursday,03_Thursday
+Dr. Okafor will finalize the PCR results on Friday,04_Friday
+Omar scheduled the MRI scan for Friday,04_Friday
+The sample size will be recalculated on Wednesday,02_Wednesday
+Amara is presenting the literature review on Sunday,06_Sunday
+the analyst scheduled the MRI scan for Sunday,06_Sunday
+Dr. Patel is presenting the literature review on Saturday,05_Saturday
+Yuki is responsible for the morning rounds on Friday,04_Friday
+Dr. Chen is presenting the literature review on Tuesday,01_Tuesday
+We expect the peer review feedback by Friday,04_Friday
+the nurse will finalize the PCR results on Thursday,03_Thursday
+Dr. Rossi scheduled the MRI scan for Thursday,03_Thursday
+Bob is responsible for the morning rounds on Tuesday,01_Tuesday
+the intern is responsible for the morning rounds on Thursday,03_Thursday
+the PI is responsible for the morning rounds on Wednesday,02_Wednesday
+The statistical analysis will be performed on Saturday,05_Saturday
+Elena is responsible for the morning rounds on Tuesday,01_Tuesday
+The sample size will be recalculated on Sunday,06_Sunday
+Bob scheduled the MRI scan for Monday,00_Monday
+Are we still on track for the launch this Saturday,05_Saturday
+Are we still on track for the launch this Sunday,06_Sunday
+Dr. Patel will finalize the PCR results on Wednesday,02_Wednesday
+Kevin scheduled the MRI scan for Saturday,05_Saturday
+the supervisor scheduled the MRI scan for Tuesday,01_Tuesday
+Omar is responsible for the morning rounds on Sunday,06_Sunday
+Bob is responsible for the morning rounds on Friday,04_Friday
+Dr. Rossi noted a discrepancy in the logs from Tuesday,01_Tuesday
+Omar scheduled the MRI scan for Monday,00_Monday
+the intern will finalize the PCR results on Friday,04_Friday
+Amara is presenting the literature review on Monday,00_Monday
+Liam noted a discrepancy in the logs from Saturday,05_Saturday
+Fatima is presenting the literature review on Saturday,05_Saturday
+the PI is responsible for the morning rounds on Monday,00_Monday
+Dr. Okafor will finalize the PCR results on Sunday,06_Sunday
+Prof. Wang noted a discrepancy in the logs from Saturday,05_Saturday
+the intern noted a discrepancy in the logs from Sunday,06_Sunday
+Liam is presenting the literature review on Thursday,03_Thursday
+Kevin scheduled the MRI scan for Sunday,06_Sunday
+the postdoc is responsible for the morning rounds on Monday,00_Monday
+Elena will finalize the PCR results on Tuesday,01_Tuesday
+the nurse will finalize the PCR results on Sunday,06_Sunday
+Liam scheduled the MRI scan for Saturday,05_Saturday
+the supervisor noted a discrepancy in the logs from Wednesday,02_Wednesday
+the technician scheduled the MRI scan for Wednesday,02_Wednesday
+Dr. Okafor is responsible for the morning rounds on Friday,04_Friday
+Sarah is presenting the literature review on Saturday,05_Saturday
+Kevin is responsible for the morning rounds on Saturday,05_Saturday
+Prof. Wang scheduled the MRI scan for Sunday,06_Sunday
+Prof. Wang is responsible for the morning rounds on Friday,04_Friday
+Prof. Müller noted a discrepancy in the logs from Monday,00_Monday
+the postdoc is responsible for the morning rounds on Wednesday,02_Wednesday
+the analyst will finalize the PCR results on Monday,00_Monday
+Sarah is presenting the literature review on Thursday,03_Thursday
+The sample size will be recalculated on Saturday,05_Saturday
+Kevin will finalize the PCR results on Wednesday,02_Wednesday
+Dr. Patel scheduled the MRI scan for Wednesday,02_Wednesday
+the coordinator noted a discrepancy in the logs from Wednesday,02_Wednesday
+Omar is presenting the literature review on Saturday,05_Saturday
+Dr. Patel scheduled the MRI scan for Monday,00_Monday
+the nurse is presenting the literature review on Friday,04_Friday
+Data backup must be completed every Sunday,06_Sunday
+The final abstract is due this Monday,00_Monday
+Elena will finalize the PCR results on Saturday,05_Saturday
+James noted a discrepancy in the logs from Tuesday,01_Tuesday
+the supervisor will finalize the PCR results on Tuesday,01_Tuesday
+the nurse scheduled the MRI scan for Wednesday,02_Wednesday
+Prof. Müller is presenting the literature review on Friday,04_Friday
+Fatima will finalize the PCR results on Monday,00_Monday
+Is the centrifuge maintenance occurring on Thursday,03_Thursday
+Sarah will finalize the PCR results on Tuesday,01_Tuesday
+Raj noted a discrepancy in the logs from Thursday,03_Thursday
+Elena noted a discrepancy in the logs from Sunday,06_Sunday
+Maria scheduled the MRI scan for Thursday,03_Thursday
+Prof. Müller scheduled the MRI scan for Tuesday,01_Tuesday
+Charlie scheduled the MRI scan for Tuesday,01_Tuesday
+the technician noted a discrepancy in the logs from Wednesday,02_Wednesday
+The sample size will be recalculated on Thursday,03_Thursday
+The sample size will be recalculated on Friday,04_Friday
+Yuki will finalize the PCR results on Friday,04_Friday
+The chemical waste pickup is every Thursday,03_Thursday
+the intern is responsible for the morning rounds on Sunday,06_Sunday
+Data backup must be completed every Monday,00_Monday
+The longitudinal study concludes on Tuesday,01_Tuesday
+The clinical trial phase begins this Tuesday,01_Tuesday
+Dr. Okafor noted a discrepancy in the logs from Thursday,03_Thursday
+Bob will finalize the PCR results on Saturday,05_Saturday
+Prof. Müller will finalize the PCR results on Thursday,03_Thursday
+Amara will finalize the PCR results on Thursday,03_Thursday
+the PI will finalize the PCR results on Friday,04_Friday
+Prof. Wang scheduled the MRI scan for Wednesday,02_Wednesday
+Sarah will finalize the PCR results on Sunday,06_Sunday
+Prof. Wang will finalize the PCR results on Friday,04_Friday
+the technician noted a discrepancy in the logs from Sunday,06_Sunday
+the PI noted a discrepancy in the logs from Friday,04_Friday
+Maria is responsible for the morning rounds on Thursday,03_Thursday
