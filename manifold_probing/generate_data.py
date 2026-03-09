@@ -252,14 +252,218 @@ def generate_temperatures(n_samples=1000):
     return _enumerate_unique(templates, temps, ("temp",), n_samples)
 
 
-df_weekdays = generate_weekdays(1000)
-df_weekdays.to_csv("weekdays.csv", index=False)
-print(f"Wrote {len(df_weekdays)} unique weekday samples")
+def generate_time_units(n_samples=1000):
+    # Ordered from shortest to longest duration
+    units = [
+        "millisecond",
+        "second",
+        "minute",
+        "hour",
+        "day",
+        "week",
+        "month",
+        "year",
+        "decade",
+        "century",
+    ]
 
-df_hours = generate_hours(1500)
-df_hours.to_csv("hours.csv", index=False)
-print(f"Wrote {len(df_hours)} unique hour samples")
+    templates = [
+        "{name} set the experiment timer for one {unit}",
+        "The process is measured in units of one {unit}",
+        "Each interval in the protocol corresponds to one {unit}",
+        "The signal persists for approximately one {unit}",
+        "Resolution of the sensor is roughly one {unit}",
+        "{name} noted the delay was about one {unit}",
+        "The reaction completes in exactly one {unit}",
+        "The standard interval for this assay is one {unit}",
+        "{name} calculated the half-life as roughly one {unit}",
+        "The oscillation period measures one {unit}",
+        "Events are logged to the nearest {unit}",
+        "The clock ticks once per {unit}",
+        "The gap between readings is one {unit}",
+        "{name} reported latency of approximately one {unit}",
+        "The simulation advances by one {unit}",
+        "Phase transitions occur every {unit}",
+        "Data is captured at a resolution of one {unit}",
+        "The protocol requires a pause of one {unit}",
+        "{name} measured the response time in one {unit}",
+        "The cache refreshes every {unit}",
+        "Cell division occurs on the order of one {unit}",
+        "The epoch duration is fixed at one {unit}",
+        "{name} confirmed the lag was under one {unit}",
+        "The retention policy spans one {unit}",
+        "Sample decay is tracked per {unit}",
+        "The synchronization window aligns to one {unit}",
+        "{name} budgeted resources by the {unit}",
+        "The checkpoint interval is set to one {unit}",
+        "{name} recorded the duration as one {unit}",
+        "The experiment was designed around the timescale of one {unit}",
+    ]
 
-df_temps = generate_temperatures(1000)
-df_temps.to_csv("temperatures.csv", index=False)
-print(f"Wrote {len(df_temps)} unique temperature samples")
+    n_with_name = sum(1 for t in templates if "{name}" in t)
+    n_without = len(templates) - n_with_name
+    max_unique = n_with_name * len(names) * len(units) + n_without * len(units)
+    print(
+        f"Time units: {len(templates)} templates × {len(names)} names × "
+        f"{len(units)} units → {max_unique} max unique sentences"
+    )
+
+    return _enumerate_unique(templates, units, ("unit",), n_samples)
+
+
+def generate_body_parts(n_samples=1000):
+    # Ordered head-to-toe
+    parts = [
+        "head",
+        "face",
+        "neck",
+        "shoulder",
+        "chest",
+        "back",
+        "arm",
+        "elbow",
+        "wrist",
+        "hand",
+        "abdomen",
+        "hip",
+        "leg",
+        "knee",
+        "ankle",
+        "foot",
+    ]
+
+    templates = [
+        "The scan revealed an abnormality in the {part}",
+        "{name} reported persistent soreness in the {part}",
+        "The injury was localized to the {part}",
+        "The nurse applied a bandage to the {part}",
+        "{name} noticed visible swelling in the {part}",
+        "The X-ray focused on the patient's {part}",
+        "Range of motion was restricted in the {part}",
+        "{name} documented bruising on the {part}",
+        "The physical exam highlighted tenderness in the {part}",
+        "The protective gear is designed for the {part}",
+        "{name} measured the circumference of the {part}",
+        "The biopsy was taken from tissue near the {part}",
+        "Temperature elevation was noted at the {part}",
+        "{name} reported numbness spreading from the {part}",
+        "The rash first appeared on the {part}",
+        "The surgeon focused the incision near the {part}",
+        "{name} documented visible asymmetry in the {part}",
+        "The compression sleeve is worn on the {part}",
+        "Reflexes were tested at the {part}",
+        "{name} reported that the discomfort originated in the {part}",
+        "The burn was classified as superficial, affecting the {part}",
+        "Muscle weakness was observed in the {part}",
+        "{name} applied ice to reduce inflammation in the {part}",
+        "The fracture was confirmed in the {part}",
+        "Skin discoloration was observed on the {part}",
+        "{name} noted restricted blood flow to the {part}",
+        "The physical therapist worked on mobility of the {part}",
+        "Lymph node enlargement was found near the {part}",
+        "{name} described a tingling sensation in the {part}",
+        "The imaging clearly depicted damage to the {part}",
+    ]
+
+    n_with_name = sum(1 for t in templates if "{name}" in t)
+    n_without = len(templates) - n_with_name
+    max_unique = n_with_name * len(names) * len(parts) + n_without * len(parts)
+    print(
+        f"Body parts: {len(templates)} templates × {len(names)} names × "
+        f"{len(parts)} parts → {max_unique} max unique sentences"
+    )
+
+    return _enumerate_unique(templates, parts, ("part",), n_samples)
+
+
+def generate_living_things(n_samples=1000):
+    # Ordered from simpler to more complex organisms (plants then animals)
+    organisms = [
+        "moss",
+        "fern",
+        "grass",
+        "flower",
+        "shrub",
+        "tree",
+        "insect",
+        "arachnid",
+        "crustacean",
+        "fish",
+        "amphibian",
+        "reptile",
+        "bird",
+        "mammal",
+    ]
+
+    templates = [
+        "The researcher identified the specimen as a {organism}",
+        "{name} photographed what appeared to be a {organism}",
+        "The field guide confirmed the find was a {organism}",
+        "Samples were collected from a living {organism}",
+        "{name} documented the habitat of the {organism}",
+        "The ecology report focused on the local {organism}",
+        "DNA sequencing confirmed the sample came from a {organism}",
+        "{name} observed the behavior of a wild {organism}",
+        "The museum exhibit featured a preserved {organism}",
+        "The invasive species turned out to be a {organism}",
+        "{name} extracted RNA from the tissue of a {organism}",
+        "The biome is dominated by the {organism}",
+        "Children in the class were asked to draw a {organism}",
+        "{name} trained for years on identifying a {organism}",
+        "The fossil record shows evidence of the ancient {organism}",
+        "Conservation efforts focused on preserving the {organism}",
+        "{name} cultured a colony derived from a {organism}",
+        "The biodiversity index recorded the presence of a {organism}",
+        "The nature documentary featured the remarkable {organism}",
+        "{name} noted that the diet study examined a {organism}",
+        "The ecosystem depends heavily on the {organism}",
+        "The genome was successfully sequenced from a {organism}",
+        "{name} spent the summer studying a local {organism}",
+        "The biology textbook chapter covered the {organism}",
+        "Environmental impact was assessed for the {organism}",
+        "{name} confirmed the endangered status of the {organism}",
+        "The sanctuary was established to protect the {organism}",
+        "Biochemists extracted compounds from the {organism}",
+        "{name} tagged and released the captured {organism}",
+        "The grant funded a three-year study of the {organism}",
+    ]
+
+    n_with_name = sum(1 for t in templates if "{name}" in t)
+    n_without = len(templates) - n_with_name
+    max_unique = n_with_name * len(names) * len(organisms) + n_without * len(organisms)
+    print(
+        f"Living things: {len(templates)} templates × {len(names)} names × "
+        f"{len(organisms)} organisms → {max_unique} max unique sentences"
+    )
+
+    return _enumerate_unique(templates, organisms, ("organism",), n_samples)
+
+
+def main():
+    df_weekdays = generate_weekdays(1000)
+    df_weekdays.to_csv("weekdays.csv", index=False)
+    print(f"Wrote {len(df_weekdays)} unique weekday samples\n")
+
+    df_hours = generate_hours(1500)
+    df_hours.to_csv("hours.csv", index=False)
+    print(f"Wrote {len(df_hours)} unique hour samples\n")
+
+    df_temps = generate_temperatures(1000)
+    df_temps.to_csv("temperatures.csv", index=False)
+    print(f"Wrote {len(df_temps)} unique temperature samples\n")
+
+    df_time_units = generate_time_units(1000)
+    df_time_units.to_csv("time_units.csv", index=False)
+    print(f"Wrote {len(df_time_units)} unique time unit samples\n")
+
+    df_body_parts = generate_body_parts(1000)
+    df_body_parts.to_csv("body_parts.csv", index=False)
+    print(f"Wrote {len(df_body_parts)} unique body part samples\n")
+
+    df_living_things = generate_living_things(1000)
+    df_living_things.to_csv("living_things.csv", index=False)
+    print(f"Wrote {len(df_living_things)} unique living things samples\n")
+
+
+if __name__ == "__main__":
+    main()
