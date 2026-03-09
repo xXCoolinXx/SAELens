@@ -28,7 +28,7 @@ class SMIXAEConfig(SAEConfig):
     d_expert: int = 16
     # k_experts: int = 8
     d_bottleneck: int = 3
-    b_gate_init: float = -0.1
+    b_enc_init: float = -0.1
     rescale_acts_by_decoder_norm: bool = True
 
     # jump_relu_bandwidth: float = 0.05
@@ -60,7 +60,7 @@ class SMIXAE(SAE[SMIXAEConfig]):
     W_bottleneck: nn.Parameter
     W_latent_dec: nn.Parameter
     log_threshold: nn.Parameter
-    b_gate: nn.Parameter
+    b_enc: nn.Parameter
 
     def __init__(self, cfg: SMIXAEConfig, use_error_term: bool = False):
         super().__init__(cfg, use_error_term)
@@ -156,8 +156,8 @@ class SMIXAETrainingConfig(TrainingSAEConfig):
     d_bottleneck: int = 3
     k_experts: int = 8  # L0 = d_expert * k_experts
     aux_loss_coefficient: float = 1 / 32
-    b_gate_init: float = -0.1
-    rescale_acts_by_decoder_norm: bool = False
+    b_enc_init: float = -0.1
+    rescale_acts_by_decoder_norm: bool = True
     # expert_threshold: float = 0.1
 
     # jump_relu_bandwidth: float = 0.05
@@ -185,9 +185,9 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     """
 
     # b_enc: nn.Parameter
-    # b_gate : nn.Parameter
+    # b_enc : nn.Parameter
     # W_gate: nn.Parameter
-    b_gate: nn.Parameter
+    b_enc: nn.Parameter
     W_bottleneck: nn.Parameter
     W_latent_dec: nn.Parameter
     # log_threshold: nn.Parameter
@@ -455,13 +455,13 @@ def _init_weights_smixae(
     # )  # Same dim size but we reshape
 
     # Add gate bias term to allow more expressivity - pre relu
-    sae.b_gate = nn.Parameter(
+    sae.b_enc = nn.Parameter(
         torch.ones(
             sae.cfg.n_experts * sae.cfg.d_expert,
             dtype=sae.dtype,
             device=sae.device,
         )
-        * sae.cfg.b_gate_init
+        * sae.cfg.b_enc_init
     )
 
     sae.W_bottleneck = nn.Parameter(
@@ -503,7 +503,7 @@ def smixae_encode(
 
     # Use step to decouple magnitude from existence
     # gate = sae.activation_fn(
-    #     sae_in @ sae.W_gate + sae.b_gate  # , sae.threshold, sae.cfg.jump_relu_bandwidth
+    #     sae_in @ sae.W_gate + sae.b_enc  # , sae.threshold, sae.cfg.jump_relu_bandwidth
     # )
 
     # Save L0 to apply count loss later
@@ -517,7 +517,7 @@ def smixae_encode(
     # l0 = expert_cost.sum(dim=-1)
 
     # Standard forward
-    hidden_pre = sae.activation_fn(sae_in @ sae.W_enc + sae.b_gate)  # Remove gate
+    hidden_pre = sae.activation_fn(sae_in @ sae.W_enc + sae.b_enc)  # Remove gate
     h = hidden_pre  # * gate  # type: ignore
 
     h_unflattened = h.unflatten(-1, (sae.cfg.n_experts, sae.cfg.d_expert))

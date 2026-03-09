@@ -432,14 +432,17 @@ def get_sae_activations(
     with torch.no_grad():
         for i in tqdm(range(0, B * S, sae_batch_size)):
             batch = activations_flat[i : i + sae_batch_size].to(device)
-            _, cache = sae.run_with_cache(
-                batch, names_filter=["hook_sae_acts_post", "hook_decode_mask"]
-            )
-            active_experts = cache["hook_sae_acts_post"] * cache[
-                "hook_decode_mask"
-            ].unsqueeze(-1)
+            # _, cache = sae.run_with_cache(
+            #     batch, names_filter=["hook_sae_acts_post", "hook_decode_mask"]
+            # )
+            # active_experts = cache["hook_sae_acts_post"] * cache[
+            #     "hook_decode_mask"
+            # ].unsqueeze(-1)
+
+            active_experts = sae.encode(batch)
+
             sae_activations.append(active_experts.cpu())
-            del cache, active_experts, batch
+            del active_experts, batch
             torch.cuda.empty_cache()
 
     del sae

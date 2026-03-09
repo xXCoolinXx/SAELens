@@ -46,7 +46,7 @@ source_repo = "monology/pile-uncopyrighted"
 device = "cuda"
 
 batch_size = 4096
-total_tokens = 100_000_000
+total_tokens = 500_000_000
 # total_tokens = 1000 * batch_size
 
 total_training_steps = total_tokens // batch_size
@@ -65,6 +65,7 @@ cfg = LanguageModelSAERunnerConfig(
         # l0_coefficient=1.0,
         k_experts=32,
         aux_loss_coefficient=1 / 32,
+        rescale_acts_by_decoder_norm=True,
         normalize_activations="expected_average_only_in",
     ),
     model_name="gemma-2-2b",  # "pythia-160m-deduped",  # Use deduped, apparently its more interpretable
@@ -87,7 +88,7 @@ cfg = LanguageModelSAERunnerConfig(
     # Wandb
     logger=LoggingConfig(
         log_to_wandb=True,
-        wandb_project="SMIXAE on Gemma 2-2B, Matching Pursuit",
+        wandb_project="SMIXAE on Gemma 2-2B, Batch Top K",
         wandb_log_frequency=30,
         eval_every_n_wandb_logs=5000000,
     ),
