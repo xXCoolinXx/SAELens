@@ -58,12 +58,12 @@ lr_decay_steps = total_training_steps // 5  # 20% of training
 cfg = LanguageModelSAERunnerConfig(
     sae=SMIXAETrainingConfig(
         d_in=2304,  # d_in=768,  # For pythia and gpt2-small,
-        n_experts=1024,  # Good amount of features, compare to Gemma Scope
+        n_experts=2048,  # Good amount of features, compare to Gemma Scope
         d_expert=16,
         d_bottleneck=3,
-        d_sae=16 * 512,  # this parameter is ignored
+        d_sae=16 * 2048,  # this parameter is ignored
         # l0_coefficient=1.0,
-        k_experts=32,
+        k_experts=64,
         aux_loss_coefficient=1 / 32,
         rescale_acts_by_decoder_norm=True,
         normalize_activations="expected_average_only_in",

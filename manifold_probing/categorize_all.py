@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Any
 
 import pandas as pd
 import plotly.express as px
@@ -12,6 +13,7 @@ from tqdm import tqdm
 from transformer_lens import HookedTransformer
 
 from sae_lens import SAE
+from sae_lens.saes.smixae import SMIXAE
 
 
 # ======================================================================
@@ -56,9 +58,20 @@ class Expert:
             return None
         return int(self.labels.unique().numel())
 
+    @property
+    def adjusted_fisher_score(self) -> float | None:
+        if (
+            self.fisher_score is None
+            or self.n_unique_labels is None
+            or self.n_classes == 0
+        ):
+            return None
+        return self.fisher_score * (self.n_unique_labels / self.n_classes)
+
     def sort_key(self, sort_by: str) -> float:
         mapping: dict[str, float | None] = {
             "fisher": self.fisher_score,
+            "adjusted_fisher": self.adjusted_fisher_score,
             "continuity": self.mean_continuity,
         }
         if sort_by not in mapping:
@@ -106,7 +119,7 @@ class Expert:
 
         X = self.expert_activations  # (N, D)
         y = self.labels  # (N,)
-        N, D = X.shape
+        _, D = X.shape
 
         overall_mean = X.mean(dim=0)  # (D,)
 
@@ -171,6 +184,8 @@ class Expert:
             parts.append(f"labels={self.n_unique_labels}")
         if self.fisher_score is not None:
             parts.append(f"fisher={self.fisher_score:.3f}")
+        if self.adjusted_fisher_score is not None:
+            parts.append(f"adj_fisher={self.adjusted_fisher_score:.3f}")
         if self.mean_continuity is not None:
             parts.append(f"cont={self.mean_continuity:.3f}")
         return ", ".join(parts) + ")"
@@ -182,6 +197,8 @@ class Expert:
         context_window: int = 10,
         device: str = "cuda",
         label_names: dict[int, str] | None = None,
+        continuous_color: bool = False,
+        color_scale: str = "Plasma",
     ) -> Figure:
         # Lazy-evaluate continuity
         if self.local_continuity_scores is None:
@@ -190,44 +207,60 @@ class Expert:
         contexts = self.get_context_windows(str_tokens, context_window=context_window)
         pts = self.expert_activations.numpy()
 
-        use_label_colour = self.labels is not None and label_names is not None
-
         hover_extra: dict[str, list[float] | bool] = {"Context": True}
 
+        cont_list: list[float] = []
         if self.local_continuity_scores is not None:
             cont_list = self.local_continuity_scores.numpy().tolist()
 
-        if use_label_colour:
+        if self.labels is not None and label_names is not None:
             label_strs = [
-                label_names.get(l.item(), str(l.item()))
-                for l in self.labels  # type: ignore[union-attr]
+                label_names.get(int(l.item()), str(l.item())) for l in self.labels
             ]
-            df_dict: dict[str, list] = {
+            label_ids = self.labels.tolist()
+            df_dict: dict[str, Any] = {
                 "x": pts[:, 0].tolist(),
                 "y": pts[:, 1].tolist(),
                 "z": pts[:, 2].tolist(),
                 "Label": label_strs,
+                "LabelId": label_ids,
                 "Context": contexts,
             }
             if self.local_continuity_scores is not None:
                 df_dict["Continuity"] = cont_list
                 hover_extra["Continuity"] = True
-            hover_extra.update({"x": False, "y": False, "z": False})
+            hover_extra.update({"x": False, "y": False, "z": False, "LabelId": False})
 
             df = pd.DataFrame(df_dict)
-            fig = px.scatter_3d(
-                df,
-                x="x",
-                y="y",
-                z="z",
-                color="Label",
-                hover_data=hover_extra,
-                title=self._make_title(),
-                opacity=0.8,
-            )
+            if continuous_color:
+                hover_extra["Label"] = True
+                fig = px.scatter_3d(
+                    df,
+                    x="x",
+                    y="y",
+                    z="z",
+                    color="LabelId",
+                    color_continuous_scale=color_scale,
+                    hover_data=hover_extra,
+                    title=self._make_title(),
+                    opacity=0.8,
+                )
+            else:
+                sorted_label_names = sorted(label_names.values())
+                fig = px.scatter_3d(
+                    df,
+                    x="x",
+                    y="y",
+                    z="z",
+                    color="Label",
+                    category_orders={"Label": sorted_label_names},
+                    hover_data=hover_extra,
+                    title=self._make_title(),
+                    opacity=0.8,
+                )
         else:
             color_col = "Continuity"
-            color_vals = (
+            color_vals: list[float] = (
                 cont_list
                 if self.local_continuity_scores is not None
                 else [0.0] * pts.shape[0]
@@ -370,7 +403,9 @@ def collect_activations(
 
     activations = torch.cat(all_acts, dim=0)
     del all_acts
-    str_tokens = [model.to_str_tokens(tokenized[i]) for i in range(B)]
+    str_tokens: list[list[str]] = [
+        list(model.to_str_tokens(tokenized[i])) for i in range(B)
+    ]
     del model
     torch.cuda.empty_cache()
     print("LLM deleted and GPU memory freed.")
@@ -394,7 +429,7 @@ def get_sae_activations(
     activations: torch.Tensor,
     sae_batch_size: int,
     active_threshold: float = 1e-5,
-    min_points: int = 15,
+    min_points: int = 100,
     max_points: int = 1000,
     labels: torch.Tensor | None = None,
     last_token_only: bool = False,
@@ -402,7 +437,10 @@ def get_sae_activations(
     n_classes: int = 0,
 ) -> list[Expert]:
     print(f"Loading SAE from {checkpoint_path}")
-    sae = SAE.load_from_disk(path=checkpoint_path, device=device)
+    sae: SMIXAE = SAE.load_from_disk(path=checkpoint_path, device=device) # type: ignore
+
+    # Monkey patch - scale up threshold
+    # sae.threshold = sae.threshold * 1.5 # type: ignore
 
     B, S_full, D = activations.shape
 
@@ -531,10 +569,21 @@ def main(
         1e-5, help="L2 norm threshold to consider an expert active"
     ),
     min_points: int = typer.Option(
-        15, help="Minimum active tokens required to evaluate an expert"
+        100, help="Minimum active tokens required to evaluate an expert"
     ),
     max_points: int = typer.Option(
         1000, help="Max active tokens per expert (0 = no cap)"
+    ),
+    adjusted_fisher: bool = typer.Option(
+        False,
+        help="Sort by Fisher × (n_classes_present / n_classes) to penalise low class coverage",
+    ),
+    continuous_color: bool = typer.Option(
+        False,
+        help="Color points by continuous label ordinal rather than discrete categories",
+    ),
+    color_scale: str = typer.Option(
+        "Plasma", help="Plotly continuous colorscale name (e.g. Plasma, Viridis, RdBu)"
     ),
     output_dir: str = typer.Option(
         "expert_plots", help="Base directory to save the HTML plots"
@@ -603,7 +652,10 @@ def main(
 
     # ── 4. Sort ───────────────────────────────────────────────────────
     if sort_by == "auto":
-        sort_by = "fisher" if is_labelled else "continuity"
+        if is_labelled:
+            sort_by = "adjusted_fisher" if adjusted_fisher else "fisher"
+        else:
+            sort_by = "continuity"
 
     print(f"Sorting by {sort_by} ({'ascending' if sort_ascending else 'descending'})…")
     experts.sort(
@@ -627,6 +679,8 @@ def main(
             parts.append(f"Labels: {expert.n_unique_labels}/{n_classes}")
         if expert.fisher_score is not None:
             parts.append(f"Fisher: {expert.fisher_score:.4f}")
+        if expert.adjusted_fisher_score is not None:
+            parts.append(f"Adj-Fisher: {expert.adjusted_fisher_score:.4f}")
         if expert.mean_continuity is not None:
             parts.append(f"Cont: {expert.mean_continuity:.4f}")
         parts.append(f"Points: {expert.expert_activations.shape[0]}")
@@ -638,6 +692,8 @@ def main(
             context_window=context_window_display,
             device=device,
             label_names=label_names,
+            continuous_color=continuous_color,
+            color_scale=color_scale,
         )
 
         filename = (
