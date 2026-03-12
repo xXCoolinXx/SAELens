@@ -1,12 +1,12 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 
+import numpy as np
 import torch
 from torch import nn
 from transformer_lens.hook_points import HookPoint
 from typing_extensions import override
 
-from sae_lens.saes.batchtopk_sae import BatchTopK
 from sae_lens.saes.sae import (
     SAE,
     SAEConfig,
@@ -156,14 +156,15 @@ class SMIXAETrainingConfig(TrainingSAEConfig):
     d_bottleneck: int = 3
     k_experts: int = 8  # L0 = d_expert * k_experts
     aux_loss_coefficient: float = 1 / 32
-    b_enc_init: float = -0.1
+    b_enc_init: float = 0.0
     rescale_acts_by_decoder_norm: bool = True
     # expert_threshold: float = 0.1
 
     # jump_relu_bandwidth: float = 0.05
-    # jump_relu_init_threshold: float = 2.0
+    jumprelu_init_threshold: float = 0.01
+    pre_act_loss_coefficient: float | None = 1 / 32
     # l0_coefficient: float = 1.0
-    threshold_lr: float = 0.1
+    # threshold_lr: float = 0.1
     dead_after_n_passes: int = 1000  # If an expert hasn't fired for 1k passes, it has sadly passed away and we give it emergency aux loss to resucitate
 
     @override
@@ -191,6 +192,8 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     W_bottleneck: nn.Parameter
     W_latent_dec: nn.Parameter
     # log_threshold: nn.Parameter
+    # log_threshold_enc: nn.Parameter
+    log_threshold_bottleneck: nn.Parameter
 
     # Flow diagram
 
@@ -205,12 +208,11 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         self.hook_l0 = HookPoint()
         self.hook_sae_acts_bottleneck = HookPoint()
 
-        self.batchtopk = BatchTopK(self.cfg.k_experts)
+        # self.batchtopk = BatchTopK(self.cfg.k_experts)
 
-        self.register_buffer(
-            "threshold",
-            # use double precision as otherwise we can run into numerical issues
-            torch.tensor(0.0, dtype=torch.double, device=self.W_dec.device),
+        self.log_threshold_bottleneck = nn.Parameter(
+            torch.ones(self.cfg.d_sae, dtype=self.dtype, device=self.device)
+            * np.log(cfg.jumprelu_init_threshold)
         )
 
         # Dead expert tracker
@@ -225,6 +227,14 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         self.cfg.apply_b_dec_to_input = False  # Remove bias term - destroys structure
         self.b_dec.requires_grad_(False)
 
+    # @property
+    # def threshold_enc(self) -> torch.Tensor:
+    #     return torch.exp(self.log_threshold_enc)
+
+    @property
+    def threshold_bottleneck(self) -> torch.Tensor:
+        return torch.exp(self.log_threshold_bottleneck)
+
     def initialize_weights(self) -> None:
         super().initialize_weights()
         _init_weights_smixae(self)
@@ -238,7 +248,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     ) -> tuple[torch.Tensor, torch.Tensor]:
         h, hidden_pre, z = smixae_encode(self, x)
 
-        batch_norm_mask = self.batchtopk(z.norm(dim=-1)) > 0  # (batch_size, n_experts)
+        # batch_norm_mask = self.batchtopk(z.norm(dim=-1)) > 0  # (batch_size, n_experts)
 
         self.z_pre = z
         self.z = z * batch_norm_mask.unsqueeze(-1)
