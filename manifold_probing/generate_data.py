@@ -439,6 +439,66 @@ def generate_living_things(n_samples=1000):
     return _enumerate_unique(templates, organisms, ("organism",), n_samples)
 
 
+def generate_months(n_samples=1000):
+    months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ]
+
+    templates = [
+        "{name} will submit the annual report in {month}",
+        "The grant deadline falls in {month}",
+        "The conference is scheduled for {month}",
+        "Field data collection begins in {month}",
+        "{name} plans to defend the thesis in {month}",
+        "The fiscal year closes at the end of {month}",
+        "The cohort study enrollment opens in {month}",
+        "{name} noted the equipment arrived in {month}",
+        "The review board meets annually in {month}",
+        "The lab renovation is planned for {month}",
+        "Sample collection was completed in {month}",
+        "{name} presented the interim findings in {month}",
+        "The breeding season peaks in {month}",
+        "The journal submission window opens in {month}",
+        "The fellowship applications are due in {month}",
+        "{name} recorded the highest yield in {month}",
+        "The symposium takes place every {month}",
+        "The pilot study wrapped up in {month}",
+        "The funding cycle resets each {month}",
+        "{name} returned from fieldwork in {month}",
+        "The accreditation review is scheduled for {month}",
+        "Animal migration peaks in {month}",
+        "{name} confirmed the calibration was done in {month}",
+        "The onboarding of new staff happens every {month}",
+        "The protocol amendment was approved in {month}",
+        "{name} noticed the anomaly first appeared in {month}",
+        "The seasonal survey is conducted each {month}",
+        "The lab will be closed for two weeks in {month}",
+        "The reagent stock is replenished every {month}",
+        "{name} finalized the analysis in {month}",
+    ]
+
+    n_with_name = sum(1 for t in templates if "{name}" in t)
+    n_without = len(templates) - n_with_name
+    max_unique = n_with_name * len(names) * len(months) + n_without * len(months)
+    print(
+        f"Months: {len(templates)} templates × {len(names)} names × "
+        f"{len(months)} months → {max_unique} max unique sentences"
+    )
+
+    return _enumerate_unique(templates, months, ("month",), n_samples)
+
+
 def main():
     df_weekdays = generate_weekdays(1000)
     df_weekdays.to_csv("weekdays.csv", index=False)
@@ -463,6 +523,10 @@ def main():
     df_living_things = generate_living_things(1000)
     df_living_things.to_csv("living_things.csv", index=False)
     print(f"Wrote {len(df_living_things)} unique living things samples\n")
+
+    df_months = generate_months(1000)
+    df_months.to_csv("months.csv", index=False)
+    print(f"Wrote {len(df_months)} unique month samples\n")
 
 
 if __name__ == "__main__":

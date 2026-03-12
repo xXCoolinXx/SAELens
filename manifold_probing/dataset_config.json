@@ -1,0 +1,9 @@
+[
+  {"dataframe_path": "weekdays.csv",     "color_scale": "HSV"},
+  {"dataframe_path": "hours.csv",        "color_scale": "HSV"},
+  {"dataframe_path": "temperatures.csv", "color_scale": "thermal"},
+  {"dataframe_path": "time_units.csv",   "color_scale": "Viridis"},
+  {"dataframe_path": "body_parts.csv",   "color_scale": "Cividis"},
+  {"dataframe_path": "living_things.csv","continuous_color": false},
+  {"dataframe_path": "months.csv",       "color_scale": "Phase"}
+]
