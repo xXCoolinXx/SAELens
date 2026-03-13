@@ -228,9 +228,17 @@ class SMIXAE(SAE[SMIXAEConfig]):
 
     @property
     def effective_decoder_norm(self) -> torch.Tensor:
-        return self.W_latent_dec @ self.W_dec.view(
-            self.cfg.n_experts, self.cfg.d_expert, -1
-        ).norm(dim=-1)
+        """
+        Computes the Frobenius norm of the effective 3D -> Residual projection.
+        Returns a tensor of shape (n_experts,)
+        """
+        W_dec_reshaped = self.W_dec.view(self.cfg.n_experts, self.cfg.d_expert, -1)
+
+        # W_latent_dec: (n_experts, d_bottleneck, d_expert)
+        # W_dec_reshaped: (n_experts, d_expert, d_model)
+        W_eff = self.W_latent_dec @ W_dec_reshaped
+
+        return torch.linalg.matrix_norm(W_eff, ord="fro", dim=(-2, -1))
 
 
 @dataclass
@@ -401,6 +409,8 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
 
         metrics["expert_norm_mean"] = self.h_bottleneck.norm(dim=-1).mean()
 
+        # metrics['threshold_mean'] =
+
         return TrainStepOutput(
             sae_in=step_input.sae_in,
             sae_out=sae_out,
@@ -429,19 +439,31 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
             )
         )
 
-        losses["l0_grump"] = self.cfg.l0_coefficient * torch.tanh(
-            self.cfg.grump_tanh_coefficient
-            * torch.norm(self.h_bottleneck, dim=-1)
-            * decoder_norm
+        losses["l0_grump"] = self.cfg.l0_coefficient * (
+            torch.tanh(
+                self.cfg.grump_tanh_coefficient
+                * torch.norm(self.h_bottleneck, dim=-1)
+                * decoder_norm
+            )
+            .sum(dim=-1)
+            .mean()
         )
 
         return losses
 
     @property
     def effective_decoder_norm(self) -> torch.Tensor:
-        return self.W_latent_dec @ self.W_dec.view(
-            self.cfg.n_experts, self.cfg.d_expert, -1
-        ).norm(dim=-1)
+        """
+        Computes the Frobenius norm of the effective 3D -> Residual projection.
+        Returns a tensor of shape (n_experts,)
+        """
+        W_dec_reshaped = self.W_dec.view(self.cfg.n_experts, self.cfg.d_expert, -1)
+
+        # W_latent_dec: (n_experts, d_bottleneck, d_expert)
+        # W_dec_reshaped: (n_experts, d_expert, d_model)
+        W_eff = self.W_latent_dec @ W_dec_reshaped
+
+        return torch.linalg.matrix_norm(W_eff, ord="fro", dim=(-2, -1))
 
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
         return nn.ReLU()
@@ -461,7 +483,7 @@ def _init_weights_smixae(
     sae.b_bottleneck = nn.Parameter(
         torch.zeros(
             sae.cfg.n_experts,
-            sae.cfg.d_expert,
+            sae.cfg.d_bottleneck,
             dtype=sae.dtype,
             device=sae.device,
         )
@@ -509,7 +531,9 @@ def smixae_encode(
 
     # Apply rescale before activation
     if sae.cfg.rescale_acts_by_decoder_norm:
-        hidden_pre_bottleneck = hidden_pre_bottleneck * sae.effective_decoder_norm
+        hidden_pre_bottleneck = (
+            hidden_pre_bottleneck * sae.effective_decoder_norm.unsqueeze(-1)
+        )
 
     # Apply grump function
     h_bottleneck = sae.grump(hidden_pre_bottleneck)
