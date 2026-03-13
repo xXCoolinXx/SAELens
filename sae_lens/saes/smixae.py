@@ -166,7 +166,7 @@ class SMIXAE(SAE[SMIXAEConfig]):
 
         self.grump = GrumpReLULayer(
             self.cfg.n_experts,
-            self.cfg.d_expert,
+            self.cfg.d_bottleneck,
             self.cfg.grump_init,
             self.cfg.grump_bandwidth,
         )
@@ -298,7 +298,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
 
         self.grump = GrumpReLULayer(
             self.cfg.n_experts,
-            self.cfg.d_expert,
+            self.cfg.d_bottleneck,
             self.cfg.grump_init,
             self.cfg.grump_bandwidth,
         )
