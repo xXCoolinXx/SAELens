@@ -80,6 +80,7 @@ class SMIXAE(SAE[SMIXAEConfig]):
             ),
         )
 
+        # Let this be set by the loaded class
         self.cfg.apply_b_dec_to_input = False  # Remove bias term - destroys structure
 
     @override
@@ -222,7 +223,9 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
             ),
         )
 
-        self.cfg.apply_b_dec_to_input = False  # Remove bias term - destroys structure
+        self.cfg.apply_b_dec_to_input = (
+            False  # True  # True  # Remove bias term - destroys structure
+        )
         self.b_dec.requires_grad_(False)
 
     def initialize_weights(self) -> None:
@@ -295,8 +298,8 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         sae_out_pre = torch.einsum("bnd,nde->bne", feature_acts, self.W_latent_dec)
         sae_out_pre = sae_out_pre.flatten(-2, -1)
         sae_out_pre = (
-            sae_out_pre @ self.W_dec
-        )  # + self.b_dec # Bias term destroys manifold structure
+            sae_out_pre @ self.W_dec  # + self.b_dec
+        )  # Bias term destroys manifold structure, so only add it to the output
 
         sae_out_pre = self.hook_sae_recons(sae_out_pre)
         sae_out_pre = self.run_time_activation_norm_fn_out(sae_out_pre)

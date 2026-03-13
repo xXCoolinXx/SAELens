@@ -96,8 +96,14 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     # --continuous-color \
     # --color-scale "hsv"
 
-    /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py all-datasets \
-    --checkpoint-path "/scratch/Collin/SAELens/checkpoints/gn5pwf9k/final_500002816" \
+    # CUDA_VISIBLE_DEVICES=0 /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py all-datasets \
+    # --checkpoint-path "/scratch/Collin/SAELens/checkpoints/lhm93f4f/125001728" \
+    # --base-model-name gemma-2-2b \
+    # --hook-point blocks.12.hook_resid_post \
+    # --datasets-config manifold_probing/dataset_config.json &
+
+    CUDA_VISIBLE_DEVICES=0 /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py all-datasets \
+    --checkpoint-path "/scratch/Collin/SAELens/checkpoints/sxa3nlyu/final_500002816" \
     --base-model-name gemma-2-2b \
     --hook-point blocks.12.hook_resid_post \
     --datasets-config manifold_probing/dataset_config.json
