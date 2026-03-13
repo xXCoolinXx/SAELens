@@ -61,10 +61,12 @@ cfg = LanguageModelSAERunnerConfig(
         n_experts=2048,  # Good amount of features, compare to Gemma Scope
         d_expert=16,
         d_bottleneck=3,
-        d_sae=16 * 2048,  # this parameter is ignored
-        # l0_coefficient=1.0,
-        k_experts=64,
-        aux_loss_coefficient=1 / 32,
+        d_sae=16 * 2048,  # this parameter is ignored,
+        grump_init=0.1,
+        grump_bandwidth=2.0,
+        pre_act_loss_coefficient=3e-6,
+        grump_tanh_coefficient=4,
+        l0_coefficient=10,
         rescale_acts_by_decoder_norm=True,
         normalize_activations="expected_average_only_in",
     ),

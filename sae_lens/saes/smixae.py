@@ -90,30 +90,31 @@ class GrumpReLULayer(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         # x shape: [batch, num_groups, group_dim]
-        threshold = torch.exp(self.log_threshold)
 
         # --- INFERENCE PATH ---
         if not self.training:
             # Compute pure math without autograd overhead
-            ellipsoid = (x / threshold) ** 2
+            ellipsoid = (x / self.threshold) ** 2
             g = (
                 ellipsoid.sum(dim=-1, keepdim=True) - 1.0
             )  # Determine whether it falls outside of the ellipsoid
             return (x * (g > 0)).to(x)
 
         # --- TRAINING PATH ---
-        out: torch.Tensor = GrumpReLU.apply(x, threshold, self.bandwidth)  # type: ignore
+        out: torch.Tensor = GrumpReLU.apply(x, self.threshold, self.bandwidth)  # type: ignore
 
         return out
 
     def calculate_pre_act_loss(self, x: torch.Tensor, decoder_norm: torch.Tensor):
-        threshold = torch.exp(self.log_threshold)
-
-        ellipsoid = (x / threshold) ** 2
+        ellipsoid = (x / self.threshold) ** 2
         g = ellipsoid.sum(dim=-1) - 1.0
         summand = torch.relu(-g) * decoder_norm
 
         return summand.mean(dim=0).sum()
+
+    @property
+    def threshold(self):
+        return torch.exp(self.log_threshold)
 
 
 @dataclass
@@ -131,10 +132,6 @@ class SMIXAEConfig(SAEConfig):
     grump_bandwidth: float = (
         1.0  # Reasonable default for the largher nornms, may also need to scale up
     )
-
-    # jump_relu_bandwidth: float = 0.05
-    # jump_relu_init_threshold = 0.1
-    # l0_coefficient: float = 1.0
 
     @override
     @classmethod
@@ -409,7 +406,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
 
         metrics["expert_norm_mean"] = self.h_bottleneck.norm(dim=-1).mean()
 
-        # metrics['threshold_mean'] =
+        metrics["threshold_mean"] = self.grump.threshold.mean()
 
         return TrainStepOutput(
             sae_in=step_input.sae_in,
