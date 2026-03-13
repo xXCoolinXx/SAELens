@@ -105,12 +105,14 @@ class GrumpReLULayer(nn.Module):
 
         return out
 
-    def calculate_pre_act_loss(self, x: torch.Tensor, decoder_norm: torch.Tensor):
+    def calculate_pre_act_loss(
+        self, x: torch.Tensor, decoder_norm: torch.Tensor, dead_mask: torch.Tensor
+    ):
         ellipsoid = (x / self.threshold) ** 2
         g = ellipsoid.sum(dim=-1) - 1.0
         summand = torch.relu(-g) * decoder_norm
 
-        return summand.mean(dim=0).sum()
+        return (summand.mean(dim=0) * dead_mask).sum()
 
     @property
     def threshold(self):
@@ -360,6 +362,19 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         feature_acts, hidden_pre = self.encode_with_hidden_pre(step_input.sae_in)
         sae_out = self.decode(self.h_bottleneck)
 
+        # Track dead experts
+        with torch.no_grad():
+            # Check if an expert fired at least once in this batch (norm > 0)
+            # h_bottleneck is (batch, n_experts, d_bottleneck)
+            fired_in_batch = (self.h_bottleneck.norm(dim=-1) > 0).any(dim=0)
+
+            # Reset counter to 0 if fired, otherwise increment by 1
+            self.n_passes_since_fired = torch.where(
+                fired_in_batch,
+                torch.zeros_like(self.n_passes_since_fired),
+                self.n_passes_since_fired + 1,
+            )
+
         # Calculate MSE loss
         per_item_mse_loss = self.mse_loss_fn(sae_out, step_input.sae_in)
 
@@ -432,7 +447,9 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         losses["pre_act_loss"] = (
             self.cfg.pre_act_loss_coefficient
             * self.grump.calculate_pre_act_loss(
-                self.hidden_pre_bottleneck, decoder_norm
+                self.hidden_pre_bottleneck,
+                decoder_norm,
+                self.n_passes_since_fired > self.cfg.dead_after_n_passes,  # type: ignore
             )
         )
 
