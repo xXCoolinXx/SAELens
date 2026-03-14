@@ -510,29 +510,21 @@ def smixae_encode(
     # l0 = expert_cost.sum(dim=-1)
 
     # Standard forward
-    hidden_pre = sae.activation_fn(sae_in @ sae.W_enc + sae.b_enc)  # Remove gate
-    h = hidden_pre  # * gate  # type: ignore
-
-    h_unflattened = h.unflatten(-1, (sae.cfg.n_experts, sae.cfg.d_expert))
-
-    # expert_norms = h_unflattened.norm(dim=-1)
-    # expert_mask = Step.apply(expert_norms, sae.threshold, sae.cfg.jump_relu_bandwidth)
-    # l0 = expert_mask.sum(dim=-1)
-
-    # expert_mask = (h_unflattened.norm(dim=-1) > self.cfg.expert_threshold).float()
-
-    h_unflattened = h_unflattened  # * expert_mask.unsqueeze(-1)
+    h_latent = sae.activation_fn(sae_in @ sae.W_enc + sae.b_enc)
+    h_latent = h_latent.unflatten(
+        -1, (sae.cfg.n_experts, sae.cfg.d_expert)
+    )  # Unflatten
 
     # Bottleneck
-    z = (
-        torch.einsum("bne,ned->bnd", h_unflattened, sae.W_bottleneck) + sae.b_bottleneck
+    hidden_pre_bottleneck = (
+        torch.einsum("bne,ned->bnd", h_latent, sae.W_bottleneck) + sae.b_bottleneck
     )  # (batch_size, n_experts, d_bottelneck)
 
     if sae.cfg.rescale_acts_by_decoder_norm:
         norm = (
             sae.W_latent_dec @ sae.W_dec.view(sae.cfg.n_experts, sae.cfg.d_expert, -1)
         ).norm(dim=-1)
-        z = z * norm
+        hidden_pre_bottleneck = norm * hidden_pre_bottleneck
 
     # expert_norms = self.z.norm(dim=-1)  # (batch, n_experts)
     # _, topk_idx = expert_norms.topk(self.cfg.k_experts, dim=-1)
