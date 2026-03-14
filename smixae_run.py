@@ -62,11 +62,14 @@ cfg = LanguageModelSAERunnerConfig(
         d_expert=16,
         d_bottleneck=3,
         d_sae=16 * 2048,  # this parameter is ignored,
-        grump_init=0.01,
+        grump_init=0.01,  # Anthropic uses 0.1 but I only get good results with 0.01
         grump_bandwidth=2.0,
         pre_act_loss_coefficient=3e-6,
         grump_tanh_coefficient=4,
-        l0_coefficient=10,
+        l0_coefficient=20.0,
+        l0_warm_up_steps=int(
+            total_training_steps * 0.2
+        ),  # Seems to work better with earlier L0 jump
         rescale_acts_by_decoder_norm=True,
         normalize_activations="expected_average_only_in",
     ),
@@ -76,7 +79,7 @@ cfg = LanguageModelSAERunnerConfig(
     dataset_path=source_repo,  # We already loaded the dataset because we have to use custom code # type: ignore
     is_dataset_tokenized=False,
     # Training Parameters
-    lr=3e-4,
+    lr=5e-4,
     lr_warm_up_steps=lr_warm_up_steps,
     lr_decay_steps=lr_decay_steps,
     train_batch_size_tokens=batch_size,

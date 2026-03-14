@@ -216,7 +216,7 @@ class SMIXAE(SAE[SMIXAEConfig]):
         """
         sae_out_pre = torch.einsum("bnd,nde->bne", feature_acts, self.W_latent_dec)
         sae_out_pre = sae_out_pre.flatten(-2, -1)
-        sae_out_pre = sae_out_pre @ self.W_dec  # + self.b_dec
+        sae_out_pre = sae_out_pre @ self.W_dec + self.b_dec
 
         sae_out_pre = self.hook_sae_recons(sae_out_pre)
         sae_out_pre = self.run_time_activation_norm_fn_out(sae_out_pre)
@@ -259,6 +259,7 @@ class SMIXAETrainingConfig(TrainingSAEConfig):
     pre_act_loss_coefficient: float = 1 / 32
     grump_tanh_coefficient: float = 0.01
     l0_coefficient: float = 1.0
+    l0_warm_up_steps: int = 1000
 
     dead_after_n_passes: int = 1000  # If an expert hasn't fired for 1k passes, it has sadly passed away and we give it emergency aux loss to resucitate
 
@@ -315,15 +316,20 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         )
 
         self.cfg.apply_b_dec_to_input = False  # Remove bias term - destroys structure
-        self.b_dec.requires_grad_(False)
+        # self.b_dec.requires_grad_(False)
 
     def initialize_weights(self) -> None:
         super().initialize_weights()
         _init_weights_smixae(self)
 
     @override
-    def get_coefficients(self) -> dict[str, TrainCoefficientConfig | float]:
-        return {}
+    def get_coefficients(self) -> dict[str, float | TrainCoefficientConfig]:
+        return {
+            "l0": TrainCoefficientConfig(
+                value=self.cfg.l0_coefficient,
+                warm_up_steps=self.cfg.l0_warm_up_steps,
+            ),
+        }
 
     def encode_with_hidden_pre(
         self, x: torch.Tensor
@@ -347,7 +353,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         sae_out_pre = sae_out_pre.flatten(-2, -1)
         sae_out_pre = (
             sae_out_pre @ self.W_dec
-        )  # + self.b_dec # Bias term destroys manifold structure
+        ) + self.b_dec  # Bias term destroys manifold structure
 
         sae_out_pre = self.hook_sae_recons(sae_out_pre)
         sae_out_pre = self.run_time_activation_norm_fn_out(sae_out_pre)
@@ -453,7 +459,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
             )
         )
 
-        losses["l0_grump"] = self.cfg.l0_coefficient * (
+        losses["l0_grump"] = step_input.coefficients["l0"] * (
             torch.tanh(
                 self.cfg.grump_tanh_coefficient
                 * torch.norm(self.h_bottleneck, dim=-1)
