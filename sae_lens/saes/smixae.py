@@ -526,9 +526,4 @@ def smixae_encode(
         ).norm(dim=-1)
         hidden_pre_bottleneck = norm * hidden_pre_bottleneck
 
-    # expert_norms = self.z.norm(dim=-1)  # (batch, n_experts)
-    # _, topk_idx = expert_norms.topk(self.cfg.k_experts, dim=-1)
-    # mask = torch.zeros_like(expert_norms).scatter(-1, topk_idx, 1.0)
-    # self.z = self.z * mask.unsqueeze(-1)
-
-    return h, hidden_pre, z  # , l0
+    return h_latent, hidden_pre_bottleneck
