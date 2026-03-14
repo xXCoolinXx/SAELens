@@ -459,12 +459,9 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
             )
         )
 
+        scaled_norm = (self.h_bottleneck / self.grump.threshold).norm(dim=-1)
         losses["l0_grump"] = step_input.coefficients["l0"] * (
-            torch.tanh(
-                self.cfg.grump_tanh_coefficient
-                * torch.norm(self.h_bottleneck, dim=-1)
-                * decoder_norm
-            )
+            torch.tanh(self.cfg.grump_tanh_coefficient * scaled_norm * decoder_norm)
             .sum(dim=-1)
             .mean()
         )

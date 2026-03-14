@@ -59,48 +59,14 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     # export CUDA_VISIBLE_DEVICES=1 # Hot fix because ASAX doesn't properly change GPU visibility :/
     # Train an SAE
     # /scratch/Collin/envs/sae/bin/python3 context-sae-train.py
-    CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python3 smixae_run.py
+    # CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python3 smixae_run.py
     # /scratch/Collin/envs/sae/bin/python3 /scratch/Collin/SAELens/probing_tasks.py  # manifold_visualization_smixae.py #
 
-    # /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py \
-    # --checkpoint-path "/scratch/Collin/SAELens/checkpoints/7ajlxjnb/final_100003840" \
-    # --base-model-name "gemma-2-2b" \
-    # --hook-point  "blocks.12.hook_resid_post" \
-    # --n-input-samples 1500 \
-    # --input-sequence-length 128 \
-    # --n-interesting-experts-to-plot 100 \
-    # --output-dir "manifold_analysis" \
-    # --k-neighbors 10 \
-    # --device "cuda" \
-    # --llm-batch-size 32 \
-    # --sae-batch-size 2048 \
-    # --k-neighbors 10 
-
-    # --checkpoint-path "/scratch/Collin/SAELens/checkpoints/7ajlxjnb/final_100003840" \
-    # /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py \
-    # --checkpoint-path "/scratch/Collin/SAELens/checkpoints/gn5pwf9k/125001728" \
-    # --base-model-name "gemma-2-2b" \
-    # --hook-point  "blocks.12.hook_resid_post" \
-    # --n-input-samples 1500 \
-    # --input-sequence-length 128 \
-    # --n-interesting-experts-to-plot 25 \
-    # --output-dir "manifold_analysis/hours" \
-    # --k-neighbors 2 \
-    # --device "cuda" \
-    # --llm-batch-size 32 \
-    # --sae-batch-size 2048 \
-    # --dataframe-path "./manifold_probing/hours.csv" \
-    # --text-column "Sentence" \
-    # --label-column "Label" \
-    # --sort-by "adjusted_fisher" \
-    # --continuous-color \
-    # --color-scale "hsv"
-
-    # /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py all-datasets \
-    # --checkpoint-path "/scratch/Collin/SAELens/checkpoints/gn5pwf9k/final_500002816" \
-    # --base-model-name gemma-2-2b \
-    # --hook-point blocks.12.hook_resid_post \
-    # --datasets-config manifold_probing/dataset_config.json
+    /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py all-datasets \
+    --checkpoint-path "/scratch/Collin/SAELens/checkpoints/rt3d1tqz/250003456" \
+    --base-model-name gemma-2-2b \
+    --hook-point blocks.12.hook_resid_post \
+    --datasets-config manifold_probing/dataset_config.json
 
     # Test autointerp, requires two GPUS for autointerp
     # CUDA_VISIBLE_DEVICES=0 /scratch/Collin/envs/sae/bin/python -m vllm.entrypoints.openai.api_server \
