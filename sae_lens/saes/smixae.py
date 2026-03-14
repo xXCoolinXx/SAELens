@@ -460,6 +460,8 @@ def smixae_encode(
     )  # (batch_size, n_experts, d_bottelneck)
 
     if sae.cfg.rescale_acts_by_decoder_norm:
-        hidden_pre_bottleneck = hidden_pre_bottleneck * sae.effective_decoder_norm
+        hidden_pre_bottleneck = (
+            hidden_pre_bottleneck * sae.effective_decoder_norm.unsqueeze(-1)
+        )
 
     return h_latent, hidden_pre_latent, hidden_pre_bottleneck
