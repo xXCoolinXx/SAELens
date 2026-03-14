@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## v6.38.0 (2026-03-14)
+
+### Feature
+
+* feat: support chat datasets and chat formatting (#658)
+
+* feat: support chat datasets and chat formatting
+
+* changes from CR
+
+* changes from CR
+
+* changes from CR
+
+* changes from CR
+
+* bust cache for build
+
+* more CR fixes ([`32461c0`](https://github.com/decoderesearch/SAELens/commit/32461c0104cabcf487b626d41d3903398c583f7e))
+
 ## v6.37.7 (2026-03-13)
 
 ### Fix
