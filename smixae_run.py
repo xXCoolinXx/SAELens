@@ -61,7 +61,7 @@ cfg = LanguageModelSAERunnerConfig(
         n_experts=4096,  # Good amount of features, compare to Gemma Scope
         d_expert=8,
         d_bottleneck=3,
-        d_sae=16 * 2048,  # this parameter is ignored
+        d_sae=8 * 4096,  # this parameter is ignored
         # l0_coefficient=1.0,
         k_experts=64,
         aux_loss_coefficient=1 / 32,
@@ -80,11 +80,11 @@ cfg = LanguageModelSAERunnerConfig(
     train_batch_size_tokens=batch_size,
     dtype="bfloat16",
     device=device,
-    context_size=2048,
+    context_size=128,
     disable_concat_sequences=True,
     training_tokens=total_tokens,
-    n_batches_in_buffer=40,
-    store_batch_size_prompts=32,
+    n_batches_in_buffer=16384,
+    store_batch_size_prompts=256,
     # Wandb
     logger=LoggingConfig(
         log_to_wandb=True,
@@ -98,6 +98,9 @@ cfg = LanguageModelSAERunnerConfig(
     # Try compilation, since we have an H100 :)
     compile_llm=True,
     compile_sae=True,
+    autocast=True,
+    autocast_lm=True,
+    act_store_device="cpu",  # Move to CPU, we got hella RAM
     save_final_checkpoint=True,
 )
 
