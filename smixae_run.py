@@ -45,7 +45,7 @@ source_repo = "monology/pile-uncopyrighted"
 
 device = "cuda"
 
-batch_size = 4096
+batch_size = 8192
 total_tokens = 500_000_000
 # total_tokens = 1000 * batch_size
 
@@ -58,8 +58,8 @@ lr_decay_steps = total_training_steps // 5  # 20% of training
 cfg = LanguageModelSAERunnerConfig(
     sae=SMIXAETrainingConfig(
         d_in=2304,  # d_in=768,  # For pythia and gpt2-small,
-        n_experts=2048,  # Good amount of features, compare to Gemma Scope
-        d_expert=16,
+        n_experts=4096,  # Good amount of features, compare to Gemma Scope
+        d_expert=8,
         d_bottleneck=3,
         d_sae=16 * 2048,  # this parameter is ignored
         # l0_coefficient=1.0,

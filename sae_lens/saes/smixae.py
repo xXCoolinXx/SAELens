@@ -26,14 +26,8 @@ class SMIXAEConfig(SAEConfig):
 
     n_experts: int = 1024
     d_expert: int = 16
-    # k_experts: int = 8
     d_bottleneck: int = 3
-    b_enc_init: float = -0.1
     rescale_acts_by_decoder_norm: bool = True
-
-    # jump_relu_bandwidth: float = 0.05
-    # jump_relu_init_threshold = 0.1
-    # l0_coefficient: float = 1.0
 
     @override
     @classmethod
@@ -145,22 +139,13 @@ class SMIXAETrainingConfig(TrainingSAEConfig):
     Configuration class for training a SMIXAETraining.
     """
 
-    # l1_coefficient: float = 1.0
-    # lp_norm: float = 1.0
-    # l1_warm_up_steps: int = 0
-
     n_experts: int = 1024
     d_expert: int = 16
     d_bottleneck: int = 3
     k_experts: int = 8  # L0 = d_expert * k_experts
     aux_loss_coefficient: float = 1 / 32
-    b_enc_init: float = -0.1
     rescale_acts_by_decoder_norm: bool = True
-    # expert_threshold: float = 0.1
 
-    # jump_relu_bandwidth: float = 0.05
-    # jump_relu_init_threshold: float = 2.0
-    # l0_coefficient: float = 1.0
     threshold_lr: float = 0.1
     dead_after_n_passes: int = 1000  # If an expert hasn't fired for 1k passes, it has sadly passed away and we give it emergency aux loss to resucitate
 
@@ -182,18 +167,10 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
       - calculate_aux_loss: computes a sparsity penalty based on the (optionally scaled) p-norm of feature activations.
     """
 
-    # b_enc: nn.Parameter
-    # b_enc : nn.Parameter
-    # W_gate: nn.Parameter
     b_enc: nn.Parameter
     b_bottleneck: nn.Parameter
     W_bottleneck: nn.Parameter
     W_latent_dec: nn.Parameter
-    # log_threshold: nn.Parameter
-
-    # Flow diagram
-
-    # x : d_model -> SwiGLU : (n_experts, d_expert) -> Bottleneck (n_experts, d_bottleneck) -> Latent Decode : (n_experts, d_expert) -> W_dec : (d_model)
 
     def __init__(self, cfg: SMIXAETrainingConfig):
         # Intercept d_sae
@@ -461,12 +438,6 @@ def _init_weights_smixae(
         )
     )
 
-    # sae.log_threshold = nn.Parameter(
-    #     torch.ones(sae.cfg.n_experts, dtype=sae.dtype, device=sae.device)
-    #     * np.log(sae.cfg.jump_relu_init_threshold)
-    # )
-
-    # nn.init.kaiming_uniform_(sae.W_gate)
     nn.init.kaiming_uniform_(sae.W_bottleneck)
     nn.init.kaiming_uniform_(sae.W_latent_dec)
 
@@ -475,23 +446,6 @@ def smixae_encode(
     sae: SMIXAE | SMIXAETraining, x: torch.Tensor
 ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
     sae_in = sae.process_sae_in(x)
-
-    # StepGLU encoder gate
-
-    # Use step to decouple magnitude from existence
-    # gate = sae.activation_fn(
-    #     sae_in @ sae.W_gate + sae.b_enc  # , sae.threshold, sae.cfg.jump_relu_bandwidth
-    # )
-
-    # Save L0 to apply count loss later
-    # l0 = torch.sum(gate, dim=-1)  # type: ignore
-    # latent_count = gate.unflatten(-1, (sae.cfg.n_experts, sae.cfg.d_expert)).sum(
-    #     dim=-1
-    # )  # 0 to 16
-    # expert_cost = torch.log1p(
-    #     latent_count
-    # )  # concave: first latent costs ~0.7, going from 8→9 costs ~0.05
-    # l0 = expert_cost.sum(dim=-1)
 
     # Standard forward
     hidden_pre_latent = sae_in @ sae.W_enc + sae.b_enc
