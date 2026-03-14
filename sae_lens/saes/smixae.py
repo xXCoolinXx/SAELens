@@ -98,31 +98,11 @@ class SMIXAE(SAE[SMIXAEConfig]):
         """
         Encode the input tensor into the feature space.
         """
-        # Preprocess the SAE input (casting type, applying hooks, normalization)
-        # Process the input (including dtype conversion, hook call, and any activation normalization)
         _, _, z = smixae_encode(self, x)  # (batch, n_experts, d_bottleneck)
 
         z_norm_mask = z.norm(dim=-1) > self.threshold  # type: ignore # (batch, n_experts) mask
 
-        z = z * z_norm_mask.unsqueeze(-1)  # Apply mask per bottelneck
-
-        # sae_in = self.process_sae_in(x)
-
-        # # SwiGLU encoder gate
-        # gate = self.activation_fn(sae_in @ self.W_gate)
-        # hidden_pre = self.hook_sae_acts_pre(sae_in @ self.W_enc)
-        # h = self.hook_sae_acts_post(hidden_pre * gate)
-        # h_unflattened = h.unflatten(-1, (self.cfg.n_experts, self.cfg.d_expert))
-
-        # # Bottleneck
-        # self.z = torch.einsum(
-        #     "bne,ned->bnd", h_unflattened, self.W_bottleneck
-        # )  # (batch_size, n_experts, d_bottelneck)
-
-        # expert_norms = self.z.norm(dim=-1)  # (batch, n_experts)
-        # _, topk_idx = expert_norms.topk(self.cfg.k_experts, dim=-1)
-        # mask = torch.zeros_like(expert_norms).scatter(-1, topk_idx, 1.0)
-        # self.z = self.z * mask.unsqueeze(-1)
+        z = z * z_norm_mask.unsqueeze(-1)  # Apply mask per bottleneck
 
         return z
 
@@ -133,7 +113,7 @@ class SMIXAE(SAE[SMIXAEConfig]):
         """
         sae_out_pre = torch.einsum("bnd,nde->bne", feature_acts, self.W_latent_dec)
         sae_out_pre = sae_out_pre.flatten(-2, -1)
-        sae_out_pre = sae_out_pre @ self.W_dec  # + self.b_dec
+        sae_out_pre = sae_out_pre @ self.W_dec + self.b_dec
 
         sae_out_pre = self.hook_sae_recons(sae_out_pre)
         sae_out_pre = self.run_time_activation_norm_fn_out(sae_out_pre)
@@ -228,7 +208,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         self.cfg.apply_b_dec_to_input = (
             False  # True  # True  # Remove bias term - destroys structure
         )
-        self.b_dec.requires_grad_(False)
+        # self.b_dec.requires_grad_(False)
 
     def initialize_weights(self) -> None:
         super().initialize_weights()
@@ -300,7 +280,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         sae_out_pre = torch.einsum("bnd,nde->bne", feature_acts, self.W_latent_dec)
         sae_out_pre = sae_out_pre.flatten(-2, -1)
         sae_out_pre = (
-            sae_out_pre @ self.W_dec  # + self.b_dec
+            sae_out_pre @ self.W_dec + self.b_dec
         )  # Bias term destroys manifold structure, so only add it to the output
 
         sae_out_pre = self.hook_sae_recons(sae_out_pre)
@@ -470,7 +450,8 @@ def _init_weights_smixae(
 
     sae.b_bottleneck = nn.Parameter(
         torch.zeros(
-            sae.cfg.n_experts * sae.cfg.d_expert,
+            sae.cfg.n_experts,
+            sae.cfg.d_bottleneck,
             dtype=sae.dtype,
             device=sae.device,
         )
@@ -543,8 +524,8 @@ def smixae_encode(
     h_unflattened = h_unflattened  # * expert_mask.unsqueeze(-1)
 
     # Bottleneck
-    z = torch.einsum(
-        "bne,ned->bnd", h_unflattened, sae.W_bottleneck
+    z = (
+        torch.einsum("bne,ned->bnd", h_unflattened, sae.W_bottleneck) + sae.b_bottleneck
     )  # (batch_size, n_experts, d_bottelneck)
 
     if sae.cfg.rescale_acts_by_decoder_norm:
