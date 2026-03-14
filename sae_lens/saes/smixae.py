@@ -98,13 +98,15 @@ class SMIXAE(SAE[SMIXAEConfig]):
         """
         Encode the input tensor into the feature space.
         """
-        _, _, z = smixae_encode(self, x)  # (batch, n_experts, d_bottleneck)
+        _, _, hidden_pre_bottleneck = smixae_encode(
+            self, x
+        )  # (batch, n_experts, d_bottleneck)
 
-        z_norm_mask = z.norm(dim=-1) > self.threshold  # type: ignore # (batch, n_experts) mask
+        bottleneck_mask = hidden_pre_bottleneck.norm(dim=-1) > self.threshold  # type: ignore # (batch, n_experts) mask
 
-        z = z * z_norm_mask.unsqueeze(-1)  # Apply mask per bottleneck
-
-        return z
+        return hidden_pre_bottleneck * bottleneck_mask.unsqueeze(
+            -1
+        )  # Apply mask per bottleneck
 
     def decode(self, feature_acts: torch.Tensor) -> torch.Tensor:
         """
@@ -121,6 +123,20 @@ class SMIXAE(SAE[SMIXAEConfig]):
 
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
         return nn.ReLU()  # Try ReLU, GELU, etc.
+
+    @property
+    def effective_decoder_norm(self) -> torch.Tensor:
+        """
+        Computes the Frobenius norm of the effective 3D -> Residual projection.
+        Returns a tensor of shape (n_experts,)
+        """
+        W_dec_reshaped = self.W_dec.view(self.cfg.n_experts, self.cfg.d_expert, -1)
+
+        # W_latent_dec: (n_experts, d_bottleneck, d_expert)
+        # W_dec_reshaped: (n_experts, d_expert, d_model)
+        W_eff = self.W_latent_dec @ W_dec_reshaped
+
+        return torch.linalg.matrix_norm(W_eff, ord="fro", dim=(-2, -1))
 
 
 @dataclass
@@ -221,17 +237,19 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     def encode_with_hidden_pre(
         self, x: torch.Tensor
     ) -> tuple[torch.Tensor, torch.Tensor]:
-        h, hidden_pre, z = smixae_encode(self, x)
+        h_latent, hidden_pre_latent, hidden_pre_bottleneck = smixae_encode(self, x)
 
-        batch_norm_mask = self.batchtopk(z.norm(dim=-1)) > 0  # (batch_size, n_experts)
+        batch_norm_mask = (
+            self.batchtopk(hidden_pre_bottleneck.norm(dim=-1)) > 0
+        )  # (batch_size, n_experts)
 
-        self.z_pre = z
-        self.z = z * batch_norm_mask.unsqueeze(-1)
-        # self.l0 = l0
-        self.hook_sae_acts_pre(hidden_pre)
-        self.hook_sae_acts_post(h)
-        # self.hook_l0(l0)
-        self.hook_sae_acts_bottleneck(z)
+        # Stash
+        self.hidden_pre_bottleneck = hidden_pre_bottleneck
+        self.h_bottleneck = hidden_pre_bottleneck * batch_norm_mask.unsqueeze(-1)
+
+        self.hook_sae_acts_pre(hidden_pre_latent)
+        self.hook_sae_acts_post(h_latent)
+        self.hook_sae_acts_bottleneck(self.h_bottleneck)
 
         did_fire = batch_norm_mask.any(dim=0)
         self.n_passes_since_fired += 1
@@ -239,38 +257,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
             self.n_passes_since_fired * ~did_fire
         )  # 0 out if it did fire
 
-        # Process the input (including dtype conversion, hook call, and any activation normalization)
-        # sae_in = self.process_sae_in(x)
-
-        # # StepGLU encoder gate
-
-        # # Use step to decouple magnitude from existence
-        # gate = Step.apply(
-        #     sae_in @ self.W_gate, self.threshold, self.cfg.jump_relu_bandwidth
-        # )
-
-        # # Save L0 to apply count loss later
-        # self.l0 = torch.sum(gate, dim=-1)  # type: ignore
-
-        # # Standard forward
-        # hidden_pre = self.hook_sae_acts_pre(sae_in @ self.W_enc)
-        # h = hidden_pre * gate
-
-        # h_unflattened = h.unflatten(-1, (self.cfg.n_experts, self.cfg.d_expert))
-        # # expert_mask = (h_unflattened.norm(dim=-1) > self.cfg.expert_threshold).float()
-        # # h_unflattened = h_unflattened * expert_mask.unsqueeze(-1)
-
-        # # Bottleneck
-        # self.z = torch.einsum(
-        #     "bne,ned->bnd", h_unflattened, self.W_bottleneck
-        # )  # (batch_size, n_experts, d_bottelneck)
-
-        # # expert_norms = self.z.norm(dim=-1)  # (batch, n_experts)
-        # # _, topk_idx = expert_norms.topk(self.cfg.k_experts, dim=-1)
-        # # mask = torch.zeros_like(expert_norms).scatter(-1, topk_idx, 1.0)
-        # # self.z = self.z * mask.unsqueeze(-1)
-
-        return h, hidden_pre
+        return h_latent, hidden_pre_latent  # These get ignored
 
     def decode(self, feature_acts: torch.Tensor) -> torch.Tensor:
         """
@@ -294,9 +281,9 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     ) -> TrainStepOutput:
         """Forward pass during training."""
         feature_acts, hidden_pre = self.encode_with_hidden_pre(step_input.sae_in)
-        sae_out = self.decode(self.z)
+        sae_out = self.decode(self.h_bottleneck)
 
-        self.update_threshold(self.z.norm(dim=-1))
+        self.update_threshold(self.h_bottleneck.norm(dim=-1))
 
         # Calculate MSE loss
         per_item_mse_loss = self.mse_loss_fn(sae_out, step_input.sae_in)
@@ -335,14 +322,14 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         metrics = {}
 
         metrics["experts_above_1e-3_L2"] = (
-            (self.z.norm(dim=-1) > 1e-3).float().sum(dim=-1).mean()
+            (self.h_bottleneck.norm(dim=-1) > 1e-3).float().sum(dim=-1).mean()
         )
 
         metrics["experts_above_1e-1_L2"] = (
-            (self.z.norm(dim=-1) > 1e-1).float().sum(dim=-1).mean()
+            (self.h_bottleneck.norm(dim=-1) > 1e-1).float().sum(dim=-1).mean()
         )
 
-        metrics["expert_norm_mean"] = self.z.norm(dim=-1).mean()
+        metrics["expert_norm_mean"] = self.h_bottleneck.norm(dim=-1).mean()
 
         return TrainStepOutput(
             sae_in=step_input.sae_in,
@@ -366,17 +353,9 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         losses["dead_expert_aux_loss"] = self.calculate_topk_aux_loss(
             step_input.sae_in,
             sae_out,
-            self.z_pre,
+            self.hidden_pre_bottleneck,
             self.n_passes_since_fired > self.cfg.dead_after_n_passes,
         )
-
-        # losses["l0"] = (self.cfg.l0_coefficient * self.l0).mean()
-
-        # Apply group lasso on feature acts
-
-        # losses["group_lasso"] = (
-        #     self.cfg.aux_loss_coefficient * self.z.norm(dim=-1).sum(dim=-1).mean()
-        # )  # L2 norm per expert, 'L1' sum over all experts
 
         return losses
 
@@ -423,6 +402,20 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
                 min_positive = norms_topk[positive_mask].min().to(self.threshold.dtype)
                 self.threshold = (1 - lr) * self.threshold + lr * min_positive
 
+    @property
+    def effective_decoder_norm(self) -> torch.Tensor:
+        """
+        Computes the Frobenius norm of the effective 3D -> Residual projection.
+        Returns a tensor of shape (n_experts,)
+        """
+        W_dec_reshaped = self.W_dec.view(self.cfg.n_experts, self.cfg.d_expert, -1)
+
+        # W_latent_dec: (n_experts, d_bottleneck, d_expert)
+        # W_dec_reshaped: (n_experts, d_expert, d_model)
+        W_eff = self.W_latent_dec @ W_dec_reshaped
+
+        return torch.linalg.matrix_norm(W_eff, ord="fro", dim=(-2, -1))
+
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
         return nn.ReLU()
 
@@ -430,15 +423,6 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
 def _init_weights_smixae(
     sae: SAE[SMIXAEConfig] | TrainingSAE[SMIXAETrainingConfig],
 ) -> None:
-    # sae.W_gate = nn.Parameter(
-    #     torch.empty(
-    #         sae.cfg.d_in,
-    #         sae.cfg.n_experts * sae.cfg.d_expert,
-    #         dtype=sae.dtype,
-    #         device=sae.device,
-    #     )
-    # )  # Same dim size but we reshape
-
     # Add gate bias term to allow more expressivity - pre relu
     sae.b_enc = nn.Parameter(
         torch.zeros(
@@ -510,7 +494,8 @@ def smixae_encode(
     # l0 = expert_cost.sum(dim=-1)
 
     # Standard forward
-    h_latent = sae.activation_fn(sae_in @ sae.W_enc + sae.b_enc)
+    hidden_pre_latent = sae_in @ sae.W_enc + sae.b_enc
+    h_latent = sae.activation_fn(hidden_pre_latent)
     h_latent = h_latent.unflatten(
         -1, (sae.cfg.n_experts, sae.cfg.d_expert)
     )  # Unflatten
@@ -521,9 +506,6 @@ def smixae_encode(
     )  # (batch_size, n_experts, d_bottelneck)
 
     if sae.cfg.rescale_acts_by_decoder_norm:
-        norm = (
-            sae.W_latent_dec @ sae.W_dec.view(sae.cfg.n_experts, sae.cfg.d_expert, -1)
-        ).norm(dim=-1)
-        hidden_pre_bottleneck = norm * hidden_pre_bottleneck
+        hidden_pre_bottleneck = hidden_pre_bottleneck * sae.effective_decoder_norm
 
-    return h_latent, hidden_pre_bottleneck
+    return h_latent, hidden_pre_latent, hidden_pre_bottleneck
