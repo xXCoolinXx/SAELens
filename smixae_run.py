@@ -46,7 +46,7 @@ source_repo = "monology/pile-uncopyrighted"
 device = "cuda"
 
 batch_size = 16384
-total_tokens = 500_000_000
+total_tokens = 100_000_000
 # total_tokens = 1000 * batch_size
 
 total_training_steps = total_tokens // batch_size
@@ -57,7 +57,7 @@ lr_decay_steps = total_training_steps // 5  # 20% of training
 # So many damn parameters
 cfg = LanguageModelSAERunnerConfig(
     sae=SMIXAETrainingConfig(
-        d_in=2304,  # d_in=768,  # For pythia and gpt2-small,
+        d_in=3584,  # 2304,  # d_in=768,  # For pythia and gpt2-small,
         n_experts=4096,  # Good amount of features, compare to Gemma Scope
         d_expert=8,
         d_bottleneck=3,
@@ -69,9 +69,9 @@ cfg = LanguageModelSAERunnerConfig(
         normalize_activations="expected_average_only_in",
     ),
     # resume_from_checkpoint="/scratch/Collin/SAELens/checkpoints/vcqgm5qo/250003456",  # Remove this later
-    model_name="gemma-2-2b",  # "pythia-160m-deduped",  # Use deduped, apparently its more interpretable
+    model_name="gemma-2-9b",  # "gemma-2-2b",  # "pythia-160m-deduped",  # Use deduped, apparently its more interpretable
     model_class_name="HookedTransformer",
-    hook_name="blocks.12.hook_resid_post",  # "blocks.8.hook_resid_post",
+    hook_name="blocks.11.hook_resid_post",  # "blocks.8.hook_resid_post",
     dataset_path=source_repo,  # We already loaded the dataset because we have to use custom code # type: ignore
     is_dataset_tokenized=False,
     # Training Parameters
@@ -89,7 +89,7 @@ cfg = LanguageModelSAERunnerConfig(
     # Wandb
     logger=LoggingConfig(
         log_to_wandb=True,
-        wandb_project="SMIXAE on Gemma 2-2B, Batch Top K",
+        wandb_project="SMIXAE on Gemma 2-9B, Batch Top K",
         wandb_log_frequency=30,
         eval_every_n_wandb_logs=5000000,
     ),
