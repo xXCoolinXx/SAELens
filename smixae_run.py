@@ -45,7 +45,7 @@ source_repo = "monology/pile-uncopyrighted"
 
 device = "cuda"
 
-batch_size = 8192
+batch_size = 16384
 total_tokens = 500_000_000
 # total_tokens = 1000 * batch_size
 
@@ -68,13 +68,14 @@ cfg = LanguageModelSAERunnerConfig(
         rescale_acts_by_decoder_norm=True,
         normalize_activations="expected_average_only_in",
     ),
+    # resume_from_checkpoint="/scratch/Collin/SAELens/checkpoints/vcqgm5qo/250003456",  # Remove this later
     model_name="gemma-2-2b",  # "pythia-160m-deduped",  # Use deduped, apparently its more interpretable
     model_class_name="HookedTransformer",
     hook_name="blocks.12.hook_resid_post",  # "blocks.8.hook_resid_post",
     dataset_path=source_repo,  # We already loaded the dataset because we have to use custom code # type: ignore
     is_dataset_tokenized=False,
     # Training Parameters
-    lr=3e-4,
+    lr=5e-4,
     lr_warm_up_steps=lr_warm_up_steps,
     lr_decay_steps=lr_decay_steps,
     train_batch_size_tokens=batch_size,
@@ -83,8 +84,8 @@ cfg = LanguageModelSAERunnerConfig(
     context_size=128,
     disable_concat_sequences=True,
     training_tokens=total_tokens,
-    n_batches_in_buffer=16384,
-    store_batch_size_prompts=256,
+    n_batches_in_buffer=1024,
+    store_batch_size_prompts=128,
     # Wandb
     logger=LoggingConfig(
         log_to_wandb=True,

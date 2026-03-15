@@ -59,7 +59,7 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     # export CUDA_VISIBLE_DEVICES=1 # Hot fix because ASAX doesn't properly change GPU visibility :/
     # Train an SAE
     # /scratch/Collin/envs/sae/bin/python3 context-sae-train.py
-    CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python3 smixae_run.py
+    CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python3 -u smixae_run.py
     # /scratch/Collin/envs/sae/bin/python3 /scratch/Collin/SAELens/probing_tasks.py  # manifold_visualization_smixae.py #
 
     # /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py \
@@ -97,10 +97,10 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     # --color-scale "hsv"
 
     # CUDA_VISIBLE_DEVICES=0 /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py all-datasets \
-    # --checkpoint-path "/scratch/Collin/SAELens/checkpoints/lhm93f4f/125001728" \
+    # --checkpoint-path "/scratch/Collin/SAELens/checkpoints/vcqgm5qo/250003456" \
     # --base-model-name gemma-2-2b \
     # --hook-point blocks.12.hook_resid_post \
-    # --datasets-config manifold_probing/dataset_config.json &
+    # --datasets-config manifold_probing/dataset_config.json
 
     # CUDA_VISIBLE_DEVICES=0 /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py all-datasets \
     # --checkpoint-path "/scratch/Collin/SAELens/checkpoints/sxa3nlyu/final_500002816" \
