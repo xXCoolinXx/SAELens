@@ -1,22 +1,19 @@
 #!/usr/bin/env python3
 """
-Newline-position manifold analysis with SMIXAE expert activations
-using multivariate Fisher discriminant scores.
+Newline-position manifold analysis with SMIXAE expert activations.
 
-Pipeline
---------
-1. Stream texts from HuggingFace, wrap to fixed line width, tokenize,
-   compute per-token ``chars_since_nl``.
-2. Collect hidden states from a TransformerLens model at a specified hook point.
-3. Encode hidden states through a pretrained SMIXAE (loaded via sae_lens) to
-   obtain per-expert bottleneck activations  (n_experts × d_bottleneck).
-4. Bucket ``chars_since_nl`` into N equal-width bins, compute the multivariate
-   Fisher discriminant ratio  tr(S_W⁻¹ S_B) per expert.
-5. Rank experts, visualise the top-10 bottleneck manifolds, and save results.
+Scores each expert with four metrics:
+  • decode_r2:          R² of  chars_since_nl ~ linear(bottleneck)
+  • encode_linear_r2:   mean R² of  bottleneck_dim ~ linear(chars)
+  • encode_periodic_r2: mean R² of  bottleneck_dim ~ linear(chars) + Fourier(chars)
+  • periodic_gain:      encode_periodic_r2 − encode_linear_r2
+
+Generates HTML plots showing the top-k experts for EVERY method side by side.
 """
 
 import gc
 import json
+import math
 import os
 import re
 import textwrap
@@ -38,11 +35,31 @@ from transformer_lens import HookedTransformer
 from transformers import DataCollatorWithPadding
 
 from sae_lens import SAE
+from sae_lens.saes.smixae import SMIXAE  # noqa: F401 — registers architecture
 
-# Ensure SMIXAE architecture is registered with sae_lens
-from sae_lens.saes.smixae import SMIXAE  # noqa: F401
+# ═══════════════════════ Constants ═══════════════════════════════════════
 
-# ═══════════════════════ Memory helpers ══════════════════════════════════
+VALID_RANK_BY = [
+    "decode_r2",
+    "encode_linear_r2",
+    "encode_periodic_r2",
+    "periodic_gain",
+]
+METHOD_LABELS = {
+    "decode_r2": "Decode R²",
+    "encode_linear_r2": "Linear R²",
+    "encode_periodic_r2": "Periodic R²",
+    "periodic_gain": "Periodic Δ",
+}
+METHOD_SHORT = {
+    "decode_r2": "dec",
+    "encode_linear_r2": "lin",
+    "encode_periodic_r2": "per",
+    "periodic_gain": "Δper",
+}
+
+
+# ═══════════════════════ Memory ══════════════════════════════════════════
 
 
 def gpu_mem_mb() -> str:
@@ -60,36 +77,26 @@ def flush_gpu():
         torch.cuda.reset_peak_memory_stats()
 
 
-# ═══════════════════════ Hook helpers ════════════════════════════════════
+# ═══════════════════════ Helpers ═════════════════════════════════════════
 
 
 def extract_layer_from_hook(hook_name: str) -> int | None:
-    """Extract layer index from hook name like 'blocks.20.hook_resid_post'."""
-    match = re.search(r"blocks\.(\d+)\.", hook_name)
-    if match:
-        return int(match.group(1))
-    return None
+    m = re.search(r"blocks\.(\d+)\.", hook_name)
+    return int(m.group(1)) if m else None
 
 
-# ═══════════════════════ Bucketing ═══════════════════════════════════════
-
-
-def bucket_labels(
-    labels: torch.Tensor, n_buckets: int
-) -> tuple[torch.Tensor, np.ndarray]:
-    lo = float(labels.min().item())
-    hi = float(labels.max().item())
-    bin_edges = np.linspace(lo, hi, n_buckets + 1)
-    boundaries = torch.tensor(bin_edges[1:-1], dtype=labels.dtype)
-    bucketed = torch.bucketize(labels.float(), boundaries.float()).long()
-    return bucketed, bin_edges
+def _grid_layout(n_methods: int, top_k: int, max_cols: int = 5):
+    """Returns (total_rows, ncols, rows_per_method)."""
+    ncols = min(top_k, max_cols)
+    rows_per = max(math.ceil(top_k / ncols), 1) if ncols > 0 else 1
+    return rows_per * n_methods, ncols, rows_per
 
 
 # ═══════════════════════ Data Pipeline ═══════════════════════════════════
 
 
-def wrap_preserve_newlines(text: str, width: int, **kw) -> str:
-    wrapper = textwrap.TextWrapper(width=width, **kw)
+def wrap_preserve_newlines(text: str, width: int) -> str:
+    wrapper = textwrap.TextWrapper(width=width)
     out: list[str] = []
     for line in text.splitlines(keepends=False):
         if line.strip() == "":
@@ -99,21 +106,19 @@ def wrap_preserve_newlines(text: str, width: int, **kw) -> str:
     return "\n".join(out)
 
 
-def make_line_wrapper(
-    line_length: int, text_key: str = "text", out_key: str = "text_lines"
-):
+def make_line_wrapper(line_length: int):
     def _fn(ex):
-        ex[out_key] = wrap_preserve_newlines(ex[text_key], width=line_length)
+        ex["text_lines"] = wrap_preserve_newlines(ex["text"], width=line_length)
         return ex
 
     return _fn
 
 
-def assert_chars_since_nl_map(line_length: int, key: str = "chars_since_nl"):
+def assert_chars_since_nl_map(line_length: int):
     def _fn(batch):
         bad = [
             (i, m)
-            for i, seq in enumerate(batch[key])
+            for i, seq in enumerate(batch["chars_since_nl"])
             if (m := max(seq, default=0)) > line_length
         ]
         assert not bad, (
@@ -128,33 +133,27 @@ def make_forward_inputs_with_chars_since_nl(
     tokenizer,
     max_seq_len: int,
     use_chat: bool,
-    text_key: str = "text_lines",
-    out_chars_key: str = "chars_since_nl",
-    add_generation_prompt: bool = False,
 ):
     if not getattr(tokenizer, "is_fast", False):
         raise ValueError("Requires a *fast* tokenizer (for offset_mapping).")
-
     special_ids = set(getattr(tokenizer, "all_special_ids", ()))
 
-    def _render_and_span(x: str) -> tuple[str, int, int]:
+    def _render(x: str):
         if not use_chat:
             return x, 0, len(x)
-        rendered = tokenizer.apply_chat_template(
+        r = tokenizer.apply_chat_template(
             [{"role": "user", "content": x}],
             tokenize=False,
-            add_generation_prompt=add_generation_prompt,
+            add_generation_prompt=False,
         )
-        start = rendered.find(x)
-        if start == -1:
-            return rendered, 0, 0
-        return rendered, start, start + len(x)
+        s = r.find(x)
+        return (r, s, s + len(x)) if s != -1 else (r, 0, 0)
 
     def _fn(batch: dict[str, Any]) -> dict[str, Any]:
-        xs: list[str] = batch[text_key]
+        xs = batch["text_lines"]
         rendered_list, spans = [], []
         for x in xs:
-            r, s, e = _render_and_span(x)
+            r, s, e = _render(x)
             rendered_list.append(r)
             spans.append((s, e))
 
@@ -177,8 +176,7 @@ def make_forward_inputs_with_chars_since_nl(
             enc["offset_mapping"],
             enc["special_tokens_mask"],
         ):
-            last_nl = -1
-            cols: list[int] = []
+            last_nl, cols = -1, []
             for tid, (s, e), is_sp in zip(ids, offs, spmask):
                 tid = int(tid)
                 if is_sp or tid in special_ids or not (span_s <= s and e <= span_e):
@@ -191,11 +189,10 @@ def make_forward_inputs_with_chars_since_nl(
                 cols.append(e0 - last_nl - 1)
             out_chars.append(cols)
 
-        enc[out_chars_key] = out_chars
         return {
             "input_ids": enc["input_ids"],
             "attention_mask": enc["attention_mask"],
-            out_chars_key: enc[out_chars_key],
+            "chars_since_nl": out_chars,
         }
 
     return _fn
@@ -213,19 +210,10 @@ def collect_hook_hiddens(
     num_workers: int = 0,
     max_seq_len: int | None = None,
 ) -> list[torch.Tensor]:
-    """
-    Collect activations at *hook_name* using TransformerLens run_with_cache.
-
-    Uses ``names_filter`` to cache only the requested hook and
-    ``stop_at_layer`` to skip computing unnecessary later layers.
-    Every batch's GPU tensors are freed after copying the result to CPU.
-    """
     model.eval()
     device = next(model.parameters()).device
-
-    # Stop early if possible — no need to compute layers after our hook
     hook_layer = extract_layer_from_hook(hook_name)
-    stop_at_layer = hook_layer + 1 if hook_layer is not None else None
+    stop_at = hook_layer + 1 if hook_layer is not None else None
 
     if tokenizer.pad_token_id is None:
         tokenizer.pad_token = tokenizer.eos_token
@@ -238,19 +226,24 @@ def collect_hook_hiddens(
     )
 
     def collate_fn(examples):
-        feats = []
-        for ex in examples:
-            ids = ex["input_ids"]
-            am = ex["attention_mask"]
-            feats.append(
-                {
-                    "input_ids": ids.tolist() if torch.is_tensor(ids) else ids,
-                    "attention_mask": am.tolist() if torch.is_tensor(am) else am,
-                }
-            )
-        batch = collator(feats)
-        batch["lengths"] = batch["attention_mask"].sum(dim=1, dtype=torch.long)
-        return batch
+        feats = [
+            {
+                "input_ids": (
+                    e["input_ids"].tolist()
+                    if torch.is_tensor(e["input_ids"])
+                    else e["input_ids"]
+                ),
+                "attention_mask": (
+                    e["attention_mask"].tolist()
+                    if torch.is_tensor(e["attention_mask"])
+                    else e["attention_mask"]
+                ),
+            }
+            for e in examples
+        ]
+        b = collator(feats)
+        b["lengths"] = b["attention_mask"].sum(dim=1, dtype=torch.long)
+        return b
 
     dl = DataLoader(
         dataset,
@@ -261,40 +254,37 @@ def collect_hook_hiddens(
         pin_memory=(device.type == "cuda"),
     )
 
-    layer_out: list[torch.Tensor] = []
+    out: list[torch.Tensor] = []
     with torch.inference_mode():
-        for batch in tqdm(dl, desc=f"Collecting hiddens ({hook_name})"):
+        for batch in tqdm(dl, desc=f"Hiddens ({hook_name})"):
             lengths = batch.pop("lengths").tolist()
-            input_ids = batch["input_ids"].to(device, non_blocking=True)
-            attention_mask = batch["attention_mask"].to(device, non_blocking=True)
+            ids = batch["input_ids"].to(device, non_blocking=True)
+            am = batch["attention_mask"].to(device, non_blocking=True)
 
             _, cache = model.run_with_cache(
-                input_ids,
-                attention_mask=attention_mask,
+                ids,
+                attention_mask=am,
                 names_filter=hook_name,
-                stop_at_layer=stop_at_layer,
-                prepend_bos=False,  # we already tokenized with BOS
-                return_type=None,  # don't compute logits — saves memory
+                stop_at_layer=stop_at,
+                prepend_bos=False,
+                return_type=None,
             )
+            h = cache[hook_name].detach().cpu()
 
-            h = cache[hook_name].detach().cpu()  # (B, T, D)
-
-            # Free all GPU memory from this batch
-            del cache, input_ids, attention_mask, batch
+            del cache, ids, am, batch
             if device.type == "cuda":
                 torch.cuda.empty_cache()
 
             for i, L in enumerate(lengths):
                 if tokenizer.padding_side == "left":
-                    layer_out.append(h[i, -L:].contiguous())
+                    out.append(h[i, -L:].contiguous())
                 else:
-                    layer_out.append(h[i, :L].contiguous())
-
+                    out.append(h[i, :L].contiguous())
             del h
 
-    assert len(layer_out) == len(dataset)
-    logger.info(f"Collected {len(layer_out)} samples at {hook_name}  {gpu_mem_mb()}")
-    return layer_out
+    assert len(out) == len(dataset)
+    logger.info(f"Collected {len(out)} samples  {gpu_mem_mb()}")
+    return out
 
 
 # ═══════════════════ SMIXAE Encoding ═════════════════════════════════════
@@ -305,86 +295,108 @@ def extract_expert_bottleneck_acts(
     all_hiddens: torch.Tensor,
     batch_size: int = 4096,
 ) -> torch.Tensor:
-    """
-    Encode via ``sae.encode()`` in batches. For SMIXAE this returns
-    ``(batch, n_experts, d_bottleneck)`` — thresholded bottleneck activations.
-    """
     device = next(sae.parameters()).device
     sae_dtype = next(sae.parameters()).dtype
     chunks: list[torch.Tensor] = []
 
     sae.eval()
     with torch.no_grad():
-        for batch_cpu in tqdm(all_hiddens.split(batch_size), desc="SMIXAE encode"):
-            batch_gpu = batch_cpu.to(device=device, dtype=sae_dtype)
-            encoded = sae.encode(batch_gpu)
-            chunks.append(encoded.float().cpu())
-
-            del batch_gpu, encoded
+        for b_cpu in tqdm(all_hiddens.split(batch_size), desc="SMIXAE encode"):
+            b_gpu = b_cpu.to(device=device, dtype=sae_dtype)
+            chunks.append(sae.encode(b_gpu).float().cpu())
+            del b_gpu
             if device.type == "cuda":
                 torch.cuda.empty_cache()
 
     return torch.cat(chunks, dim=0)
 
 
-# ═══════════════════ Multivariate Fisher Score ═══════════════════════════
+# ═══════════════════ Regression Scoring ══════════════════════════════════
 
 
-def compute_expert_fisher_scores(
-    expert_acts: torch.Tensor,  # (N, n_experts, d_bottleneck) — CPU
-    labels: torch.Tensor,  # (N,) — CPU, bucketed
-    min_samples: int = 5,
-) -> np.ndarray:
-    """Entirely CPU-based — no GPU memory pressure."""
+def compute_expert_scores(
+    expert_acts: torch.Tensor,  # (N, n_experts, d_bottleneck) CPU
+    labels: torch.Tensor,  # (N,) CPU
+    line_length: int,
+    n_harmonics: int = 3,
+    chunk_size: int = 64,
+) -> pd.DataFrame:
     N, n_experts, d = expert_acts.shape
+    chars = labels.double()
 
-    unique_labels, counts = torch.unique(labels, return_counts=True)
-    valid = unique_labels[counts >= min_samples]
+    # Build design matrices
+    ones = torch.ones(N, dtype=torch.float64)
+    X_lin = torch.stack([chars, ones], dim=-1)  # (N, 2)
 
-    if len(valid) < 2:
-        logger.warning(
-            f"Only {len(valid)} class(es) ≥ {min_samples} samples; need ≥ 2."
+    feats = [chars, ones]
+    for k in range(1, n_harmonics + 1):
+        phase = 2 * torch.pi * k * chars / line_length
+        feats.extend([torch.sin(phase), torch.cos(phase)])
+    X_per = torch.stack(feats, dim=-1)  # (N, 2+2H)
+
+    X_lin_pinv = torch.linalg.pinv(X_lin)  # (2, N)
+    X_per_pinv = torch.linalg.pinv(X_per)  # (F, N)
+
+    enc_lin_r2 = torch.zeros(n_experts, d, dtype=torch.float64)
+    enc_per_r2 = torch.zeros(n_experts, d, dtype=torch.float64)
+    dec_r2 = torch.zeros(n_experts, dtype=torch.float64)
+    corrs = torch.zeros(n_experts, d, dtype=torch.float64)
+
+    chars_c = chars - chars.mean()
+    ss_tot_chars = (chars_c**2).sum().clamp(min=1e-10)
+
+    for start in tqdm(range(0, n_experts, chunk_size), desc="Expert scores"):
+        end = min(start + chunk_size, n_experts)
+        nc = end - start
+
+        # Reshape chunk of expert activations to (N, nc*d)
+        Y = expert_acts[:, start:end, :].double().reshape(N, nc * d)
+        Y_mean = Y.mean(dim=0, keepdim=True)
+        ss_tot = ((Y - Y_mean) ** 2).sum(dim=0).clamp(min=1e-10)
+
+        # Encode linear: bottleneck_dim ~ linear(chars)
+        Yh_lin = X_lin @ (X_lin_pinv @ Y)
+        enc_lin_r2[start:end] = (1 - ((Y - Yh_lin) ** 2).sum(0) / ss_tot).reshape(nc, d)
+
+        # Encode periodic: bottleneck_dim ~ linear(chars) + Fourier(chars)
+        Yh_per = X_per @ (X_per_pinv @ Y)
+        enc_per_r2[start:end] = (1 - ((Y - Yh_per) ** 2).sum(0) / ss_tot).reshape(nc, d)
+
+        # Decode: chars ~ linear(bottleneck)
+        acts_chunk = expert_acts[:, start:end, :].double()  # (N, nc, d)
+        X_dec = torch.cat(
+            [acts_chunk, torch.ones(N, nc, 1, dtype=torch.float64)],
+            dim=-1,
+        )  # (N, nc, d+1)
+        y_target = chars.view(1, N, 1).expand(nc, -1, -1)  # (nc, N, 1)
+        beta = torch.linalg.lstsq(X_dec.permute(1, 0, 2), y_target).solution
+        y_hat = (X_dec.permute(1, 0, 2) @ beta).squeeze(-1)  # (nc, N)
+        dec_r2[start:end] = (
+            1 - ((chars.unsqueeze(0) - y_hat) ** 2).sum(1) / ss_tot_chars
         )
-        return np.zeros(n_experts, dtype=np.float64)
 
-    logger.info(
-        f"Fisher: {len(valid)} classes with ≥ {min_samples} samples "
-        f"(counts: {dict(zip(valid.tolist(), counts[counts >= min_samples].tolist()))})"
-    )
+        # Per-dim Pearson correlation
+        acts_c = acts_chunk - acts_chunk.mean(dim=0, keepdim=True)
+        cov = (chars_c.view(N, 1, 1) * acts_c).sum(dim=0)
+        denom = ss_tot_chars.sqrt() * (acts_c**2).sum(dim=0).clamp(min=1e-10).sqrt()
+        corrs[start:end] = cov / denom
 
-    mask = torch.isin(labels, valid)
-    acts = expert_acts[mask].float()
-    labs = labels[mask]
-
-    global_mean = acts.mean(dim=0).double()
-
-    S_B = torch.zeros(n_experts, d, d, dtype=torch.float64)
-    S_W = torch.zeros(n_experts, d, d, dtype=torch.float64)
-
-    for c in tqdm(valid.tolist(), desc="Fisher scatter matrices"):
-        c_mask = labs == c
-        x_c = acts[c_mask].double()
-        n_c = x_c.shape[0]
-        mean_c = x_c.mean(dim=0)
-
-        diff = (mean_c - global_mean).unsqueeze(-1)
-        S_B += n_c * (diff @ diff.transpose(-1, -2))
-
-        centered = x_c - mean_c.unsqueeze(0)
-        S_W += torch.einsum("cnd,cne->nde", centered, centered)
-
-        del x_c, centered
-
-    S_W += 1e-8 * torch.eye(d, dtype=torch.float64).unsqueeze(0)
-
-    try:
-        X = torch.linalg.solve(S_W, S_B)
-        scores = torch.diagonal(X, dim1=-2, dim2=-1).sum(dim=-1)
-    except Exception as exc:
-        logger.warning(f"Fisher solve failed ({exc}); returning zeros.")
-        scores = torch.zeros(n_experts, dtype=torch.float64)
-
-    return scores.numpy()
+    # Assemble DataFrame
+    rows = []
+    for e in range(n_experts):
+        r = {
+            "expert_id": e,
+            "decode_r2": float(dec_r2[e]),
+            "encode_linear_r2": float(enc_lin_r2[e].mean()),
+            "encode_periodic_r2": float(enc_per_r2[e].mean()),
+            "periodic_gain": float(enc_per_r2[e].mean() - enc_lin_r2[e].mean()),
+        }
+        for j in range(d):
+            r[f"dim{j}_corr"] = float(corrs[e, j])
+            r[f"dim{j}_linear_r2"] = float(enc_lin_r2[e, j])
+            r[f"dim{j}_periodic_r2"] = float(enc_per_r2[e, j])
+        rows.append(r)
+    return pd.DataFrame(rows)
 
 
 def compute_expert_class_stats(
@@ -392,311 +404,444 @@ def compute_expert_class_stats(
     labels: torch.Tensor,
     threshold: float = 0.0,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Per-class stats using the *original* (unbucketed) labels."""
     unique = torch.unique(labels).tolist()
     norms = expert_acts.norm(dim=-1)
-
     means, rates = [], []
     for c in unique:
         m = labels == c
         means.append(expert_acts[m].float().mean(dim=0).numpy())
         rates.append((norms[m] > threshold).float().mean(dim=0).numpy())
-
     return np.stack(means), np.stack(rates), np.array(unique)
 
 
 # ═══════════════════════ Visualisation ═══════════════════════════════════
 
 
-def plot_top_experts(
+def _build_multi_method_grid(
+    scores_df: pd.DataFrame,
+    top_k: int,
+    use_3d: bool,
+    max_cols: int = 5,
+):
+    """
+    Build subplot grid and collect per-method expert lists.
+
+    Returns (fig, total_rows, ncols, rows_per, method_eids, titles).
+    """
+    methods = VALID_RANK_BY
+    actual_k = min(top_k, len(scores_df))
+    total_rows, ncols, rows_per = _grid_layout(len(methods), actual_k, max_cols)
+
+    titles: list[str] = []
+    method_eids: dict[str, list[int]] = {}
+
+    for method in methods:
+        ranked = scores_df.sort_values(method, ascending=False).head(actual_k)
+        eids: list[int] = []
+        for _, row in ranked.iterrows():
+            eid = int(row["expert_id"])
+            val = float(row[method])
+            eids.append(eid)
+            titles.append(f"{METHOD_SHORT[method]}: E{eid} ({val:.3f})")
+        # Pad remaining cells in this method's row-block
+        titles.extend([""] * (rows_per * ncols - len(eids)))
+        method_eids[method] = eids
+
+    spec_type = "scene" if use_3d else "xy"
+    specs = [[{"type": spec_type} for _ in range(ncols)] for _ in range(total_rows)]
+
+    fig = make_subplots(
+        rows=total_rows,
+        cols=ncols,
+        subplot_titles=titles,
+        specs=specs,
+        horizontal_spacing=0.02,
+        vertical_spacing=0.025,
+    )
+
+    return fig, total_rows, ncols, rows_per, method_eids
+
+
+def _add_method_annotations(fig, methods, rows_per, total_rows):
+    """Add rotated method labels on the left margin."""
+    for m_i, method in enumerate(methods):
+        y = 1.0 - (m_i * rows_per + rows_per / 2) / total_rows
+        fig.add_annotation(
+            text=f"<b>{METHOD_LABELS[method]}</b>",
+            xref="paper",
+            yref="paper",
+            x=-0.05,
+            y=y,
+            showarrow=False,
+            font=dict(size=12),
+            textangle=-90,
+        )
+
+
+def _update_3d_scene(fig, flat_idx: int):
+    """Configure a 3D scene by its flat (0-based) grid index."""
+    scene_key = "scene" if flat_idx == 0 else f"scene{flat_idx + 1}"
+    fig.update_layout(
+        **{
+            scene_key: dict(
+                aspectmode="data",
+                xaxis=dict(showbackground=False, showticklabels=False, title=""),
+                yaxis=dict(showbackground=False, showticklabels=False, title=""),
+                zaxis=dict(showbackground=False, showticklabels=False, title=""),
+                camera=dict(eye=dict(x=1.5, y=1.5, z=1.0)),
+            )
+        }
+    )
+
+
+def plot_multi_method_scatter(
     expert_acts: torch.Tensor,
     labels: torch.Tensor,
-    fisher_scores: np.ndarray,
+    scores_df: pd.DataFrame,
     top_k: int = 10,
     max_points: int = 50_000,
-    output_path: str = "top_experts.html",
+    output_path: str = "scatter.html",
 ) -> go.Figure:
-    """Scatter plots coloured by *original* (continuous) chars_since_nl."""
-    N, n_experts, d = expert_acts.shape
-    ranking = np.argsort(fisher_scores)[::-1][:top_k].copy()
+    """One scatter subplot per top expert, arranged by method (one row-group each)."""
+    if len(scores_df) == 0:
+        logger.warning("No experts to plot (scatter)")
+        return go.Figure()
 
-    if max_points < N:
-        rng = np.random.default_rng(0)
-        idx = rng.choice(N, size=max_points, replace=False)
-        idx.sort()
+    methods = VALID_RANK_BY
+    N, _, d = expert_acts.shape
+    use_3d = d >= 3
+    actual_k = min(top_k, len(scores_df))
+
+    fig, total_rows, ncols, rows_per, method_eids = _build_multi_method_grid(
+        scores_df,
+        actual_k,
+        use_3d,
+    )
+
+    # Reduce points for large grids
+    n_subplots = len(methods) * actual_k
+    adj_points = min(max_points, N)
+    if n_subplots > 10:
+        adj_points = max(adj_points * 10 // n_subplots, 2000)
+
+    if adj_points < N:
+        idx = np.sort(np.random.default_rng(0).choice(N, adj_points, replace=False))
     else:
         idx = np.arange(N)
 
     labels_np = labels[idx].numpy().astype(np.float32)
     vmin, vmax = float(labels_np.min()), float(labels_np.max())
 
-    use_3d = d >= 3
-    nrows, ncols = 2, 5
+    colorbar_placed = False
 
-    subplot_titles = [f"Expert {eid} — J={fisher_scores[eid]:.2f}" for eid in ranking]
-    subplot_titles += [""] * (nrows * ncols - len(subplot_titles))
+    for m_i, method in enumerate(methods):
+        eids = method_eids[method]
+        for pi, eid in enumerate(eids):
+            row = m_i * rows_per + pi // ncols + 1
+            col = pi % ncols + 1
+            flat = (row - 1) * ncols + (col - 1)
+            is_last = m_i == len(methods) - 1 and pi == len(eids) - 1
 
-    if use_3d:
-        specs = [[{"type": "scene"} for _ in range(ncols)] for _ in range(nrows)]
-    else:
-        specs = [[{"type": "xy"} for _ in range(ncols)] for _ in range(nrows)]
-
-    fig = make_subplots(
-        rows=nrows,
-        cols=ncols,
-        subplot_titles=subplot_titles,
-        specs=specs,
-        horizontal_spacing=0.02,
-        vertical_spacing=0.08,
-    )
-
-    for plot_i, expert_id in enumerate(ranking):
-        row = plot_i // ncols + 1
-        col = plot_i % ncols + 1
-
-        acts_e = expert_acts[idx, expert_id].numpy()
-
-        marker_kwargs = dict(
-            color=labels_np,
-            colorscale="Viridis",
-            cmin=vmin,
-            cmax=vmax,
-            size=1.5,
-            opacity=0.6,
-        )
-        if plot_i == len(ranking) - 1:
-            marker_kwargs["colorbar"] = dict(
-                title="chars<br>since \\n",
-                len=0.4,
-                thickness=15,
-                x=1.02,
-                y=0.5,
+            acts_e = expert_acts[idx, eid].numpy()
+            mk = dict(
+                color=labels_np,
+                colorscale="Viridis",
+                cmin=vmin,
+                cmax=vmax,
+                size=1.0,
+                opacity=0.4,
+                showscale=(is_last and not colorbar_placed),
             )
-            marker_kwargs["showscale"] = True
-        else:
-            marker_kwargs["showscale"] = False
+            if is_last and not colorbar_placed:
+                mk["colorbar"] = dict(
+                    title="chars<br>since \\n",
+                    len=0.12,
+                    thickness=10,
+                    x=1.02,
+                )
+                colorbar_placed = True
 
-        if use_3d:
-            trace = go.Scatter3d(
-                x=acts_e[:, 0],
-                y=acts_e[:, 1],
-                z=acts_e[:, 2],
-                mode="markers",
-                marker=marker_kwargs,
-                hovertemplate=(
-                    "b0: %{x:.3f}<br>b1: %{y:.3f}<br>b2: %{z:.3f}<br>"
-                    "chars_since_nl: %{marker.color:.0f}<extra></extra>"
-                ),
-                name=f"Expert {expert_id}",
-                showlegend=False,
-            )
-            fig.add_trace(trace, row=row, col=col)
+            if use_3d:
+                fig.add_trace(
+                    go.Scatter3d(
+                        x=acts_e[:, 0],
+                        y=acts_e[:, 1],
+                        z=acts_e[:, 2],
+                        mode="markers",
+                        marker=mk,
+                        showlegend=False,
+                        hoverinfo="skip",
+                    ),
+                    row=row,
+                    col=col,
+                )
+                _update_3d_scene(fig, flat)
+            else:
+                fig.add_trace(
+                    go.Scattergl(
+                        x=acts_e[:, 0],
+                        y=acts_e[:, 1] if d >= 2 else np.zeros(len(acts_e)),
+                        mode="markers",
+                        marker=mk,
+                        showlegend=False,
+                    ),
+                    row=row,
+                    col=col,
+                )
 
-            scene_name = f"scene{plot_i + 1}" if plot_i > 0 else "scene"
-            fig.update_layout(
-                **{
-                    scene_name: dict(
-                        xaxis_title="b₀",
-                        yaxis_title="b₁",
-                        zaxis_title="b₂",
-                        aspectmode="data",
-                        xaxis=dict(
-                            showbackground=False,
-                            showticklabels=False,
-                            title_font_size=10,
-                        ),
-                        yaxis=dict(
-                            showbackground=False,
-                            showticklabels=False,
-                            title_font_size=10,
-                        ),
-                        zaxis=dict(
-                            showbackground=False,
-                            showticklabels=False,
-                            title_font_size=10,
-                        ),
-                        camera=dict(eye=dict(x=1.5, y=1.5, z=1.0)),
-                    )
-                }
-            )
-        else:
-            trace = go.Scattergl(
-                x=acts_e[:, 0],
-                y=acts_e[:, 1] if d >= 2 else np.zeros_like(acts_e[:, 0]),
-                mode="markers",
-                marker=marker_kwargs,
-                hovertemplate=(
-                    "b0: %{x:.3f}<br>b1: %{y:.3f}<br>"
-                    "chars_since_nl: %{marker.color:.0f}<extra></extra>"
-                ),
-                name=f"Expert {expert_id}",
-                showlegend=False,
-            )
-            fig.add_trace(trace, row=row, col=col)
+    _add_method_annotations(fig, methods, rows_per, total_rows)
 
     fig.update_layout(
-        title=dict(
-            text=f"Top-{top_k} SMIXAE Experts — Bottleneck Activations by chars_since_nl",
-            font_size=16,
-        ),
-        height=800,
-        width=2000,
+        title="Top Experts by All Scoring Methods — Bottleneck Scatter",
+        height=280 * total_rows + 80,
+        width=280 * ncols + 140,
         template="plotly_white",
-        margin=dict(l=20, r=60, t=60, b=20),
+        margin=dict(l=70, r=80, t=60, b=20),
     )
-
     fig.write_html(output_path, include_plotlyjs="cdn")
-    logger.info(f"Saved scatter plot → {output_path}")
+    logger.info(f"Saved multi-method scatter → {output_path}")
     return fig
 
 
-def plot_expert_class_means(
-    class_means: np.ndarray,
-    class_labels: np.ndarray,
-    fisher_scores: np.ndarray,
+def plot_multi_method_class_means(
+    class_means: np.ndarray,  # (n_classes, n_experts, d)
+    class_labels: np.ndarray,  # (n_classes,)
+    scores_df: pd.DataFrame,
     top_k: int = 10,
-    output_path: str = "top_experts_class_means.html",
+    output_path: str = "class_means.html",
 ) -> go.Figure:
-    """Class-mean trajectories coloured by original chars_since_nl."""
-    n_classes, n_experts, d = class_means.shape
-    ranking = np.argsort(fisher_scores)[::-1][:top_k].copy()
+    """Class-mean trajectory per expert, arranged by method."""
+    if len(scores_df) == 0:
+        logger.warning("No experts to plot (class means)")
+        return go.Figure()
 
-    labels_float = class_labels.astype(np.float32)
-    vmin, vmax = float(labels_float.min()), float(labels_float.max())
-
+    methods = VALID_RANK_BY
+    n_classes, _, d = class_means.shape
     use_3d = d >= 3
-    nrows, ncols = 2, 5
+    actual_k = min(top_k, len(scores_df))
 
-    subplot_titles = [f"Expert {eid} — J={fisher_scores[eid]:.2f}" for eid in ranking]
-    subplot_titles += [""] * (nrows * ncols - len(subplot_titles))
-
-    if use_3d:
-        specs = [[{"type": "scene"} for _ in range(ncols)] for _ in range(nrows)]
-    else:
-        specs = [[{"type": "xy"} for _ in range(ncols)] for _ in range(nrows)]
-
-    fig = make_subplots(
-        rows=nrows,
-        cols=ncols,
-        subplot_titles=subplot_titles,
-        specs=specs,
-        horizontal_spacing=0.02,
-        vertical_spacing=0.08,
+    fig, total_rows, ncols, rows_per, method_eids = _build_multi_method_grid(
+        scores_df,
+        actual_k,
+        use_3d,
     )
 
-    for plot_i, expert_id in enumerate(ranking):
-        row = plot_i // ncols + 1
-        col = plot_i % ncols + 1
+    lf = class_labels.astype(np.float32)
+    vmin, vmax = float(lf.min()), float(lf.max())
 
-        m = class_means[:, expert_id, :]
+    colorbar_placed = False
 
-        marker_kwargs = dict(
-            color=labels_float,
-            colorscale="Viridis",
-            cmin=vmin,
-            cmax=vmax,
-            size=5,
-            opacity=0.9,
-            line=dict(width=0.5, color="black"),
-        )
-        if plot_i == len(ranking) - 1:
-            marker_kwargs["colorbar"] = dict(
-                title="chars<br>since \\n",
-                len=0.4,
-                thickness=15,
-                x=1.02,
-                y=0.5,
+    for m_i, method in enumerate(methods):
+        eids = method_eids[method]
+        for pi, eid in enumerate(eids):
+            row = m_i * rows_per + pi // ncols + 1
+            col = pi % ncols + 1
+            flat = (row - 1) * ncols + (col - 1)
+            is_last = m_i == len(methods) - 1 and pi == len(eids) - 1
+
+            m = class_means[:, eid, :]
+            mk = dict(
+                color=lf,
+                colorscale="Viridis",
+                cmin=vmin,
+                cmax=vmax,
+                size=2.0,
+                opacity=0.9,
+                line=dict(width=0.3, color="black"),
+                showscale=(is_last and not colorbar_placed),
             )
-            marker_kwargs["showscale"] = True
-        else:
-            marker_kwargs["showscale"] = False
+            if is_last and not colorbar_placed:
+                mk["colorbar"] = dict(
+                    title="chars<br>since \\n",
+                    len=0.12,
+                    thickness=10,
+                    x=1.02,
+                )
+                colorbar_placed = True
 
-        if use_3d:
-            fig.add_trace(
-                go.Scatter3d(
-                    x=m[:, 0],
-                    y=m[:, 1],
-                    z=m[:, 2],
-                    mode="lines",
-                    line=dict(color="rgba(100,100,100,0.3)", width=2),
-                    showlegend=False,
-                    hoverinfo="skip",
-                ),
-                row=row,
-                col=col,
-            )
-            fig.add_trace(
-                go.Scatter3d(
-                    x=m[:, 0],
-                    y=m[:, 1],
-                    z=m[:, 2],
-                    mode="markers",
-                    marker=marker_kwargs,
-                    hovertemplate=(
-                        "b0: %{x:.3f}<br>b1: %{y:.3f}<br>b2: %{z:.3f}<br>"
-                        "chars_since_nl: %{marker.color:.0f}<extra></extra>"
+            if use_3d:
+                # Connecting line
+                fig.add_trace(
+                    go.Scatter3d(
+                        x=m[:, 0],
+                        y=m[:, 1],
+                        z=m[:, 2],
+                        mode="lines",
+                        line=dict(color="rgba(100,100,100,0.3)", width=1),
+                        showlegend=False,
+                        hoverinfo="skip",
                     ),
-                    name=f"Expert {expert_id}",
-                    showlegend=False,
-                ),
-                row=row,
-                col=col,
-            )
+                    row=row,
+                    col=col,
+                )
+                # Markers
+                fig.add_trace(
+                    go.Scatter3d(
+                        x=m[:, 0],
+                        y=m[:, 1],
+                        z=m[:, 2],
+                        mode="markers",
+                        marker=mk,
+                        showlegend=False,
+                        hovertemplate=(
+                            "b0:%{x:.3f}<br>b1:%{y:.3f}<br>b2:%{z:.3f}<br>"
+                            "chars:%{marker.color:.0f}<extra></extra>"
+                        ),
+                    ),
+                    row=row,
+                    col=col,
+                )
+                _update_3d_scene(fig, flat)
+            else:
+                fig.add_trace(
+                    go.Scattergl(
+                        x=m[:, 0],
+                        y=m[:, 1] if d >= 2 else np.zeros(n_classes),
+                        mode="markers+lines",
+                        marker=mk,
+                        line=dict(color="rgba(100,100,100,0.3)", width=1),
+                        showlegend=False,
+                    ),
+                    row=row,
+                    col=col,
+                )
 
-            scene_name = f"scene{plot_i + 1}" if plot_i > 0 else "scene"
-            fig.update_layout(
-                **{
-                    scene_name: dict(
-                        xaxis_title="b₀",
-                        yaxis_title="b₁",
-                        zaxis_title="b₂",
-                        aspectmode="data",
-                        xaxis=dict(
-                            showbackground=False,
-                            showticklabels=False,
-                            title_font_size=10,
-                        ),
-                        yaxis=dict(
-                            showbackground=False,
-                            showticklabels=False,
-                            title_font_size=10,
-                        ),
-                        zaxis=dict(
-                            showbackground=False,
-                            showticklabels=False,
-                            title_font_size=10,
-                        ),
-                        camera=dict(eye=dict(x=1.5, y=1.5, z=1.0)),
-                    )
-                }
-            )
-        else:
-            fig.add_trace(
-                go.Scattergl(
-                    x=m[:, 0],
-                    y=m[:, 1] if d >= 2 else np.zeros(n_classes),
-                    mode="markers+lines",
-                    marker=marker_kwargs,
-                    line=dict(color="rgba(100,100,100,0.3)", width=1),
-                    showlegend=False,
-                ),
-                row=row,
-                col=col,
-            )
+    _add_method_annotations(fig, methods, rows_per, total_rows)
 
     fig.update_layout(
-        title=dict(
-            text=f"Top-{top_k} Experts — Class Mean Trajectories by chars_since_nl",
-            font_size=16,
-        ),
-        height=800,
-        width=2000,
+        title="Top Experts by All Methods — Class Mean Trajectories",
+        height=300 * total_rows + 80,
+        width=280 * ncols + 140,
         template="plotly_white",
-        margin=dict(l=20, r=60, t=60, b=20),
+        margin=dict(l=70, r=80, t=60, b=20),
+    )
+    fig.write_html(output_path, include_plotlyjs="cdn")
+    logger.info(f"Saved multi-method class means → {output_path}")
+    return fig
+
+
+def plot_expert_dim_analysis(
+    expert_acts: torch.Tensor,
+    labels: torch.Tensor,
+    expert_id: int,
+    scores_row: dict,
+    line_length: int,
+    n_harmonics: int = 3,
+    max_points: int = 20_000,
+    output_path: str = "dim_analysis.html",
+) -> go.Figure:
+    """Per-dimension scatter with fitted linear + periodic curves for one expert."""
+    N, _, d = expert_acts.shape
+
+    if max_points < N:
+        idx = np.sort(np.random.default_rng(42).choice(N, max_points, replace=False))
+    else:
+        idx = np.arange(N)
+
+    acts_sub = expert_acts[idx, expert_id, :].float().numpy()
+    chars_sub = labels[idx].float().numpy()
+    chars_full = labels.double().numpy()
+    acts_full = expert_acts[:, expert_id, :].double().numpy()
+
+    x_fit = np.linspace(chars_full.min(), chars_full.max(), 300)
+
+    def _periodic_design(x):
+        cols = [x, np.ones_like(x)]
+        for k in range(1, n_harmonics + 1):
+            ph = 2 * np.pi * k * x / line_length
+            cols.extend([np.sin(ph), np.cos(ph)])
+        return np.column_stack(cols)
+
+    X_per_full = _periodic_design(chars_full)
+    X_per_fit = _periodic_design(x_fit)
+
+    fig = make_subplots(
+        rows=1,
+        cols=d,
+        subplot_titles=[
+            f"Dim {j}  (ρ={scores_row.get(f'dim{j}_corr', 0):.3f}, "
+            f"lin={scores_row.get(f'dim{j}_linear_r2', 0):.3f}, "
+            f"per={scores_row.get(f'dim{j}_periodic_r2', 0):.3f})"
+            for j in range(d)
+        ],
+        horizontal_spacing=0.06,
+    )
+
+    vmin, vmax = float(chars_sub.min()), float(chars_sub.max())
+
+    for j in range(d):
+        c = j + 1
+
+        # Scatter
+        fig.add_trace(
+            go.Scattergl(
+                x=chars_sub,
+                y=acts_sub[:, j],
+                mode="markers",
+                marker=dict(
+                    color=chars_sub,
+                    colorscale="Viridis",
+                    cmin=vmin,
+                    cmax=vmax,
+                    size=1.0,
+                    opacity=0.15,
+                    showscale=(j == d - 1),
+                    colorbar=dict(title="chars", len=0.8) if j == d - 1 else None,
+                ),
+                showlegend=False,
+                hoverinfo="skip",
+            ),
+            row=1,
+            col=c,
+        )
+
+        # Linear fit
+        c_lin = np.polyfit(chars_full, acts_full[:, j], 1)
+        fig.add_trace(
+            go.Scatter(
+                x=x_fit,
+                y=np.polyval(c_lin, x_fit),
+                mode="lines",
+                line=dict(color="red", width=2.5, dash="dash"),
+                name="Linear" if j == 0 else None,
+                showlegend=(j == 0),
+            ),
+            row=1,
+            col=c,
+        )
+
+        # Periodic fit
+        beta, *_ = np.linalg.lstsq(X_per_full, acts_full[:, j], rcond=None)
+        fig.add_trace(
+            go.Scatter(
+                x=x_fit,
+                y=X_per_fit @ beta,
+                mode="lines",
+                line=dict(color="blue", width=2.5),
+                name="Periodic" if j == 0 else None,
+                showlegend=(j == 0),
+            ),
+            row=1,
+            col=c,
+        )
+
+        fig.update_xaxes(title_text="chars_since_nl", row=1, col=c)
+        fig.update_yaxes(title_text=f"dim {j}", row=1, col=c)
+
+    # Build summary line for title
+    method_scores = "  ".join(
+        f"{METHOD_SHORT[m]}={scores_row.get(m, 0):.4f}" for m in VALID_RANK_BY
+    )
+    fig.update_layout(
+        title=f"Expert {expert_id} — Per-Dim Analysis  ({method_scores})",
+        height=400,
+        width=max(350 * d + 100, 800),
+        template="plotly_white",
+        legend=dict(x=0.01, y=0.99),
     )
 
     fig.write_html(output_path, include_plotlyjs="cdn")
-    logger.info(f"Saved class-mean plot → {output_path}")
+    logger.info(f"Saved dim analysis → {output_path}")
     return fig
 
 
@@ -708,49 +853,31 @@ app = typer.Typer(pretty_exceptions_enable=False)
 @app.command()
 def main(
     # Model & data
-    model_name: str = typer.Option(
-        "google/gemma-2-9b", help="HuggingFace model name or path."
-    ),
-    dataset_name: str = typer.Option(
-        "monology/pile-uncopyrighted", help="HuggingFace dataset identifier."
-    ),
-    output_path: str = typer.Option("outputs", help="Root output directory."),
-    batch_size: int = typer.Option(8, help="Batch size for LLM forward passes."),
-    num_workers: int = typer.Option(0, help="DataLoader workers."),
+    model_name: str = typer.Option("google/gemma-2-9b"),
+    dataset_name: str = typer.Option("monology/pile-uncopyrighted"),
+    output_path: str = typer.Option("outputs"),
+    batch_size: int = typer.Option(8),
+    num_workers: int = typer.Option(0),
     # Text processing
-    line_length: int = typer.Option(
-        80, help="Wrap text to this many characters per line."
-    ),
-    num_samples: int = typer.Option(100, help="Number of post-filter samples."),
-    min_lines: int = typer.Option(
-        5, help="Reject texts shorter than line_length × min_lines."
-    ),
-    max_seq_len: int = typer.Option(2048, help="Tokenizer truncation limit."),
-    use_chat: bool = typer.Option(False, help="Apply chat template before tokenizing."),
+    line_length: int = typer.Option(80),
+    num_samples: int = typer.Option(100),
+    min_lines: int = typer.Option(5),
+    max_seq_len: int = typer.Option(2048),
+    use_chat: bool = typer.Option(False),
     # SMIXAE
-    smixae_path: str = typer.Option(
-        ..., help="Path to SMIXAE checkpoint dir (sae_lens format)."
-    ),
-    hook_name: str = typer.Option(
-        "blocks.20.hook_resid_post",
-        help="TransformerLens hook point the SMIXAE was trained on (e.g. blocks.20.hook_resid_post).",
-    ),
-    sae_batch_size: int = typer.Option(4096, help="Batch size for SMIXAE encoding."),
-    # Fisher
-    fisher_n_buckets: int = typer.Option(
-        5, help="Number of equal-width bins for chars_since_nl for Fisher."
-    ),
-    fisher_min_samples_per_class: int = typer.Option(
-        5, help="Min samples per bucket for Fisher."
-    ),
-    fisher_top_k: int = typer.Option(50, help="How many top experts to log."),
+    smixae_path: str = typer.Option(..., help="SMIXAE checkpoint dir."),
+    hook_name: str = typer.Option("blocks.20.hook_resid_post"),
+    sae_batch_size: int = typer.Option(4096),
+    # Scoring
+    n_harmonics: int = typer.Option(3, help="Fourier harmonics for periodic scoring."),
     # Visualisation
-    plot_top_k: int = typer.Option(10, help="How many top experts to plot."),
-    plot_max_points: int = typer.Option(
-        50_000, help="Subsample scatter plots to this many points."
+    plot_top_k: int = typer.Option(10, help="Top-k experts to plot per method."),
+    plot_max_points: int = typer.Option(50_000),
+    dim_analysis_top_n: int = typer.Option(
+        3, help="Generate dim analysis for top N experts per method."
     ),
     # Misc
-    seed: int = typer.Option(42, help="Random seed."),
+    seed: int = typer.Option(42),
 ) -> None:
     """Analyse SMIXAE experts for newline-position manifold structure."""
 
@@ -759,19 +886,19 @@ def main(
     torch.set_grad_enabled(False)
     torch.set_float32_matmul_precision("high")
 
-    # ── Output dir ───────────────────────────────────────────────────────
+    # Output dir
     model_slug = os.path.basename(model_name.strip("/"))
     ds_slug = os.path.basename(dataset_name.strip("/"))
     out_dir = os.path.join(output_path, model_slug, ds_slug)
     os.makedirs(out_dir, exist_ok=True)
 
-    # ── Load model via TransformerLens ────────────────────────────────────
-    if not any(k in model_name for k in ("gpt2", "pythia")):
-        dtype = torch.bfloat16
-    else:
-        dtype = torch.float32
-
-    logger.info(f"Loading model {model_name} via TransformerLens  {gpu_mem_mb()}")
+    # ── Model via TransformerLens ────────────────────────────────────────
+    dtype = (
+        torch.float32
+        if any(k in model_name for k in ("gpt2", "pythia"))
+        else torch.bfloat16
+    )
+    logger.info(f"Loading {model_name} via TransformerLens  {gpu_mem_mb()}")
     model = HookedTransformer.from_pretrained(
         model_name,
         dtype=dtype,
@@ -779,35 +906,20 @@ def main(
     )
     model.eval()
     logger.info(
-        f"Model loaded ({model.cfg.n_layers} layers, n_ctx={model.cfg.n_ctx})  {gpu_mem_mb()}"
+        f"Loaded ({model.cfg.n_layers} layers, n_ctx={model.cfg.n_ctx})  {gpu_mem_mb()}"
     )
 
-    # Validate hook name
-    valid_hooks = set(model.hook_dict.keys())
-    if hook_name not in valid_hooks:
-        logger.error(
-            f"Hook '{hook_name}' not found. "
-            f"Available hooks containing 'resid': "
-            f"{sorted(h for h in valid_hooks if 'resid' in h)[:20]}"
-        )
-        raise typer.BadParameter(f"Unknown hook: {hook_name}")
+    if hook_name not in model.hook_dict:
+        resid = sorted(h for h in model.hook_dict if "resid" in h)[:20]
+        raise typer.BadParameter(f"Unknown hook '{hook_name}'. Residual hooks: {resid}")
+    logger.info(f"Hook: {hook_name}  (layer={extract_layer_from_hook(hook_name)})")
 
-    hook_layer = extract_layer_from_hook(hook_name)
-    logger.info(f"Using hook: {hook_name}  (layer={hook_layer})")
-
-    # ── Tokenizer (from TransformerLens) ─────────────────────────────────
     tokenizer = model.tokenizer
-    assert tokenizer is not None, "TransformerLens model has no tokenizer"
-
+    assert tokenizer is not None
     tokenizer.padding_side = "left" if "Qwen3" in model_name else "right"
     if tokenizer.pad_token_id is None:
         tokenizer.pad_token = tokenizer.eos_token
-
-    # Resolve max_seq_len against model context window
-    model_max = model.cfg.n_ctx
-    assert 0 < max_seq_len <= model_max, (
-        f"max_seq_len={max_seq_len} must be in (0, {model_max}]"
-    )
+    assert 0 < max_seq_len <= model.cfg.n_ctx
 
     # ── Dataset ──────────────────────────────────────────────────────────
     logger.info(
@@ -820,19 +932,11 @@ def main(
     dataset = Dataset.from_generator(lambda: islice(stream, num_samples))
     logger.info(f"Materialised {len(dataset)} samples")
 
+    dataset = dataset.map(make_line_wrapper(line_length), desc="Wrapping")
     dataset = dataset.map(
-        make_line_wrapper(line_length),
-        desc="Wrapping into char-limited lines",
-    )
-    dataset = dataset.map(
-        make_forward_inputs_with_chars_since_nl(
-            tokenizer,
-            max_seq_len,
-            use_chat=use_chat,
-            text_key="text_lines",
-        ),
+        make_forward_inputs_with_chars_since_nl(tokenizer, max_seq_len, use_chat),
         batched=True,
-        desc="Tokenizing + computing chars_since_nl",
+        desc="Tokenizing",
     )
     dataset = dataset.with_format(
         "torch",
@@ -844,25 +948,24 @@ def main(
     dataset = dataset.map(
         assert_chars_since_nl_map(line_length),
         batched=True,
-        desc="Validating chars_since_nl",
+        desc="Validating",
     )
 
     # ══════════════════════════════════════════════════════════════════════
     # PHASE 1: Collect hidden states at hook, then FREE the model
     # ══════════════════════════════════════════════════════════════════════
     logger.info(f"Collecting hidden states at {hook_name}  {gpu_mem_mb()}")
-    layer_hiddens = collect_hook_hiddens(
+    hiddens_list = collect_hook_hiddens(
         dataset,
         model,
         tokenizer,
-        hook_name=hook_name,
-        batch_size=batch_size,
-        num_workers=num_workers,
-        max_seq_len=max_seq_len,
+        hook_name,
+        batch_size,
+        num_workers,
+        max_seq_len,
     )
 
-    # Flatten → CPU
-    all_hiddens = torch.cat(layer_hiddens, dim=0)
+    all_hiddens = torch.cat(hiddens_list, dim=0)
     all_labels = torch.cat(
         [torch.as_tensor(c, dtype=torch.long) for c in dataset["chars_since_nl"]]
     )
@@ -871,137 +974,132 @@ def main(
     keep = all_labels > 0
     all_hiddens = all_hiddens[keep]
     all_labels = all_labels[keep]
-    logger.info(f"Tokens after dropping label==0: {all_hiddens.shape[0]:,}")
+    logger.info(f"Tokens (label>0): {all_hiddens.shape[0]:,}")
 
-    # Free base model — reclaim all GPU memory
-    del model, layer_hiddens
+    del model, hiddens_list
     flush_gpu()
-    logger.info(f"Base model freed  {gpu_mem_mb()}")
+    logger.info(f"Model freed  {gpu_mem_mb()}")
 
     # ══════════════════════════════════════════════════════════════════════
-    # PHASE 2: Load SMIXAE via sae_lens, encode, then FREE it
+    # PHASE 2: SMIXAE encode → CPU, then FREE
     # ══════════════════════════════════════════════════════════════════════
     logger.info(f"Loading SMIXAE from {smixae_path}  {gpu_mem_mb()}")
     sae = SAE.load_from_disk(path=smixae_path, device=str(device))
     sae.eval()
-
     logger.info(
-        f"SMIXAE loaded: {sae.cfg.n_experts} experts, "
+        f"SMIXAE: {sae.cfg.n_experts} experts, "
         f"d_expert={sae.cfg.d_expert}, d_bottleneck={sae.cfg.d_bottleneck}  "
         f"{gpu_mem_mb()}"
     )
 
-    expert_acts = extract_expert_bottleneck_acts(
-        sae,
-        all_hiddens,
-        batch_size=sae_batch_size,
-    )
+    expert_acts = extract_expert_bottleneck_acts(sae, all_hiddens, sae_batch_size)
     logger.info(f"Expert activations: {expert_acts.shape}  {gpu_mem_mb()}")
 
     threshold = float(sae.threshold.item())
-    n_experts = sae.cfg.n_experts
-    d_bottleneck = sae.cfg.d_bottleneck
+    n_experts_cfg = sae.cfg.n_experts
+    d_bn_cfg = sae.cfg.d_bottleneck
 
     del sae, all_hiddens
     flush_gpu()
     logger.info(f"SMIXAE freed  {gpu_mem_mb()}")
 
     # ══════════════════════════════════════════════════════════════════════
-    # PHASE 3: Fisher scores + visualisation — all CPU
+    # PHASE 3: Scoring + Visualisation (all CPU)
     # ══════════════════════════════════════════════════════════════════════
-
-    # Bucket labels for Fisher
-    bucketed_labels, bin_edges = bucket_labels(all_labels, fisher_n_buckets)
-
-    bucket_counts = torch.bincount(bucketed_labels)
-    logger.info(
-        f"Bucketed chars_since_nl into {fisher_n_buckets} bins:\n"
-        + "\n".join(
-            f"  bucket {i}: [{bin_edges[i]:.0f}, {bin_edges[i + 1]:.0f})  "
-            f"n={bucket_counts[i].item():,}"
-            for i in range(fisher_n_buckets)
-        )
-    )
-
-    fisher_scores = compute_expert_fisher_scores(
+    scores_df = compute_expert_scores(
         expert_acts,
-        bucketed_labels,
-        min_samples=fisher_min_samples_per_class,
+        all_labels,
+        line_length,
+        n_harmonics,
     )
 
-    ranking = np.argsort(fisher_scores)[::-1].copy()
+    # Log top experts per method
+    logger.info(f"\n{'═' * 70}")
+    display_cols = ["expert_id"] + VALID_RANK_BY
+    for method in VALID_RANK_BY:
+        ranked = scores_df.sort_values(method, ascending=False)
+        logger.info(
+            f"\nTop-10 by {method}:\n"
+            f"{ranked[display_cols].head(10).to_string(index=False)}"
+        )
 
-    logger.info(f"\n{'═' * 60}")
-    logger.info(f"Top-{fisher_top_k} experts by Fisher score ({hook_name}):")
-    for i, eidx in enumerate(ranking[:fisher_top_k]):
-        logger.info(f"  #{i + 1:3d}  expert {eidx:4d}  J = {fisher_scores[eidx]:.4f}")
-
-    # Per-class stats use original labels
+    # Class stats (original fine-grained labels)
     class_means, firing_rates, class_labels_arr = compute_expert_class_stats(
         expert_acts,
         all_labels,
         threshold=threshold,
     )
 
-    # Plots use original labels for continuous Viridis colouring
-    plot_top_experts(
-        expert_acts=expert_acts,
-        labels=all_labels,
-        fisher_scores=fisher_scores,
+    # ── Multi-method plots ───────────────────────────────────────────────
+    plot_multi_method_scatter(
+        expert_acts,
+        all_labels,
+        scores_df,
         top_k=plot_top_k,
         max_points=plot_max_points,
         output_path=os.path.join(out_dir, "top_experts_scatter.html"),
     )
-
-    plot_expert_class_means(
-        class_means=class_means,
-        class_labels=class_labels_arr,
-        fisher_scores=fisher_scores,
+    plot_multi_method_class_means(
+        class_means,
+        class_labels_arr,
+        scores_df,
         top_k=plot_top_k,
         output_path=os.path.join(out_dir, "top_experts_class_means.html"),
     )
 
-    # ── Save numerical results ───────────────────────────────────────────
-    fisher_df = pd.DataFrame(
-        {
-            "expert_id": np.arange(len(fisher_scores)),
-            "fisher_score": fisher_scores,
-        }
-    )
-    fisher_df = (
-        fisher_df.sort_values("fisher_score", ascending=False)
-        .reset_index(drop=True)
-        .rename_axis("rank")
-    )
-    fisher_df.to_csv(os.path.join(out_dir, "fisher_scores.csv"))
+    # ── Dim analysis for unique top experts across all methods ────────────
+    top_expert_ids: set[int] = set()
+    for method in VALID_RANK_BY:
+        top_expert_ids.update(
+            scores_df.sort_values(method, ascending=False)
+            .head(dim_analysis_top_n)["expert_id"]
+            .values.tolist()
+        )
 
-    np.save(os.path.join(out_dir, "fisher_scores.npy"), fisher_scores)
+    logger.info(
+        f"Generating dim analysis for {len(top_expert_ids)} unique experts "
+        f"(top-{dim_analysis_top_n} per method)"
+    )
+    for eid in sorted(top_expert_ids):
+        row = scores_df[scores_df["expert_id"] == eid].iloc[0]
+        plot_expert_dim_analysis(
+            expert_acts,
+            all_labels,
+            int(eid),
+            row.to_dict(),
+            line_length,
+            n_harmonics,
+            max_points=max(plot_max_points // 3, 5000),
+            output_path=os.path.join(out_dir, f"dim_analysis_expert{int(eid)}.html"),
+        )
+
+    # ── Save numerical results ───────────────────────────────────────────
+    scores_df.to_csv(os.path.join(out_dir, "expert_scores.csv"), index=False)
     np.save(os.path.join(out_dir, "expert_class_means.npy"), class_means)
     np.save(os.path.join(out_dir, "expert_firing_rates.npy"), firing_rates)
     np.save(os.path.join(out_dir, "class_labels.npy"), class_labels_arr)
 
-    n_tokens = int(all_labels.shape[0])
-    summary = {
+    summary: dict[str, Any] = {
         "hook_name": hook_name,
-        "hook_layer": hook_layer,
-        "n_experts": n_experts,
-        "d_bottleneck": d_bottleneck,
-        "n_tokens": n_tokens,
-        "n_classes_original": int(len(class_labels_arr)),
-        "fisher_n_buckets": fisher_n_buckets,
-        "fisher_bin_edges": bin_edges.tolist(),
-        "fisher_mean": float(fisher_scores.mean()),
-        "fisher_std": float(fisher_scores.std()),
-        "fisher_max": float(fisher_scores.max()),
-        "fisher_median": float(np.median(fisher_scores)),
-        "fisher_top1_expert": int(ranking[0]),
-        "fisher_top1_score": float(fisher_scores[ranking[0]]),
-        "fisher_top5_mean": float(fisher_scores[ranking[:5]].mean()),
-        "fisher_top10_mean": float(fisher_scores[ranking[:10]].mean()),
+        "n_experts": n_experts_cfg,
+        "d_bottleneck": d_bn_cfg,
+        "n_harmonics": n_harmonics,
+        "line_length": line_length,
+        "n_tokens": int(all_labels.shape[0]),
+        "n_classes": int(len(class_labels_arr)),
         "threshold": threshold,
     }
-    pd.DataFrame([summary]).to_csv(os.path.join(out_dir, "summary.csv"), index=False)
+    for method in VALID_RANK_BY:
+        top = scores_df.sort_values(method, ascending=False)
+        summary[f"top1_{method}_expert"] = int(top.iloc[0]["expert_id"])
+        summary[f"top1_{method}"] = float(top.iloc[0][method])
+        summary[f"top5_mean_{method}"] = float(top.head(5)[method].mean())
+        summary[f"top10_mean_{method}"] = float(top.head(10)[method].mean())
 
+    pd.DataFrame([summary]).to_csv(
+        os.path.join(out_dir, "summary.csv"),
+        index=False,
+    )
     logger.info(f"\nResults saved to {out_dir}")
     logger.info(f"Summary: {json.dumps(summary, indent=2)}")
 

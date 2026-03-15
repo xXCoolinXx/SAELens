@@ -110,7 +110,9 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     --batch-size 32 \
     --num-samples 100 \
     --smixae-path /scratch/Collin/SAELens/checkpoints/qsoe6uz6/final_100007936 \
-    --hook-name "blocks.11.hook_resid_post"
+    --hook-name "blocks.11.hook_resid_post" \
+    --line-length 150 \
+    --plot-top-k 25
 
 
     # CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py all-datasets \
