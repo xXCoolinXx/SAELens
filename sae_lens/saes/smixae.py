@@ -228,12 +228,6 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         self.hook_sae_acts_post(h_latent)
         self.hook_sae_acts_bottleneck(self.h_bottleneck)
 
-        did_fire = batch_norm_mask.any(dim=0)
-        self.n_passes_since_fired += 1
-        self.n_passes_since_fired = (
-            self.n_passes_since_fired * ~did_fire
-        )  # 0 out if it did fire
-
         return h_latent, hidden_pre_latent  # These get ignored
 
     def decode(self, feature_acts: torch.Tensor) -> torch.Tensor:
@@ -320,6 +314,10 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
 
         metrics["expert_norm_mean"] = self.h_bottleneck.norm(dim=-1).mean()
 
+        metrics["dead_experts"] = (
+            (self.n_passes_since_fired > self.cfg.dead_after_n_passes).sum().item()
+        )
+
         return TrainStepOutput(
             sae_in=step_input.sae_in,
             sae_out=sae_out,
@@ -361,7 +359,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         residual = (sae_in - sae_out).detach()
 
         # Heuristic: use half of active experts as k_aux
-        k_aux = self.cfg.k_experts // 2
+        k_aux = self.cfg.k_experts  # // 2
         scale = min(num_dead / k_aux, 1.0)
         k_aux = min(k_aux, num_dead)
 
