@@ -55,7 +55,7 @@ class SMIXAE(SAE[SMIXAEConfig]):
     W_latent_dec: nn.Parameter
     log_threshold: nn.Parameter
     b_enc: nn.Parameter
-    b_bottleneck: nn.Parameter
+    # b_bottleneck: nn.Parameter
 
     def __init__(self, cfg: SMIXAEConfig, use_error_term: bool = False):
         super().__init__(cfg, use_error_term)
@@ -168,7 +168,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
     """
 
     b_enc: nn.Parameter
-    b_bottleneck: nn.Parameter
+    # b_bottleneck: nn.Parameter
     W_bottleneck: nn.Parameter
     W_latent_dec: nn.Parameter
 
@@ -421,14 +421,14 @@ def _init_weights_smixae(
         )
     )
 
-    sae.b_bottleneck = nn.Parameter(
-        torch.zeros(
-            sae.cfg.n_experts,
-            sae.cfg.d_bottleneck,
-            dtype=sae.dtype,
-            device=sae.device,
-        )
-    )
+    # sae.b_bottleneck = nn.Parameter(
+    #     torch.zeros(
+    #         sae.cfg.n_experts,
+    #         sae.cfg.d_bottleneck,
+    #         dtype=sae.dtype,
+    #         device=sae.device,
+    #     )
+    # )
 
     sae.W_bottleneck = nn.Parameter(
         torch.empty(
@@ -469,7 +469,7 @@ def smixae_encode(
     # Bottleneck
     hidden_pre_bottleneck = (
         torch.einsum("bne,ned->bnd", h_latent_unflattened, sae.W_bottleneck)
-        + sae.b_bottleneck
+        # + sae.b_bottleneck - this causes flattening
     )  # (batch_size, n_experts, d_bottelneck)
 
     if sae.cfg.rescale_acts_by_decoder_norm:
