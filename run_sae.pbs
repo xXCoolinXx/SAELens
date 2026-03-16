@@ -9,7 +9,7 @@
 #PBS -q gpu
 
 # Request resources: 1 node, 1 CPU, and 1 GPU
-#PBS -l select=1:ncpus=8:ngpus=1:mem=16gb
+#PBS -l select=1:ncpus=8:ngpus=2:mem=16gb
 
 # Set the maximum walltime for the job (e.g., 1 hour)
 #PBS -l walltime=10:00:00
@@ -59,7 +59,7 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     # export CUDA_VISIBLE_DEVICES=1 # Hot fix because ASAX doesn't properly change GPU visibility :/
     # Train an SAE
     # /scratch/Collin/envs/sae/bin/python3 context-sae-train.py
-    CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python3 -u smixae_run.py
+    # CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python3 -u smixae_run.py
     # /scratch/Collin/envs/sae/bin/python3 /scratch/Collin/SAELens/probing_tasks.py  # manifold_visualization_smixae.py #
 
     # /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py \
@@ -105,14 +105,14 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     # --noise-threshold 5.0 \
     # --n-interesting-experts-to-plot 10
 
-    # CUDA_VISIBLE_DEVICES=0 /scratch/Collin/envs/sae/bin/python3 manifold_probing/anthropic_newline.py \
-    # --model-name "google/gemma-2-9b" \
-    # --batch-size 32 \
-    # --num-samples 100 \
-    # --smixae-path /scratch/Collin/SAELens/checkpoints/72jxocm5/final_100007936 \
-    # --hook-name "blocks.11.hook_resid_post" \
-    # --line-length 150 \
-    # --plot-top-k 25
+    CUDA_VISIBLE_DEVICES=0 /scratch/Collin/envs/sae/bin/python3 manifold_probing/anthropic_newline.py \
+    --model-name "google/gemma-2-9b" \
+    --batch-size 32 \
+    --num-samples 100 \
+    --smixae-path /scratch/Collin/SAELens/checkpoints/7ios7gsx/final_100007936 \
+    --hook-name "blocks.11.hook_resid_post" \
+    --line-length 150 \
+    --plot-top-k 25
 
 
     # CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py all-datasets \
