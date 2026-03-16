@@ -109,7 +109,7 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     # --model-name "google/gemma-2-9b" \
     # --batch-size 32 \
     # --num-samples 100 \
-    # --smixae-path /scratch/Collin/SAELens/checkpoints/qsoe6uz6/final_100007936 \
+    # --smixae-path /scratch/Collin/SAELens/checkpoints/72jxocm5/final_100007936 \
     # --hook-name "blocks.11.hook_resid_post" \
     # --line-length 150 \
     # --plot-top-k 25

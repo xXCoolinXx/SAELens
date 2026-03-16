@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING, Any, Generic, Literal, TypeVar, cast
 
 import simple_parsing
 import torch
-import wandb
 from datasets import (
     Dataset,
     DatasetDict,
@@ -16,6 +15,7 @@ from datasets import (
     load_dataset,
 )
 
+import wandb
 from sae_lens import __version__, logger
 
 # keeping this unused import since some SAELens deps import DTYPE_MAP from config
@@ -220,6 +220,7 @@ class LanguageModelSAERunnerConfig(Generic[T_TRAINING_SAE_CONFIG]):
     )
     activations_mixing_fraction: float = 0.5
     context_processor: Literal["near_pairs"] | None = None
+    n_batches_for_norm_estimate: int = 1000
 
     # Misc
     device: str = "cpu"
@@ -461,6 +462,7 @@ class LanguageModelSAERunnerConfig(Generic[T_TRAINING_SAE_CONFIG]):
             dead_feature_window=self.dead_feature_window,
             feature_sampling_window=self.feature_sampling_window,
             logger=self.logger,
+            n_batches_for_norm_estimate=self.n_batches_for_norm_estimate,
         )
 
 
@@ -688,6 +690,7 @@ class SAETrainerConfig:
     dead_feature_window: int
     feature_sampling_window: int
     logger: LoggingConfig
+    n_batches_for_norm_estimate: int
 
     @property
     def total_training_steps(self) -> int:

@@ -51,22 +51,23 @@ total_tokens = 100_000_000
 
 total_training_steps = total_tokens // batch_size
 
-lr_warm_up_steps = 1000
+lr_warm_up_steps = 100
 lr_decay_steps = total_training_steps // 5  # 20% of training
 
 # So many damn parameters
 cfg = LanguageModelSAERunnerConfig(
     sae=SMIXAETrainingConfig(
         d_in=3584,  # 2304,  # d_in=768,  # For pythia and gpt2-small,
-        n_experts=4096,  # Good amount of features, compare to Gemma Scope
+        n_experts=8192,  # Good amount of features, compare to Gemma Scope
         d_expert=8,
         d_bottleneck=3,
-        d_sae=8 * 4096,  # this parameter is ignored
+        d_sae=8 * 8192,  # this parameter is ignored
         # l0_coefficient=1.0,
         k_experts=64,
         aux_loss_coefficient=1 / 32,
         rescale_acts_by_decoder_norm=True,
         normalize_activations="expected_average_only_in",
+        dead_after_n_passes=250,
     ),
     # resume_from_checkpoint="/scratch/Collin/SAELens/checkpoints/vcqgm5qo/250003456",  # Remove this later
     model_name="gemma-2-9b",  # "gemma-2-2b",  # "pythia-160m-deduped",  # Use deduped, apparently its more interpretable
@@ -86,6 +87,7 @@ cfg = LanguageModelSAERunnerConfig(
     training_tokens=total_tokens,
     n_batches_in_buffer=1024,
     store_batch_size_prompts=128,
+    n_batches_for_norm_estimate=100,
     # Wandb
     logger=LoggingConfig(
         log_to_wandb=True,

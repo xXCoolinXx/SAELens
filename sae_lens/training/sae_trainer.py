@@ -1,14 +1,15 @@
 import contextlib
 import math
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable, Generic, Protocol
+from typing import Any, Generic, Protocol
 
 import torch
-import wandb
 from safetensors.torch import save_file
 from torch.optim import Adam
 from tqdm.auto import tqdm
 
+import wandb
 from sae_lens import __version__
 from sae_lens.config import SAETrainerConfig
 from sae_lens.constants import (
@@ -164,7 +165,7 @@ class SAETrainer(Generic[T_TRAINING_SAE, T_TRAINING_SAE_CONFIG]):
             self.activation_scaler.estimate_scaling_factor(
                 d_in=self.sae.cfg.d_in,
                 data_provider=self.data_provider,
-                n_batches_for_norm_estimate=int(1e3),
+                n_batches_for_norm_estimate=self.cfg.n_batches_for_norm_estimate,
             )
 
         # Train loop
