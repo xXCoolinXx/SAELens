@@ -188,6 +188,7 @@ class LanguageModelSAERunnerConfig(Generic[T_TRAINING_SAE_CONFIG]):
         sae_lens_version (str): The version of the sae_lens library.
         sae_lens_training_version (str): The version of the sae_lens training library.
         exclude_special_tokens (bool | list[int]): Whether to exclude special tokens from the activations. If True, excludes all special tokens. If a list of ints, excludes those token IDs.
+        n_batches_for_norm_estimate (int): How many batches to use to estimate the norm. Default value is 1000, though it may be helpful to lower this if you use a larger batch size to reduce loading time.
     """
 
     sae: T_TRAINING_SAE_CONFIG
