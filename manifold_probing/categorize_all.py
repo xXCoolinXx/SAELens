@@ -6,13 +6,17 @@ from typing import Any
 
 import pandas as pd
 import plotly.express as px
+import plotly.io as pio
+import plotly.offline as pyo
 import torch
 import torch.nn.functional as F
 import typer
 from datasets import load_dataset
 from plotly.graph_objects import Figure
 from tqdm import tqdm
-from transformer_lens import HookedTransformer
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers.modeling_utils import PreTrainedModel
+from transformers.tokenization_utils_base import PreTrainedTokenizerBase
 
 from sae_lens import SAE
 from sae_lens.saes.smixae import SMIXAE
@@ -247,6 +251,13 @@ class Expert:
                     title=self._make_title(),
                     opacity=0.8,
                 )
+                n = len(label_names)
+                fig.update_coloraxes(
+                    colorbar=dict(
+                        tickvals=list(range(n)),
+                        ticktext=[label_names[i] for i in range(n)],
+                    )
+                )
             else:
                 sorted_label_names = sorted(label_names.values())
                 fig = px.scatter_3d(
@@ -260,6 +271,7 @@ class Expert:
                     title=self._make_title(),
                     opacity=0.8,
                 )
+                fig.update_layout(showlegend=True)
         else:
             color_col = "Continuity"
             color_vals: list[float] = (
@@ -293,13 +305,94 @@ class Expert:
         fig.update_traces(marker=dict(size=4))
         return fig
 
+    def get_mean_plot(
+        self,
+        label_names: dict[int, str] | None = None,
+        color_scale: str = "Plasma",
+        continuous_color: bool = False,
+    ) -> Figure | None:
+        if self.labels is None or label_names is None:
+            return None
+
+        pts = self.expert_activations.numpy()
+        xs, ys, zs, label_strs, label_ids, counts = [], [], [], [], [], []
+        for c in range(self.n_classes):
+            mask = (self.labels == c).numpy()
+            if not mask.any():
+                continue
+            centroid = pts[mask].mean(axis=0)
+            xs.append(float(centroid[0]))
+            ys.append(float(centroid[1]))
+            zs.append(float(centroid[2]))
+            label_strs.append(label_names[c])
+            label_ids.append(c)
+            counts.append(int(mask.sum()))
+
+        df = pd.DataFrame(
+            {"x": xs, "y": ys, "z": zs, "Label": label_strs, "LabelId": label_ids, "Count": counts}
+        )
+
+        if continuous_color:
+            fig = px.scatter_3d(
+                df,
+                x="x",
+                y="y",
+                z="z",
+                color="LabelId",
+                color_continuous_scale=color_scale,
+                size="Count",
+                size_max=30,
+                text="Label",
+                hover_data={"x": False, "y": False, "z": False, "Label": True, "Count": True, "LabelId": False},
+                title=self._make_title() + " [class means]",
+                opacity=0.9,
+            )
+            n = len(label_names)
+            fig.update_coloraxes(
+                colorbar=dict(
+                    tickvals=list(range(n)),
+                    ticktext=[label_names[i] for i in range(n)],
+                )
+            )
+        else:
+            sorted_label_names = sorted(label_names.values())
+            fig = px.scatter_3d(
+                df,
+                x="x",
+                y="y",
+                z="z",
+                color="Label",
+                category_orders={"Label": sorted_label_names},
+                size="Count",
+                size_max=30,
+                text="Label",
+                hover_data={"x": False, "y": False, "z": False, "Label": True, "Count": True},
+                title=self._make_title() + " [class means]",
+                opacity=0.9,
+            )
+            fig.update_layout(showlegend=True)
+
+        fig.update_traces(
+            marker=dict(line=dict(width=1, color="DarkSlateGrey")),
+            textposition="top center",
+        )
+        return fig
+
 
 # ======================================================================
 # Model / SAE loading
 # ======================================================================
-def load_llm(model_name: str, device: str) -> HookedTransformer:
+def load_llm(
+    model_name: str, device: str
+) -> tuple[PreTrainedModel, PreTrainedTokenizerBase]:
     print(f"Loading {model_name}")
-    return HookedTransformer.from_pretrained(model_name, device=device)
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    if tokenizer.pad_token_id is None:
+        tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = "right"
+    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float32)
+    model = model.to(device).eval()
+    return model, tokenizer
 
 
 def load_sae(checkpoint_path: str, device: str) -> SMIXAE:
@@ -311,7 +404,8 @@ def load_sae(checkpoint_path: str, device: str) -> SMIXAE:
 # Data loading + LLM activation collection
 # ======================================================================
 def collect_activations(
-    model: HookedTransformer,
+    model: PreTrainedModel,
+    tokenizer: PreTrainedTokenizerBase,
     hook_name: str,
     max_length: int,
     n_input_samples: int,
@@ -378,24 +472,26 @@ def collect_activations(
         label_ids = None
 
     print("Collecting activations...")
-    tokenized = model.to_tokens(texts, prepend_bos=True, move_to_device=False)[
-        :, :max_length
-    ]
+    enc = tokenizer(
+        texts,
+        truncation=True,
+        max_length=max_length,
+        padding=True,
+        return_tensors="pt",
+    )
+    tokenized = enc["input_ids"]        # (B, S)
+    attention_mask = enc["attention_mask"]  # (B, S)
     B, S = tokenized.shape
 
     if label_ids is not None:
         labels_tensor = label_ids[:B].unsqueeze(1).expand(B, S).clone()
 
-    pad_token_id = getattr(model.tokenizer, "pad_token_id", None)
-    if pad_token_id is not None:
-        non_pad_mask = tokenized != pad_token_id
-        col_indices = torch.arange(S).unsqueeze(0).expand(B, S)
-        last_token_positions = (
-            col_indices.masked_fill(~non_pad_mask, -1).max(dim=1).values
-        )
-        last_token_positions = last_token_positions.clamp(min=0)
-    else:
-        last_token_positions = torch.full((B,), S - 1, dtype=torch.long)
+    pad_token_id = tokenizer.pad_token_id
+    non_pad_mask = tokenized != pad_token_id
+    col_indices = torch.arange(S).unsqueeze(0).expand(B, S)
+    last_token_positions = (
+        col_indices.masked_fill(~non_pad_mask, -1).max(dim=1).values
+    ).clamp(min=0)
 
     print(
         f"Last non-pad positions — min: {last_token_positions.min().item()}, "
@@ -404,20 +500,37 @@ def collect_activations(
         f"(seq length {S})"
     )
 
+    _hook_store: dict[str, torch.Tensor] = {}
+
+    def _make_hook(key: str):
+        def hook(_module: Any, _input: Any, output: Any) -> None:
+            if isinstance(output, tuple):
+                _hook_store[key] = output[0].detach().cpu()
+            else:
+                _hook_store[key] = output.detach().cpu()
+        return hook
+
+    handle = model.get_submodule(hook_name).register_forward_hook(
+        _make_hook(hook_name)
+    )
     all_acts = []
-    for i in tqdm(range(0, B, llm_batch_size)):
-        batch = tokenized[i : i + llm_batch_size].to(device)
-        with torch.no_grad():
-            _, cache = model.run_with_cache(batch, names_filter=hook_name)
-        all_acts.append(cache[hook_name].cpu())
-        del cache
-        torch.cuda.empty_cache()
+    try:
+        for i in tqdm(range(0, B, llm_batch_size)):
+            batch = tokenized[i : i + llm_batch_size].to(device)
+            mask = attention_mask[i : i + llm_batch_size].to(device)
+            with torch.no_grad():
+                model(input_ids=batch, attention_mask=mask)
+            all_acts.append(_hook_store[hook_name])
+            torch.cuda.empty_cache()
+    finally:
+        handle.remove()
 
     activations = torch.cat(all_acts, dim=0)
     del all_acts
     str_tokens: list[list[str]] = [
-        list(model.to_str_tokens(tokenized[i])) for i in range(B)
-    ]  # type: ignore
+        list(tokenizer.convert_ids_to_tokens(tokenized[i].tolist()) or [])
+        for i in range(B)
+    ]
 
     return (
         activations,
@@ -546,10 +659,100 @@ class DatasetConfig:
 
 
 # ======================================================================
+# HTML output helpers
+# ======================================================================
+_HTML_TEMPLATE = """\
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{title}</title>
+  <script>__PLOTLYJS__</script>
+  <style>
+    body {{ font-family: sans-serif; margin: 8px; }}
+    .tab-strip {{ display:flex; flex-wrap:wrap; gap:4px; margin-bottom:8px; }}
+    .tab-btn {{ padding:4px 10px; cursor:pointer; border:1px solid #aaa;
+                border-radius:3px; background:#f0f0f0; font-size:13px; }}
+    .tab-btn.active {{ background:#333; color:#fff; }}
+    .tab-pane {{ display:none; flex-direction:column; gap:8px; }}
+    .tab-pane.active {{ display:flex; }}
+    .plot-box {{ width:100%; height:650px; }}
+  </style>
+</head>
+<body>
+  <h2>{title}</h2>
+  <div class="tab-strip">{tab_buttons}</div>
+  {tab_panes}
+  <script>
+    const FIGURES = {{{figures_json}}};
+    const rendered = new Set();
+    function renderTab(idx) {{
+      document.querySelectorAll('.tab-pane').forEach((pane, i) => {{
+        if (i !== idx) return;
+        pane.querySelectorAll('.plot-box').forEach(box => {{
+          if (!rendered.has(box.id)) {{
+            Plotly.newPlot(box.id, FIGURES[box.id].data, FIGURES[box.id].layout, {{responsive: true}});
+            rendered.add(box.id);
+          }} else {{
+            Plotly.Plots.resize(box);
+          }}
+        }});
+      }});
+    }}
+    function switchTab(idx) {{
+      document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+      document.querySelectorAll('.tab-pane').forEach((p, i) => p.classList.toggle('active', i === idx));
+      renderTab(idx);
+    }}
+    renderTab(0);
+  </script>
+</body>
+</html>"""
+
+
+def build_dataset_html(
+    expert_entries: list[tuple[str, Figure, Figure | None]],
+    dataset_title: str,
+) -> str:
+    tab_buttons: list[str] = []
+    tab_panes: list[str] = []
+    figures_json_parts: list[str] = []
+
+    for idx, (tab_label, scatter_fig, mean_fig) in enumerate(expert_entries):
+        scatter_id = f"scatter_{idx}"
+        active_cls = " active" if idx == 0 else ""
+
+        tab_buttons.append(
+            f'<button class="tab-btn{active_cls}" onclick="switchTab({idx})">'
+            f"{tab_label}</button>"
+        )
+
+        plot_divs = f'<div class="plot-box" id="{scatter_id}"></div>'
+        if mean_fig is not None:
+            mean_id = f"mean_{idx}"
+            plot_divs += f'\n    <div class="plot-box" id="{mean_id}"></div>'
+            figures_json_parts.append(f'"{mean_id}": {pio.to_json(mean_fig, engine="json")}')
+
+        tab_panes.append(
+            f'<div class="tab-pane{active_cls}">\n    {plot_divs}\n  </div>'
+        )
+        figures_json_parts.append(f'"{scatter_id}": {pio.to_json(scatter_fig, engine="json")}')
+
+    html = _HTML_TEMPLATE.format(
+        title=dataset_title,
+        tab_buttons="\n    ".join(tab_buttons),
+        tab_panes="\n  ".join(tab_panes),
+        figures_json=",\n    ".join(figures_json_parts),
+    )
+    return html.replace("__PLOTLYJS__", pyo.get_plotlyjs(), 1)
+
+
+# ======================================================================
 # Core pipeline (runs on one dataset with pre-loaded model + SAE)
 # ======================================================================
 def run_pipeline(
-    model: HookedTransformer,
+    model: PreTrainedModel,
+    tokenizer: PreTrainedTokenizerBase,
     sae: SMIXAE,
     cfg: DatasetConfig,
     final_output_dir: str,
@@ -582,13 +785,14 @@ def run_pipeline(
     llm_acts, str_tokens, labels, label_names, last_token_positions, n_classes = (
         collect_activations(
             model=model,
+            tokenizer=tokenizer,
             hook_name=hook_point,
             max_length=input_sequence_length,
             n_input_samples=n_input_samples,
             device=device,
             llm_batch_size=llm_batch_size,
             dataset_name=dataset_name,
-            dataframe_path=cfg.dataframe_path,
+            dataframe_path=cfg.dataframe_path or None,
             text_column=cfg.text_column,
             label_column=cfg.label_column,
         )
@@ -648,8 +852,9 @@ def run_pipeline(
 
     # ── 5. Plot ───────────────────────────────────────────────────────
     n_to_plot = min(n_interesting_experts_to_plot, len(experts))
-    print(f"\nSaving top {n_to_plot} experts to '{output_dir}/'…")
+    print(f"\nBuilding HTML for top {n_to_plot} experts…")
 
+    expert_entries: list[tuple[str, Figure, Figure | None]] = []
     for i in range(n_to_plot):
         expert = experts[i]
         score_val = expert.sort_key(effective_sort_by)
@@ -669,7 +874,7 @@ def run_pipeline(
         parts.append(f"Points: {expert.expert_activations.shape[0]}")
         print(" | ".join(parts))
 
-        fig = expert.get_plot(
+        scatter_fig = expert.get_plot(
             str_tokens=str_tokens,  # type: ignore[arg-type]
             k_neighbors=k_neighbors,
             context_window=context_window_display,
@@ -678,12 +883,19 @@ def run_pipeline(
             continuous_color=cfg.effective_continuous_color,
             color_scale=cfg.effective_color_scale,
         )
-
-        filename = (
-            f"rank_{i + 1:02d}_expert_{expert.expert_id:04d}"
-            f"_{effective_sort_by}_{score_val:.4f}.html"
+        mean_fig = expert.get_mean_plot(
+            label_names=label_names,
+            color_scale=cfg.effective_color_scale,
+            continuous_color=cfg.effective_continuous_color,
         )
-        fig.write_html(os.path.join(output_dir, filename))
+        tab_label = f"#{i + 1} E{expert.expert_id} ({effective_sort_by}={score_val:.3f})"
+        expert_entries.append((tab_label, scatter_fig, mean_fig))
+
+    html_str = build_dataset_html(expert_entries, f"{subdir} — Expert Analysis")
+    output_path = os.path.join(output_dir, "experts.html")
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(html_str)
+    print(f"Saved: {output_path}")
 
 
 # ======================================================================
@@ -800,7 +1012,7 @@ def single(
     os.makedirs(final_output_dir, exist_ok=True)
     print(f"Plots will be saved to: {final_output_dir}")
 
-    model = load_llm(base_model_name, device)
+    model, tokenizer = load_llm(base_model_name, device)
     sae = load_sae(checkpoint_path, device)
 
     cfg = DatasetConfig(
@@ -813,6 +1025,7 @@ def single(
 
     run_pipeline(
         model=model,
+        tokenizer=tokenizer,
         sae=sae,
         cfg=cfg,
         final_output_dir=final_output_dir,
@@ -895,6 +1108,10 @@ def all_datasets(
     output_dir: str = typer.Option(
         "expert_plots", help="Base directory to save the HTML plots"
     ),
+    continuity_dataset: str = typer.Option(
+        "monology/pile-uncopyrighted",
+        help="HuggingFace dataset to stream for the unlabelled continuity pass",
+    ),
 ):
     config_dir = Path(datasets_config).resolve().parent
     with open(datasets_config) as f:
@@ -917,32 +1134,44 @@ def all_datasets(
     print(f"All plots will be saved under: {final_output_dir}")
 
     # Load model and SAE once
-    model = load_llm(base_model_name, device)
+    model, tokenizer = load_llm(base_model_name, device)
     sae = load_sae(checkpoint_path, device)
 
+    pipeline_kwargs: dict[str, Any] = dict(
+        model=model,
+        tokenizer=tokenizer,
+        sae=sae,
+        final_output_dir=final_output_dir,
+        hook_point=hook_point,
+        n_input_samples=n_input_samples,
+        input_sequence_length=input_sequence_length,
+        device=device,
+        llm_batch_size=llm_batch_size,
+        sae_batch_size=sae_batch_size,
+        sort_ascending=sort_ascending,
+        adjusted_fisher=adjusted_fisher,
+        k_neighbors=k_neighbors,
+        active_threshold=active_threshold,
+        noise_threshold=noise_threshold,
+        min_points=min_points,
+        max_points=max_points,
+        n_interesting_experts_to_plot=n_interesting_experts_to_plot,
+        context_window_display=context_window_display,
+    )
+
     for cfg in dataset_cfgs:
-        run_pipeline(
-            model=model,
-            sae=sae,
-            cfg=cfg,
-            final_output_dir=final_output_dir,
-            hook_point=hook_point,
-            n_input_samples=n_input_samples,
-            input_sequence_length=input_sequence_length,
-            device=device,
-            llm_batch_size=llm_batch_size,
-            sae_batch_size=sae_batch_size,
-            sort_by=sort_by,
-            sort_ascending=sort_ascending,
-            adjusted_fisher=adjusted_fisher,
-            k_neighbors=k_neighbors,
-            active_threshold=active_threshold,
-            noise_threshold=noise_threshold,
-            min_points=min_points,
-            max_points=max_points,
-            n_interesting_experts_to_plot=n_interesting_experts_to_plot,
-            context_window_display=context_window_display,
-        )
+        run_pipeline(cfg=cfg, sort_by=sort_by, **pipeline_kwargs)  # type: ignore[arg-type]
+
+    # Unlabelled continuity pass
+    print(f"\n{'=' * 60}")
+    print(f"Continuity pass: streaming from {continuity_dataset}")
+    continuity_cfg = DatasetConfig(
+        dataframe_path="",
+        text_column="text",
+        label_column=None,
+        output_subdir="continuity",
+    )
+    run_pipeline(cfg=continuity_cfg, sort_by="continuity", dataset_name=continuity_dataset, **pipeline_kwargs)  # type: ignore[arg-type]
 
     del model, sae
     torch.cuda.empty_cache()
