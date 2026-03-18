@@ -312,10 +312,21 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
             (self.h_bottleneck.norm(dim=-1) > 1e-1).float().sum(dim=-1).mean()
         )
 
-        metrics["expert_norm_mean"] = self.h_bottleneck.norm(dim=-1).mean()
+        post_act_norms = self.h_bottleneck.norm(dim=-1)
+
+        metrics["expert_norm_mean"] = post_act_norms[post_act_norms > 0].mean()
 
         metrics["dead_experts"] = (
             (self.n_passes_since_fired > self.cfg.dead_after_n_passes).sum().item()
+        )
+
+        # Track this during training to make sure the threshold is working properly - woops
+        metrics["act_threshold"] = self.threshold
+        metrics["experts_above_threshold"] = (
+            (self.hidden_pre_bottleneck.norm(dim=-1) > self.threshold)
+            .float()
+            .sum(dim=-1)
+            .mean()
         )
 
         return TrainStepOutput(
@@ -359,7 +370,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         residual = (sae_in - sae_out).detach()
 
         # Heuristic: use half of active experts as k_aux
-        k_aux = self.cfg.k_experts  # // 2
+        k_aux = self.cfg.k_experts  # // 2 - using half in this architecture leads to aux loss failing to recover dead latents
         scale = min(num_dead / k_aux, 1.0)
         k_aux = min(k_aux, num_dead)
 
