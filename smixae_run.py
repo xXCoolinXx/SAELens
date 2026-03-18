@@ -69,6 +69,7 @@ cfg = LanguageModelSAERunnerConfig(
         rescale_acts_by_decoder_norm=True,
         normalize_activations="expected_average_only_in",
         dead_after_n_passes=500,
+        threshold_lr=0.01,
     ),
     # resume_from_checkpoint="/scratch/Collin/SAELens/checkpoints/vcqgm5qo/250003456",  # Remove this later
     model_name="google/gemma-2-9b",  # "gemma-2-2b",  # "pythia-160m-deduped",  # Use deduped, apparently its more interpretable

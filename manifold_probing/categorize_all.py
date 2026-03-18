@@ -550,7 +550,6 @@ def get_sae_activations(
     device: str,
     activations: torch.Tensor,
     sae_batch_size: int,
-    noise_threshold: float,
     active_threshold: float = 1e-5,
     min_points: int = 100,
     max_points: int = 1000,
@@ -605,13 +604,8 @@ def get_sae_activations(
         expert_pts = sae_activations_cat[..., i, :]
         active_mask = torch.norm(expert_pts, p=2, dim=-1) > active_threshold
         n_active = int(active_mask.sum().item())
-        n_active_unlikely_noise = int(
-            (torch.norm(expert_pts, p=2, dim=-1) > noise_threshold).sum().item()
-        )
 
-        if (
-            n_active_unlikely_noise < min_points
-        ):  # If most things are clustered around 0, the structure is likely spurious. Otherwise, we pass through all points
+        if n_active < min_points:
             continue
         if max_points and n_active > max_points:
             active_indices = active_mask.nonzero(as_tuple=False)
@@ -767,7 +761,6 @@ def run_pipeline(
     adjusted_fisher: bool,
     k_neighbors: int,
     active_threshold: float,
-    noise_threshold: float,
     min_points: int,
     max_points: int,
     n_interesting_experts_to_plot: int,
@@ -806,7 +799,6 @@ def run_pipeline(
         device=device,
         activations=llm_acts,
         sae_batch_size=sae_batch_size,
-        noise_threshold=noise_threshold,
         active_threshold=active_threshold,
         min_points=min_points,
         max_points=max_points,
@@ -978,7 +970,6 @@ def single(
     active_threshold: float = typer.Option(
         1e-5, help="L2 norm threshold to consider an expert active"
     ),
-    noise_threshold: float = typer.Option(4.0, help="L2 norm cutoff for pure noise"),
     min_points: int = typer.Option(
         100, help="Minimum active tokens required to evaluate an expert"
     ),
@@ -1040,7 +1031,6 @@ def single(
         adjusted_fisher=adjusted_fisher,
         k_neighbors=k_neighbors,
         active_threshold=active_threshold,
-        noise_threshold=noise_threshold,
         min_points=min_points,
         max_points=max_points,
         n_interesting_experts_to_plot=n_interesting_experts_to_plot,
@@ -1090,10 +1080,6 @@ def all_datasets(
     k_neighbors: int = typer.Option(10, help="Number of neighbors for continuity"),
     active_threshold: float = typer.Option(
         1e-5, help="L2 norm threshold to consider an expert active"
-    ),
-    noise_threshold: float = typer.Option(
-        4.0,
-        help="Threshold for whether an expert's activations are considered noise. 4.0 usually seems to work well",
     ),
     min_points: int = typer.Option(
         100, help="Minimum active tokens required to evaluate an expert"
@@ -1152,7 +1138,6 @@ def all_datasets(
         adjusted_fisher=adjusted_fisher,
         k_neighbors=k_neighbors,
         active_threshold=active_threshold,
-        noise_threshold=noise_threshold,
         min_points=min_points,
         max_points=max_points,
         n_interesting_experts_to_plot=n_interesting_experts_to_plot,
