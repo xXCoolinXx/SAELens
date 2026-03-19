@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any, Generic, Literal, TypeVar, cast
 
 import simple_parsing
 import torch
+import wandb
 from datasets import (
     Dataset,
     DatasetDict,
@@ -15,7 +16,6 @@ from datasets import (
     load_dataset,
 )
 
-import wandb
 from sae_lens import __version__, logger
 
 # keeping this unused import since some SAELens deps import DTYPE_MAP from config

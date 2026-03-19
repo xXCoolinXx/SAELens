@@ -86,6 +86,7 @@ def train_toy_sae(
             # hacky way to disable evals, but works for now
             eval_every_n_wandb_logs=2**31 - 1,
         ),
+        n_batches_for_norm_estimate=1000,
     )
 
     def snapshot_wrapper(

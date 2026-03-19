@@ -896,24 +896,24 @@ class TestResumeFromCheckpoint:
         # Find the checkpoint subdirectory - based on the output, we have a nested structure
         # The actual checkpoint is in test-run-id/test-run-id/final_64
         nested_run_dir = checkpoint_dir / run_id
-        assert nested_run_dir.exists(), (
-            f"Expected nested run directory at {nested_run_dir}"
-        )
+        assert (
+            nested_run_dir.exists()
+        ), f"Expected nested run directory at {nested_run_dir}"
 
         # Look for the final_* directory that contains the checkpoint files
         checkpoint_subdirs = list(nested_run_dir.glob("final_*"))
-        assert len(checkpoint_subdirs) >= 1, (
-            f"Expected at least one final_* directory in {nested_run_dir}"
-        )
+        assert (
+            len(checkpoint_subdirs) >= 1
+        ), f"Expected at least one final_* directory in {nested_run_dir}"
 
         # Verify the checkpoint files exist
         final_checkpoint_dir = checkpoint_subdirs[0]
-        assert (final_checkpoint_dir / "cfg.json").exists(), (
-            f"No cfg.json found in {final_checkpoint_dir}"
-        )
-        assert (final_checkpoint_dir / SAE_WEIGHTS_FILENAME).exists(), (
-            f"No sae_weights.safetensors found in {final_checkpoint_dir}"
-        )
+        assert (
+            final_checkpoint_dir / "cfg.json"
+        ).exists(), f"No cfg.json found in {final_checkpoint_dir}"
+        assert (
+            final_checkpoint_dir / SAE_WEIGHTS_FILENAME
+        ).exists(), f"No sae_weights.safetensors found in {final_checkpoint_dir}"
 
         # Second run: resume with more tokens
         second_args = [
@@ -951,9 +951,9 @@ class TestResumeFromCheckpoint:
         training_state_files = list(
             (tmp_path / "continued").glob(f"**/{TRAINER_STATE_FILENAME}")
         )
-        assert len(training_state_files) >= 1, (
-            f"Expected at least one trainer_state.pt file in {tmp_path / 'continued'}"
-        )
+        assert (
+            len(training_state_files) >= 1
+        ), f"Expected at least one trainer_state.pt file in {tmp_path / 'continued'}"
 
         # The parent directory of the trainer_state.pt file is our checkpoint directory
         final_continued_checkpoint = training_state_files[0].parent

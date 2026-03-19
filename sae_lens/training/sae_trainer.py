@@ -5,11 +5,11 @@ from pathlib import Path
 from typing import Any, Generic, Protocol
 
 import torch
+import wandb
 from safetensors.torch import save_file
 from torch.optim import Adam
 from tqdm.auto import tqdm
 
-import wandb
 from sae_lens import __version__
 from sae_lens.config import SAETrainerConfig
 from sae_lens.constants import (
