@@ -693,25 +693,27 @@ class PretokenizeRunnerConfig:
 
 @dataclass
 class SAETrainerConfig:
-    n_checkpoints: int
-    checkpoint_path: str | None
-    save_final_checkpoint: bool
     total_training_samples: int
-    device: str
-    autocast: bool
-    lr: float
-    lr_end: float | None
-    lr_scheduler_name: str
-    lr_warm_up_steps: int
-    adam_beta1: float
-    adam_beta2: float
-    lr_decay_steps: int
-    n_restart_cycles: int
     train_batch_size_samples: int
-    dead_feature_window: int
-    feature_sampling_window: int
-    logger: LoggingConfig
-    n_batches_for_norm_estimate: int
+    lr: float = 3e-4
+    lr_end: float | None = None
+    lr_scheduler_name: str = "constant"
+    lr_warm_up_steps: int = 0
+    lr_decay_steps: int = 0
+    n_restart_cycles: int = 1
+    adam_beta1: float = 0.9
+    adam_beta2: float = 0.999
+    device: str = "cpu"
+    autocast: bool = False
+    dead_feature_window: int = 1000
+    feature_sampling_window: int = 2000
+    n_checkpoints: int = 0
+    checkpoint_path: str | None = None
+    save_final_checkpoint: bool = False
+    logger: LoggingConfig = field(
+        default_factory=lambda: LoggingConfig(log_to_wandb=False)
+    )
+    n_batches_for_norm_estimate: int = 1000
 
     @property
     def total_training_steps(self) -> int:
