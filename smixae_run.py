@@ -45,13 +45,14 @@ source_repo = "monology/pile-uncopyrighted"
 
 device = "cuda"
 
-batch_size = 8192
-total_tokens = 100_000_000
+factor = 1  # Use for scaling up and down batch size
+batch_size = 8192 * factor
+total_tokens = 500_000_000
 # total_tokens = 1000 * batch_size
 
 total_training_steps = total_tokens // batch_size
 
-lr_warm_up_steps = 500
+lr_warm_up_steps = 500 // factor
 lr_decay_steps = total_training_steps // 5  # 20% of training
 
 # So many damn parameters
@@ -68,17 +69,17 @@ cfg = LanguageModelSAERunnerConfig(
         / 32,  # 1 / 32, double it because on gemma it doesn't seem to be strong enough to reliably go to 0 over training
         rescale_acts_by_decoder_norm=True,
         normalize_activations="expected_average_only_in",
-        dead_after_n_passes=500,
+        dead_after_n_passes=500 // factor,
         threshold_lr=1e-3,
     ),
     # resume_from_checkpoint="/scratch/Collin/SAELens/checkpoints/vcqgm5qo/250003456",  # Remove this later
     model_name="google/gemma-2-9b",  # "gemma-2-2b",  # "pythia-160m-deduped",  # Use deduped, apparently its more interpretable
     model_class_name="AutoModelForCausalLM",
     hook_name="model.layers.11",  # "blocks.8.hook_resid_post",
-    dataset_path=source_repo,  # We already loaded the dataset because we have to use custom code # type: ignore
+    dataset_path=source_repo,
     is_dataset_tokenized=False,
     # Training Parameters
-    lr=5e-4,
+    lr=5e-4 * factor,
     lr_warm_up_steps=lr_warm_up_steps,
     lr_decay_steps=lr_decay_steps,
     train_batch_size_tokens=batch_size,

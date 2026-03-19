@@ -117,7 +117,7 @@ class SMIXAE(SAE[SMIXAEConfig]):
 
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
         # use leaky relu to avoid dead relus at the latent level, neg slop is small enough to avoid impacting expert norm
-        return nn.LeakyReLU(negative_slope=1e-3)
+        return nn.LeakyReLU(negative_slope=1e-4)
 
     @property
     def effective_decoder_norm(self) -> torch.Tensor:
@@ -424,7 +424,7 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
 
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
         # use leaky relu to avoid dead relus at the latent level, neg slop is small enough to avoid impacting expert norm
-        return nn.LeakyReLU(negative_slope=1e-3)
+        return nn.LeakyReLU(negative_slope=1e-4)
 
 
 def _init_weights_smixae(
