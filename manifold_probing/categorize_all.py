@@ -329,7 +329,14 @@ class Expert:
             counts.append(int(mask.sum()))
 
         df = pd.DataFrame(
-            {"x": xs, "y": ys, "z": zs, "Label": label_strs, "LabelId": label_ids, "Count": counts}
+            {
+                "x": xs,
+                "y": ys,
+                "z": zs,
+                "Label": label_strs,
+                "LabelId": label_ids,
+                "Count": counts,
+            }
         )
 
         if continuous_color:
@@ -343,7 +350,14 @@ class Expert:
                 size="Count",
                 size_max=30,
                 text="Label",
-                hover_data={"x": False, "y": False, "z": False, "Label": True, "Count": True, "LabelId": False},
+                hover_data={
+                    "x": False,
+                    "y": False,
+                    "z": False,
+                    "Label": True,
+                    "Count": True,
+                    "LabelId": False,
+                },
                 title=self._make_title() + " [class means]",
                 opacity=0.9,
             )
@@ -366,7 +380,13 @@ class Expert:
                 size="Count",
                 size_max=30,
                 text="Label",
-                hover_data={"x": False, "y": False, "z": False, "Label": True, "Count": True},
+                hover_data={
+                    "x": False,
+                    "y": False,
+                    "z": False,
+                    "Label": True,
+                    "Count": True,
+                },
                 title=self._make_title() + " [class means]",
                 opacity=0.9,
             )
@@ -397,7 +417,9 @@ def load_llm(
 
 def load_sae(checkpoint_path: str, device: str) -> SMIXAE:
     print(f"Loading SAE from {checkpoint_path}")
-    return SAE.load_from_disk(path=checkpoint_path, device=device)  # type: ignore
+    sae = SAE.load_from_disk(path=checkpoint_path, device=device)
+    print(f"SAE Threshold value: {sae.threshold}")
+    return sae  # type: ignore
 
 
 # ======================================================================
@@ -479,7 +501,7 @@ def collect_activations(
         padding=True,
         return_tensors="pt",
     )
-    tokenized = enc["input_ids"]        # (B, S)
+    tokenized = enc["input_ids"]  # (B, S)
     attention_mask = enc["attention_mask"]  # (B, S)
     B, S = tokenized.shape
 
@@ -508,11 +530,10 @@ def collect_activations(
                 _hook_store[key] = output[0].detach().cpu()
             else:
                 _hook_store[key] = output.detach().cpu()
+
         return hook
 
-    handle = model.get_submodule(hook_name).register_forward_hook(
-        _make_hook(hook_name)
-    )
+    handle = model.get_submodule(hook_name).register_forward_hook(_make_hook(hook_name))
     all_acts = []
     try:
         for i in tqdm(range(0, B, llm_batch_size)):
@@ -725,12 +746,16 @@ def build_dataset_html(
         if mean_fig is not None:
             mean_id = f"mean_{idx}"
             plot_divs += f'\n    <div class="plot-box" id="{mean_id}"></div>'
-            figures_json_parts.append(f'"{mean_id}": {pio.to_json(mean_fig, engine="json")}')
+            figures_json_parts.append(
+                f'"{mean_id}": {pio.to_json(mean_fig, engine="json")}'
+            )
 
         tab_panes.append(
             f'<div class="tab-pane{active_cls}">\n    {plot_divs}\n  </div>'
         )
-        figures_json_parts.append(f'"{scatter_id}": {pio.to_json(scatter_fig, engine="json")}')
+        figures_json_parts.append(
+            f'"{scatter_id}": {pio.to_json(scatter_fig, engine="json")}'
+        )
 
     html = _HTML_TEMPLATE.format(
         title=dataset_title,
@@ -880,7 +905,9 @@ def run_pipeline(
             color_scale=cfg.effective_color_scale,
             continuous_color=cfg.effective_continuous_color,
         )
-        tab_label = f"#{i + 1} E{expert.expert_id} ({effective_sort_by}={score_val:.3f})"
+        tab_label = (
+            f"#{i + 1} E{expert.expert_id} ({effective_sort_by}={score_val:.3f})"
+        )
         expert_entries.append((tab_label, scatter_fig, mean_fig))
 
     html_str = build_dataset_html(expert_entries, f"{subdir} — Expert Analysis")
@@ -1156,7 +1183,12 @@ def all_datasets(
         label_column=None,
         output_subdir="continuity",
     )
-    run_pipeline(cfg=continuity_cfg, sort_by="continuity", dataset_name=continuity_dataset, **pipeline_kwargs)  # type: ignore[arg-type]
+    run_pipeline(
+        cfg=continuity_cfg,
+        sort_by="continuity",
+        dataset_name=continuity_dataset,
+        **pipeline_kwargs,
+    )  # type: ignore[arg-type]
 
     del model, sae
     torch.cuda.empty_cache()

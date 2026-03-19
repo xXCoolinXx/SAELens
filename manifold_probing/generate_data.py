@@ -134,7 +134,7 @@ def generate_hours(n_samples=1000):
         "9AM",
         "10AM",
         "11AM",
-        "12AM",
+        "12PM",
         "1PM",
         "2PM",
         "3PM",
@@ -146,7 +146,7 @@ def generate_hours(n_samples=1000):
         "9PM",
         "10PM",
         "11PM",
-        "12PM",
+        "12AM",
     ]
 
     templates = [

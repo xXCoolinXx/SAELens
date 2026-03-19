@@ -59,7 +59,7 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     # export CUDA_VISIBLE_DEVICES=1 # Hot fix because ASAX doesn't properly change GPU visibility :/
     # Train an SAE
     # /scratch/Collin/envs/sae/bin/python3 context-sae-train.py
-    CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python3 -u smixae_run.py
+    # CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python3 -u smixae_run.py
     # /scratch/Collin/envs/sae/bin/python3 /scratch/Collin/SAELens/probing_tasks.py  # manifold_visualization_smixae.py #
 
     # /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py \
@@ -109,17 +109,18 @@ LOGFILE=$PBS_O_WORKDIR/logs/debug_$(date +%Y%m%d_%H%M%S).log
     # --model-name "google/gemma-2-9b" \
     # --batch-size 32 \
     # --num-samples 100 \
-    # --smixae-path /scratch/Collin/SAELens/checkpoints/7ios7gsx/final_100007936 \
+    # --smixae-path /scratch/Collin/SAELens/checkpoints/zwrplcwu/final_100007936 \
     # --hook-name "blocks.11.hook_resid_post" \
     # --line-length 150 \
     # --plot-top-k 25
 
 
-    # CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py all-datasets \
-    # --checkpoint-path /scratch/Collin/SAELens/checkpoints/7ios7gsx/final_100007936 \
-    # --base-model-name google/gemma-2-9b \
-    # --hook-point model.layers.11 \
-    # --datasets-config manifold_probing/dataset_config.json 
+    CUDA_VISIBLE_DEVICES=0 /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py all-datasets \
+    --checkpoint-path /scratch/Collin/SAELens/checkpoints/zwrplcwu/final_100007936 \
+    --base-model-name google/gemma-2-9b \
+    --hook-point model.layers.11 \
+    --datasets-config manifold_probing/dataset_config.json  \
+    --min-points 900
 
     # CUDA_VISIBLE_DEVICES=1 /scratch/Collin/envs/sae/bin/python3 manifold_probing/categorize_all.py all-datasets \
     # --checkpoint-path "/scratch/Collin/SAELens/checkpoints/sxa3nlyu/final_500002816" \

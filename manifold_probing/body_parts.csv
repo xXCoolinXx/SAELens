@@ -1,1001 +1,1001 @@
 Sentence,Label
-the technician reported that the discomfort originated in the hip,11_hip
-The biopsy was taken from tissue near the knee,13_knee
-"The burn was classified as superficial, affecting the knee",13_knee
-Lymph node enlargement was found near the head,00_head
-The biopsy was taken from tissue near the chest,04_chest
-the intern documented visible asymmetry in the wrist,08_wrist
-Raj documented visible asymmetry in the elbow,07_elbow
-The physical therapist worked on mobility of the arm,06_arm
-The protective gear is designed for the ankle,14_ankle
-Alice measured the circumference of the foot,15_foot
-The biopsy was taken from tissue near the hip,11_hip
-Charlie described a tingling sensation in the back,05_back
-the analyst reported persistent soreness in the hip,11_hip
-Prof. Kim noticed visible swelling in the arm,06_arm
-Bob measured the circumference of the shoulder,03_shoulder
-The X-ray focused on the patient's hand,09_hand
-The scan revealed an abnormality in the face,01_face
-The fracture was confirmed in the head,00_head
-The injury was localized to the knee,13_knee
-Raj noted restricted blood flow to the chest,04_chest
-Prof. Wang measured the circumference of the abdomen,10_abdomen
-The fracture was confirmed in the knee,13_knee
-Charlie reported that the discomfort originated in the arm,06_arm
-Liam reported numbness spreading from the chest,04_chest
-The physical exam highlighted tenderness in the arm,06_arm
-the technician documented bruising on the elbow,07_elbow
-Dr. Smith noted restricted blood flow to the hip,11_hip
-Kevin reported numbness spreading from the wrist,08_wrist
-the coordinator applied ice to reduce inflammation in the hip,11_hip
-Bob measured the circumference of the knee,13_knee
-Alice noted restricted blood flow to the foot,15_foot
-Yuki reported persistent soreness in the foot,15_foot
-Raj reported that the discomfort originated in the neck,02_neck
-Range of motion was restricted in the head,00_head
-Charlie reported that the discomfort originated in the knee,13_knee
-"The burn was classified as superficial, affecting the elbow",07_elbow
-The nurse applied a bandage to the leg,12_leg
-the postdoc described a tingling sensation in the shoulder,03_shoulder
-the analyst described a tingling sensation in the hip,11_hip
-Dr. Rossi applied ice to reduce inflammation in the shoulder,03_shoulder
-The protective gear is designed for the chest,04_chest
-The injury was localized to the abdomen,10_abdomen
-the supervisor noticed visible swelling in the elbow,07_elbow
-Prof. Kim applied ice to reduce inflammation in the hip,11_hip
-Charlie applied ice to reduce inflammation in the shoulder,03_shoulder
-"The burn was classified as superficial, affecting the ankle",14_ankle
-Prof. Kim reported persistent soreness in the hip,11_hip
-the analyst noticed visible swelling in the leg,12_leg
-Dr. Chen documented bruising on the ankle,14_ankle
-the postdoc measured the circumference of the neck,02_neck
-Bob reported that the discomfort originated in the hip,11_hip
-Charlie reported persistent soreness in the abdomen,10_abdomen
-The scan revealed an abnormality in the ankle,14_ankle
-the PI measured the circumference of the neck,02_neck
-Sarah documented visible asymmetry in the knee,13_knee
-Omar documented bruising on the neck,02_neck
-Dr. Okafor noticed visible swelling in the head,00_head
-Yuki documented bruising on the wrist,08_wrist
-The physical exam highlighted tenderness in the face,01_face
-Alice noted restricted blood flow to the back,05_back
-Charlie applied ice to reduce inflammation in the abdomen,10_abdomen
-Sarah described a tingling sensation in the head,00_head
-Dr. Chen noticed visible swelling in the neck,02_neck
-Skin discoloration was observed on the chest,04_chest
-the PI documented visible asymmetry in the back,05_back
-The scan revealed an abnormality in the chest,04_chest
-Charlie reported persistent soreness in the knee,13_knee
-"The burn was classified as superficial, affecting the abdomen",10_abdomen
-the postdoc documented visible asymmetry in the hip,11_hip
-Sarah documented visible asymmetry in the arm,06_arm
-The injury was localized to the back,05_back
-the nurse measured the circumference of the knee,13_knee
-Dr. Rossi noted restricted blood flow to the ankle,14_ankle
-Temperature elevation was noted at the face,01_face
-Maria described a tingling sensation in the neck,02_neck
-the supervisor reported numbness spreading from the abdomen,10_abdomen
-Maria described a tingling sensation in the back,05_back
-Dr. Rossi reported numbness spreading from the knee,13_knee
-Liam noted restricted blood flow to the leg,12_leg
-Elena noticed visible swelling in the back,05_back
-Prof. Kim noticed visible swelling in the hip,11_hip
-Elena reported persistent soreness in the chest,04_chest
-The biopsy was taken from tissue near the head,00_head
-Prof. Wang measured the circumference of the back,05_back
-Prof. Kim documented visible asymmetry in the back,05_back
-Kevin applied ice to reduce inflammation in the wrist,08_wrist
-The surgeon focused the incision near the arm,06_arm
-Prof. Wang reported numbness spreading from the elbow,07_elbow
-the postdoc applied ice to reduce inflammation in the hip,11_hip
-Prof. Müller noticed visible swelling in the shoulder,03_shoulder
-Fatima documented visible asymmetry in the abdomen,10_abdomen
-Dr. Chen described a tingling sensation in the face,01_face
-Raj noted restricted blood flow to the neck,02_neck
-The biopsy was taken from tissue near the elbow,07_elbow
-Dr. Chen measured the circumference of the elbow,07_elbow
-Reflexes were tested at the neck,02_neck
-The compression sleeve is worn on the neck,02_neck
-Kevin reported that the discomfort originated in the head,00_head
-The X-ray focused on the patient's ankle,14_ankle
-The physical exam highlighted tenderness in the foot,15_foot
-Bob noted restricted blood flow to the chest,04_chest
-The injury was localized to the foot,15_foot
-Bob applied ice to reduce inflammation in the shoulder,03_shoulder
-Elena applied ice to reduce inflammation in the ankle,14_ankle
-Yuki reported that the discomfort originated in the abdomen,10_abdomen
-Prof. Müller applied ice to reduce inflammation in the wrist,08_wrist
-Skin discoloration was observed on the foot,15_foot
-Elena noted restricted blood flow to the hand,09_hand
-the supervisor reported numbness spreading from the knee,13_knee
-Bob described a tingling sensation in the elbow,07_elbow
-the nurse described a tingling sensation in the foot,15_foot
-Yuki documented bruising on the abdomen,10_abdomen
-The compression sleeve is worn on the chest,04_chest
-the coordinator measured the circumference of the knee,13_knee
-Liam measured the circumference of the elbow,07_elbow
-Prof. Müller measured the circumference of the elbow,07_elbow
-Dr. Smith documented visible asymmetry in the arm,06_arm
-The biopsy was taken from tissue near the ankle,14_ankle
-Dr. Okafor measured the circumference of the knee,13_knee
-Raj reported numbness spreading from the wrist,08_wrist
-Dr. Patel documented visible asymmetry in the elbow,07_elbow
-the nurse applied ice to reduce inflammation in the shoulder,03_shoulder
-Sarah reported that the discomfort originated in the abdomen,10_abdomen
-Kevin noticed visible swelling in the ankle,14_ankle
-The scan revealed an abnormality in the leg,12_leg
-Sarah noticed visible swelling in the chest,04_chest
-The compression sleeve is worn on the foot,15_foot
-James noticed visible swelling in the back,05_back
-Temperature elevation was noted at the shoulder,03_shoulder
-James noticed visible swelling in the elbow,07_elbow
-Temperature elevation was noted at the wrist,08_wrist
-The scan revealed an abnormality in the abdomen,10_abdomen
-Alice reported that the discomfort originated in the head,00_head
-Dr. Okafor reported numbness spreading from the chest,04_chest
-Liam reported numbness spreading from the foot,15_foot
-The physical therapist worked on mobility of the chest,04_chest
-the postdoc described a tingling sensation in the foot,15_foot
-Reflexes were tested at the hip,11_hip
-The fracture was confirmed in the neck,02_neck
-Bob reported that the discomfort originated in the foot,15_foot
-The physical therapist worked on mobility of the abdomen,10_abdomen
-Alice noticed visible swelling in the wrist,08_wrist
-Dr. Rossi noted restricted blood flow to the elbow,07_elbow
-Dr. Smith described a tingling sensation in the ankle,14_ankle
-The scan revealed an abnormality in the elbow,07_elbow
-Prof. Wang noted restricted blood flow to the ankle,14_ankle
-Amara noticed visible swelling in the abdomen,10_abdomen
-Dr. Smith applied ice to reduce inflammation in the head,00_head
-Dr. Smith reported numbness spreading from the arm,06_arm
-Alice applied ice to reduce inflammation in the wrist,08_wrist
-James reported persistent soreness in the hip,11_hip
-The biopsy was taken from tissue near the foot,15_foot
-Charlie applied ice to reduce inflammation in the hand,09_hand
-Prof. Müller measured the circumference of the hand,09_hand
-The physical exam highlighted tenderness in the back,05_back
-Raj applied ice to reduce inflammation in the elbow,07_elbow
-Lymph node enlargement was found near the abdomen,10_abdomen
-the coordinator reported that the discomfort originated in the hip,11_hip
-The rash first appeared on the knee,13_knee
-Elena noted restricted blood flow to the abdomen,10_abdomen
-the intern noted restricted blood flow to the chest,04_chest
-the coordinator noted restricted blood flow to the back,05_back
-James documented bruising on the face,01_face
-The physical therapist worked on mobility of the ankle,14_ankle
-Dr. Chen noted restricted blood flow to the arm,06_arm
-The X-ray focused on the patient's hip,11_hip
-Kevin described a tingling sensation in the head,00_head
-the coordinator reported numbness spreading from the hip,11_hip
-Dr. Rossi reported numbness spreading from the hand,09_hand
-Amara reported that the discomfort originated in the arm,06_arm
-the coordinator measured the circumference of the arm,06_arm
-the technician reported numbness spreading from the arm,06_arm
-Fatima reported that the discomfort originated in the neck,02_neck
-Kevin documented bruising on the hand,09_hand
-Fatima applied ice to reduce inflammation in the foot,15_foot
-Alice reported numbness spreading from the head,00_head
-Elena applied ice to reduce inflammation in the elbow,07_elbow
-the PI noticed visible swelling in the ankle,14_ankle
-Kevin noted restricted blood flow to the abdomen,10_abdomen
-The physical therapist worked on mobility of the head,00_head
-The imaging clearly depicted damage to the foot,15_foot
-Fatima described a tingling sensation in the leg,12_leg
-Elena described a tingling sensation in the shoulder,03_shoulder
-The fracture was confirmed in the chest,04_chest
-The surgeon focused the incision near the elbow,07_elbow
-the analyst documented bruising on the elbow,07_elbow
-Fatima documented visible asymmetry in the leg,12_leg
-The imaging clearly depicted damage to the head,00_head
-The physical exam highlighted tenderness in the hand,09_hand
-The surgeon focused the incision near the chest,04_chest
-Alice noticed visible swelling in the abdomen,10_abdomen
-Bob documented bruising on the chest,04_chest
-Dr. Rossi reported persistent soreness in the head,00_head
-Prof. Müller reported that the discomfort originated in the leg,12_leg
-Fatima reported numbness spreading from the wrist,08_wrist
-James noticed visible swelling in the wrist,08_wrist
-the postdoc reported that the discomfort originated in the ankle,14_ankle
-Maria applied ice to reduce inflammation in the back,05_back
-Lymph node enlargement was found near the chest,04_chest
-Kevin applied ice to reduce inflammation in the elbow,07_elbow
-Charlie reported that the discomfort originated in the elbow,07_elbow
-the postdoc noticed visible swelling in the hip,11_hip
-Omar measured the circumference of the knee,13_knee
-Maria reported numbness spreading from the abdomen,10_abdomen
-The X-ray focused on the patient's chest,04_chest
-The injury was localized to the neck,02_neck
-the coordinator noticed visible swelling in the face,01_face
-The physical therapist worked on mobility of the face,01_face
-the nurse described a tingling sensation in the head,00_head
-The imaging clearly depicted damage to the arm,06_arm
-the supervisor reported that the discomfort originated in the hand,09_hand
-Prof. Müller reported persistent soreness in the knee,13_knee
-Range of motion was restricted in the leg,12_leg
-Prof. Müller applied ice to reduce inflammation in the knee,13_knee
-Muscle weakness was observed in the face,01_face
-The scan revealed an abnormality in the hand,09_hand
-Dr. Patel reported persistent soreness in the chest,04_chest
-Yuki reported persistent soreness in the back,05_back
-Dr. Patel noted restricted blood flow to the elbow,07_elbow
-Reflexes were tested at the shoulder,03_shoulder
-Elena noted restricted blood flow to the wrist,08_wrist
-The nurse applied a bandage to the hand,09_hand
-Dr. Smith reported persistent soreness in the leg,12_leg
-Yuki documented visible asymmetry in the ankle,14_ankle
-Alice documented visible asymmetry in the abdomen,10_abdomen
-The rash first appeared on the shoulder,03_shoulder
-Charlie described a tingling sensation in the knee,13_knee
-Reflexes were tested at the knee,13_knee
-The physical exam highlighted tenderness in the knee,13_knee
-Alice described a tingling sensation in the shoulder,03_shoulder
-the technician applied ice to reduce inflammation in the leg,12_leg
-The physical therapist worked on mobility of the neck,02_neck
-Prof. Kim applied ice to reduce inflammation in the shoulder,03_shoulder
-The X-ray focused on the patient's abdomen,10_abdomen
-The surgeon focused the incision near the face,01_face
-The protective gear is designed for the arm,06_arm
-Reflexes were tested at the leg,12_leg
-Dr. Okafor documented bruising on the chest,04_chest
-The protective gear is designed for the hand,09_hand
-The nurse applied a bandage to the chest,04_chest
-The nurse applied a bandage to the neck,02_neck
-Raj reported that the discomfort originated in the head,00_head
-Amara noticed visible swelling in the back,05_back
-the nurse noted restricted blood flow to the abdomen,10_abdomen
-Elena measured the circumference of the head,00_head
-Alice reported persistent soreness in the leg,12_leg
-Lymph node enlargement was found near the foot,15_foot
-The rash first appeared on the neck,02_neck
-Range of motion was restricted in the abdomen,10_abdomen
-"The burn was classified as superficial, affecting the back",05_back
-Sarah applied ice to reduce inflammation in the arm,06_arm
-Muscle weakness was observed in the head,00_head
-Bob reported persistent soreness in the shoulder,03_shoulder
-the coordinator applied ice to reduce inflammation in the knee,13_knee
-the technician applied ice to reduce inflammation in the knee,13_knee
-Dr. Okafor measured the circumference of the face,01_face
-Prof. Kim documented bruising on the elbow,07_elbow
-Dr. Smith reported that the discomfort originated in the foot,15_foot
-Dr. Patel documented visible asymmetry in the head,00_head
-Range of motion was restricted in the back,05_back
-Liam documented bruising on the leg,12_leg
-The surgeon focused the incision near the ankle,14_ankle
-Dr. Chen described a tingling sensation in the back,05_back
-the supervisor documented visible asymmetry in the back,05_back
-Raj described a tingling sensation in the hand,09_hand
-the nurse measured the circumference of the chest,04_chest
-The surgeon focused the incision near the head,00_head
-Charlie reported that the discomfort originated in the back,05_back
-Dr. Chen measured the circumference of the head,00_head
-Liam described a tingling sensation in the face,01_face
-Muscle weakness was observed in the hip,11_hip
-The rash first appeared on the head,00_head
-Raj reported persistent soreness in the leg,12_leg
-Alice documented visible asymmetry in the chest,04_chest
-Kevin documented visible asymmetry in the ankle,14_ankle
-Dr. Okafor applied ice to reduce inflammation in the hip,11_hip
-Maria documented visible asymmetry in the elbow,07_elbow
-The imaging clearly depicted damage to the leg,12_leg
-Liam noted restricted blood flow to the hip,11_hip
-Range of motion was restricted in the knee,13_knee
-Omar noticed visible swelling in the shoulder,03_shoulder
-The physical exam highlighted tenderness in the elbow,07_elbow
-the nurse documented bruising on the leg,12_leg
-Yuki noticed visible swelling in the knee,13_knee
-Omar applied ice to reduce inflammation in the back,05_back
-Omar documented bruising on the arm,06_arm
-Range of motion was restricted in the neck,02_neck
-Fatima documented bruising on the elbow,07_elbow
-Amara described a tingling sensation in the leg,12_leg
-The biopsy was taken from tissue near the shoulder,03_shoulder
-the PI reported persistent soreness in the elbow,07_elbow
-Alice documented bruising on the arm,06_arm
-The nurse applied a bandage to the knee,13_knee
-Dr. Chen documented visible asymmetry in the elbow,07_elbow
-James reported that the discomfort originated in the chest,04_chest
-The injury was localized to the hip,11_hip
-Yuki measured the circumference of the knee,13_knee
-The rash first appeared on the arm,06_arm
-The imaging clearly depicted damage to the hand,09_hand
-Amara documented bruising on the shoulder,03_shoulder
-Dr. Smith noticed visible swelling in the face,01_face
-the nurse reported that the discomfort originated in the shoulder,03_shoulder
-Temperature elevation was noted at the ankle,14_ankle
-Dr. Smith documented bruising on the abdomen,10_abdomen
-Maria noticed visible swelling in the hip,11_hip
-Dr. Rossi reported numbness spreading from the leg,12_leg
-Prof. Müller measured the circumference of the neck,02_neck
-the nurse described a tingling sensation in the abdomen,10_abdomen
-the postdoc documented visible asymmetry in the knee,13_knee
-Dr. Chen documented visible asymmetry in the face,01_face
-Lymph node enlargement was found near the neck,02_neck
-The surgeon focused the incision near the back,05_back
-The injury was localized to the elbow,07_elbow
-the nurse documented visible asymmetry in the wrist,08_wrist
-Lymph node enlargement was found near the leg,12_leg
-Prof. Wang measured the circumference of the ankle,14_ankle
-Alice reported numbness spreading from the wrist,08_wrist
-Dr. Patel reported persistent soreness in the face,01_face
-the coordinator measured the circumference of the elbow,07_elbow
-Liam noticed visible swelling in the ankle,14_ankle
-The surgeon focused the incision near the hand,09_hand
-James noted restricted blood flow to the foot,15_foot
-the nurse reported numbness spreading from the knee,13_knee
-"The burn was classified as superficial, affecting the neck",02_neck
-Alice reported persistent soreness in the foot,15_foot
-the nurse noticed visible swelling in the leg,12_leg
-The physical therapist worked on mobility of the back,05_back
-Dr. Okafor reported numbness spreading from the ankle,14_ankle
-The rash first appeared on the hip,11_hip
-Alice measured the circumference of the ankle,14_ankle
-Skin discoloration was observed on the shoulder,03_shoulder
-The compression sleeve is worn on the head,00_head
-The biopsy was taken from tissue near the leg,12_leg
-The imaging clearly depicted damage to the chest,04_chest
-Skin discoloration was observed on the knee,13_knee
-The rash first appeared on the hand,09_hand
-The physical exam highlighted tenderness in the hip,11_hip
-Omar reported persistent soreness in the wrist,08_wrist
-Dr. Patel reported persistent soreness in the knee,13_knee
-Alice noticed visible swelling in the knee,13_knee
-the intern reported that the discomfort originated in the foot,15_foot
-Bob applied ice to reduce inflammation in the neck,02_neck
-the coordinator documented visible asymmetry in the foot,15_foot
-Reflexes were tested at the abdomen,10_abdomen
-Kevin noticed visible swelling in the wrist,08_wrist
-the PI described a tingling sensation in the abdomen,10_abdomen
-Maria reported numbness spreading from the hip,11_hip
-Range of motion was restricted in the foot,15_foot
-Prof. Müller documented bruising on the head,00_head
-Dr. Smith reported persistent soreness in the hip,11_hip
-the postdoc documented visible asymmetry in the ankle,14_ankle
-Muscle weakness was observed in the neck,02_neck
-The X-ray focused on the patient's elbow,07_elbow
-Bob applied ice to reduce inflammation in the face,01_face
-Sarah documented visible asymmetry in the ankle,14_ankle
-Alice reported that the discomfort originated in the knee,13_knee
-Alice documented visible asymmetry in the hand,09_hand
-the intern noted restricted blood flow to the foot,15_foot
-the postdoc measured the circumference of the ankle,14_ankle
-the analyst applied ice to reduce inflammation in the shoulder,03_shoulder
-Prof. Müller applied ice to reduce inflammation in the arm,06_arm
-Dr. Okafor reported persistent soreness in the abdomen,10_abdomen
-The rash first appeared on the wrist,08_wrist
-Amara documented bruising on the head,00_head
-the intern reported numbness spreading from the face,01_face
-the analyst described a tingling sensation in the face,01_face
-The imaging clearly depicted damage to the back,05_back
-the postdoc reported that the discomfort originated in the neck,02_neck
-Range of motion was restricted in the wrist,08_wrist
-Alice noted restricted blood flow to the leg,12_leg
-Raj reported that the discomfort originated in the hip,11_hip
-Alice reported that the discomfort originated in the wrist,08_wrist
-The biopsy was taken from tissue near the abdomen,10_abdomen
-the postdoc reported numbness spreading from the hip,11_hip
-Dr. Chen applied ice to reduce inflammation in the leg,12_leg
-The protective gear is designed for the face,01_face
-"The burn was classified as superficial, affecting the leg",12_leg
-The nurse applied a bandage to the back,05_back
-the analyst reported persistent soreness in the neck,02_neck
-"The burn was classified as superficial, affecting the arm",06_arm
-the PI documented bruising on the foot,15_foot
-the coordinator reported persistent soreness in the hip,11_hip
-"The burn was classified as superficial, affecting the face",01_face
-Omar reported persistent soreness in the chest,04_chest
-the supervisor noticed visible swelling in the neck,02_neck
-Fatima documented bruising on the arm,06_arm
-Skin discoloration was observed on the ankle,14_ankle
-the technician applied ice to reduce inflammation in the head,00_head
-Liam reported persistent soreness in the knee,13_knee
-Dr. Chen documented bruising on the shoulder,03_shoulder
-The nurse applied a bandage to the abdomen,10_abdomen
-Dr. Rossi applied ice to reduce inflammation in the knee,13_knee
-Alice noted restricted blood flow to the face,01_face
-Fatima reported persistent soreness in the leg,12_leg
-Dr. Rossi reported that the discomfort originated in the hip,11_hip
-the technician noted restricted blood flow to the arm,06_arm
-Skin discoloration was observed on the hand,09_hand
-The nurse applied a bandage to the ankle,14_ankle
-the technician reported persistent soreness in the ankle,14_ankle
-The surgeon focused the incision near the shoulder,03_shoulder
-the coordinator noticed visible swelling in the neck,02_neck
-Kevin reported that the discomfort originated in the ankle,14_ankle
-Fatima reported that the discomfort originated in the chest,04_chest
-The scan revealed an abnormality in the back,05_back
-The physical exam highlighted tenderness in the chest,04_chest
-Charlie documented bruising on the hand,09_hand
-The nurse applied a bandage to the wrist,08_wrist
-the postdoc described a tingling sensation in the chest,04_chest
-Reflexes were tested at the elbow,07_elbow
-the postdoc documented visible asymmetry in the elbow,07_elbow
-Liam reported that the discomfort originated in the back,05_back
-Dr. Chen described a tingling sensation in the ankle,14_ankle
-Dr. Chen reported numbness spreading from the wrist,08_wrist
-Maria noticed visible swelling in the back,05_back
-The X-ray focused on the patient's shoulder,03_shoulder
-The fracture was confirmed in the wrist,08_wrist
-Skin discoloration was observed on the elbow,07_elbow
-the postdoc reported numbness spreading from the leg,12_leg
-Temperature elevation was noted at the head,00_head
-Liam documented visible asymmetry in the ankle,14_ankle
-The rash first appeared on the foot,15_foot
-Charlie reported that the discomfort originated in the head,00_head
-Dr. Smith noticed visible swelling in the foot,15_foot
-Raj measured the circumference of the face,01_face
-The imaging clearly depicted damage to the face,01_face
-Maria noted restricted blood flow to the arm,06_arm
-the technician documented bruising on the knee,13_knee
-Dr. Chen reported that the discomfort originated in the wrist,08_wrist
-The imaging clearly depicted damage to the ankle,14_ankle
-Prof. Wang documented bruising on the face,01_face
-Prof. Müller reported persistent soreness in the shoulder,03_shoulder
-The physical therapist worked on mobility of the knee,13_knee
-Elena noticed visible swelling in the elbow,07_elbow
-Dr. Rossi reported that the discomfort originated in the abdomen,10_abdomen
-the PI reported that the discomfort originated in the leg,12_leg
-Raj noted restricted blood flow to the knee,13_knee
-The physical therapist worked on mobility of the leg,12_leg
-Dr. Chen described a tingling sensation in the elbow,07_elbow
-Liam measured the circumference of the back,05_back
-"The burn was classified as superficial, affecting the hand",09_hand
-the analyst described a tingling sensation in the chest,04_chest
-Yuki reported persistent soreness in the leg,12_leg
-The fracture was confirmed in the face,01_face
-The compression sleeve is worn on the ankle,14_ankle
-Dr. Rossi measured the circumference of the hand,09_hand
-Lymph node enlargement was found near the wrist,08_wrist
-The surgeon focused the incision near the wrist,08_wrist
-The compression sleeve is worn on the wrist,08_wrist
-the nurse reported persistent soreness in the face,01_face
-the intern described a tingling sensation in the abdomen,10_abdomen
-The nurse applied a bandage to the head,00_head
-Dr. Chen applied ice to reduce inflammation in the chest,04_chest
-The scan revealed an abnormality in the hip,11_hip
-Yuki reported persistent soreness in the arm,06_arm
-Elena reported persistent soreness in the arm,06_arm
-Dr. Okafor described a tingling sensation in the hip,11_hip
-Liam reported numbness spreading from the hip,11_hip
-Temperature elevation was noted at the hip,11_hip
-Temperature elevation was noted at the chest,04_chest
-Prof. Wang applied ice to reduce inflammation in the head,00_head
-Muscle weakness was observed in the chest,04_chest
-The nurse applied a bandage to the face,01_face
-Dr. Okafor reported that the discomfort originated in the hip,11_hip
-The protective gear is designed for the elbow,07_elbow
-the supervisor noted restricted blood flow to the knee,13_knee
-the postdoc reported numbness spreading from the back,05_back
-Elena described a tingling sensation in the face,01_face
-the supervisor described a tingling sensation in the back,05_back
-Reflexes were tested at the ankle,14_ankle
-Bob noticed visible swelling in the elbow,07_elbow
-Prof. Kim documented visible asymmetry in the head,00_head
-Alice applied ice to reduce inflammation in the head,00_head
-The protective gear is designed for the foot,15_foot
-Dr. Smith described a tingling sensation in the neck,02_neck
-The physical therapist worked on mobility of the hand,09_hand
-Elena documented visible asymmetry in the foot,15_foot
-Charlie noticed visible swelling in the ankle,14_ankle
-Liam measured the circumference of the abdomen,10_abdomen
-James reported persistent soreness in the elbow,07_elbow
-"The burn was classified as superficial, affecting the foot",15_foot
-Liam described a tingling sensation in the neck,02_neck
-Skin discoloration was observed on the leg,12_leg
-Yuki documented bruising on the arm,06_arm
-the technician described a tingling sensation in the hip,11_hip
-Range of motion was restricted in the ankle,14_ankle
-The scan revealed an abnormality in the neck,02_neck
-the analyst applied ice to reduce inflammation in the ankle,14_ankle
-the intern documented visible asymmetry in the neck,02_neck
-the nurse reported that the discomfort originated in the ankle,14_ankle
-Elena described a tingling sensation in the foot,15_foot
-Temperature elevation was noted at the abdomen,10_abdomen
-the intern documented visible asymmetry in the chest,04_chest
-The surgeon focused the incision near the abdomen,10_abdomen
-Dr. Rossi measured the circumference of the shoulder,03_shoulder
-the intern applied ice to reduce inflammation in the head,00_head
-the coordinator reported persistent soreness in the wrist,08_wrist
-the intern described a tingling sensation in the hip,11_hip
-Alice noted restricted blood flow to the knee,13_knee
-Dr. Okafor documented bruising on the abdomen,10_abdomen
-the postdoc reported that the discomfort originated in the head,00_head
-Skin discoloration was observed on the arm,06_arm
-The biopsy was taken from tissue near the arm,06_arm
-Range of motion was restricted in the arm,06_arm
-Yuki reported that the discomfort originated in the back,05_back
-Dr. Rossi reported persistent soreness in the foot,15_foot
-The protective gear is designed for the leg,12_leg
-Omar reported that the discomfort originated in the face,01_face
-Dr. Smith applied ice to reduce inflammation in the knee,13_knee
-the supervisor applied ice to reduce inflammation in the chest,04_chest
-The X-ray focused on the patient's leg,12_leg
-Muscle weakness was observed in the abdomen,10_abdomen
-Elena applied ice to reduce inflammation in the hip,11_hip
-Lymph node enlargement was found near the back,05_back
-Sarah noticed visible swelling in the arm,06_arm
-Dr. Smith measured the circumference of the face,01_face
-Dr. Okafor reported numbness spreading from the abdomen,10_abdomen
-Prof. Wang noted restricted blood flow to the neck,02_neck
-Elena reported that the discomfort originated in the arm,06_arm
-Bob documented visible asymmetry in the ankle,14_ankle
-Lymph node enlargement was found near the arm,06_arm
-the intern noted restricted blood flow to the hip,11_hip
-Dr. Rossi noticed visible swelling in the abdomen,10_abdomen
-Reflexes were tested at the face,01_face
-Dr. Okafor noted restricted blood flow to the neck,02_neck
-Prof. Kim applied ice to reduce inflammation in the knee,13_knee
-The rash first appeared on the leg,12_leg
-the supervisor documented visible asymmetry in the neck,02_neck
-Yuki measured the circumference of the chest,04_chest
-Omar reported persistent soreness in the abdomen,10_abdomen
-The injury was localized to the chest,04_chest
-The fracture was confirmed in the abdomen,10_abdomen
-Dr. Okafor noted restricted blood flow to the hip,11_hip
-Sarah reported numbness spreading from the abdomen,10_abdomen
-Raj noted restricted blood flow to the hand,09_hand
-Raj noticed visible swelling in the neck,02_neck
-Fatima noticed visible swelling in the shoulder,03_shoulder
-The nurse applied a bandage to the arm,06_arm
-The rash first appeared on the back,05_back
-the analyst applied ice to reduce inflammation in the face,01_face
-Yuki applied ice to reduce inflammation in the shoulder,03_shoulder
-Elena noticed visible swelling in the arm,06_arm
-the intern reported numbness spreading from the head,00_head
-Elena documented bruising on the arm,06_arm
-James measured the circumference of the neck,02_neck
-the postdoc noted restricted blood flow to the neck,02_neck
-Dr. Chen documented visible asymmetry in the knee,13_knee
-The physical exam highlighted tenderness in the head,00_head
-Maria described a tingling sensation in the chest,04_chest
-The X-ray focused on the patient's face,01_face
-Skin discoloration was observed on the hip,11_hip
-The protective gear is designed for the shoulder,03_shoulder
-the coordinator measured the circumference of the back,05_back
-Sarah reported numbness spreading from the leg,12_leg
-Charlie documented bruising on the arm,06_arm
-Maria reported that the discomfort originated in the face,01_face
-Dr. Rossi documented bruising on the hand,09_hand
-Dr. Patel noticed visible swelling in the hip,11_hip
-Lymph node enlargement was found near the ankle,14_ankle
-the PI measured the circumference of the ankle,14_ankle
-Dr. Smith measured the circumference of the wrist,08_wrist
-Raj documented visible asymmetry in the head,00_head
-Elena reported persistent soreness in the knee,13_knee
-the PI reported that the discomfort originated in the elbow,07_elbow
-the supervisor reported numbness spreading from the hip,11_hip
-Prof. Müller noticed visible swelling in the abdomen,10_abdomen
-the analyst applied ice to reduce inflammation in the neck,02_neck
-Raj reported numbness spreading from the hand,09_hand
-Maria reported persistent soreness in the neck,02_neck
-Amara documented bruising on the elbow,07_elbow
-The fracture was confirmed in the hip,11_hip
-Dr. Chen reported that the discomfort originated in the knee,13_knee
-Liam reported that the discomfort originated in the shoulder,03_shoulder
-the postdoc noticed visible swelling in the neck,02_neck
-Prof. Müller documented bruising on the elbow,07_elbow
-The scan revealed an abnormality in the knee,13_knee
-Elena reported that the discomfort originated in the back,05_back
-Fatima measured the circumference of the hip,11_hip
-Range of motion was restricted in the shoulder,03_shoulder
-Bob documented visible asymmetry in the foot,15_foot
-Prof. Müller applied ice to reduce inflammation in the leg,12_leg
-Elena reported numbness spreading from the hand,09_hand
-The physical exam highlighted tenderness in the abdomen,10_abdomen
-the PI described a tingling sensation in the ankle,14_ankle
-Skin discoloration was observed on the back,05_back
-The surgeon focused the incision near the hip,11_hip
-the nurse reported persistent soreness in the neck,02_neck
-the postdoc documented visible asymmetry in the foot,15_foot
-Elena reported persistent soreness in the leg,12_leg
-Muscle weakness was observed in the elbow,07_elbow
-Sarah documented bruising on the chest,04_chest
-Sarah measured the circumference of the abdomen,10_abdomen
-Fatima reported numbness spreading from the hand,09_hand
-Dr. Okafor reported numbness spreading from the foot,15_foot
-Prof. Kim documented bruising on the back,05_back
-Fatima reported numbness spreading from the foot,15_foot
-Dr. Rossi noted restricted blood flow to the wrist,08_wrist
-Raj reported persistent soreness in the hand,09_hand
-Fatima described a tingling sensation in the neck,02_neck
-the supervisor documented visible asymmetry in the abdomen,10_abdomen
-The protective gear is designed for the wrist,08_wrist
-Temperature elevation was noted at the foot,15_foot
-Amara reported numbness spreading from the back,05_back
-Dr. Patel reported persistent soreness in the wrist,08_wrist
-Sarah measured the circumference of the shoulder,03_shoulder
-Prof. Wang reported numbness spreading from the neck,02_neck
-Prof. Kim reported that the discomfort originated in the neck,02_neck
-Prof. Wang applied ice to reduce inflammation in the back,05_back
-Dr. Rossi described a tingling sensation in the foot,15_foot
-Skin discoloration was observed on the abdomen,10_abdomen
-Omar described a tingling sensation in the face,01_face
-Dr. Okafor reported that the discomfort originated in the leg,12_leg
-The compression sleeve is worn on the back,05_back
-The injury was localized to the leg,12_leg
-the intern reported that the discomfort originated in the chest,04_chest
-The fracture was confirmed in the leg,12_leg
-Yuki measured the circumference of the neck,02_neck
-The biopsy was taken from tissue near the neck,02_neck
-the analyst noticed visible swelling in the foot,15_foot
-the PI noticed visible swelling in the shoulder,03_shoulder
-Dr. Patel documented bruising on the wrist,08_wrist
-the nurse noted restricted blood flow to the wrist,08_wrist
-The physical therapist worked on mobility of the shoulder,03_shoulder
-Amara noticed visible swelling in the foot,15_foot
-The physical therapist worked on mobility of the wrist,08_wrist
-Temperature elevation was noted at the elbow,07_elbow
-the postdoc described a tingling sensation in the wrist,08_wrist
-the analyst reported numbness spreading from the ankle,14_ankle
-the supervisor reported that the discomfort originated in the ankle,14_ankle
-The surgeon focused the incision near the foot,15_foot
-"The burn was classified as superficial, affecting the hip",11_hip
-The biopsy was taken from tissue near the wrist,08_wrist
-the nurse reported that the discomfort originated in the hand,09_hand
-Charlie reported that the discomfort originated in the wrist,08_wrist
-The physical exam highlighted tenderness in the ankle,14_ankle
-Maria described a tingling sensation in the hip,11_hip
-Dr. Okafor reported persistent soreness in the hand,09_hand
-the intern reported numbness spreading from the hip,11_hip
-Sarah reported persistent soreness in the elbow,07_elbow
-The rash first appeared on the ankle,14_ankle
-James documented bruising on the back,05_back
-the nurse documented visible asymmetry in the foot,15_foot
-The fracture was confirmed in the elbow,07_elbow
-The X-ray focused on the patient's neck,02_neck
-Yuki measured the circumference of the shoulder,03_shoulder
-James measured the circumference of the hand,09_hand
-the nurse measured the circumference of the foot,15_foot
-Prof. Kim noticed visible swelling in the abdomen,10_abdomen
-The fracture was confirmed in the arm,06_arm
-Omar measured the circumference of the back,05_back
-Bob noticed visible swelling in the ankle,14_ankle
-Muscle weakness was observed in the arm,06_arm
-Dr. Okafor noted restricted blood flow to the head,00_head
-the supervisor reported numbness spreading from the foot,15_foot
-The protective gear is designed for the neck,02_neck
-The protective gear is designed for the hip,11_hip
-Range of motion was restricted in the hip,11_hip
-The compression sleeve is worn on the elbow,07_elbow
-Liam reported that the discomfort originated in the elbow,07_elbow
-Dr. Chen documented visible asymmetry in the hip,11_hip
-the supervisor noted restricted blood flow to the hand,09_hand
-Charlie reported that the discomfort originated in the hip,11_hip
-Muscle weakness was observed in the ankle,14_ankle
-the postdoc documented visible asymmetry in the leg,12_leg
-James noticed visible swelling in the hand,09_hand
-Bob documented bruising on the hand,09_hand
-Maria documented visible asymmetry in the neck,02_neck
-James noticed visible swelling in the chest,04_chest
-Range of motion was restricted in the chest,04_chest
-Muscle weakness was observed in the foot,15_foot
-Prof. Kim noted restricted blood flow to the face,01_face
-Dr. Rossi reported that the discomfort originated in the head,00_head
-Dr. Okafor documented bruising on the leg,12_leg
-the intern reported persistent soreness in the wrist,08_wrist
-Prof. Wang described a tingling sensation in the knee,13_knee
-Raj documented visible asymmetry in the ankle,14_ankle
-the postdoc reported persistent soreness in the shoulder,03_shoulder
-Prof. Kim measured the circumference of the hip,11_hip
-Prof. Kim measured the circumference of the ankle,14_ankle
-The X-ray focused on the patient's wrist,08_wrist
-Dr. Smith reported that the discomfort originated in the head,00_head
-Muscle weakness was observed in the wrist,08_wrist
-the coordinator applied ice to reduce inflammation in the leg,12_leg
-the PI reported persistent soreness in the face,01_face
-The surgeon focused the incision near the leg,12_leg
-Muscle weakness was observed in the back,05_back
-the PI described a tingling sensation in the neck,02_neck
-Bob documented visible asymmetry in the hip,11_hip
-Fatima noticed visible swelling in the leg,12_leg
-Dr. Chen reported numbness spreading from the knee,13_knee
-Prof. Müller documented visible asymmetry in the abdomen,10_abdomen
-the coordinator reported that the discomfort originated in the shoulder,03_shoulder
-The nurse applied a bandage to the shoulder,03_shoulder
-Prof. Müller documented visible asymmetry in the knee,13_knee
-Prof. Müller reported persistent soreness in the leg,12_leg
-the nurse noted restricted blood flow to the arm,06_arm
-Dr. Rossi described a tingling sensation in the hand,09_hand
-the PI noted restricted blood flow to the shoulder,03_shoulder
-The compression sleeve is worn on the hip,11_hip
-Yuki described a tingling sensation in the arm,06_arm
-Sarah noticed visible swelling in the face,01_face
-Raj noted restricted blood flow to the head,00_head
-Dr. Patel noted restricted blood flow to the hip,11_hip
-the technician reported persistent soreness in the shoulder,03_shoulder
-Liam reported numbness spreading from the face,01_face
-Elena reported persistent soreness in the wrist,08_wrist
-Raj noted restricted blood flow to the leg,12_leg
-the intern documented visible asymmetry in the ankle,14_ankle
-the coordinator described a tingling sensation in the elbow,07_elbow
-Fatima documented visible asymmetry in the neck,02_neck
-The injury was localized to the shoulder,03_shoulder
-Range of motion was restricted in the elbow,07_elbow
-Reflexes were tested at the back,05_back
-Dr. Rossi noted restricted blood flow to the face,01_face
-Maria documented visible asymmetry in the arm,06_arm
-Range of motion was restricted in the face,01_face
-Prof. Kim reported numbness spreading from the abdomen,10_abdomen
-Yuki documented bruising on the foot,15_foot
-Skin discoloration was observed on the head,00_head
-Dr. Smith reported persistent soreness in the neck,02_neck
-Maria noticed visible swelling in the foot,15_foot
-the supervisor applied ice to reduce inflammation in the hip,11_hip
-Dr. Chen described a tingling sensation in the foot,15_foot
-Omar noted restricted blood flow to the back,05_back
-Dr. Patel described a tingling sensation in the hip,11_hip
-Dr. Patel noted restricted blood flow to the leg,12_leg
-The injury was localized to the ankle,14_ankle
-Prof. Kim measured the circumference of the leg,12_leg
-Skin discoloration was observed on the neck,02_neck
-Lymph node enlargement was found near the hand,09_hand
-the PI described a tingling sensation in the hand,09_hand
-Omar described a tingling sensation in the elbow,07_elbow
-the postdoc described a tingling sensation in the face,01_face
-Prof. Kim documented bruising on the leg,12_leg
-Prof. Müller described a tingling sensation in the leg,12_leg
-Raj applied ice to reduce inflammation in the leg,12_leg
-The physical therapist worked on mobility of the elbow,07_elbow
-Yuki noticed visible swelling in the neck,02_neck
-Sarah reported numbness spreading from the neck,02_neck
-Reflexes were tested at the head,00_head
-the intern reported persistent soreness in the face,01_face
-The injury was localized to the wrist,08_wrist
-Amara noted restricted blood flow to the shoulder,03_shoulder
-Dr. Rossi reported numbness spreading from the back,05_back
-The X-ray focused on the patient's head,00_head
-Muscle weakness was observed in the hand,09_hand
-The compression sleeve is worn on the shoulder,03_shoulder
-the technician reported persistent soreness in the neck,02_neck
-Dr. Rossi documented bruising on the ankle,14_ankle
-Maria documented visible asymmetry in the foot,15_foot
-Omar described a tingling sensation in the knee,13_knee
-the technician noticed visible swelling in the abdomen,10_abdomen
-Liam reported numbness spreading from the arm,06_arm
-the PI applied ice to reduce inflammation in the abdomen,10_abdomen
-Dr. Rossi reported numbness spreading from the neck,02_neck
-The compression sleeve is worn on the arm,06_arm
-Muscle weakness was observed in the leg,12_leg
-The fracture was confirmed in the shoulder,03_shoulder
-Kevin documented bruising on the neck,02_neck
-the technician reported persistent soreness in the hand,09_hand
-Reflexes were tested at the foot,15_foot
-the supervisor reported that the discomfort originated in the face,01_face
-Elena documented visible asymmetry in the back,05_back
-the technician documented visible asymmetry in the head,00_head
+Prof. Kim applied ice to reduce inflammation in the face,01_face
 The fracture was confirmed in the foot,15_foot
-James reported persistent soreness in the arm,06_arm
-The biopsy was taken from tissue near the hand,09_hand
-Prof. Müller described a tingling sensation in the foot,15_foot
-Amara described a tingling sensation in the arm,06_arm
-Temperature elevation was noted at the back,05_back
-The nurse applied a bandage to the elbow,07_elbow
-Prof. Kim reported numbness spreading from the neck,02_neck
-The imaging clearly depicted damage to the knee,13_knee
-the intern noted restricted blood flow to the neck,02_neck
-The physical exam highlighted tenderness in the wrist,08_wrist
-Amara documented visible asymmetry in the shoulder,03_shoulder
-Reflexes were tested at the arm,06_arm
-the coordinator noticed visible swelling in the abdomen,10_abdomen
-Kevin noticed visible swelling in the back,05_back
-Dr. Chen documented visible asymmetry in the head,00_head
-The imaging clearly depicted damage to the wrist,08_wrist
-Prof. Müller documented bruising on the ankle,14_ankle
-Charlie documented visible asymmetry in the arm,06_arm
-the intern noticed visible swelling in the chest,04_chest
-Temperature elevation was noted at the neck,02_neck
-Prof. Kim described a tingling sensation in the hip,11_hip
-Dr. Okafor reported persistent soreness in the foot,15_foot
-the analyst noted restricted blood flow to the neck,02_neck
-Dr. Smith documented visible asymmetry in the wrist,08_wrist
-the analyst measured the circumference of the ankle,14_ankle
-The injury was localized to the hand,09_hand
-Amara documented bruising on the hand,09_hand
-Dr. Rossi measured the circumference of the elbow,07_elbow
-Prof. Wang applied ice to reduce inflammation in the foot,15_foot
-the postdoc applied ice to reduce inflammation in the head,00_head
-the postdoc noted restricted blood flow to the elbow,07_elbow
-Alice reported numbness spreading from the leg,12_leg
-Sarah documented visible asymmetry in the head,00_head
-James documented visible asymmetry in the head,00_head
-the nurse noted restricted blood flow to the chest,04_chest
-Charlie documented bruising on the ankle,14_ankle
-The rash first appeared on the chest,04_chest
-The scan revealed an abnormality in the wrist,08_wrist
-The imaging clearly depicted damage to the shoulder,03_shoulder
-the nurse reported persistent soreness in the back,05_back
-Liam described a tingling sensation in the ankle,14_ankle
-the PI applied ice to reduce inflammation in the hip,11_hip
-Dr. Okafor documented visible asymmetry in the foot,15_foot
-The nurse applied a bandage to the hip,11_hip
-The scan revealed an abnormality in the shoulder,03_shoulder
-Sarah described a tingling sensation in the face,01_face
-the analyst noticed visible swelling in the chest,04_chest
-Prof. Wang reported that the discomfort originated in the face,01_face
-Prof. Kim described a tingling sensation in the hand,09_hand
-Sarah noted restricted blood flow to the knee,13_knee
-Dr. Chen noticed visible swelling in the abdomen,10_abdomen
-Dr. Chen measured the circumference of the chest,04_chest
-The imaging clearly depicted damage to the neck,02_neck
-Range of motion was restricted in the hand,09_hand
-The injury was localized to the arm,06_arm
-Dr. Chen noticed visible swelling in the arm,06_arm
-Lymph node enlargement was found near the elbow,07_elbow
-the analyst noticed visible swelling in the abdomen,10_abdomen
-Temperature elevation was noted at the hand,09_hand
-Dr. Okafor reported persistent soreness in the leg,12_leg
-the analyst described a tingling sensation in the abdomen,10_abdomen
-the coordinator described a tingling sensation in the abdomen,10_abdomen
-Dr. Smith applied ice to reduce inflammation in the arm,06_arm
-Skin discoloration was observed on the wrist,08_wrist
-Dr. Okafor reported numbness spreading from the face,01_face
-The physical exam highlighted tenderness in the shoulder,03_shoulder
-Prof. Kim applied ice to reduce inflammation in the chest,04_chest
-Dr. Rossi documented visible asymmetry in the arm,06_arm
-The imaging clearly depicted damage to the hip,11_hip
-Alice reported persistent soreness in the face,01_face
-The rash first appeared on the elbow,07_elbow
-Dr. Smith documented visible asymmetry in the abdomen,10_abdomen
-The X-ray focused on the patient's arm,06_arm
-Bob documented bruising on the elbow,07_elbow
-The biopsy was taken from tissue near the back,05_back
-The scan revealed an abnormality in the foot,15_foot
-The imaging clearly depicted damage to the elbow,07_elbow
-the technician reported that the discomfort originated in the ankle,14_ankle
-The fracture was confirmed in the ankle,14_ankle
-Prof. Wang documented bruising on the elbow,07_elbow
-Dr. Okafor described a tingling sensation in the chest,04_chest
-The injury was localized to the face,01_face
-the technician reported persistent soreness in the head,00_head
-Prof. Wang measured the circumference of the leg,12_leg
-Bob documented visible asymmetry in the leg,12_leg
-Dr. Patel described a tingling sensation in the back,05_back
-Prof. Müller reported persistent soreness in the ankle,14_ankle
-The biopsy was taken from tissue near the face,01_face
-The fracture was confirmed in the back,05_back
-The compression sleeve is worn on the face,01_face
-Dr. Rossi applied ice to reduce inflammation in the abdomen,10_abdomen
-the coordinator applied ice to reduce inflammation in the elbow,07_elbow
-Temperature elevation was noted at the arm,06_arm
-"The burn was classified as superficial, affecting the head",00_head
-"The burn was classified as superficial, affecting the chest",04_chest
-James reported persistent soreness in the face,01_face
-James reported numbness spreading from the arm,06_arm
-Charlie noticed visible swelling in the head,00_head
-Yuki measured the circumference of the wrist,08_wrist
-The rash first appeared on the abdomen,10_abdomen
-the coordinator reported numbness spreading from the chest,04_chest
-the technician noticed visible swelling in the face,01_face
-Sarah documented bruising on the back,05_back
-Fatima measured the circumference of the elbow,07_elbow
-the PI reported persistent soreness in the arm,06_arm
-Dr. Smith reported numbness spreading from the leg,12_leg
-Elena applied ice to reduce inflammation in the abdomen,10_abdomen
-Lymph node enlargement was found near the hip,11_hip
-Raj documented visible asymmetry in the abdomen,10_abdomen
-The physical therapist worked on mobility of the hip,11_hip
-Amara documented bruising on the knee,13_knee
-Amara described a tingling sensation in the back,05_back
-Yuki measured the circumference of the hand,09_hand
-"The burn was classified as superficial, affecting the shoulder",03_shoulder
-Liam noted restricted blood flow to the foot,15_foot
-Omar reported that the discomfort originated in the abdomen,10_abdomen
-Reflexes were tested at the hand,09_hand
-the technician noticed visible swelling in the wrist,08_wrist
-Yuki measured the circumference of the leg,12_leg
-Kevin noticed visible swelling in the face,01_face
-The injury was localized to the head,00_head
-The physical exam highlighted tenderness in the neck,02_neck
-James applied ice to reduce inflammation in the chest,04_chest
-Reflexes were tested at the chest,04_chest
-Lymph node enlargement was found near the face,01_face
-Dr. Patel documented bruising on the head,00_head
-Charlie documented bruising on the chest,04_chest
-Prof. Müller applied ice to reduce inflammation in the back,05_back
-James reported persistent soreness in the neck,02_neck
-the PI reported persistent soreness in the hand,09_hand
-the supervisor documented visible asymmetry in the leg,12_leg
-Sarah measured the circumference of the chest,04_chest
-Dr. Rossi reported persistent soreness in the abdomen,10_abdomen
-The surgeon focused the incision near the neck,02_neck
-Alice described a tingling sensation in the wrist,08_wrist
-Alice noticed visible swelling in the chest,04_chest
-Dr. Okafor noticed visible swelling in the chest,04_chest
-the nurse noted restricted blood flow to the hand,09_hand
-Fatima documented visible asymmetry in the ankle,14_ankle
-Omar noted restricted blood flow to the chest,04_chest
-the coordinator noted restricted blood flow to the hand,09_hand
-The nurse applied a bandage to the foot,15_foot
-Dr. Okafor described a tingling sensation in the hand,09_hand
-The physical therapist worked on mobility of the foot,15_foot
-the intern noted restricted blood flow to the leg,12_leg
-the technician reported numbness spreading from the neck,02_neck
-the supervisor documented visible asymmetry in the face,01_face
-Yuki documented bruising on the shoulder,03_shoulder
-Dr. Okafor reported numbness spreading from the neck,02_neck
-Elena documented visible asymmetry in the knee,13_knee
-Elena reported that the discomfort originated in the ankle,14_ankle
-Dr. Patel noted restricted blood flow to the chest,04_chest
-Alice applied ice to reduce inflammation in the arm,06_arm
-Dr. Okafor reported that the discomfort originated in the elbow,07_elbow
-Sarah described a tingling sensation in the elbow,07_elbow
-The surgeon focused the incision near the knee,13_knee
-The compression sleeve is worn on the hand,09_hand
-Elena documented visible asymmetry in the head,00_head
-The imaging clearly depicted damage to the abdomen,10_abdomen
-the postdoc noted restricted blood flow to the leg,12_leg
-Sarah noticed visible swelling in the foot,15_foot
-Dr. Smith documented bruising on the foot,15_foot
-the postdoc noted restricted blood flow to the ankle,14_ankle
-The compression sleeve is worn on the leg,12_leg
-The protective gear is designed for the knee,13_knee
-"The burn was classified as superficial, affecting the wrist",08_wrist
-Fatima reported persistent soreness in the ankle,14_ankle
-Sarah reported that the discomfort originated in the head,00_head
-Sarah noted restricted blood flow to the elbow,07_elbow
-The physical exam highlighted tenderness in the leg,12_leg
-The scan revealed an abnormality in the arm,06_arm
-the PI reported numbness spreading from the ankle,14_ankle
-Maria reported numbness spreading from the ankle,14_ankle
-The X-ray focused on the patient's foot,15_foot
-Bob measured the circumference of the face,01_face
-Dr. Patel measured the circumference of the foot,15_foot
-Maria applied ice to reduce inflammation in the knee,13_knee
-Prof. Müller noticed visible swelling in the foot,15_foot
-Dr. Smith measured the circumference of the elbow,07_elbow
-Kevin noted restricted blood flow to the head,00_head
-Charlie described a tingling sensation in the elbow,07_elbow
-The protective gear is designed for the head,00_head
-Charlie described a tingling sensation in the hip,11_hip
-Dr. Patel applied ice to reduce inflammation in the arm,06_arm
-the intern reported persistent soreness in the chest,04_chest
-the technician documented bruising on the neck,02_neck
-Dr. Rossi noticed visible swelling in the leg,12_leg
-James noticed visible swelling in the shoulder,03_shoulder
-Omar reported persistent soreness in the ankle,14_ankle
-Omar documented visible asymmetry in the arm,06_arm
-Lymph node enlargement was found near the knee,13_knee
-the supervisor reported numbness spreading from the ankle,14_ankle
-Dr. Smith reported that the discomfort originated in the knee,13_knee
-Liam documented visible asymmetry in the wrist,08_wrist
-the nurse noticed visible swelling in the back,05_back
-Sarah documented bruising on the shoulder,03_shoulder
-Prof. Kim documented bruising on the abdomen,10_abdomen
-Temperature elevation was noted at the leg,12_leg
-the technician measured the circumference of the back,05_back
-the analyst reported persistent soreness in the back,05_back
-The rash first appeared on the face,01_face
-the intern documented bruising on the wrist,08_wrist
-Dr. Chen documented visible asymmetry in the neck,02_neck
-The scan revealed an abnormality in the head,00_head
-Yuki documented bruising on the hand,09_hand
+Dr. Rossi measured the circumference of the head,00_head
+Lymph node enlargement was found near the chest,04_chest
+The protective gear is designed for the face,01_face
+Elena reported numbness spreading from the wrist,08_wrist
+The injury was localized to the wrist,08_wrist
+the technician noticed visible swelling in the neck,02_neck
+The physical exam highlighted tenderness in the back,05_back
+Prof. Kim reported numbness spreading from the face,01_face
+the PI noted restricted blood flow to the hand,09_hand
+Alice reported persistent soreness in the knee,13_knee
+Charlie noted restricted blood flow to the face,01_face
+the intern documented bruising on the chest,04_chest
+Bob documented visible asymmetry in the wrist,08_wrist
+The nurse applied a bandage to the shoulder,03_shoulder
+the postdoc applied ice to reduce inflammation in the abdomen,10_abdomen
+The nurse applied a bandage to the neck,02_neck
+The rash first appeared on the back,05_back
+Prof. Kim noted restricted blood flow to the leg,12_leg
+Elena documented bruising on the elbow,07_elbow
+Omar reported persistent soreness in the foot,15_foot
 The fracture was confirmed in the hand,09_hand
-Reflexes were tested at the wrist,08_wrist
-Muscle weakness was observed in the shoulder,03_shoulder
-Kevin documented visible asymmetry in the shoulder,03_shoulder
-The compression sleeve is worn on the knee,13_knee
-Dr. Okafor described a tingling sensation in the abdomen,10_abdomen
-the supervisor noticed visible swelling in the hand,09_hand
-Dr. Smith noticed visible swelling in the hip,11_hip
-James noticed visible swelling in the neck,02_neck
-The X-ray focused on the patient's knee,13_knee
-the technician documented visible asymmetry in the shoulder,03_shoulder
-Skin discoloration was observed on the face,01_face
-Fatima reported persistent soreness in the shoulder,03_shoulder
-Maria described a tingling sensation in the ankle,14_ankle
-The compression sleeve is worn on the abdomen,10_abdomen
-Temperature elevation was noted at the knee,13_knee
-Elena noticed visible swelling in the leg,12_leg
-Prof. Wang noted restricted blood flow to the hand,09_hand
-Alice documented visible asymmetry in the ankle,14_ankle
-The protective gear is designed for the back,05_back
-The X-ray focused on the patient's back,05_back
-Charlie reported numbness spreading from the chest,04_chest
+Range of motion was restricted in the wrist,08_wrist
+Raj documented bruising on the neck,02_neck
+Prof. Kim noticed visible swelling in the abdomen,10_abdomen
+James measured the circumference of the abdomen,10_abdomen
+The surgeon focused the incision near the arm,06_arm
+The physical exam highlighted tenderness in the arm,06_arm
+Dr. Chen reported that the discomfort originated in the neck,02_neck
+The surgeon focused the incision near the foot,15_foot
+Kevin noticed visible swelling in the leg,12_leg
+Raj noticed visible swelling in the hand,09_hand
+Skin discoloration was observed on the foot,15_foot
+Fatima noted restricted blood flow to the arm,06_arm
+Dr. Chen reported numbness spreading from the chest,04_chest
+the PI reported numbness spreading from the leg,12_leg
+Prof. Müller applied ice to reduce inflammation in the wrist,08_wrist
+the intern noted restricted blood flow to the arm,06_arm
+The scan revealed an abnormality in the wrist,08_wrist
+Amara documented visible asymmetry in the neck,02_neck
+Temperature elevation was noted at the foot,15_foot
+Prof. Müller measured the circumference of the leg,12_leg
+Yuki applied ice to reduce inflammation in the hip,11_hip
+the nurse documented bruising on the face,01_face
+Dr. Rossi reported persistent soreness in the head,00_head
+The imaging clearly depicted damage to the leg,12_leg
+The rash first appeared on the head,00_head
+Reflexes were tested at the neck,02_neck
+Skin discoloration was observed on the back,05_back
+Range of motion was restricted in the shoulder,03_shoulder
+The scan revealed an abnormality in the leg,12_leg
+Prof. Kim documented bruising on the abdomen,10_abdomen
+Fatima reported that the discomfort originated in the hip,11_hip
+The compression sleeve is worn on the back,05_back
+the coordinator documented bruising on the back,05_back
+Sarah applied ice to reduce inflammation in the face,01_face
+The protective gear is designed for the shoulder,03_shoulder
+Kevin documented bruising on the face,01_face
+the analyst applied ice to reduce inflammation in the abdomen,10_abdomen
+The compression sleeve is worn on the foot,15_foot
+Fatima reported numbness spreading from the foot,15_foot
+Range of motion was restricted in the neck,02_neck
+Elena applied ice to reduce inflammation in the head,00_head
+Prof. Kim applied ice to reduce inflammation in the chest,04_chest
+Temperature elevation was noted at the leg,12_leg
+Prof. Wang measured the circumference of the knee,13_knee
+The physical therapist worked on mobility of the face,01_face
+Charlie measured the circumference of the elbow,07_elbow
+Dr. Okafor reported that the discomfort originated in the face,01_face
+the coordinator reported that the discomfort originated in the hand,09_hand
+Kevin reported numbness spreading from the hand,09_hand
+The injury was localized to the knee,13_knee
+Amara described a tingling sensation in the shoulder,03_shoulder
+the technician noted restricted blood flow to the abdomen,10_abdomen
+The compression sleeve is worn on the face,01_face
+Raj noted restricted blood flow to the neck,02_neck
+Maria measured the circumference of the foot,15_foot
+The surgeon focused the incision near the face,01_face
+Prof. Müller measured the circumference of the elbow,07_elbow
+The X-ray focused on the patient's chest,04_chest
+the technician reported that the discomfort originated in the neck,02_neck
+Reflexes were tested at the ankle,14_ankle
+Elena reported that the discomfort originated in the arm,06_arm
+The physical therapist worked on mobility of the shoulder,03_shoulder
+The injury was localized to the shoulder,03_shoulder
+The rash first appeared on the hip,11_hip
+Lymph node enlargement was found near the neck,02_neck
+the intern reported that the discomfort originated in the neck,02_neck
+Alice reported numbness spreading from the neck,02_neck
+Dr. Rossi documented visible asymmetry in the hand,09_hand
+The X-ray focused on the patient's abdomen,10_abdomen
+The injury was localized to the neck,02_neck
+the technician documented bruising on the arm,06_arm
+Maria reported persistent soreness in the elbow,07_elbow
+Bob reported persistent soreness in the face,01_face
+The X-ray focused on the patient's hand,09_hand
+the intern documented bruising on the foot,15_foot
 Muscle weakness was observed in the knee,13_knee
-Prof. Kim documented visible asymmetry in the abdomen,10_abdomen
-the intern measured the circumference of the foot,15_foot
-the PI noted restricted blood flow to the elbow,07_elbow
-Omar noted restricted blood flow to the arm,06_arm
-Liam documented visible asymmetry in the leg,12_leg
+Dr. Smith reported numbness spreading from the hand,09_hand
+Dr. Okafor noted restricted blood flow to the head,00_head
+"The burn was classified as superficial, affecting the hand",09_hand
+Prof. Kim measured the circumference of the head,00_head
+the nurse reported that the discomfort originated in the leg,12_leg
+Charlie reported persistent soreness in the knee,13_knee
+The physical exam highlighted tenderness in the face,01_face
+The nurse applied a bandage to the foot,15_foot
+The protective gear is designed for the hand,09_hand
+Elena described a tingling sensation in the chest,04_chest
+the coordinator reported numbness spreading from the leg,12_leg
+The rash first appeared on the arm,06_arm
+The physical therapist worked on mobility of the hip,11_hip
+The protective gear is designed for the hip,11_hip
+Alice described a tingling sensation in the arm,06_arm
+Bob described a tingling sensation in the knee,13_knee
+Dr. Okafor reported that the discomfort originated in the foot,15_foot
+Liam reported persistent soreness in the head,00_head
+Raj reported persistent soreness in the chest,04_chest
+Dr. Patel described a tingling sensation in the wrist,08_wrist
+Dr. Patel applied ice to reduce inflammation in the face,01_face
+Muscle weakness was observed in the hand,09_hand
+Dr. Patel applied ice to reduce inflammation in the hand,09_hand
+Maria reported numbness spreading from the arm,06_arm
+James applied ice to reduce inflammation in the head,00_head
+the analyst measured the circumference of the elbow,07_elbow
+the postdoc described a tingling sensation in the knee,13_knee
+Liam documented bruising on the abdomen,10_abdomen
+Alice documented bruising on the shoulder,03_shoulder
+Amara reported persistent soreness in the chest,04_chest
+Dr. Chen applied ice to reduce inflammation in the shoulder,03_shoulder
+the supervisor applied ice to reduce inflammation in the leg,12_leg
+the nurse documented bruising on the abdomen,10_abdomen
+Fatima noted restricted blood flow to the abdomen,10_abdomen
+Dr. Patel described a tingling sensation in the head,00_head
+Charlie reported that the discomfort originated in the neck,02_neck
+Prof. Müller described a tingling sensation in the arm,06_arm
+Charlie reported that the discomfort originated in the hip,11_hip
+Charlie noticed visible swelling in the leg,12_leg
+The compression sleeve is worn on the elbow,07_elbow
+Liam noticed visible swelling in the abdomen,10_abdomen
+Amara noted restricted blood flow to the hand,09_hand
+Temperature elevation was noted at the ankle,14_ankle
+the coordinator reported numbness spreading from the face,01_face
+Elena applied ice to reduce inflammation in the face,01_face
+The imaging clearly depicted damage to the chest,04_chest
+Dr. Okafor described a tingling sensation in the leg,12_leg
+Dr. Chen reported persistent soreness in the wrist,08_wrist
+Fatima measured the circumference of the ankle,14_ankle
+Dr. Smith documented bruising on the hand,09_hand
+The protective gear is designed for the wrist,08_wrist
+The scan revealed an abnormality in the chest,04_chest
+Yuki noticed visible swelling in the hip,11_hip
+Reflexes were tested at the shoulder,03_shoulder
+James measured the circumference of the chest,04_chest
+The biopsy was taken from tissue near the chest,04_chest
+Prof. Müller reported numbness spreading from the shoulder,03_shoulder
+Amara reported persistent soreness in the arm,06_arm
+the coordinator reported that the discomfort originated in the wrist,08_wrist
+the intern noticed visible swelling in the shoulder,03_shoulder
+The compression sleeve is worn on the knee,13_knee
+Dr. Okafor noted restricted blood flow to the back,05_back
+the postdoc noticed visible swelling in the hand,09_hand
+the PI measured the circumference of the abdomen,10_abdomen
+Prof. Müller noticed visible swelling in the wrist,08_wrist
+The nurse applied a bandage to the elbow,07_elbow
+James documented visible asymmetry in the face,01_face
+The protective gear is designed for the neck,02_neck
+Amara reported numbness spreading from the wrist,08_wrist
+the nurse reported persistent soreness in the knee,13_knee
+Maria reported that the discomfort originated in the head,00_head
+Dr. Smith reported persistent soreness in the knee,13_knee
+the nurse reported persistent soreness in the elbow,07_elbow
+the supervisor applied ice to reduce inflammation in the face,01_face
+the postdoc reported that the discomfort originated in the neck,02_neck
+Kevin applied ice to reduce inflammation in the face,01_face
+the coordinator described a tingling sensation in the abdomen,10_abdomen
+Charlie measured the circumference of the leg,12_leg
+the PI reported persistent soreness in the leg,12_leg
+the supervisor reported that the discomfort originated in the knee,13_knee
+Alice reported persistent soreness in the hand,09_hand
+the analyst noted restricted blood flow to the knee,13_knee
+The injury was localized to the arm,06_arm
+"The burn was classified as superficial, affecting the elbow",07_elbow
+the nurse reported numbness spreading from the leg,12_leg
+The compression sleeve is worn on the wrist,08_wrist
+the postdoc described a tingling sensation in the abdomen,10_abdomen
+Sarah reported persistent soreness in the arm,06_arm
+Lymph node enlargement was found near the leg,12_leg
+Dr. Patel reported that the discomfort originated in the face,01_face
+The nurse applied a bandage to the hand,09_hand
+the supervisor reported persistent soreness in the back,05_back
+The surgeon focused the incision near the chest,04_chest
+Bob documented visible asymmetry in the foot,15_foot
+Dr. Chen reported that the discomfort originated in the shoulder,03_shoulder
+The fracture was confirmed in the leg,12_leg
+"The burn was classified as superficial, affecting the chest",04_chest
+Elena applied ice to reduce inflammation in the hip,11_hip
+The scan revealed an abnormality in the hand,09_hand
+Reflexes were tested at the elbow,07_elbow
+Dr. Patel reported persistent soreness in the elbow,07_elbow
+Reflexes were tested at the hand,09_hand
+Sarah described a tingling sensation in the abdomen,10_abdomen
+The biopsy was taken from tissue near the abdomen,10_abdomen
+the intern noticed visible swelling in the elbow,07_elbow
+Kevin measured the circumference of the foot,15_foot
+Lymph node enlargement was found near the hip,11_hip
+The X-ray focused on the patient's neck,02_neck
+The rash first appeared on the leg,12_leg
+Sarah reported that the discomfort originated in the hand,09_hand
+"The burn was classified as superficial, affecting the wrist",08_wrist
+Elena documented bruising on the neck,02_neck
+Amara reported numbness spreading from the ankle,14_ankle
+Elena noted restricted blood flow to the abdomen,10_abdomen
+Liam reported that the discomfort originated in the chest,04_chest
+Prof. Wang reported persistent soreness in the hand,09_hand
+The nurse applied a bandage to the back,05_back
+The nurse applied a bandage to the ankle,14_ankle
+the technician documented visible asymmetry in the wrist,08_wrist
+the PI documented visible asymmetry in the ankle,14_ankle
+Fatima reported numbness spreading from the arm,06_arm
+The biopsy was taken from tissue near the knee,13_knee
+the supervisor applied ice to reduce inflammation in the neck,02_neck
+Dr. Smith reported that the discomfort originated in the arm,06_arm
+The imaging clearly depicted damage to the hip,11_hip
+the intern documented bruising on the wrist,08_wrist
+Prof. Wang reported persistent soreness in the leg,12_leg
+Reflexes were tested at the abdomen,10_abdomen
+Amara reported that the discomfort originated in the hip,11_hip
+the nurse noticed visible swelling in the elbow,07_elbow
+Dr. Okafor noticed visible swelling in the face,01_face
+"The burn was classified as superficial, affecting the face",01_face
+Range of motion was restricted in the hip,11_hip
+The physical exam highlighted tenderness in the chest,04_chest
+Alice measured the circumference of the hip,11_hip
+The injury was localized to the face,01_face
+Yuki applied ice to reduce inflammation in the ankle,14_ankle
+Dr. Patel measured the circumference of the leg,12_leg
+Kevin described a tingling sensation in the back,05_back
+the coordinator measured the circumference of the face,01_face
+Prof. Müller reported that the discomfort originated in the arm,06_arm
+Fatima documented visible asymmetry in the abdomen,10_abdomen
+The protective gear is designed for the back,05_back
+Prof. Wang documented bruising on the leg,12_leg
+Prof. Wang reported that the discomfort originated in the chest,04_chest
+the PI noticed visible swelling in the shoulder,03_shoulder
+The physical exam highlighted tenderness in the neck,02_neck
+Alice documented visible asymmetry in the abdomen,10_abdomen
+Lymph node enlargement was found near the hand,09_hand
+the intern documented visible asymmetry in the knee,13_knee
+the supervisor noticed visible swelling in the wrist,08_wrist
+Range of motion was restricted in the leg,12_leg
+Elena reported persistent soreness in the head,00_head
+the intern described a tingling sensation in the face,01_face
+The imaging clearly depicted damage to the hand,09_hand
+The X-ray focused on the patient's wrist,08_wrist
+Yuki documented visible asymmetry in the face,01_face
+the postdoc described a tingling sensation in the arm,06_arm
+Prof. Kim applied ice to reduce inflammation in the wrist,08_wrist
+Yuki applied ice to reduce inflammation in the knee,13_knee
+Muscle weakness was observed in the ankle,14_ankle
+The imaging clearly depicted damage to the foot,15_foot
+The injury was localized to the elbow,07_elbow
+Dr. Rossi documented bruising on the knee,13_knee
+James applied ice to reduce inflammation in the elbow,07_elbow
+the PI applied ice to reduce inflammation in the abdomen,10_abdomen
+Prof. Kim noticed visible swelling in the chest,04_chest
+The physical exam highlighted tenderness in the wrist,08_wrist
+Lymph node enlargement was found near the elbow,07_elbow
+the supervisor documented bruising on the hip,11_hip
+Yuki applied ice to reduce inflammation in the foot,15_foot
+Sarah described a tingling sensation in the face,01_face
+Sarah noted restricted blood flow to the shoulder,03_shoulder
+Maria described a tingling sensation in the ankle,14_ankle
+Maria measured the circumference of the head,00_head
+Raj reported persistent soreness in the head,00_head
+Fatima noted restricted blood flow to the knee,13_knee
+James noted restricted blood flow to the foot,15_foot
+Yuki noted restricted blood flow to the elbow,07_elbow
+Yuki reported persistent soreness in the head,00_head
+The biopsy was taken from tissue near the shoulder,03_shoulder
+Dr. Patel noted restricted blood flow to the back,05_back
+Dr. Okafor reported numbness spreading from the neck,02_neck
+the coordinator noticed visible swelling in the face,01_face
+"The burn was classified as superficial, affecting the leg",12_leg
+the nurse documented visible asymmetry in the foot,15_foot
+the supervisor applied ice to reduce inflammation in the abdomen,10_abdomen
+Prof. Wang measured the circumference of the chest,04_chest
+the PI reported persistent soreness in the abdomen,10_abdomen
+the PI described a tingling sensation in the wrist,08_wrist
+Muscle weakness was observed in the abdomen,10_abdomen
+Kevin noted restricted blood flow to the back,05_back
+the PI documented visible asymmetry in the knee,13_knee
+Prof. Wang documented visible asymmetry in the neck,02_neck
+Bob documented bruising on the back,05_back
+Liam applied ice to reduce inflammation in the elbow,07_elbow
+The imaging clearly depicted damage to the ankle,14_ankle
+Fatima measured the circumference of the elbow,07_elbow
+The fracture was confirmed in the back,05_back
+"The burn was classified as superficial, affecting the knee",13_knee
+Prof. Wang documented bruising on the chest,04_chest
+Range of motion was restricted in the chest,04_chest
+The compression sleeve is worn on the leg,12_leg
+Dr. Patel documented bruising on the abdomen,10_abdomen
+The surgeon focused the incision near the wrist,08_wrist
+Omar measured the circumference of the shoulder,03_shoulder
+the technician documented bruising on the abdomen,10_abdomen
+Prof. Müller described a tingling sensation in the chest,04_chest
+The imaging clearly depicted damage to the face,01_face
+Dr. Patel noted restricted blood flow to the hip,11_hip
+Alice documented bruising on the back,05_back
+James noticed visible swelling in the foot,15_foot
+Reflexes were tested at the leg,12_leg
+the PI noted restricted blood flow to the neck,02_neck
+Fatima described a tingling sensation in the wrist,08_wrist
+Amara noted restricted blood flow to the foot,15_foot
+the nurse documented visible asymmetry in the abdomen,10_abdomen
+The surgeon focused the incision near the head,00_head
+the coordinator documented visible asymmetry in the foot,15_foot
+Liam noted restricted blood flow to the hand,09_hand
+Range of motion was restricted in the hand,09_hand
+Fatima noticed visible swelling in the hand,09_hand
+Dr. Smith reported persistent soreness in the neck,02_neck
+Liam measured the circumference of the ankle,14_ankle
+The physical therapist worked on mobility of the elbow,07_elbow
+the supervisor reported that the discomfort originated in the arm,06_arm
+The biopsy was taken from tissue near the back,05_back
+Prof. Wang reported numbness spreading from the knee,13_knee
+Omar reported that the discomfort originated in the foot,15_foot
+the PI documented bruising on the face,01_face
+Sarah documented visible asymmetry in the chest,04_chest
+Yuki documented bruising on the hand,09_hand
+Bob reported persistent soreness in the elbow,07_elbow
+the nurse noticed visible swelling in the wrist,08_wrist
+Bob noticed visible swelling in the knee,13_knee
+"The burn was classified as superficial, affecting the head",00_head
+Lymph node enlargement was found near the head,00_head
+the supervisor described a tingling sensation in the head,00_head
+the supervisor documented visible asymmetry in the elbow,07_elbow
+The fracture was confirmed in the knee,13_knee
+Dr. Rossi reported that the discomfort originated in the ankle,14_ankle
+the technician noticed visible swelling in the wrist,08_wrist
+Dr. Smith noted restricted blood flow to the shoulder,03_shoulder
+Dr. Smith reported that the discomfort originated in the neck,02_neck
+The physical therapist worked on mobility of the abdomen,10_abdomen
+The physical therapist worked on mobility of the back,05_back
+The physical exam highlighted tenderness in the head,00_head
+Prof. Wang noticed visible swelling in the hand,09_hand
+James reported numbness spreading from the knee,13_knee
+Amara applied ice to reduce inflammation in the ankle,14_ankle
+Dr. Rossi measured the circumference of the leg,12_leg
+Bob applied ice to reduce inflammation in the knee,13_knee
+Dr. Okafor described a tingling sensation in the neck,02_neck
+Lymph node enlargement was found near the abdomen,10_abdomen
+The fracture was confirmed in the neck,02_neck
+Dr. Patel documented visible asymmetry in the abdomen,10_abdomen
+Dr. Smith reported persistent soreness in the wrist,08_wrist
+Maria described a tingling sensation in the face,01_face
+The nurse applied a bandage to the leg,12_leg
+Elena reported numbness spreading from the elbow,07_elbow
+Yuki noted restricted blood flow to the face,01_face
+the coordinator reported persistent soreness in the knee,13_knee
+Dr. Chen documented bruising on the head,00_head
+The nurse applied a bandage to the chest,04_chest
+The biopsy was taken from tissue near the face,01_face
+The imaging clearly depicted damage to the shoulder,03_shoulder
+The rash first appeared on the shoulder,03_shoulder
+the nurse reported that the discomfort originated in the back,05_back
+Prof. Müller noticed visible swelling in the shoulder,03_shoulder
+Sarah described a tingling sensation in the hip,11_hip
+Maria documented visible asymmetry in the back,05_back
+Amara applied ice to reduce inflammation in the wrist,08_wrist
+Fatima described a tingling sensation in the head,00_head
+the technician measured the circumference of the foot,15_foot
+James documented bruising on the wrist,08_wrist
 The protective gear is designed for the abdomen,10_abdomen
-Kevin measured the circumference of the face,01_face
+the PI measured the circumference of the hand,09_hand
+Prof. Müller documented bruising on the back,05_back
+the technician reported that the discomfort originated in the face,01_face
+The scan revealed an abnormality in the shoulder,03_shoulder
+Fatima reported that the discomfort originated in the wrist,08_wrist
+Omar noted restricted blood flow to the wrist,08_wrist
+James documented visible asymmetry in the neck,02_neck
+Temperature elevation was noted at the back,05_back
+Dr. Smith described a tingling sensation in the head,00_head
+Range of motion was restricted in the arm,06_arm
+Kevin noted restricted blood flow to the elbow,07_elbow
+Prof. Müller documented visible asymmetry in the wrist,08_wrist
+the nurse reported numbness spreading from the knee,13_knee
+Alice noted restricted blood flow to the chest,04_chest
+Prof. Wang reported that the discomfort originated in the ankle,14_ankle
+Prof. Müller described a tingling sensation in the hip,11_hip
+Yuki documented visible asymmetry in the ankle,14_ankle
+Dr. Okafor reported numbness spreading from the arm,06_arm
+Liam reported numbness spreading from the shoulder,03_shoulder
+Amara measured the circumference of the hand,09_hand
+Liam described a tingling sensation in the neck,02_neck
+The X-ray focused on the patient's arm,06_arm
+Dr. Rossi noted restricted blood flow to the foot,15_foot
+Dr. Rossi reported persistent soreness in the ankle,14_ankle
+The surgeon focused the incision near the neck,02_neck
+Dr. Okafor reported that the discomfort originated in the arm,06_arm
+The fracture was confirmed in the abdomen,10_abdomen
+Maria noticed visible swelling in the foot,15_foot
+The imaging clearly depicted damage to the head,00_head
+Fatima reported numbness spreading from the back,05_back
+Raj described a tingling sensation in the wrist,08_wrist
+Sarah measured the circumference of the back,05_back
+the intern applied ice to reduce inflammation in the chest,04_chest
 Alice reported that the discomfort originated in the back,05_back
+Omar described a tingling sensation in the back,05_back
+Dr. Okafor measured the circumference of the wrist,08_wrist
+the supervisor reported that the discomfort originated in the shoulder,03_shoulder
+The physical exam highlighted tenderness in the hip,11_hip
+the supervisor documented bruising on the chest,04_chest
+The scan revealed an abnormality in the neck,02_neck
+Sarah reported that the discomfort originated in the elbow,07_elbow
+The physical therapist worked on mobility of the foot,15_foot
+The surgeon focused the incision near the knee,13_knee
+Dr. Smith noticed visible swelling in the shoulder,03_shoulder
+The injury was localized to the chest,04_chest
+The X-ray focused on the patient's back,05_back
+the PI documented bruising on the head,00_head
+Prof. Müller reported that the discomfort originated in the foot,15_foot
+The physical exam highlighted tenderness in the hand,09_hand
+the technician described a tingling sensation in the face,01_face
+Skin discoloration was observed on the shoulder,03_shoulder
+Dr. Patel reported persistent soreness in the face,01_face
+The fracture was confirmed in the wrist,08_wrist
+Charlie noted restricted blood flow to the arm,06_arm
+Charlie documented bruising on the chest,04_chest
+the supervisor measured the circumference of the elbow,07_elbow
+Omar noticed visible swelling in the abdomen,10_abdomen
+Dr. Okafor described a tingling sensation in the hip,11_hip
+Prof. Müller reported persistent soreness in the back,05_back
+Fatima reported that the discomfort originated in the chest,04_chest
+The nurse applied a bandage to the wrist,08_wrist
+The physical therapist worked on mobility of the wrist,08_wrist
+Skin discoloration was observed on the head,00_head
+"The burn was classified as superficial, affecting the ankle",14_ankle
+the supervisor reported numbness spreading from the shoulder,03_shoulder
+Muscle weakness was observed in the arm,06_arm
+Elena applied ice to reduce inflammation in the hand,09_hand
+Dr. Chen noticed visible swelling in the neck,02_neck
+The X-ray focused on the patient's knee,13_knee
+The compression sleeve is worn on the hip,11_hip
+The nurse applied a bandage to the knee,13_knee
+Liam documented bruising on the ankle,14_ankle
+The protective gear is designed for the ankle,14_ankle
+the coordinator documented bruising on the hand,09_hand
+Prof. Kim reported persistent soreness in the shoulder,03_shoulder
+Kevin reported numbness spreading from the chest,04_chest
+Elena reported numbness spreading from the head,00_head
+The injury was localized to the hip,11_hip
+the nurse applied ice to reduce inflammation in the hip,11_hip
+the nurse measured the circumference of the hand,09_hand
+Prof. Müller documented visible asymmetry in the leg,12_leg
+The fracture was confirmed in the shoulder,03_shoulder
+Bob applied ice to reduce inflammation in the back,05_back
+Lymph node enlargement was found near the ankle,14_ankle
+the nurse documented bruising on the leg,12_leg
+Temperature elevation was noted at the hand,09_hand
+Dr. Okafor described a tingling sensation in the foot,15_foot
+The scan revealed an abnormality in the hip,11_hip
+Bob noted restricted blood flow to the abdomen,10_abdomen
+Temperature elevation was noted at the neck,02_neck
+The rash first appeared on the wrist,08_wrist
+The biopsy was taken from tissue near the neck,02_neck
+The nurse applied a bandage to the hip,11_hip
+Sarah documented visible asymmetry in the foot,15_foot
+Elena reported persistent soreness in the foot,15_foot
+Reflexes were tested at the foot,15_foot
+The physical therapist worked on mobility of the arm,06_arm
+Alice applied ice to reduce inflammation in the chest,04_chest
+James reported that the discomfort originated in the hip,11_hip
+Muscle weakness was observed in the head,00_head
+The fracture was confirmed in the head,00_head
+Elena reported that the discomfort originated in the leg,12_leg
+Alice documented bruising on the wrist,08_wrist
+the supervisor noticed visible swelling in the face,01_face
+Skin discoloration was observed on the face,01_face
+James reported persistent soreness in the ankle,14_ankle
+The compression sleeve is worn on the chest,04_chest
+The physical exam highlighted tenderness in the shoulder,03_shoulder
+The X-ray focused on the patient's face,01_face
+Yuki noticed visible swelling in the chest,04_chest
+James reported that the discomfort originated in the ankle,14_ankle
+Fatima documented visible asymmetry in the chest,04_chest
+the intern documented visible asymmetry in the face,01_face
+Prof. Müller reported numbness spreading from the elbow,07_elbow
+The scan revealed an abnormality in the face,01_face
+Prof. Kim documented visible asymmetry in the head,00_head
+Fatima documented visible asymmetry in the back,05_back
+Dr. Smith documented visible asymmetry in the chest,04_chest
+Muscle weakness was observed in the hip,11_hip
+Prof. Müller documented bruising on the neck,02_neck
+The scan revealed an abnormality in the ankle,14_ankle
+The biopsy was taken from tissue near the hand,09_hand
+Reflexes were tested at the back,05_back
+Amara documented bruising on the face,01_face
+Sarah documented visible asymmetry in the abdomen,10_abdomen
+Dr. Patel documented visible asymmetry in the hip,11_hip
+Raj reported persistent soreness in the wrist,08_wrist
+Prof. Müller documented visible asymmetry in the foot,15_foot
+The X-ray focused on the patient's hip,11_hip
+The biopsy was taken from tissue near the leg,12_leg
+The rash first appeared on the knee,13_knee
+The surgeon focused the incision near the hand,09_hand
+the intern described a tingling sensation in the ankle,14_ankle
+Lymph node enlargement was found near the foot,15_foot
+Dr. Rossi documented bruising on the hip,11_hip
+Omar applied ice to reduce inflammation in the abdomen,10_abdomen
+The fracture was confirmed in the face,01_face
+Range of motion was restricted in the foot,15_foot
+Prof. Kim noticed visible swelling in the back,05_back
+Bob measured the circumference of the back,05_back
+Elena reported numbness spreading from the hip,11_hip
+The imaging clearly depicted damage to the wrist,08_wrist
+The biopsy was taken from tissue near the head,00_head
+Omar measured the circumference of the hand,09_hand
+"The burn was classified as superficial, affecting the foot",15_foot
+the PI reported that the discomfort originated in the arm,06_arm
+Dr. Smith reported persistent soreness in the leg,12_leg
+Lymph node enlargement was found near the arm,06_arm
+The physical exam highlighted tenderness in the knee,13_knee
+Bob noticed visible swelling in the leg,12_leg
+Dr. Smith reported persistent soreness in the hand,09_hand
+The protective gear is designed for the elbow,07_elbow
+Kevin noticed visible swelling in the knee,13_knee
+James reported persistent soreness in the back,05_back
+Prof. Kim described a tingling sensation in the knee,13_knee
+Maria described a tingling sensation in the hand,09_hand
+Muscle weakness was observed in the wrist,08_wrist
+Bob reported numbness spreading from the ankle,14_ankle
+Dr. Chen documented bruising on the face,01_face
+Maria noted restricted blood flow to the foot,15_foot
+Dr. Smith described a tingling sensation in the leg,12_leg
+Temperature elevation was noted at the face,01_face
+The protective gear is designed for the head,00_head
+Sarah noticed visible swelling in the chest,04_chest
+Raj applied ice to reduce inflammation in the wrist,08_wrist
+Raj documented bruising on the back,05_back
+Maria measured the circumference of the abdomen,10_abdomen
+Dr. Patel noticed visible swelling in the back,05_back
+Yuki documented visible asymmetry in the elbow,07_elbow
+the analyst documented visible asymmetry in the neck,02_neck
+the analyst noticed visible swelling in the hand,09_hand
+The compression sleeve is worn on the arm,06_arm
+Elena reported that the discomfort originated in the face,01_face
+Yuki reported that the discomfort originated in the hip,11_hip
+The rash first appeared on the chest,04_chest
+Elena measured the circumference of the head,00_head
+Prof. Wang noticed visible swelling in the back,05_back
+Amara described a tingling sensation in the head,00_head
+Raj described a tingling sensation in the elbow,07_elbow
+Dr. Rossi reported numbness spreading from the chest,04_chest
+Amara described a tingling sensation in the leg,12_leg
+The physical exam highlighted tenderness in the abdomen,10_abdomen
+Charlie documented bruising on the leg,12_leg
+Alice applied ice to reduce inflammation in the wrist,08_wrist
+Dr. Smith noticed visible swelling in the hip,11_hip
+the PI reported persistent soreness in the face,01_face
+Dr. Okafor noticed visible swelling in the shoulder,03_shoulder
+Lymph node enlargement was found near the shoulder,03_shoulder
+Range of motion was restricted in the knee,13_knee
+The rash first appeared on the foot,15_foot
+Kevin reported numbness spreading from the leg,12_leg
+Raj reported that the discomfort originated in the chest,04_chest
+Dr. Chen reported that the discomfort originated in the ankle,14_ankle
+The scan revealed an abnormality in the head,00_head
+Muscle weakness was observed in the elbow,07_elbow
+Dr. Chen reported that the discomfort originated in the back,05_back
+The compression sleeve is worn on the abdomen,10_abdomen
+The scan revealed an abnormality in the foot,15_foot
+the nurse documented visible asymmetry in the shoulder,03_shoulder
+Reflexes were tested at the chest,04_chest
+Skin discoloration was observed on the elbow,07_elbow
+The protective gear is designed for the leg,12_leg
+Liam reported numbness spreading from the foot,15_foot
+Prof. Wang reported numbness spreading from the ankle,14_ankle
+Raj noticed visible swelling in the arm,06_arm
+The nurse applied a bandage to the head,00_head
+James documented visible asymmetry in the hand,09_hand
+Bob noted restricted blood flow to the hip,11_hip
+the intern noted restricted blood flow to the hand,09_hand
+the intern measured the circumference of the wrist,08_wrist
+Reflexes were tested at the arm,06_arm
+The surgeon focused the incision near the hip,11_hip
+The imaging clearly depicted damage to the back,05_back
+Dr. Patel documented visible asymmetry in the head,00_head
+Temperature elevation was noted at the knee,13_knee
+Amara noticed visible swelling in the knee,13_knee
+Prof. Müller reported persistent soreness in the shoulder,03_shoulder
+The rash first appeared on the elbow,07_elbow
+Alice documented visible asymmetry in the hip,11_hip
+Liam documented bruising on the back,05_back
+Charlie described a tingling sensation in the neck,02_neck
+the technician documented visible asymmetry in the knee,13_knee
+The imaging clearly depicted damage to the elbow,07_elbow
+the technician documented visible asymmetry in the ankle,14_ankle
+Sarah noted restricted blood flow to the wrist,08_wrist
+Omar documented visible asymmetry in the hand,09_hand
+Maria noted restricted blood flow to the abdomen,10_abdomen
+The physical exam highlighted tenderness in the foot,15_foot
+Skin discoloration was observed on the chest,04_chest
+Temperature elevation was noted at the head,00_head
+Maria applied ice to reduce inflammation in the shoulder,03_shoulder
+The compression sleeve is worn on the neck,02_neck
+Fatima documented bruising on the ankle,14_ankle
+Prof. Müller measured the circumference of the abdomen,10_abdomen
+The physical therapist worked on mobility of the leg,12_leg
+The rash first appeared on the abdomen,10_abdomen
+Omar noted restricted blood flow to the knee,13_knee
+Kevin applied ice to reduce inflammation in the hip,11_hip
+Liam documented visible asymmetry in the arm,06_arm
+the postdoc measured the circumference of the head,00_head
+the analyst reported numbness spreading from the neck,02_neck
+The physical therapist worked on mobility of the knee,13_knee
+Prof. Kim documented visible asymmetry in the elbow,07_elbow
+The physical therapist worked on mobility of the chest,04_chest
+Raj measured the circumference of the wrist,08_wrist
+Temperature elevation was noted at the chest,04_chest
+Dr. Smith applied ice to reduce inflammation in the back,05_back
+Elena reported that the discomfort originated in the ankle,14_ankle
+the postdoc documented bruising on the back,05_back
+the supervisor described a tingling sensation in the back,05_back
+Lymph node enlargement was found near the back,05_back
+Skin discoloration was observed on the knee,13_knee
+Liam noticed visible swelling in the foot,15_foot
+Reflexes were tested at the head,00_head
+Omar documented bruising on the knee,13_knee
+Elena documented visible asymmetry in the elbow,07_elbow
+Liam reported persistent soreness in the chest,04_chest
+the technician noticed visible swelling in the shoulder,03_shoulder
+Amara described a tingling sensation in the ankle,14_ankle
+the PI reported persistent soreness in the wrist,08_wrist
+the coordinator reported persistent soreness in the neck,02_neck
+Yuki reported persistent soreness in the elbow,07_elbow
+the technician reported persistent soreness in the chest,04_chest
+Prof. Müller documented visible asymmetry in the elbow,07_elbow
+The X-ray focused on the patient's leg,12_leg
+The scan revealed an abnormality in the back,05_back
+The fracture was confirmed in the hip,11_hip
+Kevin reported that the discomfort originated in the foot,15_foot
+The surgeon focused the incision near the ankle,14_ankle
+Amara reported numbness spreading from the arm,06_arm
+Elena reported that the discomfort originated in the shoulder,03_shoulder
+Dr. Rossi reported that the discomfort originated in the neck,02_neck
+The scan revealed an abnormality in the abdomen,10_abdomen
+the supervisor measured the circumference of the wrist,08_wrist
+Omar applied ice to reduce inflammation in the leg,12_leg
+Raj noticed visible swelling in the back,05_back
+Prof. Müller applied ice to reduce inflammation in the face,01_face
+the coordinator documented visible asymmetry in the chest,04_chest
+the intern documented visible asymmetry in the shoulder,03_shoulder
+Raj noted restricted blood flow to the abdomen,10_abdomen
+Bob documented bruising on the ankle,14_ankle
+Alice reported persistent soreness in the chest,04_chest
+Alice noticed visible swelling in the hip,11_hip
+The imaging clearly depicted damage to the abdomen,10_abdomen
+Amara applied ice to reduce inflammation in the knee,13_knee
+Dr. Patel measured the circumference of the back,05_back
+Dr. Patel noted restricted blood flow to the leg,12_leg
+Elena noticed visible swelling in the wrist,08_wrist
+the intern reported persistent soreness in the elbow,07_elbow
+Dr. Chen reported persistent soreness in the back,05_back
+the technician reported numbness spreading from the face,01_face
+Charlie applied ice to reduce inflammation in the face,01_face
+Amara noticed visible swelling in the foot,15_foot
+The surgeon focused the incision near the back,05_back
+Fatima measured the circumference of the wrist,08_wrist
+The imaging clearly depicted damage to the knee,13_knee
+Dr. Smith measured the circumference of the chest,04_chest
+Dr. Okafor measured the circumference of the ankle,14_ankle
+Elena described a tingling sensation in the knee,13_knee
+the technician documented visible asymmetry in the back,05_back
+the technician reported numbness spreading from the back,05_back
+Fatima reported numbness spreading from the wrist,08_wrist
+Fatima applied ice to reduce inflammation in the shoulder,03_shoulder
+Raj applied ice to reduce inflammation in the hand,09_hand
+Elena measured the circumference of the face,01_face
+The physical exam highlighted tenderness in the ankle,14_ankle
+the intern noted restricted blood flow to the ankle,14_ankle
+Yuki described a tingling sensation in the hand,09_hand
+Elena described a tingling sensation in the hand,09_hand
+Dr. Rossi noted restricted blood flow to the wrist,08_wrist
+Omar reported numbness spreading from the foot,15_foot
+the PI noted restricted blood flow to the ankle,14_ankle
+Reflexes were tested at the hip,11_hip
+Amara applied ice to reduce inflammation in the hand,09_hand
+Yuki noted restricted blood flow to the neck,02_neck
+Dr. Okafor documented visible asymmetry in the foot,15_foot
+Charlie reported numbness spreading from the arm,06_arm
+Range of motion was restricted in the ankle,14_ankle
+Muscle weakness was observed in the shoulder,03_shoulder
+The rash first appeared on the hand,09_hand
+Dr. Smith reported numbness spreading from the arm,06_arm
+the analyst reported numbness spreading from the shoulder,03_shoulder
+Liam reported numbness spreading from the back,05_back
+Alice measured the circumference of the ankle,14_ankle
+James measured the circumference of the shoulder,03_shoulder
+Dr. Okafor reported numbness spreading from the face,01_face
+Elena described a tingling sensation in the foot,15_foot
+Yuki applied ice to reduce inflammation in the head,00_head
+Dr. Rossi reported persistent soreness in the abdomen,10_abdomen
+Charlie noted restricted blood flow to the hip,11_hip
+Raj documented visible asymmetry in the hip,11_hip
+The compression sleeve is worn on the ankle,14_ankle
+Dr. Patel noticed visible swelling in the abdomen,10_abdomen
+Fatima noticed visible swelling in the ankle,14_ankle
+the nurse noticed visible swelling in the leg,12_leg
+The nurse applied a bandage to the abdomen,10_abdomen
+James measured the circumference of the elbow,07_elbow
+the analyst reported persistent soreness in the ankle,14_ankle
+"The burn was classified as superficial, affecting the hip",11_hip
+Range of motion was restricted in the elbow,07_elbow
+The X-ray focused on the patient's head,00_head
+Bob noticed visible swelling in the ankle,14_ankle
+the supervisor noticed visible swelling in the knee,13_knee
+Fatima noted restricted blood flow to the foot,15_foot
+Raj noticed visible swelling in the abdomen,10_abdomen
+the analyst documented visible asymmetry in the foot,15_foot
+Omar documented bruising on the elbow,07_elbow
+Prof. Wang noted restricted blood flow to the leg,12_leg
+the technician documented visible asymmetry in the hand,09_hand
+Elena reported persistent soreness in the chest,04_chest
+The biopsy was taken from tissue near the elbow,07_elbow
+Prof. Wang reported persistent soreness in the wrist,08_wrist
+Bob applied ice to reduce inflammation in the shoulder,03_shoulder
+James applied ice to reduce inflammation in the shoulder,03_shoulder
+The surgeon focused the incision near the elbow,07_elbow
+Range of motion was restricted in the head,00_head
+Prof. Wang noted restricted blood flow to the hip,11_hip
+Liam documented visible asymmetry in the hand,09_hand
+Bob described a tingling sensation in the head,00_head
+Reflexes were tested at the wrist,08_wrist
+Amara reported persistent soreness in the knee,13_knee
+The X-ray focused on the patient's foot,15_foot
+Temperature elevation was noted at the abdomen,10_abdomen
+James noticed visible swelling in the neck,02_neck
+The X-ray focused on the patient's ankle,14_ankle
+Amara measured the circumference of the arm,06_arm
+The X-ray focused on the patient's shoulder,03_shoulder
+Prof. Kim documented bruising on the knee,13_knee
+the technician documented bruising on the hip,11_hip
+Range of motion was restricted in the abdomen,10_abdomen
+Dr. Rossi reported numbness spreading from the abdomen,10_abdomen
+Prof. Wang reported persistent soreness in the neck,02_neck
+"The burn was classified as superficial, affecting the abdomen",10_abdomen
+the analyst noted restricted blood flow to the face,01_face
+Elena described a tingling sensation in the abdomen,10_abdomen
+The physical therapist worked on mobility of the hand,09_hand
+Dr. Smith reported numbness spreading from the back,05_back
+The imaging clearly depicted damage to the arm,06_arm
+Raj reported that the discomfort originated in the shoulder,03_shoulder
+Dr. Patel documented bruising on the shoulder,03_shoulder
+Yuki reported that the discomfort originated in the hand,09_hand
+Yuki applied ice to reduce inflammation in the wrist,08_wrist
+the supervisor noticed visible swelling in the ankle,14_ankle
+Kevin reported that the discomfort originated in the leg,12_leg
+Fatima applied ice to reduce inflammation in the hand,09_hand
+James documented visible asymmetry in the wrist,08_wrist
+Dr. Patel reported that the discomfort originated in the chest,04_chest
+Kevin documented visible asymmetry in the ankle,14_ankle
+the intern measured the circumference of the arm,06_arm
+Charlie measured the circumference of the shoulder,03_shoulder
+The injury was localized to the foot,15_foot
+Dr. Rossi documented visible asymmetry in the abdomen,10_abdomen
+the analyst reported that the discomfort originated in the back,05_back
+the intern reported numbness spreading from the back,05_back
+Dr. Rossi documented bruising on the wrist,08_wrist
+Liam reported that the discomfort originated in the shoulder,03_shoulder
+Alice noticed visible swelling in the arm,06_arm
+Omar measured the circumference of the chest,04_chest
+The physical therapist worked on mobility of the head,00_head
+Dr. Okafor reported numbness spreading from the knee,13_knee
+The injury was localized to the hand,09_hand
+Prof. Müller reported numbness spreading from the back,05_back
+Bob reported numbness spreading from the shoulder,03_shoulder
+Dr. Okafor described a tingling sensation in the face,01_face
+Liam reported numbness spreading from the hand,09_hand
+Dr. Chen documented visible asymmetry in the face,01_face
+the PI reported numbness spreading from the foot,15_foot
+Dr. Patel reported persistent soreness in the knee,13_knee
+Temperature elevation was noted at the shoulder,03_shoulder
+the nurse reported numbness spreading from the shoulder,03_shoulder
+the PI noted restricted blood flow to the chest,04_chest
+the coordinator reported persistent soreness in the elbow,07_elbow
+The injury was localized to the ankle,14_ankle
+"The burn was classified as superficial, affecting the back",05_back
+the supervisor reported numbness spreading from the hip,11_hip
+Liam reported persistent soreness in the hand,09_hand
+The biopsy was taken from tissue near the foot,15_foot
+The nurse applied a bandage to the face,01_face
+the technician applied ice to reduce inflammation in the elbow,07_elbow
+Prof. Müller applied ice to reduce inflammation in the knee,13_knee
+Raj noticed visible swelling in the leg,12_leg
+the nurse noticed visible swelling in the ankle,14_ankle
+Muscle weakness was observed in the face,01_face
+Omar documented visible asymmetry in the knee,13_knee
+Raj documented bruising on the arm,06_arm
+The injury was localized to the leg,12_leg
+The scan revealed an abnormality in the knee,13_knee
+Alice noticed visible swelling in the elbow,07_elbow
+Muscle weakness was observed in the back,05_back
+the technician noticed visible swelling in the elbow,07_elbow
+the postdoc documented visible asymmetry in the neck,02_neck
+Raj reported that the discomfort originated in the hand,09_hand
+Range of motion was restricted in the back,05_back
+Dr. Rossi documented bruising on the shoulder,03_shoulder
+The protective gear is designed for the arm,06_arm
+The rash first appeared on the ankle,14_ankle
+The surgeon focused the incision near the shoulder,03_shoulder
+Kevin described a tingling sensation in the wrist,08_wrist
+The biopsy was taken from tissue near the ankle,14_ankle
+The physical therapist worked on mobility of the neck,02_neck
+Muscle weakness was observed in the foot,15_foot
+The biopsy was taken from tissue near the hip,11_hip
+Amara noticed visible swelling in the neck,02_neck
+Dr. Chen reported numbness spreading from the back,05_back
+Prof. Kim noticed visible swelling in the knee,13_knee
+Prof. Kim applied ice to reduce inflammation in the elbow,07_elbow
+Bob measured the circumference of the hand,09_hand
+the PI described a tingling sensation in the arm,06_arm
+Maria documented bruising on the back,05_back
+Bob documented bruising on the hand,09_hand
+Liam described a tingling sensation in the hand,09_hand
+Sarah noted restricted blood flow to the chest,04_chest
+Sarah measured the circumference of the hip,11_hip
+Skin discoloration was observed on the hip,11_hip
+Omar measured the circumference of the hip,11_hip
+Range of motion was restricted in the face,01_face
+The protective gear is designed for the chest,04_chest
+the nurse noted restricted blood flow to the arm,06_arm
+Kevin applied ice to reduce inflammation in the neck,02_neck
+Fatima described a tingling sensation in the elbow,07_elbow
+Skin discoloration was observed on the abdomen,10_abdomen
+the technician measured the circumference of the hand,09_hand
+The rash first appeared on the face,01_face
+Yuki noted restricted blood flow to the back,05_back
+Dr. Rossi reported that the discomfort originated in the wrist,08_wrist
+"The burn was classified as superficial, affecting the neck",02_neck
+Prof. Kim noted restricted blood flow to the ankle,14_ankle
+the analyst reported that the discomfort originated in the abdomen,10_abdomen
+Kevin reported numbness spreading from the neck,02_neck
+Skin discoloration was observed on the ankle,14_ankle
+Amara reported persistent soreness in the abdomen,10_abdomen
+Prof. Wang applied ice to reduce inflammation in the face,01_face
+Dr. Smith noted restricted blood flow to the hand,09_hand
+Liam documented visible asymmetry in the back,05_back
+Temperature elevation was noted at the hip,11_hip
+Maria reported persistent soreness in the ankle,14_ankle
+Raj noticed visible swelling in the shoulder,03_shoulder
+The imaging clearly depicted damage to the neck,02_neck
+Maria reported that the discomfort originated in the back,05_back
+"The burn was classified as superficial, affecting the arm",06_arm
+Dr. Chen documented bruising on the leg,12_leg
+Maria documented bruising on the ankle,14_ankle
+Liam noted restricted blood flow to the neck,02_neck
+the PI measured the circumference of the elbow,07_elbow
+The scan revealed an abnormality in the elbow,07_elbow
+Kevin measured the circumference of the elbow,07_elbow
+Dr. Okafor reported persistent soreness in the abdomen,10_abdomen
+The fracture was confirmed in the elbow,07_elbow
+Sarah noticed visible swelling in the abdomen,10_abdomen
+Temperature elevation was noted at the wrist,08_wrist
+The injury was localized to the back,05_back
+Skin discoloration was observed on the arm,06_arm
+Liam reported that the discomfort originated in the face,01_face
+Muscle weakness was observed in the chest,04_chest
+the supervisor described a tingling sensation in the hip,11_hip
+Sarah applied ice to reduce inflammation in the leg,12_leg
+Bob noticed visible swelling in the face,01_face
+Sarah noticed visible swelling in the wrist,08_wrist
+the coordinator documented bruising on the leg,12_leg
+the supervisor noted restricted blood flow to the knee,13_knee
+Fatima reported numbness spreading from the elbow,07_elbow
+James reported that the discomfort originated in the foot,15_foot
+Dr. Smith documented visible asymmetry in the hand,09_hand
+Yuki applied ice to reduce inflammation in the leg,12_leg
+Prof. Wang reported persistent soreness in the arm,06_arm
+Fatima reported persistent soreness in the chest,04_chest
+Omar described a tingling sensation in the knee,13_knee
+Amara documented visible asymmetry in the leg,12_leg
+The physical exam highlighted tenderness in the elbow,07_elbow
+Alice applied ice to reduce inflammation in the ankle,14_ankle
+Raj documented bruising on the foot,15_foot
+Sarah documented visible asymmetry in the hand,09_hand
+Dr. Rossi described a tingling sensation in the back,05_back
+Elena reported numbness spreading from the hand,09_hand
+Muscle weakness was observed in the leg,12_leg
+the technician reported that the discomfort originated in the ankle,14_ankle
+Amara noticed visible swelling in the leg,12_leg
+Amara documented bruising on the hand,09_hand
+the coordinator documented bruising on the chest,04_chest
+Dr. Chen noted restricted blood flow to the chest,04_chest
+Elena reported persistent soreness in the ankle,14_ankle
+Prof. Kim applied ice to reduce inflammation in the knee,13_knee
+Fatima measured the circumference of the back,05_back
+the coordinator reported that the discomfort originated in the foot,15_foot
+Dr. Smith documented bruising on the ankle,14_ankle
+Reflexes were tested at the face,01_face
+Lymph node enlargement was found near the wrist,08_wrist
+The fracture was confirmed in the arm,06_arm
+Omar described a tingling sensation in the wrist,08_wrist
+The physical therapist worked on mobility of the ankle,14_ankle
+Raj documented bruising on the leg,12_leg
+the technician reported persistent soreness in the leg,12_leg
+Liam reported that the discomfort originated in the wrist,08_wrist
+Raj reported persistent soreness in the elbow,07_elbow
+Skin discoloration was observed on the wrist,08_wrist
+the PI measured the circumference of the foot,15_foot
+Skin discoloration was observed on the neck,02_neck
+Bob applied ice to reduce inflammation in the foot,15_foot
+Kevin applied ice to reduce inflammation in the elbow,07_elbow
+Alice noted restricted blood flow to the foot,15_foot
+Skin discoloration was observed on the hand,09_hand
+"The burn was classified as superficial, affecting the shoulder",03_shoulder
+The compression sleeve is worn on the hand,09_hand
+Dr. Smith applied ice to reduce inflammation in the shoulder,03_shoulder
+Liam noticed visible swelling in the chest,04_chest
+Kevin reported that the discomfort originated in the hip,11_hip
+The biopsy was taken from tissue near the wrist,08_wrist
+Raj noticed visible swelling in the chest,04_chest
+The physical exam highlighted tenderness in the leg,12_leg
+Reflexes were tested at the knee,13_knee
+the analyst reported numbness spreading from the wrist,08_wrist
+Bob measured the circumference of the foot,15_foot
+Sarah reported persistent soreness in the head,00_head
+the PI reported persistent soreness in the shoulder,03_shoulder
+Lymph node enlargement was found near the face,01_face
+the postdoc described a tingling sensation in the neck,02_neck
+Prof. Müller reported numbness spreading from the ankle,14_ankle
+The biopsy was taken from tissue near the arm,06_arm
+Prof. Kim documented visible asymmetry in the arm,06_arm
+Prof. Müller reported that the discomfort originated in the abdomen,10_abdomen
+Temperature elevation was noted at the arm,06_arm
+Prof. Kim applied ice to reduce inflammation in the arm,06_arm
+Kevin reported numbness spreading from the elbow,07_elbow
+the PI measured the circumference of the wrist,08_wrist
+The rash first appeared on the neck,02_neck
+the coordinator measured the circumference of the ankle,14_ankle
+Bob described a tingling sensation in the hip,11_hip
+the coordinator documented bruising on the shoulder,03_shoulder
+The injury was localized to the head,00_head
+Dr. Smith reported numbness spreading from the ankle,14_ankle
+The fracture was confirmed in the chest,04_chest
+Yuki documented visible asymmetry in the hand,09_hand
+Alice reported persistent soreness in the abdomen,10_abdomen
+The compression sleeve is worn on the shoulder,03_shoulder
+the analyst reported numbness spreading from the arm,06_arm
+Bob noticed visible swelling in the chest,04_chest
+Amara measured the circumference of the neck,02_neck
+Prof. Wang documented bruising on the back,05_back
+Alice applied ice to reduce inflammation in the abdomen,10_abdomen
+The surgeon focused the incision near the leg,12_leg
+Prof. Müller described a tingling sensation in the shoulder,03_shoulder
+The surgeon focused the incision near the abdomen,10_abdomen
+Dr. Smith described a tingling sensation in the knee,13_knee
+Prof. Wang noted restricted blood flow to the abdomen,10_abdomen
+The protective gear is designed for the knee,13_knee
+The scan revealed an abnormality in the arm,06_arm
+Liam documented bruising on the foot,15_foot
+The nurse applied a bandage to the arm,06_arm
+Kevin measured the circumference of the back,05_back
+Maria reported persistent soreness in the wrist,08_wrist
+Prof. Wang reported persistent soreness in the abdomen,10_abdomen
+Muscle weakness was observed in the neck,02_neck
+Dr. Okafor reported persistent soreness in the elbow,07_elbow
+the PI noted restricted blood flow to the wrist,08_wrist
+Prof. Müller noticed visible swelling in the hand,09_hand
+Dr. Rossi reported that the discomfort originated in the knee,13_knee
+Dr. Patel measured the circumference of the elbow,07_elbow
+Bob reported that the discomfort originated in the ankle,14_ankle
+Raj reported that the discomfort originated in the neck,02_neck
+The fracture was confirmed in the ankle,14_ankle
+Dr. Rossi reported that the discomfort originated in the arm,06_arm
+Temperature elevation was noted at the elbow,07_elbow
+Dr. Rossi reported persistent soreness in the elbow,07_elbow
+Maria reported numbness spreading from the elbow,07_elbow
+Skin discoloration was observed on the leg,12_leg
+the supervisor noted restricted blood flow to the leg,12_leg
+The injury was localized to the abdomen,10_abdomen
+Charlie documented bruising on the knee,13_knee
+the supervisor noted restricted blood flow to the back,05_back
+Raj measured the circumference of the leg,12_leg
+the intern documented bruising on the back,05_back
+Omar documented visible asymmetry in the shoulder,03_shoulder
+Liam documented bruising on the elbow,07_elbow
+The protective gear is designed for the foot,15_foot
+Amara noted restricted blood flow to the chest,04_chest
+The compression sleeve is worn on the head,00_head
+Raj reported numbness spreading from the wrist,08_wrist
+the technician documented bruising on the ankle,14_ankle
+Dr. Smith noted restricted blood flow to the foot,15_foot
+Prof. Wang described a tingling sensation in the arm,06_arm
+Bob noted restricted blood flow to the back,05_back
+the intern reported numbness spreading from the neck,02_neck
+Liam noticed visible swelling in the neck,02_neck
+the PI documented visible asymmetry in the back,05_back
+Prof. Kim noted restricted blood flow to the knee,13_knee

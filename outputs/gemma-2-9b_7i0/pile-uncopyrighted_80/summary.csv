@@ -1,0 +1,2 @@
+hook_name,hook_layer,n_experts,d_bottleneck,n_tokens,n_classes_original,fisher_n_buckets,fisher_bin_edges,fisher_mean,fisher_std,fisher_max,fisher_median,fisher_top1_expert,fisher_top1_score,fisher_top5_mean,fisher_top10_mean,threshold
+blocks.11.hook_resid_post,11,4096,3,36860,80,5,"[1.0, 16.8, 32.6, 48.400000000000006, 64.2, 80.0]",0.0047230106107633545,0.09997304818679417,5.88781379511086,0.0007729616857192899,1098,5.88781379511086,1.9712195283451215,1.0585504176648732,3.9356350898742676

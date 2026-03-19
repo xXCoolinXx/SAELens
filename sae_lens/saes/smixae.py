@@ -116,7 +116,8 @@ class SMIXAE(SAE[SMIXAEConfig]):
         return self.reshape_fn_out(sae_out_pre, self.d_head)
 
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
-        return nn.ReLU()  # Try ReLU, GELU, etc.
+        # use leaky relu to avoid dead relus at the latent level, neg slop is small enough to avoid impacting expert norm
+        return nn.LeakyReLU(negative_slope=1e-3)
 
     @property
     def effective_decoder_norm(self) -> torch.Tensor:
@@ -329,6 +330,9 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
             .mean()
         )
 
+        # This is needed if we use something other than ReLU to avoid dead neurons - eg LeakyReLU or Swish
+        metrics["nonzero_latent_l0"] = (feature_acts > 0).float().sum(dim=-1).mean()
+
         return TrainStepOutput(
             sae_in=step_input.sae_in,
             sae_out=sae_out,
@@ -370,7 +374,11 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         residual = (sae_in - sae_out).detach()
 
         # Heuristic: use half of active experts as k_aux
-        k_aux = self.cfg.k_experts  # // 2 - using half in this architecture leads to aux loss failing to recover dead latents
+        k_aux = (
+            self.cfg.k_experts  # // 2
+        )  # - using half in this architecture leads to aux loss failing to recover dead latents
+        # This is not ideal but not something I want to fix right now
+
         scale = min(num_dead / k_aux, 1.0)
         k_aux = min(k_aux, num_dead)
 
@@ -415,7 +423,8 @@ class SMIXAETraining(TrainingSAE[SMIXAETrainingConfig]):
         return torch.linalg.matrix_norm(W_eff, ord="fro", dim=(-2, -1))
 
     def get_activation_fn(self) -> Callable[[torch.Tensor], torch.Tensor]:
-        return nn.ReLU()
+        # use leaky relu to avoid dead relus at the latent level, neg slop is small enough to avoid impacting expert norm
+        return nn.LeakyReLU(negative_slope=1e-3)
 
 
 def _init_weights_smixae(
