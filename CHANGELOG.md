@@ -1,5 +1,443 @@
 # CHANGELOG
 
+## v6.45.3 (2026-07-04)
+
+### Fix
+
+* fix: Add missing calls to reshape_fn_out() in TemporalSAE (#695) ([`095d280`](https://github.com/decoderesearch/SAELens/commit/095d280dc0b98c1277a4387867f3c6ac6e970ab3))
+
+## v6.45.2 (2026-07-04)
+
+### Fix
+
+* fix: mse eval metric scaled inversely with eval batch token count (#711) ([`09ec191`](https://github.com/decoderesearch/SAELens/commit/09ec191058fe0f7c5f6850372a7f79e002dbeae3))
+
+* fix: remove ignored resume_from_checkpoint param from LLM runner (#712) ([`2c54b63`](https://github.com/decoderesearch/SAELens/commit/2c54b63b209a9b8119ece54d673e98e9095308ea))
+
+## v6.45.1 (2026-07-03)
+
+### Fix
+
+* fix: bug in explained_variance computing variance relative to zero instead of mean (#665) ([`4d7f530`](https://github.com/decoderesearch/SAELens/commit/4d7f530d88e7fa7413d04daf7c7270f39c07d11b))
+
+## v6.45.0 (2026-07-03)
+
+### Chore
+
+* chore: Document fine tuning existing SAEs (#709) ([`d29fd78`](https://github.com/decoderesearch/SAELens/commit/d29fd78fe08c9a2ab406202f840e1345a3c16298))
+
+* chore: Add pytest-profiling dependency, required by some tests (#687)
+
+Required for pytest --profile-svg to work, as instructed for example in benchmark/test_cache_activations_runner.py
+
+Co-authored-by: David Chanin &lt;chanindav@gmail.com&gt; ([`ccdfbe5`](https://github.com/decoderesearch/SAELens/commit/ccdfbe5dda0ad455e5b4620ffededa2769190113))
+
+* chore: DRY fold decoder norms logic (#705) ([`40e5857`](https://github.com/decoderesearch/SAELens/commit/40e5857bfc650f6a1bf8e2a72fa8cfc7a5efa984))
+
+### Feature
+
+* feat: add exclude_special_tokens to HookedSAETransformer (#708) ([`0e64dee`](https://github.com/decoderesearch/SAELens/commit/0e64dee5fc8ea261060ece13d2aa0596c725d7c2))
+
+## v6.44.4 (2026-06-22)
+
+### Fix
+
+* fix: TemporalSAE don&#39;t apply decoding bias if weights are tied and bias wasn&#39;t applied at encoding (#703) ([`0e3ca58`](https://github.com/decoderesearch/SAELens/commit/0e3ca58bdf28587a8614d658ede7ef5778f8a7b6))
+
+### Test
+
+* test: Verify TemporalSAE applies b_dec only when untied or applied at input
+
+PR #703 fixed TemporalSAE to fold b_dec back in at decode/forward only when
+the weights are untied or apply_b_dec_to_input is set. The existing tests
+only assert output shapes and run with b_dec zero-initialized, so they pass
+regardless of whether b_dec is applied. Add tests that set b_dec to a nonzero
+value and assert it is applied exactly in those cases, covering both decode()
+and forward().
+
+Co-Authored-By: Claude Opus 4.8 (1M context) &lt;noreply@anthropic.com&gt; ([`398815f`](https://github.com/decoderesearch/SAELens/commit/398815fda145d7920ad956e49b5ff3ddea9b05c3))
+
+## v6.44.3 (2026-06-16)
+
+### Chore
+
+* chore: Relax tolerance in Qwen Scope loader test to fix flaky CI (#706) ([`10c26c8`](https://github.com/decoderesearch/SAELens/commit/10c26c8d14ed12cb5b7f76f41244a81879f7df92))
+
+* chore: Add pytest-randomly to enable reproducing CI test failures (#690)
+
+Also shuffles tests order, so might uncover hidden dependencies between tests ([`ab964a9`](https://github.com/decoderesearch/SAELens/commit/ab964a9343d296e49ba23d2773495f69a2c85844))
+
+* chore: SAE overrides tidy (#694)
+
+* chore: Consistent override decorators in SAE and SAE config classes
+
+* chore: overwrite-&gt;override in docstrings ([`165b95c`](https://github.com/decoderesearch/SAELens/commit/165b95c58b795b8709582f01fa52e9e15bac24da))
+
+* chore: Update Custom SAEs guide following recent changes (#701) ([`0485aef`](https://github.com/decoderesearch/SAELens/commit/0485aef2c258f13ff845085f7bcd1bd3b8d62339))
+
+* chore: Fix copy-pasted &#34;transformer_lens&#34; in bug template (#683) ([`ef7fcac`](https://github.com/decoderesearch/SAELens/commit/ef7fcacfa210dc53834d57cb2a62b9267962d28d))
+
+* chore: SAE comments tidy (#693)
+
+* chore: More precise comment wording, initialize_weights isn&#39;t abstract
+
+Similar to wording in JumpReLUSAE
+
+* chore: Fix base SAE class name in comments ([`5fa595d`](https://github.com/decoderesearch/SAELens/commit/5fa595d512ad76b2ea31df9cc018b93468d12702))
+
+* chore: Remove misplaced comment (#696)
+
+Could alterntively be moved up, but seems redundant ([`95e4c68`](https://github.com/decoderesearch/SAELens/commit/95e4c680964332cdb2f23d97608aa20f093c644a))
+
+* chore: Comments tidy (#686)
+
+* tidy: Non-DRY comment was out of sync, didn&#39;t cover layer_norm case
+
+* doc: Mention year in references to Anthropic updates ([`ce29888`](https://github.com/decoderesearch/SAELens/commit/ce29888a9f250b53892c5b038ba77d8e0dbfdc21))
+
+* chore: Fix outdated path in comment (#689) ([`6d0955f`](https://github.com/decoderesearch/SAELens/commit/6d0955fe3bf437f30974ef0794b945b2f157958b))
+
+### Documentation
+
+* docs: Fix docstrings/comment in TemporalSAE (#702) ([`b100d70`](https://github.com/decoderesearch/SAELens/commit/b100d70230e7a3af26088f02809cfcb5bda1c9e5))
+
+* docs: update slack link ([`d0e63fc`](https://github.com/decoderesearch/SAELens/commit/d0e63fc3851ecda7e3b2d914bf9472e417e0b197))
+
+### Fix
+
+* fix: layer_norm cleanup similar to the one for constant_norm_rescale (#698) ([`e712428`](https://github.com/decoderesearch/SAELens/commit/e712428db203fdc03b2c827bf7d31f7c3ec1472d))
+
+* fix: training CLI fixes (#700)
+
+* refactor: Reuse SAE_TRAINING_CLASS_REGISTRY.keys() to DRY
+
+* test: Failing test reveals the hard-coded --architecture choices in the training CLI is out-of-date
+
+* fix: CLI allows all registered training architectures, no longer hard-coded
+
+* test: Ensure expected architecture in config parsed from CLI args
+
+* doc: Fix outdated doc references to old CLI name
+
+* chore: Update simple-parsing
+
+* fix: Help strings were wrong for many arguments in training CLI. Fixes #699
+
+* chore: Amend training configs docstrings, adds missing help for more training CLI arguments
+
+* chore: DRY, remove default values specified in docstrings
+
+Less noise in CLI args description
+Defaults already show CLI args description, in mkdocs, and in help() signatures
+
+* chore: Add missing parameter to docstring, also shows in training CLI help
+
+* test: Add failing test for --architecture showing in training CLI help
+
+* fix: --architecture/sae training CLI argument now shows in help
+
+Besides fixing the issue, the code is simplified using simple-parsing&#39;s subgroups feature ([`e54c32a`](https://github.com/decoderesearch/SAELens/commit/e54c32a650602a22693f81f530539cc35e7048eb))
+
+### Unknown
+
+* Add missing hooks (#704) ([`a2eb4b2`](https://github.com/decoderesearch/SAELens/commit/a2eb4b21eb2bf64fece3451051daa6ec3d00be1c))
+
+## v6.44.2 (2026-05-27)
+
+### Fix
+
+* fix: extract_layer_from_tlens_hook_name handles trailing-int hook names (#680)
+
+The regex required a trailing `.` after the layer index, so HF-style
+named-module paths like `model.language_model.layers.30` (where the
+index is the final segment) returned None. That silently disabled
+`stop_at_layer` early-exit in ActivationsStore for HF models, running
+every layer after the hook layer and wasting both FLOPs and KV-cache
+memory.
+
+Loosen the regex to also match `.&lt;int&gt;` at end of string. ([`703c021`](https://github.com/decoderesearch/SAELens/commit/703c0212cea952bf16f92ea3979b3706965f15eb))
+
+## v6.44.1 (2026-05-27)
+
+### Fix
+
+* fix: propagate compile, compile run_with_cache, prune HookedProxyLM hooks (#679)
+
+Fix a bug where compile_llm was a no-op, and improving compilation performance when using AutoModelForCausalLM ([`5d32ea5`](https://github.com/decoderesearch/SAELens/commit/5d32ea59ac799ec14ad6ead5c4655ab48c8d4f96))
+
+## v6.44.0 (2026-05-20)
+
+### Feature
+
+* feat: add MultiSAETrainingRunner for parallel SAE training (#678)
+
+* feat: add MultiSAETrainingRunner for parallel SAE training
+
+Train multiple SAEs from a single LLM forward pass, reusing the existing
+single-SAE training stack. MultiSAETrainer holds a dict of SAETrainer
+instances and routes per-SAE activations from a shared multi-hook
+ActivationsStore. The new ActivationsStore.from_config_multi_hook factory
+captures activations at multiple hooks in one run_with_cache and pipes them
+through the unmodified mixing_buffer via a concat-along-feature wrapper that
+guarantees a shared shuffle permutation across hooks. Bit-exact equivalence
+tests pin the multi path against running N independent SAETrainers/stores.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) &lt;noreply@anthropic.com&gt;
+
+* fix: annotate headers dict for requests 2.34+ stricter typing
+
+requests 2.34 ships bundled type stubs typing the headers kwarg as
+MutableMapping[str, str | bytes] (invariant in the value type), so the
+inferred dict[str, str] from {**hf_headers, &#34;Range&#34;: &#34;...&#34;} is no longer
+assignable. Annotating the local variable as dict[str, str | bytes]
+matches the new constraint without changing runtime behaviour.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) &lt;noreply@anthropic.com&gt;
+
+* refactor: address automated code review feedback
+
+- Move `from dataclasses import asdict` to module top (CLAUDE.md).
+- Replace `assert llm_device is not None` with an explicit RuntimeError
+  so the invariant holds under `python -O`.
+- Pass `device=layerwise.device` to `torch.zeros` in
+  `get_multi_hook_activations` to avoid a silent CPU allocation when
+  the model is on a non-CPU device.
+- Drop the view/reshape try/except in the multi-hook path; just
+  `reshape`. `view` failing on non-contiguous tensors is expected and
+  shouldn&#39;t be logged as ERROR.
+- Wrap the eval block in `_run_and_log_evals` in try/finally so SAEs
+  return to `train()` mode even if the evaluator raises.
+- Rename `SAETrainer._build_train_step_log_dict` to
+  `build_train_step_log_dict` (public) — removes the private-attribute
+  access from `MultiSAETrainer`.
+- Pop internal `_hook_*_per_sae` fields in
+  `MultiSAETrainingRunnerConfig.to_dict` so saved configs don&#39;t expose
+  redundant computed state.
+- Remove unused `verbose` config field.
+- Use `dict.fromkeys` for hook-name deduplication in
+  `ActivationsStore.from_config_multi_hook` to match the runner.
+- Call `random_params` in the test `_make_sae` helper and drop the
+  manual weight-offset hack in the same-hook independence test.
+- Build a fresh `ActivationsStore` for the post-training reconstruction
+  check instead of poking the private `_dataloader` attribute.
+- Drop &#34;see plan: out-of-scope&#34; phrase from the module docstring.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) &lt;noreply@anthropic.com&gt;
+
+* feat: save sparsity.safetensors in multi-SAE final outputs
+
+The multi-SAE runner&#39;s final output dirs were missing the per-SAE
+sparsity.safetensors file that the single-SAE runner writes. The
+`_maybe_get_log_feature_sparsity` stub always returned None on the
+premise that the trainer ref was gone after fit() — but the trainer
+is still in scope in run(). Pass it into `_save_final_outputs` and
+pull each per-SAE trainer&#39;s `log_feature_sparsity` directly.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) &lt;noreply@anthropic.com&gt;
+
+* refactor: address multi-SAE PR review feedback
+
+- get_multi_hook_activations: derive autocast device_type from the
+  model&#39;s input device instead of hardcoding &#34;cuda&#34; (would raise on
+  CPU/MPS when autocast_lm=True).
+- MultiSAETrainingRunnerConfig.to_dict: exclude internal fields via a
+  name set rather than post-hoc pops, so a future field rename fails
+  loudly instead of silently leaking private keys.
+- PerSAEEvaluator: type the data-provider argument as
+  Iterator[torch.Tensor] instead of Any.
+- Drop the dead callable/non-tensor branch in the multi-SAE pbar loss
+  formatting — TrainStepOutput.loss is always a Tensor.
+- Note the per-hook memory cost of n_batches_for_norm_estimate.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) &lt;noreply@anthropic.com&gt;
+
+* test: expand coverage for multi-SAE training paths
+
+Codecov flagged large untested regions. Adds tests exercising the
+previously-uncovered wandb logging, evaluation, and resume paths:
+
+- Runner integration test with mocked wandb covering per-SAE metric
+  aggregation, the built-in + user evaluator, sparsity-reset logging,
+  prefetching, and special-token exclusion.
+- Real resume-from-checkpoint test (the old one only checked that
+  checkpoints were written, never the resume path).
+- override_saes mismatch, interrupt-checkpoint, and per-SAE
+  hook_head_indices dict validation tests.
+- MultiSAETrainer load_checkpoint missing-subdir error and pbar refresh.
+- Single-SAE SAETrainer wandb fit test covering _log_train_step,
+  _run_and_log_evals, and the sparsity-window reset path.
+
+Coverage: multi_sae_training_runner 79-&gt;95%, multi_sae_trainer
+74-&gt;100%, sae_trainer 89-&gt;97%.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) &lt;noreply@anthropic.com&gt;
+
+* refactor: address multi-SAE PR review feedback
+
+- Share InterruptedException/interrupt_callback in sae_lens/training/_interruption
+- Construct SAEs directly from configs instead of from_dict round-trip
+- Replace hasattr duck-typing with isinstance(PrefetchingIterator) for paused()
+- Drop the None sentinel on _hook_head_indices; always a dict
+- Remove unnecessary torch.zeros allocation in get_multi_hook_activations
+- Move _FakeWandbArtifact / captured_wandb_logs fixture to tests/conftest.py
+- Strip docstrings from test functions per CLAUDE.md
+
+Co-Authored-By: Claude Opus 4.7 (1M context) &lt;noreply@anthropic.com&gt;
+
+* refactor: address second-round multi-SAE PR feedback
+
+- Hoist get_special_token_ids import out of _resolve_exclude_special_tokens
+- Use uuid.uuid4() instead of wandb.util.generate_id() for checkpoint dirs so
+  multi-SAE no longer pulls in wandb just to make a path unique
+- Drop redundant asdict(self.logger) in to_dict (asdict recurses)
+- Replace unreachable runtime guard on cfg.llm_device with an assert
+- Add @torch.no_grad() to _estimate_scaling_factors for consistency with
+  get_multi_hook_activations
+- Type tmp_path as Path (not Any) in multi-SAE trainer tests
+
+Co-Authored-By: Claude Opus 4.7 (1M context) &lt;noreply@anthropic.com&gt;
+
+---------
+
+Co-authored-by: Claude Opus 4.7 (1M context) &lt;noreply@anthropic.com&gt; ([`0c7395d`](https://github.com/decoderesearch/SAELens/commit/0c7395df3814b8fffcb955695a633ed9aab3bdbb))
+
+## v6.43.0 (2026-05-01)
+
+### Feature
+
+* feat: add Qwen Scope TopK SAEs (#677) ([`8e8fc2c`](https://github.com/decoderesearch/SAELens/commit/8e8fc2ce002086645aebc420e530d077396a114f))
+
+## v6.42.0 (2026-04-28)
+
+### Feature
+
+* feat: prefetch LLM activation batches in a background thread (#674) ([`a89ca50`](https://github.com/decoderesearch/SAELens/commit/a89ca5001e8ec5e72a3bd2be7fad4b7b85effbd9))
+
+## v6.41.2 (2026-04-27)
+
+### Fix
+
+* fix: more cross-device tensor bugs in evals (#676) ([`9311085`](https://github.com/decoderesearch/SAELens/commit/93110856b0c0bd6a6dcb0a2d45a01cba5a2272ca))
+
+## v6.41.1 (2026-04-27)
+
+### Fix
+
+* fix: move eval mask onto sae.device for cross-device runs (#675) ([`28738cf`](https://github.com/decoderesearch/SAELens/commit/28738cf85feb01ad58f37445294cefe6e5bb323d))
+
+## v6.41.0 (2026-04-27)
+
+### Feature
+
+* feat: support sharded HF models via device_map (#673) ([`546e03b`](https://github.com/decoderesearch/SAELens/commit/546e03b6173f6951473b48e4b8c12aab238d2f28))
+
+## v6.40.0 (2026-04-27)
+
+### Documentation
+
+* docs: improving SynthSAEBench docs and tutorials (#671)
+
+* improving SyntSAEBench docs and tutorials
+
+* adding matryoshka and matching pursuit SAEs to the synthetic notebook
+
+* fixes from CR
+
+* more doc updates
+
+* fixing reference
+
+* fixing bias param in docs
+
+* more fixes from CR
+
+* fixing typo
+
+* more fixes from Claude
+
+* fixing another typo ([`269a356`](https://github.com/decoderesearch/SAELens/commit/269a356d759265752046303603d0532045628a45))
+
+### Feature
+
+* feat: support placing the SAE and LLM on different devices (#672)
+
+* feat: support placing the SAE and LLM on different devices
+
+Adds an `llm_device` config field so the LLM can be placed on a different
+device from the SAE during training. `device` now refers to the SAE&#39;s
+device (and is the default for everything else); `llm_device` defaults to
+`device` so single-GPU setups are unchanged.
+
+`act_store_device` now defaults to `None` and resolves to the SAE device,
+which has more memory headroom in the multi-GPU case where the LLM is
+already filling its GPU. The legacy &#34;with_model&#34; string is still accepted
+and resolves to `llm_device`.
+
+Also fixes a latent bug where autocast/GradScaler were passed a fully
+qualified device string (e.g. &#34;cuda:1&#34;) instead of the device type (&#34;cuda&#34;).
+
+Co-Authored-By: Claude Opus 4.7 (1M context) &lt;noreply@anthropic.com&gt;
+
+* docs: address PR review — document llm_device, fix helpers TypedDict
+
+- Add llm_device and update device/act_store_device entries in the
+  LanguageModelSAERunnerConfig class docstring.
+- Update LanguageModelSAERunnerConfigDict.act_store_device to
+  str | None to match the field type.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) &lt;noreply@anthropic.com&gt;
+
+* removing useless test
+
+* fix: move token_ids to act_store device for filtering
+
+When the LLM and SAE live on different devices, token_ids came off the
+LLM (e.g. cuda:0) while exclude_special_tokens was constructed on the
+activation-store device (e.g. cuda:1). torch.isin then errored on the
+device mismatch. Move token_ids alongside the activations so filtering
+runs on a single device.
+
+Adds a CUDA-gated regression test that exercises the split-device path
+through get_filtered_llm_batch.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) &lt;noreply@anthropic.com&gt;
+
+* test: drop cuda-only test that never runs on CI
+
+The added regression test for split-device token filtering was gated on
+torch.cuda.is_available(), which means it would always be skipped on the
+GPU-less CI runners.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) &lt;noreply@anthropic.com&gt;
+
+---------
+
+Co-authored-by: Claude Opus 4.7 (1M context) &lt;noreply@anthropic.com&gt; ([`275cee6`](https://github.com/decoderesearch/SAELens/commit/275cee6223bbd177654a6a43722ed2f38bc15fdc))
+
+### Unknown
+
+* Minor SynthSAEBench Notebook Typos (#670)
+
+Corrected typos and grammatical errors in markdown cells. ([`d2ed4f0`](https://github.com/decoderesearch/SAELens/commit/d2ed4f01e3bc52ce5d50760d16cdbc40f42210f9))
+
+* Update link for pre-trained SAEs in READMEs (#668)
+
+Seems that the link currently leads to an image? Added correct link. ([`2e982e8`](https://github.com/decoderesearch/SAELens/commit/2e982e8eacae0ab5625583359baa617d12c4fcda))
+
+* Update link to importable SAEs page (#669)
+
+Similar fix to #668 . Sorry for making another issue, Github web interface doesn&#39;t let me combine them. ([`30170cd`](https://github.com/decoderesearch/SAELens/commit/30170cd34c3085b94e0fc44894bf27518cb0eaaf))
+
+## v6.39.0 (2026-03-19)
+
+### Chore
+
+* chore: document how to customize feature geometry in synth SAE stuff (#664) ([`d9d1e28`](https://github.com/decoderesearch/SAELens/commit/d9d1e281486bc0c6e3d7b364525967a756b7686e))
+
+### Feature
+
+* feat: Add parameter to set number of batches used for norm estimation (#662) ([`b321814`](https://github.com/decoderesearch/SAELens/commit/b321814678c402d46ea059f671dab5f9b124372d))
+
 ## v6.38.0 (2026-03-14)
 
 ### Feature

@@ -61,6 +61,71 @@ def test_load_model_with_generic_huggingface_lm():
     assert isinstance(model, HookedProxyLM)
 
 
+def _spy_on_from_pretrained(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Patch AutoModelForCausalLM.from_pretrained so the loaded model tracks
+    whether `.to()` was subsequently called via a `_to_called` attribute."""
+    real_from_pretrained = AutoModelForCausalLM.from_pretrained
+
+    def fake_from_pretrained(*args, **kwargs):  # type: ignore
+        # Strip device_map since we may not have accelerate installed in CI.
+        m = real_from_pretrained(
+            *args, **{k: v for k, v in kwargs.items() if k != "device_map"}
+        )
+        original_to = m.to
+
+        def to_spy(*to_args, **to_kwargs):  # type: ignore
+            m._to_called = True  # type: ignore
+            return original_to(*to_args, **to_kwargs)
+
+        m.to = to_spy  # type: ignore
+        m._to_called = False  # type: ignore
+        return m
+
+    monkeypatch.setattr(AutoModelForCausalLM, "from_pretrained", fake_from_pretrained)
+
+
+def test_load_model_skips_device_move_when_device_map_is_set(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    _spy_on_from_pretrained(monkeypatch)
+    model = load_model(
+        model_class_name="AutoModelForCausalLM",
+        model_name="gpt2",
+        device="cpu",
+        model_from_pretrained_kwargs={"device_map": "cpu"},
+    )
+    assert isinstance(model, HookedProxyLM)
+    assert model.model._to_called is False  # type: ignore
+
+
+def test_load_model_calls_device_move_when_device_map_is_explicitly_none(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    # device_map=None should be treated the same as no device_map kwarg.
+    _spy_on_from_pretrained(monkeypatch)
+    model = load_model(
+        model_class_name="AutoModelForCausalLM",
+        model_name="gpt2",
+        device="cpu",
+        model_from_pretrained_kwargs={"device_map": None},
+    )
+    assert isinstance(model, HookedProxyLM)
+    assert model.model._to_called is True  # type: ignore
+
+
+def test_load_model_calls_device_move_when_device_map_is_not_set(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    _spy_on_from_pretrained(monkeypatch)
+    model = load_model(
+        model_class_name="AutoModelForCausalLM",
+        model_name="gpt2",
+        device="cpu",
+    )
+    assert isinstance(model, HookedProxyLM)
+    assert model.model._to_called is True  # type: ignore
+
+
 @pytest.mark.skipif(
     sys.platform == "darwin", reason="Test crashes Python interpreter on macOS"
 )
@@ -288,3 +353,52 @@ def test_extract_logits_from_output_returns_none_when_object_logits_is_none():
 
     result = _extract_logits_from_output(FakeModelOutput())
     assert result is None
+
+
+def test_HookedProxyLM_hook_names_filters_registered_hooks():
+    # Only the requested submodules should be in hook_dict and have a forward
+    # hook registered. This keeps `torch.compile` from inserting a graph break
+    # at every submodule of a large HF model.
+    hf_model = AutoModelForCausalLM.from_pretrained("gpt2")
+    tokenizer = AutoTokenizer.from_pretrained("gpt2")
+    requested = ["transformer.h.0", "transformer.h.5"]
+
+    hooked = HookedProxyLM(hf_model, tokenizer, hook_names=requested)
+
+    assert set(hooked.hook_dict) == set(requested)
+    # The requested modules have one extra forward hook; non-requested ones don't.
+    for name in requested:
+        assert len(hf_model.get_submodule(name)._forward_hooks) == 1
+    for unrequested in ["transformer.h.1", "transformer.h.11", "transformer.wte"]:
+        assert len(hf_model.get_submodule(unrequested)._forward_hooks) == 0
+
+
+def test_HookedProxyLM_hook_names_raises_on_unknown_name():
+    hf_model = AutoModelForCausalLM.from_pretrained("gpt2")
+    tokenizer = AutoTokenizer.from_pretrained("gpt2")
+
+    with pytest.raises(ValueError, match="hook_names not found as submodules"):
+        HookedProxyLM(hf_model, tokenizer, hook_names=["transformer.h.0", "nope"])
+
+
+def test_HookedProxyLM_no_hook_names_hooks_everything():
+    # Default behavior (hook_names=None): every named submodule is hooked.
+    hf_model = AutoModelForCausalLM.from_pretrained("gpt2")
+    tokenizer = AutoTokenizer.from_pretrained("gpt2")
+    expected_count = sum(1 for name, _ in hf_model.named_modules() if name != "")
+
+    hooked = HookedProxyLM(hf_model, tokenizer)
+
+    assert len(hooked.hook_dict) == expected_count
+
+
+def test_load_model_passes_hook_names_to_HookedProxyLM():
+    requested = ["transformer.h.3"]
+    model = load_model(
+        model_class_name="AutoModelForCausalLM",
+        model_name="gpt2",
+        device="cpu",
+        hook_names=requested,
+    )
+    assert isinstance(model, HookedProxyLM)
+    assert set(model.hook_dict) == set(requested)

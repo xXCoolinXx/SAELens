@@ -1,9 +1,11 @@
 import json
+import time
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 import pytest
+import requests
 import torch
 import yaml
 from huggingface_hub import hf_hub_download as real_hf_hub_download
@@ -13,6 +15,7 @@ from sparsify import SparseCoder, SparseCoderConfig
 
 from sae_lens import StandardSAE, StandardSAEConfig
 from sae_lens.loading.pretrained_sae_loaders import (
+    _get_with_rate_limit_retry,
     _infer_gemma_3_raw_cfg_dict,
     dictionary_learning_sae_huggingface_loader_1,
     gemma_2_sae_huggingface_loader,
@@ -28,12 +31,14 @@ from sae_lens.loading.pretrained_sae_loaders import (
     get_llama_scope_r1_distill_config_from_hf,
     get_mntss_clt_layer_config_from_hf,
     get_mwhanna_transcoder_config_from_hf,
+    get_qwen_scope_config_from_hf,
     handle_pre_6_0_config,
     llama_scope_r1_distill_sae_huggingface_loader,
     llama_scope_sae_huggingface_loader,
     load_sae_config_from_huggingface,
     mntss_clt_layer_huggingface_loader,
     mwhanna_transcoder_huggingface_loader,
+    qwen_scope_sae_huggingface_loader,
     read_sae_components_from_disk,
     sparsify_disk_loader,
     sparsify_huggingface_loader,
@@ -2233,3 +2238,272 @@ def test_temporal_sae_huggingface_loader_with_mocked_download(
     assert "b_dec" in state_dict
     assert state_dict["W_enc"].shape == (d_sae, d_in)
     assert state_dict["W_dec"].shape == (d_sae, d_in)
+
+
+def test_get_qwen_scope_config_from_hf_qwen3_1_7b():
+    cfg = get_qwen_scope_config_from_hf(
+        repo_id="Qwen/SAE-Res-Qwen3-1.7B-Base-W32K-L0_50",
+        folder_name="layer5.sae.pt",
+        device="cpu",
+    )
+
+    assert cfg["architecture"] == "topk"
+    assert cfg["activation_fn"] == "topk"
+    assert cfg["activation_fn_kwargs"] == {"k": 50}
+    assert cfg["d_in"] == 2048
+    assert cfg["d_sae"] == 32768
+    assert cfg["model_name"] == "Qwen/Qwen3-1.7B-Base"
+    assert cfg["hook_name"] == "blocks.5.hook_resid_post"
+    assert cfg["hook_head_index"] is None
+    assert cfg["device"] == "cpu"
+    assert cfg["normalize_activations"] == "none"
+    assert cfg["apply_b_dec_to_input"] is False
+
+
+def test_get_qwen_scope_config_from_hf_qwen3_5_27b():
+    # The 27B repo lacks the "-Base" suffix; ensure parsing handles that.
+    cfg = get_qwen_scope_config_from_hf(
+        repo_id="Qwen/SAE-Res-Qwen3.5-27B-W80K-L0_100",
+        folder_name="layer42.sae.pt",
+        device="meta",
+    )
+
+    assert cfg["activation_fn_kwargs"] == {"k": 100}
+    assert cfg["d_in"] == 5120
+    assert cfg["d_sae"] == 80 * 1024
+    assert cfg["model_name"] == "Qwen/Qwen3.5-27B"
+    assert cfg["hook_name"] == "blocks.42.hook_resid_post"
+    assert cfg["hf_hook_name"] == "model.layers.42"
+    assert cfg["device"] == "meta"
+
+
+def test_get_qwen_scope_config_from_hf_overrides():
+    cfg = get_qwen_scope_config_from_hf(
+        repo_id="Qwen/SAE-Res-Qwen3-1.7B-Base-W32K-L0_50",
+        folder_name="layer0.sae.pt",
+        device="cpu",
+        cfg_overrides={"dataset_path": "custom/dataset", "context_size": 4096},
+    )
+
+    assert cfg["dataset_path"] == "custom/dataset"
+    assert cfg["context_size"] == 4096
+
+
+def test_get_qwen_scope_config_from_hf_invalid_layer():
+    with pytest.raises(
+        ValueError, match="Could not find layer number in filename: invalid.pt"
+    ):
+        get_qwen_scope_config_from_hf(
+            repo_id="Qwen/SAE-Res-Qwen3-1.7B-Base-W32K-L0_50",
+            folder_name="invalid.pt",
+            device="cpu",
+        )
+
+
+def test_get_qwen_scope_config_from_hf_unknown_model():
+    with pytest.raises(ValueError, match="Unknown Qwen Scope base model"):
+        get_qwen_scope_config_from_hf(
+            repo_id="Qwen/SAE-Res-Qwen99-1B-Base-W32K-L0_50",
+            folder_name="layer0.sae.pt",
+            device="cpu",
+        )
+
+
+def test_get_qwen_scope_config_from_hf_invalid_repo_id():
+    with pytest.raises(ValueError, match="Could not parse Qwen Scope repo_id"):
+        get_qwen_scope_config_from_hf(
+            repo_id="someone/random-repo",
+            folder_name="layer0.sae.pt",
+            device="cpu",
+        )
+
+
+def test_qwen_scope_sae_huggingface_loader_with_mocked_download(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    d_in = 2048
+    d_sae = 32 * 1024
+
+    # Qwen Scope stores W_enc as (d_sae, d_in) and W_dec as (d_in, d_sae).
+    # The loader transposes both to SAELens convention.
+    raw_W_enc = torch.randn(d_sae, d_in)
+    raw_W_dec = torch.randn(d_in, d_sae)
+    raw_b_enc = torch.randn(d_sae)
+    raw_b_dec = torch.randn(d_in)
+
+    sae_path = tmp_path / "layer3.sae.pt"
+    torch.save(
+        {
+            "W_enc": raw_W_enc,
+            "W_dec": raw_W_dec,
+            "b_enc": raw_b_enc,
+            "b_dec": raw_b_dec,
+        },
+        sae_path,
+    )
+
+    def mock_hf_hub_download(*args: Any, **kwargs: Any) -> str:  # noqa: ARG001
+        return str(sae_path)
+
+    monkeypatch.setattr(
+        "sae_lens.loading.pretrained_sae_loaders.hf_hub_download", mock_hf_hub_download
+    )
+
+    cfg_dict, state_dict, log_sparsity = qwen_scope_sae_huggingface_loader(
+        repo_id="Qwen/SAE-Res-Qwen3-1.7B-Base-W32K-L0_50",
+        folder_name="layer3.sae.pt",
+        device="cpu",
+    )
+
+    assert cfg_dict["d_in"] == d_in
+    assert cfg_dict["d_sae"] == d_sae
+    assert cfg_dict["activation_fn_kwargs"] == {"k": 50}
+    assert cfg_dict["hook_name"] == "blocks.3.hook_resid_post"
+    assert log_sparsity is None
+    assert set(state_dict.keys()) == {"W_enc", "W_dec", "b_enc", "b_dec"}
+    assert state_dict["W_enc"].shape == (d_in, d_sae)
+    assert state_dict["W_dec"].shape == (d_sae, d_in)
+
+    # The transpose must preserve the underlying linear operation: in the
+    # native Qwen Scope formula, pre_acts = residual @ raw_W_enc.T + b_enc.
+    # In SAELens, pre_acts = residual @ W_enc + b_enc. They must agree.
+    #
+    # The loader stores W_enc/W_dec as `.T.contiguous()`, so each matmul below
+    # multiplies a contiguous tensor while the reference multiplies a transposed
+    # view. Over these large reduction dims (2048 and 32768) the two layouts can
+    # accumulate float32 in a different order on some BLAS backends, so the
+    # results agree only up to rounding. Use tolerances that absorb that noise
+    # while still catching a real loader regression (which would be orders of
+    # magnitude off); the default rtol=1e-5/atol=1e-8 is too tight here and
+    # causes intermittent CI failures.
+    residual = torch.randn(2, 7, d_in)
+    expected_pre_acts = residual @ raw_W_enc.T + raw_b_enc
+    actual_pre_acts = residual @ state_dict["W_enc"] + state_dict["b_enc"]
+    assert_close(actual_pre_acts, expected_pre_acts, rtol=1e-3, atol=1e-2)
+
+    # Same for the decoder: native is feats @ raw_W_dec.T + b_dec, SAELens is feats @ W_dec + b_dec.
+    feats = torch.randn(2, 7, d_sae)
+    expected_recon = feats @ raw_W_dec.T + raw_b_dec
+    actual_recon = feats @ state_dict["W_dec"] + state_dict["b_dec"]
+    assert_close(actual_recon, expected_recon, rtol=1e-3, atol=1e-2)
+
+
+def test_qwen_scope_sae_loads_via_from_pretrained(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    d_in = 64
+    d_sae = 256
+    k = 8
+    layer = 2
+
+    raw_W_enc = torch.randn(d_sae, d_in)
+    raw_W_dec = torch.randn(d_in, d_sae)
+    raw_b_enc = torch.randn(d_sae)
+    raw_b_dec = torch.randn(d_in)
+
+    sae_path = tmp_path / f"layer{layer}.sae.pt"
+    torch.save(
+        {
+            "W_enc": raw_W_enc,
+            "W_dec": raw_W_dec,
+            "b_enc": raw_b_enc,
+            "b_dec": raw_b_dec,
+        },
+        sae_path,
+    )
+
+    def mock_hf_hub_download(*args: Any, **kwargs: Any) -> str:  # noqa: ARG001
+        return str(sae_path)
+
+    monkeypatch.setattr(
+        "sae_lens.loading.pretrained_sae_loaders.hf_hub_download", mock_hf_hub_download
+    )
+
+    cfg_dict, state_dict, _ = qwen_scope_sae_huggingface_loader(
+        repo_id=f"Qwen/SAE-Res-Qwen3-1.7B-Base-W32K-L0_{k}",
+        folder_name=f"layer{layer}.sae.pt",
+        # Override d_in / d_sae to avoid mismatch with the real Qwen3-1.7B sizes.
+        cfg_overrides={"d_in": d_in, "d_sae": d_sae},
+        device="cpu",
+    )
+    cfg_dict = handle_pre_6_0_config(cfg_dict)
+    sae = SAE.from_dict(cfg_dict)
+    sae.load_state_dict(state_dict)
+
+    residual = torch.randn(3, 5, d_in)
+    pre_acts = residual @ raw_W_enc.T + raw_b_enc
+    topk_vals, topk_idx = pre_acts.topk(k, dim=-1)
+    expected_acts = torch.zeros_like(pre_acts)
+    expected_acts.scatter_(-1, topk_idx, topk_vals.relu())
+
+    actual_acts = sae.encode(residual)
+    assert_close(actual_acts, expected_acts)
+
+
+def _fake_response(
+    status_code: int, headers: dict[str, str] | None = None
+) -> requests.Response:
+    response = requests.Response()
+    response.status_code = status_code
+    response.headers.update(headers or {})
+    return response
+
+
+def test_get_with_rate_limit_retry_retries_on_429_and_honors_retry_after(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    responses = iter(
+        [
+            _fake_response(429, {"Retry-After": "3"}),
+            _fake_response(429),
+            _fake_response(200),
+        ]
+    )
+    sleeps: list[float] = []
+
+    def fake_get(url: str, **kwargs: Any) -> requests.Response:  # noqa: ARG001
+        return next(responses)
+
+    monkeypatch.setattr(requests, "get", fake_get)
+    monkeypatch.setattr(time, "sleep", sleeps.append)
+
+    response = _get_with_rate_limit_retry("http://test/url", {})
+
+    assert response.status_code == 200
+    # First delay comes from the Retry-After header, second from exponential backoff
+    assert sleeps == [3.0, 2.0]
+
+
+def test_get_with_rate_limit_retry_raises_after_max_attempts(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    calls: list[str] = []
+
+    def fake_get(url: str, **kwargs: Any) -> requests.Response:  # noqa: ARG001
+        calls.append(url)
+        return _fake_response(429)
+
+    monkeypatch.setattr(requests, "get", fake_get)
+    monkeypatch.setattr(time, "sleep", lambda _: None)
+
+    with pytest.raises(requests.HTTPError, match="429"):
+        _get_with_rate_limit_retry("http://test/url", {}, max_attempts=3)
+
+    assert len(calls) == 3
+
+
+def test_get_with_rate_limit_retry_does_not_retry_other_errors(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    calls: list[str] = []
+
+    def fake_get(url: str, **kwargs: Any) -> requests.Response:  # noqa: ARG001
+        calls.append(url)
+        return _fake_response(404)
+
+    monkeypatch.setattr(requests, "get", fake_get)
+
+    with pytest.raises(requests.HTTPError, match="404"):
+        _get_with_rate_limit_retry("http://test/url", {})
+
+    assert len(calls) == 1

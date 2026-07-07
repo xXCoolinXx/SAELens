@@ -106,7 +106,7 @@ print(f"F1: {result.classification.f1_score:.3f}")
 
 ### Metrics
 
-- **MCC (Mean Correlation Coefficient)**: Measures alignment between SAE decoder weights and true feature vectors. Uses the Hungarian algorithm to find the optimal one-to-one matching, then computes mean absolute cosine similarity. Range [0, 1] where 1 = perfect recovery. See the paper [Compute Optimal Inference and Provable Amortisation Gap in Sparse Autoencoders](https://arxiv.org/abs/2411.13117) for more details.
+- **MCC (Mean Correlation Coefficient)**: Measures alignment between SAE decoder weights and true feature vectors. Uses the Hungarian algorithm to find the optimal one-to-one matching, then computes mean absolute cosine similarity. Range [0, 1] where 1 = perfect recovery. See the paper [Position: Mechanistic Interpretability Should Prioritize Feature Consistency in SAEs](https://arxiv.org/abs/2505.20254) for more details.
 - **Explained Variance (R²)**: Fraction of input variance explained by the SAE reconstruction. 1.0 = perfect reconstruction.
 - **Uniqueness**: Fraction of SAE latents that track unique ground-truth features (i.e., no two latents map to the same ground-truth feature). 1.0 = all unique.
 - **Classification (Precision/Recall/F1)**: Treats each SAE latent as a binary classifier for its best-matching ground-truth feature. Precision = TP/(TP+FP), Recall = TP/(TP+FN), F1 = harmonic mean.
@@ -290,6 +290,7 @@ cfg = SyntheticModelConfig(
         branching_factor=4,
         max_depth=3,
         mutually_exclusive_portion=1.0,  # All children are mutually exclusive
+        mutually_exclusive_min_depth=0,  # Apply ME starting from root nodes
         compensate_probabilities=True,  # Try to compensate firing probabilities for hierarchy effects
         scale_children_by_parent=True,  # Scale child activations by parent activation / parent mean
     ),
@@ -310,6 +311,7 @@ cfg = SyntheticModelConfig(
     mean_firing_magnitudes=LinearMagnitudeConfig(start=5.0, end=4.0),
     std_firing_magnitudes=FoldedNormalMagnitudeConfig(mean=0.5, std=0.5),
 
+    bias=0.5,
     seed=42,
 )
 

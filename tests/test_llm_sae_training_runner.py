@@ -4,6 +4,7 @@ from typing import Any
 
 import pytest
 import torch
+from safetensors.torch import load_file
 from transformer_lens import HookedTransformer
 
 from sae_lens import __version__
@@ -30,6 +31,7 @@ from tests.helpers import (
     ALL_TRAINING_ARCHITECTURES,
     NEEL_NANDA_C4_10K_DATASET,
     TINYSTORIES_MODEL,
+    assert_close,
     build_runner_cfg_for_arch,
 )
 
@@ -114,9 +116,119 @@ def test_LanguageModelSAETrainingRunner_runs_and_saves_all_architectures(
     assert runner_cfg == json.loads(json.dumps(cfg.to_dict()))
 
 
+@pytest.mark.parametrize("prefetch_llm_batches", [True, 2])
+def test_LanguageModelSAETrainingRunner_runs_with_prefetch_llm_batches(
+    tmp_path: Path,
+    ts_model: HookedTransformer,
+    prefetch_llm_batches: bool | int,
+):
+    cfg = build_runner_cfg_for_arch(
+        d_in=64,
+        d_sae=128,
+        architecture="standard",
+        checkpoint_path=str(tmp_path),
+        training_tokens=64,
+        store_batch_size_prompts=2,
+        train_batch_size_tokens=4,
+        context_size=10,
+        n_batches_in_buffer=2,
+        dataset_path=NEEL_NANDA_C4_10K_DATASET,
+        hook_name="blocks.0.hook_resid_post",
+        model_name=TINYSTORIES_MODEL,
+        n_checkpoints=0,
+        save_final_checkpoint=False,
+        n_batches_for_norm_estimate=10,
+        prefetch_llm_batches=prefetch_llm_batches,
+    )
+    runner = LanguageModelSAETrainingRunner(cfg, override_model=ts_model)
+    sae = runner.run()
+    assert sae.cfg.architecture() == "standard"
+
+
+class _CompiledCallable:
+    """Test stand-in for the callable that `torch.compile` returns for a function/method."""
+
+    def __init__(self, fn: Any):
+        self._sael_orig_fn = fn
+
+    def __call__(self, *args: Any, **kwargs: Any) -> Any:
+        return self._sael_orig_fn(*args, **kwargs)
+
+
+def test_LanguageModelSAETrainingRunner_compile_llm_compiles_run_with_cache(
+    monkeypatch: pytest.MonkeyPatch, ts_model: HookedTransformer
+):
+    # `torch.compile` only intercepts __call__; ActivationsStore and the
+    # evaluator call `model.run_with_cache(...)`, so compile_llm replaces that
+    # bound method (not the whole module). The store and evaluator share the
+    # same model object, so they see the same compiled callable.
+    monkeypatch.setattr(torch, "compile", lambda fn, **_: _CompiledCallable(fn))
+
+    cfg = build_runner_cfg_for_arch(
+        d_in=64,
+        d_sae=128,
+        architecture="standard",
+        training_tokens=4,
+        store_batch_size_prompts=2,
+        train_batch_size_tokens=4,
+        context_size=10,
+        n_batches_in_buffer=2,
+        dataset_path=NEEL_NANDA_C4_10K_DATASET,
+        hook_name="blocks.0.hook_resid_post",
+        model_name=TINYSTORIES_MODEL,
+        compile_llm=True,
+    )
+    runner = LanguageModelSAETrainingRunner(cfg, override_model=ts_model)
+
+    assert isinstance(runner.model.run_with_cache, _CompiledCallable)
+    assert runner.activations_store.model is runner.model
+    assert runner.evaluator.model is runner.model
+    assert runner.activations_store.model.run_with_cache is runner.model.run_with_cache
+
+
+def test_LanguageModelSAETrainingRunner_no_compile_when_compile_llm_false(
+    monkeypatch: pytest.MonkeyPatch, ts_model: HookedTransformer
+):
+    compile_calls: list[Any] = []
+    monkeypatch.setattr(
+        torch, "compile", lambda fn, **_: compile_calls.append(fn) or fn
+    )
+
+    cfg = build_runner_cfg_for_arch(
+        d_in=64,
+        d_sae=128,
+        architecture="standard",
+        training_tokens=4,
+        store_batch_size_prompts=2,
+        train_batch_size_tokens=4,
+        context_size=10,
+        n_batches_in_buffer=2,
+        dataset_path=NEEL_NANDA_C4_10K_DATASET,
+        hook_name="blocks.0.hook_resid_post",
+        model_name=TINYSTORIES_MODEL,
+        compile_llm=False,
+        compile_sae=False,
+    )
+    runner = LanguageModelSAETrainingRunner(cfg, override_model=ts_model)
+
+    assert compile_calls == []
+    assert runner.model is ts_model
+    assert runner.activations_store.model is ts_model
+    assert runner.evaluator.model is ts_model
+
+
 def test_parse_cfg_args_raises_system_exit_on_empty_args():
     with pytest.raises(SystemExit):
         _parse_cfg_args([])
+
+
+def test_parse_cfg_args_shows_architecture_in_help(capfd: pytest.CaptureFixture[str]):
+    with pytest.raises(SystemExit):
+        _parse_cfg_args(["--help"])
+    out = capfd.readouterr().out
+    assert "--architecture" in out
+    for architecture in ALL_TRAINING_ARCHITECTURES:
+        assert architecture in out
 
 
 def test_parse_cfg_args_raises_exception_on_invalid_args():
@@ -724,9 +836,12 @@ class TestResumeFromCheckpoint:
         activations_store_path = checkpoint_dirs[0] / ACTIVATIONS_STORE_STATE_FILENAME
         assert activations_store_path.exists(), "Activations store state wasn't saved"
 
-    def test_cli_args_parsing_with_resume(self):
+    @pytest.mark.parametrize("architecture", ALL_TRAINING_ARCHITECTURES)
+    def test_cli_args_parsing_with_resume(self, architecture: str):
         """Test that CLI args parsing works with --resume_from_checkpoint."""
         args = [
+            "--architecture",
+            architecture,
             "--model_name",
             "test-model",
             "--dataset_path",
@@ -736,6 +851,7 @@ class TestResumeFromCheckpoint:
         ]
         cfg = _parse_cfg_args(args)
 
+        assert cfg.sae.architecture() == architecture
         assert cfg.model_name == "test-model"
         assert cfg.dataset_path == "test-dataset"
         assert cfg.resume_from_checkpoint == "/path/to/checkpoint"
@@ -744,50 +860,40 @@ class TestResumeFromCheckpoint:
         self,
         small_training_cfg: LanguageModelSAERunnerConfig[StandardTrainingSAEConfig],
     ):
-        """Test that training can be resumed from a checkpoint."""
-        # First part: train for a small number of tokens
+        # First part: train to completion and save a final checkpoint
         first_cfg = small_training_cfg
-        first_cfg.training_tokens = 64  # Half of total
+        first_cfg.training_tokens = 64
+        first_cfg.n_checkpoints = 0
+        first_cfg.save_final_checkpoint = True
 
         runner1 = LanguageModelSAETrainingRunner(first_cfg)
         runner1.run()
 
-        # Get the checkpoint directory
         assert first_cfg.checkpoint_path is not None
         checkpoint_dirs = list(Path(first_cfg.checkpoint_path).glob("*"))
         assert len(checkpoint_dirs) == 1
         checkpoint_path = checkpoint_dirs[0]
 
-        # Second part: resume training from the checkpoint
+        # Second part: resume with the same token target. The restored trainer
+        # state already counts 64 training samples, so the run must take zero
+        # training steps and return the checkpointed weights unchanged. A run
+        # that failed to restore the checkpoint would train from scratch and
+        # produce different weights.
         second_cfg = small_training_cfg
-        second_cfg.training_tokens = 128  # Full amount
-        second_cfg.save_final_checkpoint = True
+        second_cfg.save_final_checkpoint = False
+        second_cfg.resume_from_checkpoint = str(checkpoint_path)
 
-        # Resume training from checkpoint
-        runner2 = LanguageModelSAETrainingRunner(
-            second_cfg, resume_from_checkpoint=str(checkpoint_path)
-        )
-        runner2.run()
+        runner2 = LanguageModelSAETrainingRunner(second_cfg)
+        resumed_sae = runner2.run()
 
-        # The resumed SAE should have trained on all tokens
-        # Check if various metrics are reasonable
+        checkpoint_weights = load_file(str(checkpoint_path / SAE_WEIGHTS_FILENAME))
+        resumed_state = resumed_sae.state_dict()
+        for name, checkpoint_value in checkpoint_weights.items():
+            assert_close(resumed_state[name], checkpoint_value)
 
-        # Get the final checkpoint and check its metrics
-        assert second_cfg.checkpoint_path is not None
-        final_checkpoint_dirs = list(Path(second_cfg.checkpoint_path).glob("*"))
-        assert (
-            len(final_checkpoint_dirs) >= 1
-        )  # Should have at least the original checkpoint
-
-        # Find the latest checkpoint (could be different from the first if new one was created)
-        latest_checkpoint = max(final_checkpoint_dirs, key=lambda p: p.stat().st_mtime)
-
-        # Load the final state
-        final_training_state_path = latest_checkpoint / TRAINER_STATE_FILENAME
-        final_training_state = torch.load(final_training_state_path)
-
-        # Ensure the resumed training completed the full training
-        assert final_training_state["n_training_samples"] >= 128
+        # The restored trainer state must reflect the first run's progress
+        training_state = torch.load(checkpoint_path / TRAINER_STATE_FILENAME)
+        assert training_state["n_training_samples"] == 64
 
     def test_activations_store_state_preserved(
         self,

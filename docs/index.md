@@ -1,6 +1,6 @@
 <!-- prettier-ignore-start -->
 !!! tip "SAELens v6"
-    SAELens 6.0.0 is live with changes to SAE training and loading. Check out the [migration guide →](migrating)
+    SAELens 6.0.0 is live with changes to SAE training and loading. Check out the [migration guide →](migrating.md)
 <!-- prettier-ignore-end -->
 
 <img width="1308" height="532" alt="saes_pic" src="https://github.com/user-attachments/assets/2a5d752f-b261-4ee4-ad5d-ebf282321371" />
@@ -41,7 +41,7 @@ sae = SAE.from_pretrained(
 )
 ```
 
-You can see other importable SAEs on [this page](https://decoderesearch.github.io/SAELens/pretrained_saes/).
+You can see other importable SAEs on [this page](https://decoderesearch.github.io/SAELens/latest/pretrained_saes/).
 
 Any SAE on Huggingface that's trained using SAELens can also be loaded using `SAE.from_pretrained()`. In this case, `release` is the name of the Huggingface repo, and `sae_id` is the path to the SAE in the repo. You can see a list of SAEs listed on Huggingface with the [saelens tag](https://huggingface.co/models?library=saelens).
 
@@ -57,7 +57,7 @@ sae = SAE.load_from_disk("/path/to/your/sae", device="cuda")
 
 ### Importing SAEs from other libraries
 
-You can import an SAE created with another library by writing a custom `PretrainedSaeHuggingfaceLoader` or `PretrainedSaeDiskLoader` for use with `SAE.from_pretrained()` or `SAE.load_from_disk()`, respectively. See the [pretrained_sae_loaders.py](https://github.com/decoderesearch/SAELens/blob/main/sae_lens/loading/pretrained_sae_loaders.py) file for more details, or ask on the [Open Source Mechanistic Interpretability Slack](https://join.slack.com/t/opensourcemechanistic/shared_invite/zt-375zalm04-GFd5tdBU1yLKlu_T_JSqZQ). If you write a good custom loader for another library, please consider contributing it back to SAELens!
+You can import an SAE created with another library by writing a custom `PretrainedSaeHuggingfaceLoader` or `PretrainedSaeDiskLoader` for use with `SAE.from_pretrained()` or `SAE.load_from_disk()`, respectively. See the [pretrained_sae_loaders.py](https://github.com/decoderesearch/SAELens/blob/main/sae_lens/loading/pretrained_sae_loaders.py) file for more details, or ask on the [Open Source Mechanistic Interpretability Slack](https://join.slack.com/t/opensourcemechanistic/shared_invite/zt-3z9o0hxjl-MDX9pbATO2qESOazNDLpdQ). If you write a good custom loader for another library, please consider contributing it back to SAELens!
 
 ## Model Compatibility
 

@@ -5,7 +5,7 @@ Methods development for training SAEs is rapidly evolving, so these docs may cha
 However, we are attempting to maintain this [tutorial](https://github.com/decoderesearch/SAELens/blob/main/tutorials/training_a_sparse_autoencoder.ipynb)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://githubtocolab.com/decoderesearch/SAELens/blob/main/tutorials/training_a_sparse_autoencoder.ipynb).
 
-We encourage readers to join the [Open Source Mechanistic Interpretability Slack](https://join.slack.com/t/opensourcemechanistic/shared_invite/zt-375zalm04-GFd5tdBU1yLKlu_T_JSqZQ) for support!
+We encourage readers to join the [Open Source Mechanistic Interpretability Slack](https://join.slack.com/t/opensourcemechanistic/shared_invite/zt-3z9o0hxjl-MDX9pbATO2qESOazNDLpdQ) for support!
 
 ## Basic training setup
 
@@ -359,12 +359,128 @@ cfg = LanguageModelSAERunnerConfig( # Full config would be defined here
 sparse_autoencoder = LanguageModelSAETrainingRunner(cfg).run()
 ```
 
+## Fine-tuning an existing SAE
+
+Use `from_pretrained_path` to initialize a new training run from a saved
+training SAE. The path should point to a directory that can be loaded by
+`TrainingSAE.load_from_disk`, such as a directory containing `cfg.json` and
+`sae_weights.safetensors`. The runner loads the SAE weights and SAE config from
+disk, then creates a fresh activation store, optimizer, scheduler, and trainer
+state from the current `LanguageModelSAERunnerConfig`. The nested `sae` field is
+still required when you build `LanguageModelSAERunnerConfig`, so keep it
+consistent with the saved SAE.
+
+```python
+import torch
+
+from sae_lens import (
+    LanguageModelSAERunnerConfig,
+    LanguageModelSAETrainingRunner,
+    LoggingConfig,
+    StandardTrainingSAEConfig,
+)
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
+cfg = LanguageModelSAERunnerConfig(
+    model_name="tiny-stories-1L-21M",
+    hook_name="blocks.0.hook_mlp_out",
+    dataset_path="apollo-research/roneneldan-TinyStories-tokenizer-gpt2",
+    is_dataset_tokenized=True,
+    streaming=True,
+    sae=StandardTrainingSAEConfig(
+        d_in=1024,
+        d_sae=16 * 1024,
+        apply_b_dec_to_input=True,
+        normalize_activations="expected_average_only_in",
+        l1_coefficient=5,
+    ),
+    from_pretrained_path="path/to/existing/training_sae",
+    training_tokens=50_000_000,
+    train_batch_size_tokens=4096,
+    logger=LoggingConfig(log_to_wandb=False),
+    device=device,
+)
+
+fine_tuned_sae = LanguageModelSAETrainingRunner(cfg).run()
+fine_tuned_sae.save_inference_model("path/to/fine_tuned_sae")
+```
+
+Note that `from_pretrained_path` starts a brand new training run from the saved
+weights. To continue an existing run exactly where it left off, use
+`resume_from_checkpoint` instead — see [Checkpoints](#checkpoints).
+
+## Training multiple SAEs in parallel (experimental)
+
+<!-- prettier-ignore-start -->
+!!! warning "Experimental feature"
+    Multi-SAE training is a new feature and the API may change. The V1 release intentionally omits CLI/argparse support, cached activations, `from_pretrained_path` per entry, and `compile_sae=True`. `compile_llm=True` is supported because the model is shared.
+<!-- prettier-ignore-end -->
+
+If you want to train a sweep of SAEs that share the same model — e.g., several `l1_coefficient` values at one hook point, or one SAE per layer for a layer-by-layer study — you can use [MultiSAETrainingRunner][sae_lens.MultiSAETrainingRunner] to run the LLM forward pass once per batch and feed the captured activations to every SAE in parallel. Each SAE keeps its own optimizer, learning-rate schedule, coefficient schedulers, activation scaler, and sparsity tracking, exactly as in single-SAE training; the runner just multiplexes the shared activation stream.
+
+The runner accepts a dict of SAE configs and a hook-name spec. Pass `hook_names` as a single string when all SAEs share one hook, or as a dict when they don't. Different SAEs can use different architectures, but SAEs sharing a hook in V1 must agree on `d_in` and `hook_head_index`.
+
+```python
+from sae_lens import (
+    MultiSAETrainingRunner,
+    MultiSAETrainingRunnerConfig,
+    StandardTrainingSAEConfig,
+    TopKTrainingSAEConfig,
+    LoggingConfig,
+)
+
+cfg = MultiSAETrainingRunnerConfig(
+    saes={
+        "h5_l1_low":  StandardTrainingSAEConfig(d_in=768, d_sae=16 * 1024, l1_coefficient=2.0),
+        "h5_l1_high": StandardTrainingSAEConfig(d_in=768, d_sae=16 * 1024, l1_coefficient=5.0),
+        "h10_topk":   TopKTrainingSAEConfig(d_in=768, d_sae=16 * 1024, k=64),
+    },
+    hook_names={
+        "h5_l1_low":  "blocks.5.hook_resid_pre",
+        "h5_l1_high": "blocks.5.hook_resid_pre",
+        "h10_topk":   "blocks.10.hook_resid_pre",
+    },
+    # OR a single string when every SAE shares one hook:
+    # hook_names="blocks.5.hook_resid_pre",
+
+    model_name="gpt2",
+    dataset_path="apollo-research/Skylion007-openwebtext-tokenizer-gpt2",
+    training_tokens=int(1e8),
+    train_batch_size_tokens=4096,
+    output_path="output/sweep_run_1",
+    logger=LoggingConfig(log_to_wandb=True, wandb_project="multi_sae_sweep"),
+)
+
+trained_saes = MultiSAETrainingRunner(cfg).run()  # dict[name, TrainingSAE]
+```
+
+Wandb metrics are namespaced by SAE name (e.g. `h5_l1_low/losses/overall_loss`) so per-SAE curves can be inspected side-by-side in one run. Built-in evals run sequentially per SAE; eval cost therefore scales linearly with the number of SAEs — if this becomes a bottleneck, raise `eval_every_n_wandb_logs` so evals run less often. You can also pass a custom per-SAE `evaluator` callable; it will be applied to every SAE with that SAE's single-hook view of the data provider.
+
+Checkpointing follows the single-SAE layout but adds a per-SAE subdirectory inside each checkpoint:
+
+```
+checkpoints/<unique_id>/<n_training_samples>/
+├── runner_cfg.json
+├── activations_store.pt
+├── h5_l1_low/
+│   ├── sae_weights.safetensors
+│   ├── cfg.json
+│   ├── sparsity.safetensors
+│   ├── trainer_state.pt
+│   └── activation_scaler.json
+├── h5_l1_high/...
+└── h10_topk/...
+```
+
+Resume by passing `resume_from_checkpoint=<checkpoint_dir>`. The per-SAE keys in `cfg.saes` must exactly match the subdirectories saved in the checkpoint.
+
 ## CLI Runner
 
-The SAE training runner can also be run from the command line via the `sae_lens.sae_training_runner` module. This can be useful for quickly testing different hyperparameters or running training on a remote server. The command line interface is shown below. All options to the CLI are the same as the [LanguageModelSAERunnerConfig][sae_lens.LanguageModelSAERunnerConfig] with a `--` prefix. E.g., `--model_name` is the same as `model_name` in the config.
+The SAE training runner can also be run from the command line via the `sae_lens.llm_sae_training_runner` module. This can be useful for quickly testing different hyperparameters or running training on a remote server. The command line interface is shown below. All options to the CLI are the same as the [LanguageModelSAERunnerConfig][sae_lens.LanguageModelSAERunnerConfig] with a `--` prefix. E.g., `--model_name` is the same as `model_name` in the config.
 
 ```bash
-python -m sae_lens.sae_training_runner --help
+python -m sae_lens.llm_sae_training_runner --help
 ```
 
 ## Logging to Weights and Biases
@@ -391,18 +507,22 @@ Some general performance tips:
 
 Checkpoints allow you to save a snapshot of the SAE and sparsitity statistics during training. To enable checkpointing, set `n_checkpoints` to a value larger than 0. If WandB logging is enabled, checkpoints will be uploaded as WandB artifacts. To save checkpoints locally, the `checkpoint_path` parameter can be set to a local directory. You can also set `save_final_checkpoint=True` to save a final checkpoint after training is finished.
 
-To resume training from a saved checkpoint, set `resume_from_checkpoint` to the path of the checkpoint when creating a `LanguageModelSAETrainingRunner`, or set `--resume_from_checkpoint` when running the CLI.
+To resume training from a saved checkpoint, set `resume_from_checkpoint` to the path of the checkpoint when creating a `LanguageModelSAETrainingRunner`, or set `--resume_from_checkpoint` when running the CLI. This restores the SAE weights, optimizer state, scheduler state, activation store progress, and training counters, so the run continues exactly where it left off.
+
+Checkpoint directories are saved under `checkpoint_path` as `<checkpoint_path>/<run_id>/<checkpoint_name>`, and contain `sae_weights.safetensors`, `trainer_state.pt`, `activations_store_state.safetensors`, and `activation_scaler.json`, all of which are required to resume.
 
 ```python
 
 cfg = LanguageModelSAERunnerConfig(
     # ... other LanguageModelSAERunnerConfig parameters ...
-    resume_from_checkpoint="path/to/checkpoint"
+    resume_from_checkpoint="checkpoints/run_id/final_100000000"
 )
 runner = LanguageModelSAETrainingRunner(cfg)
 runner.run()
 
 ```
+
+To instead start a fresh fine-tuning run from saved SAE weights, use `from_pretrained_path` — see [Fine-tuning an existing SAE](#fine-tuning-an-existing-sae).
 
 ## Optimizers and Schedulers
 

@@ -118,6 +118,59 @@ def test_default_cached_activations_path_with_hook_head_index():
     )
 
 
+def test_LanguageModelSAERunnerConfig_llm_device_defaults_to_device():
+    cfg = LanguageModelSAERunnerConfig(
+        sae=StandardTrainingSAEConfig(d_in=5, d_sae=10),
+        device="cuda:0",
+    )
+    assert cfg.llm_device == "cuda:0"
+    assert cfg.act_store_device == "cuda:0"
+    trainer_cfg = cfg.to_sae_trainer_config()
+    assert trainer_cfg.device == "cuda:0"
+
+
+def test_LanguageModelSAERunnerConfig_llm_device_can_differ_from_device():
+    cfg = LanguageModelSAERunnerConfig(
+        sae=StandardTrainingSAEConfig(d_in=5, d_sae=10),
+        device="cuda:1",
+        llm_device="cuda:0",
+    )
+    assert cfg.device == "cuda:1"
+    assert cfg.llm_device == "cuda:0"
+    # act_store_device defaults to the SAE device, not the LLM
+    assert cfg.act_store_device == "cuda:1"
+    trainer_cfg = cfg.to_sae_trainer_config()
+    assert trainer_cfg.device == "cuda:1"
+
+
+def test_LanguageModelSAERunnerConfig_act_store_device_with_model_alias_follows_llm():
+    cfg = LanguageModelSAERunnerConfig(
+        sae=StandardTrainingSAEConfig(d_in=5, d_sae=10),
+        device="cuda:1",
+        llm_device="cuda:0",
+        act_store_device="with_model",
+    )
+    assert cfg.act_store_device == "cuda:0"
+
+
+def test_LanguageModelSAERunnerConfig_rejects_negative_prefetch_llm_batches():
+    with pytest.raises(ValueError, match="prefetch_llm_batches must be"):
+        LanguageModelSAERunnerConfig(
+            sae=StandardTrainingSAEConfig(d_in=5, d_sae=10),
+            prefetch_llm_batches=-1,
+        )
+
+
+def test_LanguageModelSAERunnerConfig_accepts_zero_prefetch_llm_batches():
+    # 0 is a valid value: it's falsy, so the runner treats it as "no prefetch"
+    # rather than as "queue size 0".
+    cfg = LanguageModelSAERunnerConfig(
+        sae=StandardTrainingSAEConfig(d_in=5, d_sae=10),
+        prefetch_llm_batches=0,
+    )
+    assert cfg.prefetch_llm_batches == 0
+
+
 def test_LanguageModelSAERunnerConfig_to_dict_and_from_dict():
     cfg = LanguageModelSAERunnerConfig(
         sae=JumpReLUTrainingSAEConfig(

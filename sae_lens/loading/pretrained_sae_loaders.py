@@ -1,5 +1,6 @@
 import json
 import re
+import time
 import warnings
 from pathlib import Path
 from typing import Any, Protocol
@@ -1067,6 +1068,120 @@ def deepseek_r1_sae_huggingface_loader(
     return cfg_dict, state_dict, None
 
 
+# Maps the model identifier embedded in a Qwen Scope SAE repo name (the part
+# between "SAE-Res-" and "-W{N}K-L0_{K}") to the HF model id and its hidden size.
+QWEN_SCOPE_MODEL_INFO: dict[str, tuple[str, int]] = {
+    "Qwen3-1.7B-Base": ("Qwen/Qwen3-1.7B-Base", 2048),
+    "Qwen3-8B-Base": ("Qwen/Qwen3-8B-Base", 4096),
+    "Qwen3-30B-A3B-Base": ("Qwen/Qwen3-30B-A3B-Base", 2048),
+    "Qwen3.5-2B-Base": ("Qwen/Qwen3.5-2B-Base", 2048),
+    "Qwen3.5-9B-Base": ("Qwen/Qwen3.5-9B-Base", 4096),
+    "Qwen3.5-27B": ("Qwen/Qwen3.5-27B", 5120),
+    "Qwen3.5-35B-A3B-Base": ("Qwen/Qwen3.5-35B-A3B-Base", 2048),
+}
+
+
+def _parse_qwen_scope_repo_id(repo_id: str) -> tuple[str, int, int]:
+    """Parse a Qwen Scope repo id into (model_key, d_sae, k).
+
+    Repo ids look like ``Qwen/SAE-Res-{model_key}-W{N}K-L0_{K}``, e.g.
+    ``Qwen/SAE-Res-Qwen3-1.7B-Base-W32K-L0_50``.
+    """
+    match = re.search(r"SAE-Res-(.+)-W(\d+)K-L0_(\d+)", repo_id)
+    if match is None:
+        raise ValueError(f"Could not parse Qwen Scope repo_id: {repo_id}")
+    model_key, width_k, k = match.group(1), int(match.group(2)), int(match.group(3))
+    return model_key, width_k * 1024, k
+
+
+def get_qwen_scope_config_from_hf(
+    repo_id: str,
+    folder_name: str,
+    device: str,
+    force_download: bool = False,  # noqa: ARG001
+    cfg_overrides: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Get config for Qwen Scope SAEs (https://huggingface.co/collections/Qwen/qwen-scope).
+
+    Repo ids look like ``Qwen/SAE-Res-Qwen3-1.7B-Base-W32K-L0_50``.
+    Folder names are the per-layer checkpoint files, e.g. ``layer0.sae.pt``.
+    """
+    layer_match = re.search(r"layer(\d+)\.sae\.pt", folder_name)
+    if layer_match is None:
+        raise ValueError(f"Could not find layer number in filename: {folder_name}")
+    layer = int(layer_match.group(1))
+
+    model_key, d_sae, k = _parse_qwen_scope_repo_id(repo_id)
+    if model_key not in QWEN_SCOPE_MODEL_INFO:
+        raise ValueError(
+            f"Unknown Qwen Scope base model: {model_key!r}. "
+            f"Known models: {sorted(QWEN_SCOPE_MODEL_INFO)}"
+        )
+    model_name, d_in = QWEN_SCOPE_MODEL_INFO[model_key]
+
+    return {
+        "architecture": "topk",
+        "activation_fn": "topk",
+        "activation_fn_kwargs": {"k": k},
+        "d_in": d_in,
+        "d_sae": d_sae,
+        "dtype": "float32",
+        "context_size": 1024,
+        "model_name": model_name,
+        "hook_name": f"blocks.{layer}.hook_resid_post",
+        "hf_hook_name": f"model.layers.{layer}",
+        "hook_head_index": None,
+        "prepend_bos": True,
+        # Qwen Scope SAEs are trained on Qwen's in-house pretraining data, which
+        # is not publicly available; leave the dataset_path unset.
+        "dataset_path": None,
+        "sae_lens_training_version": None,
+        "normalize_activations": "none",
+        "device": device,
+        "apply_b_dec_to_input": False,
+        "finetuning_scaling_factor": False,
+        **(cfg_overrides or {}),
+    }
+
+
+def qwen_scope_sae_huggingface_loader(
+    repo_id: str,
+    folder_name: str,
+    device: str = "cpu",
+    force_download: bool = False,
+    cfg_overrides: dict[str, Any] | None = None,
+) -> tuple[dict[str, Any], dict[str, torch.Tensor], torch.Tensor | None]:
+    """Load a Qwen Scope TopK SAE.
+
+    Each ``layer{n}.sae.pt`` checkpoint is a dict with ``W_enc`` of shape
+    (d_sae, d_in), ``W_dec`` of shape (d_in, d_sae), ``b_enc`` and ``b_dec``.
+    SAELens uses the transposed convention, so we transpose both weight matrices.
+    """
+    cfg_dict = get_qwen_scope_config_from_hf(
+        repo_id,
+        folder_name,
+        device,
+        force_download,
+        cfg_overrides,
+    )
+
+    sae_path = hf_hub_download(
+        repo_id=repo_id,
+        filename=folder_name,
+        force_download=force_download,
+    )
+    state_dict_loaded = torch.load(sae_path, map_location=device)
+
+    state_dict = {
+        "W_enc": state_dict_loaded["W_enc"].T.contiguous(),
+        "W_dec": state_dict_loaded["W_dec"].T.contiguous(),
+        "b_enc": state_dict_loaded["b_enc"],
+        "b_dec": state_dict_loaded["b_dec"],
+    }
+
+    return cfg_dict, state_dict, None
+
+
 def get_conversion_loader_name(release: str) -> str:
     saes_directory = get_pretrained_saes_directory()
     sae_info = saes_directory.get(release, None)
@@ -1632,6 +1747,24 @@ def mwhanna_transcoder_huggingface_loader(
     return cfg_dict, state_dict, None
 
 
+def _get_with_rate_limit_retry(
+    url: str, headers: dict[str, str | bytes], max_attempts: int = 5
+) -> requests.Response:
+    """GET a URL, retrying on HTTP 429 with backoff (honors Retry-After, capped at 60s)."""
+    for attempt in range(max_attempts):
+        response = requests.get(url, headers=headers, timeout=10)
+        if response.status_code != 429 or attempt == max_attempts - 1:
+            response.raise_for_status()
+            return response
+        retry_after = response.headers.get("Retry-After")
+        delay = min(float(retry_after) if retry_after else 2.0**attempt, 60.0)
+        logger.warning(
+            f"Rate limited (HTTP 429) fetching {url}, retrying in {delay:.0f}s"
+        )
+        time.sleep(delay)
+    raise AssertionError("unreachable")
+
+
 def get_safetensors_tensor_shapes(repo_id: str, filename: str) -> dict[str, list[int]]:
     """
     Get tensor shapes from a safetensors file on HuggingFace Hub
@@ -1652,16 +1785,14 @@ def get_safetensors_tensor_shapes(repo_id: str, filename: str) -> dict[str, list
     hf_headers = build_hf_headers()
 
     # Fetch first 8 bytes to get metadata size
-    headers = {**hf_headers, "Range": "bytes=0-7"}
-    response = requests.get(url, headers=headers, timeout=10)
-    response.raise_for_status()
+    headers: dict[str, str | bytes] = {**hf_headers, "Range": "bytes=0-7"}
+    response = _get_with_rate_limit_retry(url, headers)
 
     meta_size = int.from_bytes(response.content, byteorder="little")
 
     # Fetch the metadata header
     headers = {**hf_headers, "Range": f"bytes=8-{8 + meta_size - 1}"}
-    response = requests.get(url, headers=headers, timeout=10)
-    response.raise_for_status()
+    response = _get_with_rate_limit_retry(url, headers)
 
     metadata_json = response.content.decode("utf-8").strip()
     metadata = json.loads(metadata_json)
@@ -1892,6 +2023,7 @@ NAMED_PRETRAINED_SAE_LOADERS: dict[str, PretrainedSaeHuggingfaceLoader] = {
     "llama_scope_r1_distill": llama_scope_r1_distill_sae_huggingface_loader,
     "dictionary_learning_1": dictionary_learning_sae_huggingface_loader_1,
     "deepseek_r1": deepseek_r1_sae_huggingface_loader,
+    "qwen_scope": qwen_scope_sae_huggingface_loader,
     "sparsify": sparsify_huggingface_loader,
     "gemma_2_transcoder": gemma_2_transcoder_huggingface_loader,
     "mwhanna_transcoder": mwhanna_transcoder_huggingface_loader,
@@ -1910,6 +2042,7 @@ NAMED_PRETRAINED_SAE_CONFIG_GETTERS: dict[str, PretrainedSaeConfigHuggingfaceLoa
     "llama_scope_r1_distill": get_llama_scope_r1_distill_config_from_hf,
     "dictionary_learning_1": get_dictionary_learning_config_1_from_hf,
     "deepseek_r1": get_deepseek_r1_config_from_hf,
+    "qwen_scope": get_qwen_scope_config_from_hf,
     "sparsify": get_sparsify_config_from_hf,
     "gemma_2_transcoder": get_gemma_2_transcoder_config_from_hf,
     "mwhanna_transcoder": get_mwhanna_transcoder_config_from_hf,

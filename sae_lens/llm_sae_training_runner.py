@@ -1,17 +1,21 @@
+import dataclasses
 import json
 import signal
 import sys
+from argparse import Namespace
 from collections.abc import Sequence
-from dataclasses import dataclass
+from contextlib import AbstractContextManager, nullcontext
+from dataclasses import dataclass, make_dataclass
+from functools import partial
 from pathlib import Path
 from typing import Any, Generic
 
 import torch
 import wandb
 from safetensors.torch import save_file
-from simple_parsing import ArgumentParser
+from simple_parsing import ArgumentParser, subgroups
 from transformer_lens.hook_points import HookedRootModule
-from typing_extensions import deprecated
+from typing_extensions import deprecated, override
 
 from sae_lens import logger
 from sae_lens.config import HfDataset, LanguageModelSAERunnerConfig
@@ -28,18 +32,12 @@ from sae_lens.saes.sae import (
     TrainingSAE,
     TrainingSAEConfig,
 )
+from sae_lens.training._interruption import InterruptedException, interrupt_callback
 from sae_lens.training.activation_scaler import ActivationScaler
 from sae_lens.training.activations_store import ActivationsStore
+from sae_lens.training.prefetch import PrefetchingIterator
 from sae_lens.training.sae_trainer import SAETrainer
 from sae_lens.training.types import DataProvider
-
-
-class InterruptedException(Exception):
-    pass
-
-
-def interrupt_callback(sig_num: Any, stack_frame: Any):  # noqa: ARG001
-    raise InterruptedException()
 
 
 @dataclass
@@ -72,15 +70,24 @@ class LLMSaeEvaluator(Generic[T_TRAINING_SAE]):
             compute_variance_metrics=True,
         )
 
-        eval_metrics, _ = run_evals(
-            sae=sae,
-            activation_store=self.activations_store,
-            model=self.model,
-            activation_scaler=activation_scaler,
-            eval_config=eval_config,
-            exclude_special_tokens=exclude_special_tokens,
-            model_kwargs=self.model_kwargs,
-        )  # not calculating featurwise metrics here.
+        # Eval calls into self.activations_store directly, which would race the
+        # prefetcher's producer thread on shared generator state. Pause it for
+        # the duration of the eval.
+        pause_ctx: AbstractContextManager[None] = (
+            data_provider.paused()
+            if isinstance(data_provider, PrefetchingIterator)
+            else nullcontext()
+        )
+        with pause_ctx:
+            eval_metrics, _ = run_evals(
+                sae=sae,
+                activation_store=self.activations_store,
+                model=self.model,
+                activation_scaler=activation_scaler,
+                eval_config=eval_config,
+                exclude_special_tokens=exclude_special_tokens,
+                model_kwargs=self.model_kwargs,
+            )  # not calculating featurwise metrics here.
 
         # Remove eval metrics that are already logged during training
         eval_metrics.pop("metrics/explained_variance", None)
@@ -104,6 +111,7 @@ class LanguageModelSAETrainingRunner:
     model: HookedRootModule
     sae: TrainingSAE[Any]
     activations_store: ActivationsStore
+    evaluator: "LLMSaeEvaluator[Any]"
 
     def __init__(
         self,
@@ -111,7 +119,6 @@ class LanguageModelSAETrainingRunner:
         override_dataset: HfDataset | None = None,
         override_model: HookedRootModule | None = None,
         override_sae: TrainingSAE[Any] | None = None,
-        resume_from_checkpoint: Path | str | None = None,
     ):
         if override_dataset is not None:
             logger.warning(
@@ -123,16 +130,26 @@ class LanguageModelSAETrainingRunner:
             )
 
         self.cfg = cfg
+        # set in cfg.__post_init__; locally bound so type checkers see a str
+        llm_device = self.cfg.llm_device
+        assert llm_device is not None
 
         if override_model is None:
             self.model = load_model(
                 self.cfg.model_class_name,
                 self.cfg.model_name,
-                device=self.cfg.device,
+                device=llm_device,
                 model_from_pretrained_kwargs=self.cfg.model_from_pretrained_kwargs,
+                hook_names=[self.cfg.hook_name],
             )
         else:
             self.model = override_model
+
+        # Compile the LLM before constructing anything that captures a model
+        # reference (activations store, evaluator). Otherwise compile_llm is a
+        # no-op because the store / evaluator keep pointing at the uncompiled
+        # module after `self.model` is rebound.
+        self._compile_llm_if_needed()
 
         self.activations_store = ActivationsStore.from_config(
             self.model,
@@ -156,6 +173,14 @@ class LanguageModelSAETrainingRunner:
 
         self.sae.to(self.cfg.device)
 
+        self.evaluator = LLMSaeEvaluator(
+            model=self.model,
+            activations_store=self.activations_store,
+            eval_batch_size_prompts=self.cfg.eval_batch_size_prompts,
+            n_eval_batches=self.cfg.n_eval_batches,
+            model_kwargs=self.cfg.model_kwargs,
+        )
+
     def run(self):
         """
         Run the training of the SAE.
@@ -170,18 +195,22 @@ class LanguageModelSAETrainingRunner:
                 id=self.cfg.logger.wandb_id,
             )
 
-        evaluator = LLMSaeEvaluator(
-            model=self.model,
-            activations_store=self.activations_store,
-            eval_batch_size_prompts=self.cfg.eval_batch_size_prompts,
-            n_eval_batches=self.cfg.n_eval_batches,
-            model_kwargs=self.cfg.model_kwargs,
-        )
+        data_provider: DataProvider = self.activations_store
+        if self.cfg.prefetch_llm_batches:
+            # Order matters: bool is a subclass of int, so check bool first.
+            prefetch_size = (
+                1
+                if isinstance(self.cfg.prefetch_llm_batches, bool)
+                else self.cfg.prefetch_llm_batches
+            )
+            data_provider = PrefetchingIterator(
+                iter(self.activations_store), prefetch=prefetch_size
+            )
 
         trainer = SAETrainer(
             sae=self.sae,
-            data_provider=self.activations_store,
-            evaluator=evaluator,
+            data_provider=data_provider,
+            evaluator=self.evaluator,
             save_checkpoint_fn=self.save_checkpoint,
             cfg=self.cfg.to_sae_trainer_config(),
         )
@@ -192,7 +221,7 @@ class LanguageModelSAETrainingRunner:
             self.sae.load_weights_from_checkpoint(self.cfg.resume_from_checkpoint)
             self.activations_store.load_from_checkpoint(self.cfg.resume_from_checkpoint)
 
-        self._compile_if_needed()
+        self._compile_sae_if_needed()
         sae = self.run_trainer_with_interruption_handling(trainer)
 
         if self.cfg.output_path is not None:
@@ -256,22 +285,25 @@ class LanguageModelSAETrainingRunner:
             self.cfg.disable_concat_sequences
         )
 
-    def _compile_if_needed(self):
-        # Compile model and SAE
-        #  torch.compile can provide significant speedups (10-20% in testing)
-        # using max-autotune gives the best speedups but:
+    def _compile_llm_if_needed(self):
+        # torch.compile can provide significant speedups (10-20% in testing).
+        # Using max-autotune gives the best speedups but:
         # (a) increases VRAM usage,
         # (b) can't be used on both SAE and LM (some issue with cudagraphs), and
-        # (c) takes some time to compile
-        # optimal settings seem to be:
-        # use max-autotune on SAE and max-autotune-no-cudagraphs on LM
-        # (also pylance seems to really hate this)
+        # (c) takes some time to compile.
+        # Optimal settings: max-autotune on SAE, max-autotune-no-cudagraphs on LM.
+        #
+        # We compile `run_with_cache` rather than the module itself.
+        # ActivationsStore and the evaluator call `model.run_with_cache(...)`,
+        # not `model(...)`. `torch.compile` only intercepts `__call__`/forward,
+        # so wrapping the module leaves the cache path entirely uncompiled.
         if self.cfg.compile_llm:
-            self.model = torch.compile(
-                self.model,
+            self.model.run_with_cache = torch.compile(  # type: ignore[method-assign]
+                self.model.run_with_cache,
                 mode=self.cfg.llm_compilation_mode,
-            )  # type: ignore
+            )
 
+    def _compile_sae_if_needed(self):
         if self.cfg.compile_sae:
             backend = "aot_eager" if self.cfg.device == "mps" else "inductor"
 
@@ -324,94 +356,60 @@ def _parse_cfg_args(
     """
     Parse command line arguments into a LanguageModelSAERunnerConfig.
 
-    This function first parses the architecture argument to determine which
-    concrete SAE config class to use, then parses the full configuration
-    with that concrete type.
+    ``--architecture`` selects which concrete ``TrainingSAEConfig`` subclass the
+    config is built around (and therefore which SAE-specific flags exist), via
+    ``simple_parsing`` subgroups. The choices are taken from the training-SAE
+    registry.
     """
+
+    # Generate help strings only from docstrings, not from comments.
+    # From https://github.com/lebrice/SimpleParsing/issues/352#issuecomment-4654285752
+    class CustomParser(ArgumentParser):
+        @override
+        def _resolve_subgroups(
+            self,
+            wrappers: list[Any],
+            args: list[str],
+            namespace: Namespace | None = None,
+        ) -> tuple[list[Any], dict[str, str]]:
+            resolved_wrappers, chosen_subgroups = super()._resolve_subgroups(
+                wrappers, args, namespace
+            )
+            for root_wrapper in resolved_wrappers:
+                for dc_wrapper in [root_wrapper, *root_wrapper.descendants]:
+                    for field_wrapper in dc_wrapper.fields:
+                        field_wrapper._docstring = dataclasses.replace(
+                            field_wrapper._docstring,
+                            comment_above="",
+                            comment_inline="",
+                            docstring_below="",
+                        )
+            return resolved_wrappers, chosen_subgroups
+
     if len(args) == 0:
         args = ["--help"]
 
-    # First, parse only the architecture to determine which concrete class to use
-    architecture_parser = ArgumentParser(
-        description="Parse architecture to determine SAE config class",
-        exit_on_error=False,
-        add_help=False,  # Don't add help to avoid conflicts
-    )
-    architecture_parser.add_argument(
-        "--architecture",
-        type=str,
-        choices=["standard", "gated", "jumprelu", "topk", "batchtopk"],
-        default="standard",
-        help="SAE architecture to use",
-    )
-
-    # Parse known args to extract architecture, ignore unknown args for now
-    arch_args, remaining_args = architecture_parser.parse_known_args(args)
-    architecture = arch_args.architecture
-
-    # Remove architecture from remaining args if it exists
-    filtered_args = []
-    skip_next = False
-    for arg in remaining_args:
-        if skip_next:
-            skip_next = False
-            continue
-        if arg == "--architecture":
-            skip_next = True  # Skip the next argument (the architecture value)
-            continue
-        filtered_args.append(arg)
-
-    # Create a custom wrapper class that simple_parsing can handle
-    def create_config_class(
-        sae_config_type: type[TrainingSAEConfig],
-    ) -> type[LanguageModelSAERunnerConfig[TrainingSAEConfig]]:
-        """Create a concrete config class for the given SAE config type."""
-
-        # Create the base config without the sae field
-        from dataclasses import field as dataclass_field
-        from dataclasses import fields, make_dataclass
-
-        # Get all fields from LanguageModelSAERunnerConfig except the generic sae field
-        base_fields = []
-        for field_obj in fields(LanguageModelSAERunnerConfig):
-            if field_obj.name != "sae":
-                base_fields.append((field_obj.name, field_obj.type, field_obj))
-
-        # Add the concrete sae field
-        base_fields.append(
+    sae_subgroups: dict[
+        str, TrainingSAEConfig | type[TrainingSAEConfig] | partial[TrainingSAEConfig]
+    ] = {
+        name: partial(config_class, d_in=512, d_sae=1024)
+        for name, (_, config_class) in SAE_TRAINING_CLASS_REGISTRY.items()
+    }
+    cli_config_class = make_dataclass(
+        "CommandLineRunnerConfig",
+        [
             (
                 "sae",
-                sae_config_type,
-                dataclass_field(
-                    default_factory=lambda: sae_config_type(d_in=512, d_sae=1024)
-                ),
+                TrainingSAEConfig,
+                subgroups(sae_subgroups, default="standard", alias="--architecture"),
             )
-        )
+        ],
+        bases=(LanguageModelSAERunnerConfig,),
+    )
 
-        # Create the concrete class
-        return make_dataclass(
-            f"{sae_config_type.__name__}RunnerConfig",
-            base_fields,
-            bases=(LanguageModelSAERunnerConfig,),
-        )
-
-    # Map architecture to concrete config class
-    sae_config_map: dict[str, type[TrainingSAEConfig]] = {
-        name: cfg for name, (_, cfg) in SAE_TRAINING_CLASS_REGISTRY.items()
-    }
-
-    sae_config_type = sae_config_map[architecture]
-    concrete_config_class = create_config_class(sae_config_type)
-
-    # Now parse the full configuration with the concrete type
-    parser = ArgumentParser(exit_on_error=False)
-    parser.add_arguments(concrete_config_class, dest="cfg")
-
-    # Parse the filtered arguments (without --architecture)
-    parsed_args = parser.parse_args(filtered_args)
-
-    # Return the parsed configuration
-    return parsed_args.cfg
+    parser = CustomParser(exit_on_error=False)
+    parser.add_arguments(cli_config_class, dest="cfg")
+    return parser.parse_args(args).cfg
 
 
 # moved into its own function to make it easier to test

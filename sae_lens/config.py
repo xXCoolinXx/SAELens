@@ -140,6 +140,7 @@ class LanguageModelSAERunnerConfig(Generic[T_TRAINING_SAE_CONFIG]):
         dataset_trust_remote_code (bool): Whether to trust remote code when loading datasets from Huggingface.
         streaming (bool): Whether to stream the dataset. Streaming large datasets is usually practical.
         is_dataset_tokenized (bool): Whether the dataset is already tokenized.
+        use_chat_formatting (bool): Tokenize using a chat template.
         context_size (int): The context size to use when generating activations on which to train the SAE.
         use_cached_activations (bool): Whether to use cached activations. This is useful when doing sweeps over the same activations.
         cached_activations_path (str, optional): The path to the cached activations. Defaults to "activations/{dataset_path}/{model_name}/{hook_name}_{hook_head_index}".
@@ -151,8 +152,10 @@ class LanguageModelSAERunnerConfig(Generic[T_TRAINING_SAE_CONFIG]):
         disable_concat_sequences (bool): Whether to disable concatenating sequences and ignore sequences shorter than the context size. If True, disables concatenating and ignores short sequences.
         sequence_separator_token (int | Literal["bos", "eos", "sep"] | None): If not `None`, this token will be placed between sentences in a batch to act as a separator. By default, this is the `<bos>` token.
         activations_mixing_fraction (float): Fraction of the activation buffer to keep for mixing with new activations (default 0.5). Higher values mean more temporal shuffling but slower throughput. If 0, activations are served in order without shuffling (no temporal mixing).
-        device (str): The device to use. Usually "cuda".
-        act_store_device (str): The device to use for the activation store. "cpu" is advised in order to save VRAM. Defaults to "with_model" which uses the same device as the main model.
+        device (str): The device the SAE lives on, and the default device for everything else. Usually "cuda".
+        llm_device (str | None): The device to load the LLM onto. Defaults to None, which uses `device`. Override when the LLM and SAE should live on different GPUs (e.g. `device="cuda:1"`, `llm_device="cuda:0"`).
+        act_store_device (str | None): The device to use for the activation store. Setting to "cpu" is advised if VRAM is limited. Defaults to None, which uses the same device as the SAE. The legacy string "with_model" is also accepted and resolves to `llm_device`.
+        prefetch_llm_batches (bool | int): If truthy, generate activation batches in a background thread so the LLM forward overlaps with SAE training. Pass True for the simple case (queue size 1) or an int >= 1 to size the prefetch queue. Most useful when the LLM and SAE live on different GPUs. Defaults to False (synchronous, no prefetch).
         seed (int): The seed to use.
         dtype (str): The data type to use for the SAE and activations.
         prepend_bos (bool): Whether to prepend the beginning of sequence token. You should use whatever the model was trained with.
@@ -225,8 +228,16 @@ class LanguageModelSAERunnerConfig(Generic[T_TRAINING_SAE_CONFIG]):
     activations_mixing_fraction: float = 0.5
 
     # Misc
-    device: str = "cpu"
-    act_store_device: str = "with_model"  # will be set by post init if with_model
+    device: str = "cpu"  # device for the SAE (and default for the LLM)
+    llm_device: str | None = None  # if None, will be set to `device` in post init
+    # If None, will be set to `device` (the SAE device) in post init. The legacy
+    # string "with_model" is accepted to keep the buffer co-located with the LLM.
+    act_store_device: str | None = None
+    # If truthy, run activation generation in a background thread so the LLM
+    # forward can overlap with SAE training. Pass True for the simple case
+    # (queue size 1, enough for basic overlap), or an int >= 1 to size the
+    # queue. Most useful when LLM and SAE live on different GPUs.
+    prefetch_llm_batches: bool | int = False
     seed: int = 42
     dtype: str = "float32"  # type: ignore #
     prepend_bos: bool = True
@@ -320,8 +331,26 @@ class LanguageModelSAERunnerConfig(Generic[T_TRAINING_SAE_CONFIG]):
             else:
                 self.model_from_pretrained_kwargs = {}
 
-        if self.act_store_device == "with_model":
+        if self.llm_device is None:
+            self.llm_device = self.device
+
+        if self.act_store_device is None:
             self.act_store_device = self.device
+        elif self.act_store_device == "with_model":
+            self.act_store_device = self.llm_device
+
+        # 0 is accepted (and treated as disabled, since it's falsy in the
+        # runner's `if self.cfg.prefetch_llm_batches:` gate) — only negatives
+        # are rejected.
+        if (
+            not isinstance(self.prefetch_llm_batches, bool)
+            and self.prefetch_llm_batches < 0
+        ):
+            raise ValueError(
+                "prefetch_llm_batches must be a bool or a non-negative int "
+                "(0 / False disables prefetching), "
+                f"got {self.prefetch_llm_batches}"
+            )
 
         if self.lr_end is None:
             self.lr_end = self.lr / 10
@@ -417,6 +446,7 @@ class LanguageModelSAERunnerConfig(Generic[T_TRAINING_SAE_CONFIG]):
         # Overwrite fields that might not be JSON-serializable
         d["dtype"] = str(self.dtype)
         d["device"] = str(self.device)
+        d["llm_device"] = str(self.llm_device)
         d["act_store_device"] = str(self.act_store_device)
         return d
 

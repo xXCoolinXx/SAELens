@@ -1,5 +1,5 @@
 # ruff: noqa: E402
-__version__ = "6.38.0"
+__version__ = "6.45.3"
 
 import logging
 
@@ -59,6 +59,11 @@ from .llm_sae_training_runner import LanguageModelSAETrainingRunner, SAETraining
 from .loading.pretrained_sae_loaders import (
     PretrainedSaeDiskLoader,
     PretrainedSaeHuggingfaceLoader,
+)
+from .multi_sae_training_runner import (
+    MultiSAEEvaluator,
+    MultiSAETrainingRunner,
+    MultiSAETrainingRunnerConfig,
 )
 from .pretokenize_runner import PretokenizeRunner, pretokenize_runner
 from .registry import register_sae_class, register_sae_training_class
@@ -123,6 +128,9 @@ __all__ = [
     "MatchingPursuitTrainingSAE",
     "MatchingPursuitSAEConfig",
     "MatchingPursuitTrainingSAEConfig",
+    "MultiSAEEvaluator",
+    "MultiSAETrainingRunner",
+    "MultiSAETrainingRunnerConfig",
 ]
 
 # Conditional export for SAETransformerBridge (requires transformer-lens v3+)
